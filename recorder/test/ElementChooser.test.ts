@@ -60,6 +60,19 @@ it("highlights an element while hovered", async () => {
     top: "0px",
     width: "50px",
   });
+
+  // clears on scroll
+  await page.evaluate(() => {
+    window.scrollTo(0, 100);
+    window.scrollTo(0, 0);
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  }, 1000);
 });
 
 it("chooses an element on click", async () => {
@@ -77,15 +90,21 @@ it("chooses an element on click", async () => {
   await waitForExpect(async () => {
     expect(chosen).toMatchObject({
       isFillable: false,
-      selectors: expect.arrayContaining([
-        "select",
-        "body select",
-        "html select",
-        "select:visible",
-        "body select:visible",
-        "html select:visible",
-      ]),
+      selectors: expect.arrayContaining(["select"]),
       text: "a",
+    });
+  }, 1000);
+
+  // clears on scroll
+  await page.evaluate(() => {
+    window.scrollTo(0, 100);
+    window.scrollTo(0, 0);
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "0px",
+      width: "0px",
     });
   }, 1000);
 });
@@ -98,15 +117,17 @@ it("stop hides the chooser and highlight", async () => {
     qawolf.elementChooser.stop();
   });
 
-  expect(await getStyle("#qawolf-chooser")).toMatchObject({
-    height: "0px",
-    width: "0px",
-  });
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
 
-  expect(await getStyle("#qawolf-highlight")).toMatchObject({
-    height: "0px",
-    width: "0px",
-  });
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  }, 1000);
 });
 
 it("start shows the chooser and highlight", async () => {
@@ -118,15 +139,17 @@ it("start shows the chooser and highlight", async () => {
 
   await page.click("input");
 
-  expect(await getStyle("#qawolf-chooser")).toMatchObject({
-    height: "50px",
-    width: "50px",
-  });
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "50px",
+      width: "50px",
+    });
 
-  expect(await getStyle("#qawolf-highlight")).toMatchObject({
-    height: "50px",
-    width: "50px",
-  });
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "50px",
+      width: "50px",
+    });
+  }, 1000);
 });
 
 it("updates the chosen text when it changes", async () => {

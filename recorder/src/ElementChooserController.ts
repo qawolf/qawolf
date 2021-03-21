@@ -50,8 +50,6 @@ export class ElementChooserController {
     isFillable: boolean,
     selectors: string[]
   ): void => {
-    if (!isFillable) return;
-
     const notifyTextChanged = () => {
       this._notifyElementChosen({
         isFillable,

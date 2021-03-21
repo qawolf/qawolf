@@ -57,7 +57,9 @@ export class ElementChooserView {
   }
 
   _onScroll = (): void => {
-    // clear the highlight
+    // hide the chooser and highlight on scroll
+    this._chooser.style.height = "0px";
+    this._chooser.style.width = "0px";
     this._highlight.style.height = "0px";
     this._highlight.style.width = "0px";
   };
