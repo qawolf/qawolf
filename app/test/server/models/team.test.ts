@@ -171,6 +171,7 @@ describe("team model", () => {
       const team = await updateTeam(
         {
           alert_integration_id: "integrationId",
+          alert_only_on_failure: true,
           id: "teamId",
           is_email_alert_enabled: false,
         },
@@ -180,6 +181,7 @@ describe("team model", () => {
       const updatedTeam = await db.select("*").from("teams").first();
 
       expect(team.alert_integration_id).toBe("integrationId");
+      expect(team.alert_only_on_failure).toBe(true);
       expect(team.api_key).toMatch("qawolf_");
       expect(team.is_email_alert_enabled).toBe(false);
       expect(team).toEqual({
@@ -191,6 +193,7 @@ describe("team model", () => {
       const team2 = await updateTeam(
         {
           alert_integration_id: null,
+          alert_only_on_failure: false,
           id: "teamId",
           is_email_alert_enabled: true,
         },
@@ -200,6 +203,7 @@ describe("team model", () => {
       const updatedTeam2 = await db.select("*").from("teams").first();
 
       expect(team2.alert_integration_id).toBeNull();
+      expect(team2.alert_only_on_failure).toBe(false);
       expect(team2.api_key).toMatch("qawolf_");
       expect(team2.is_email_alert_enabled).toBe(true);
       expect(team2).toEqual({

@@ -116,6 +116,7 @@ export const suiteFragment = gql`
 export const teamFragment = gql`
   fragment TeamFragment on Team {
     alert_integration_id
+    alert_only_on_failure
     api_key
     helpers
     helpers_version

@@ -288,9 +288,12 @@ type UpdateTeamData = {
 };
 
 type UpdateTeamVariables = {
+  alert_integration_id?: string | null;
+  alert_only_on_failure?: boolean;
   helpers?: string;
   helpers_version?: number;
   id: string;
+  is_email_alert_enabled?: boolean;
   name?: string;
 };
 

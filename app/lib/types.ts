@@ -116,6 +116,7 @@ export type ShortTeam = {
 
 export type Team = ShortTeam & {
   alert_integration_id: string | null;
+  alert_only_on_failure: boolean;
   api_key: string;
   helpers: string;
   helpers_version: number;

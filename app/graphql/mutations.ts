@@ -326,6 +326,7 @@ export const updateTestTriggersMutation = gql`
 export const updateTeamMutation = gql`
   mutation updateTeam(
     $alert_integration_id: String
+    $alert_only_on_failure: Boolean
     $helpers: String
     $helpers_version: Int
     $id: ID!
@@ -334,6 +335,7 @@ export const updateTeamMutation = gql`
   ) {
     updateTeam(
       alert_integration_id: $alert_integration_id
+      alert_only_on_failure: $alert_only_on_failure
       helpers: $helpers
       helpers_version: $helpers_version
       id: $id
