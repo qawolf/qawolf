@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { Icon, Slack } from "grommet-icons";
+import { Slack } from "grommet-icons";
 import { ChangeEvent } from "react";
 
 import { Integration } from "../../../../lib/types";

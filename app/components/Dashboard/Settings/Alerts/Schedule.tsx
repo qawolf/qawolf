@@ -8,7 +8,6 @@ import { edgeSize } from "../../../../theme/theme";
 import Divider from "../../../shared/Divider";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
 import Text from "../../../shared/Text";
-import Alert from "./Alert";
 
 type Props = { team: TeamWithUsers };
 
