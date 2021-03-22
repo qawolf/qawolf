@@ -12,7 +12,7 @@ type Props = {
 export default function Alerts({ integrations, team }: Props): JSX.Element {
   return (
     <>
-      <Text color="gray9" margin={{ vertical: "medium" }} size="componentLarge">
+      <Text color="gray9" margin={{ bottom: "medium" }} size="componentLarge">
         {copy.alerts}
       </Text>
       <Schedule team={team} />
