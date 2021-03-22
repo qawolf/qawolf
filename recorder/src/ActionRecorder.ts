@@ -13,10 +13,10 @@ import {
 type ActionCallback = Callback<ElementAction>;
 
 export class ActionRecorder {
+  _isStarted = false;
   _lastReceivedAction: PossibleAction;
   _onDispose: Callback[] = [];
   _selectorCache = new Map<HTMLElement, RankedSelector>();
-  _started = false;
 
   constructor() {
     debug("ActionRecorder: created");
@@ -24,10 +24,10 @@ export class ActionRecorder {
   }
 
   public stop(): void {
-    if (!this._started) return;
+    if (!this._isStarted) return;
     this._onDispose.forEach((d) => d());
     this._onDispose = [];
-    this._started = false;
+    this._isStarted = false;
     debug("ActionRecorder: stopped");
   }
 
@@ -113,8 +113,8 @@ export class ActionRecorder {
   }
 
   public start(): void {
-    if (this._started) return;
-    this._started = true;
+    if (this._isStarted) return;
+    this._isStarted = true;
 
     //////// MOUSE EVENTS ////////
 

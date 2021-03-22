@@ -25,7 +25,7 @@ function isActionRecorderStarted(): Promise<boolean> {
   return page.evaluate(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const qawolf: any = (window as any).qawolf;
-    return qawolf.actionRecorder._started;
+    return qawolf.actionRecorder._isStarted;
   });
 }
 
@@ -33,7 +33,7 @@ function isElementChooserStarted(): Promise<boolean> {
   return page.evaluate(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const qawolf: any = (window as any).qawolf;
-    return qawolf.elementChooser._started;
+    return qawolf.elementChooser._view._isStarted;
   });
 }
 

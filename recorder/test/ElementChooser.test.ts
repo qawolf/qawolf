@@ -34,124 +34,136 @@ beforeEach(async () => {
 
 afterAll(() => launched.browser.close());
 
-async function getChooserStyle() {
-  const chooser = await page.$("#qawolf-chooser");
-
-  const style = await chooser.evaluate((element) => {
-    const {
-      background,
-      border,
-      display,
-      height,
-      left,
-      top,
-      visibility,
-      width,
-    } = element.style;
-
-    const paw = element.querySelector("svg");
-
+async function getStyle(selector: string) {
+  const element = await page.$(selector);
+  return element.evaluate((element) => {
+    const style = element.style;
     return {
-      background,
-      border,
-      display,
-      height,
-      left,
-      pawVisibility: paw.style.visibility,
-      top,
-      visibility,
-      width,
+      background: style.background,
+      border: style.border,
+      height: style.height,
+      left: style.left,
+      top: style.top,
+      width: style.width,
     };
   });
-
-  return style;
 }
+
+it("chooses an element on click", async () => {
+  await page.click("button");
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toEqual({
+      background: "",
+      border: "1px solid rgb(15, 120, 243)",
+      height: "50px",
+      left: "100px",
+      top: "0px",
+      width: "50px",
+    });
+
+    expect(chosen).toMatchObject({
+      isFillable: false,
+      selectors: expect.arrayContaining(["text=hello", "button"]),
+      text: "hello",
+    });
+  });
+
+  // clears on scroll
+  await page.evaluate(() => {
+    window.scrollTo(0, 100);
+    window.scrollTo(0, 0);
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  });
+});
 
 it("highlights an element while hovered", async () => {
   await page.hover("input");
 
-  expect(await getChooserStyle()).toEqual({
+  expect(await getStyle("#qawolf-highlight")).toEqual({
     background: expect.stringContaining("rgba(15, 120, 243, 0.15)"),
     border: "",
-    display: "flex",
-    height: "100px",
-    left: "300px",
-    pawVisibility: "hidden",
-    top: "300px",
-    visibility: "visible",
+    height: "50px",
+    left: "0px",
+    top: "0px",
     width: "50px",
+  });
+
+  // clears on scroll
+  await page.evaluate(() => {
+    window.scrollTo(0, 100);
+    window.scrollTo(0, 0);
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
   });
 });
 
-it("chooses an element on click", async () => {
-  await page.click("select");
+it("start shows the chooser and highlight", async () => {
+  await page.click("input");
+
+  await page.evaluate(() => {
+    const qawolf: QAWolfWeb = (window as any).qawolf;
+    qawolf.elementChooser.stop();
+    qawolf.elementChooser.start();
+  });
+
+  await page.click("button");
 
   await waitForExpect(async () => {
-    expect(await getChooserStyle()).toMatchObject({
-      border: "1px solid rgb(15, 120, 243)",
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "50px",
+      width: "50px",
     });
-  }, 1000);
 
-  await waitForExpect(async () => {
-    expect(chosen).toMatchObject({
-      isFillable: false,
-      selectors: expect.arrayContaining([
-        "select",
-        "body select",
-        "html select",
-        "select:visible",
-        "body select:visible",
-        "html select:visible",
-      ]),
-      text: "a",
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "50px",
+      width: "50px",
     });
-  }, 1000);
-
-  const paw = await page.$("#qawolf-chooser > svg");
-  expect(await paw.evaluate((el) => el.style.visibility)).toEqual("visible");
+  });
 });
 
-it("stop hides the chooser and start shows it again", async () => {
-  await page.click("select");
-
-  await waitForExpect(async () => {
-    expect(await getChooserStyle()).toMatchObject({
-      pawVisibility: "visible",
-      visibility: "visible",
-    });
-  }, 1000);
+it("stop hides the chooser and highlight", async () => {
+  await page.click("button");
 
   await page.evaluate(() => {
     const qawolf: QAWolfWeb = (window as any).qawolf;
     qawolf.elementChooser.stop();
   });
-  expect(await getChooserStyle()).toMatchObject({
-    pawVisibility: "hidden",
-    visibility: "hidden",
-  });
 
-  await page.evaluate(() => {
-    const qawolf: QAWolfWeb = (window as any).qawolf;
-    qawolf.elementChooser.start();
-  });
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
 
-  await page.hover("select");
-  expect(await getChooserStyle()).toMatchObject({
-    pawVisibility: "hidden",
-    visibility: "visible",
-  });
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  }, 100);
 });
 
-it("updates text when the value changes", async () => {
+it("updates the chosen text when it changes", async () => {
   await page.click("input");
 
   await waitForExpect(() => {
     expect(chosen).toMatchObject({ text: "123" });
-  }, 1000);
+  });
 
   await page.fill("input", "999");
 
   await waitForExpect(() => {
     expect(chosen).toMatchObject({ text: "999" });
-  }, 1000);
+  });
 });

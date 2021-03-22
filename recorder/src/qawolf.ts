@@ -18,8 +18,8 @@ export { resolveAction } from "./resolveAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
 
 import { ActionRecorder } from "./ActionRecorder";
-import { ElementChooser } from "./ElementChooser";
+import { ElementChooserController } from "./ElementChooserController";
 
 export const actionRecorder = new ActionRecorder();
 
-export const elementChooser = new ElementChooser();
+export const elementChooser = new ElementChooserController();
