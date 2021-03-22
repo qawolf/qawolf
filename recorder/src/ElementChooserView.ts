@@ -7,8 +7,9 @@ export class ElementChooserView {
   _root: HTMLElement;
   _shadowRoot: ShadowRoot;
 
+  _isChosen = false;
+  _isStarted = false;
   _onElementChosen: Callback<Element, void>;
-  _started = false;
 
   constructor(onElementChosen: Callback<Element>) {
     this._onElementChosen = onElementChosen;
@@ -17,7 +18,6 @@ export class ElementChooserView {
     this._highlight = createHighlight();
 
     this._root = createRoot();
-
     this._shadowRoot = this._root.attachShadow({ mode: "open" });
     this._shadowRoot.appendChild(this._chooser);
     this._shadowRoot.appendChild(this._highlight);
@@ -35,16 +35,21 @@ export class ElementChooserView {
     const target = event.composedPath()[0] as HTMLElement;
     if (!target || !target.getBoundingClientRect) return;
 
+    this._isChosen = true;
+
     // separate painting the chosen ui from the callback
     // to prevent the ui from getting blocked by generating selectors
     requestAnimationFrame(() => {
       // mark it as chosen
       overlay(target, this._chooser);
+      overlay(target, this._highlight);
       this._onElementChosen(target);
     });
   };
 
   _onMouseMouse = (event: MouseEvent): void => {
+    if (this._isChosen) return;
+
     // higlight the current element
     const target = event.composedPath()[0] as HTMLElement;
     if (!target || !target.getBoundingClientRect) return;
@@ -65,8 +70,8 @@ export class ElementChooserView {
   };
 
   start() {
-    if (this._started) return;
-    this._started = true;
+    if (this._isStarted) return;
+    this._isStarted = true;
 
     document.addEventListener("click", this._onClick, true);
     document.addEventListener("mousedown", this._onMouseDown, true);
@@ -76,7 +81,8 @@ export class ElementChooserView {
   }
 
   stop() {
-    if (!this._started) return;
+    if (!this._isStarted) return;
+    this._isChosen = false;
 
     document.removeEventListener("click", this._onClick, true);
     document.removeEventListener("mousedown", this._onMouseDown, true);
@@ -91,7 +97,7 @@ export class ElementChooserView {
       this._highlight.style.width = "0px";
     });
 
-    this._started = false;
+    this._isStarted = false;
   }
 }
 

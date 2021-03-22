@@ -49,32 +49,6 @@ async function getStyle(selector: string) {
   });
 }
 
-it("highlights an element while hovered", async () => {
-  await page.hover("input");
-
-  expect(await getStyle("#qawolf-highlight")).toEqual({
-    background: expect.stringContaining("rgba(15, 120, 243, 0.15)"),
-    border: "",
-    height: "50px",
-    left: "0px",
-    top: "0px",
-    width: "50px",
-  });
-
-  // clears on scroll
-  await page.evaluate(() => {
-    window.scrollTo(0, 100);
-    window.scrollTo(0, 0);
-  });
-
-  await waitForExpect(async () => {
-    expect(await getStyle("#qawolf-highlight")).toMatchObject({
-      height: "0px",
-      width: "0px",
-    });
-  });
-});
-
 it("chooses an element on click", async () => {
   await page.click("button");
 
@@ -109,7 +83,35 @@ it("chooses an element on click", async () => {
   });
 });
 
+it("highlights an element while hovered", async () => {
+  await page.hover("input");
+
+  expect(await getStyle("#qawolf-highlight")).toEqual({
+    background: expect.stringContaining("rgba(15, 120, 243, 0.15)"),
+    border: "",
+    height: "50px",
+    left: "0px",
+    top: "0px",
+    width: "50px",
+  });
+
+  // clears on scroll
+  await page.evaluate(() => {
+    window.scrollTo(0, 100);
+    window.scrollTo(0, 0);
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  });
+});
+
 it("start shows the chooser and highlight", async () => {
+  await page.click("input");
+
   await page.evaluate(() => {
     const qawolf: QAWolfWeb = (window as any).qawolf;
     qawolf.elementChooser.stop();

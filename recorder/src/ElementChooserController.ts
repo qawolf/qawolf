@@ -11,11 +11,6 @@ export class ElementChooserController {
   _disposeTextObserver: Callback | null = null;
   _view: ElementChooserView;
 
-  _notifyElementChosen(value: ElementChosen) {
-    const callback = (window as any).qawElementChosen;
-    if (callback) callback(value);
-  }
-
   _generateSelectors(
     target: HTMLElement,
     isFillable: boolean,
@@ -33,7 +28,7 @@ export class ElementChooserController {
         return a.selector.localeCompare(b.selector);
       });
 
-      this._notifyElementChosen({
+      notifyElementChosen({
         isFillable,
         selectors: selectors.map((s) => s.selector),
         text,
@@ -51,7 +46,7 @@ export class ElementChooserController {
     selectors: string[]
   ): void => {
     const notifyTextChanged = () => {
-      this._notifyElementChosen({
+      notifyElementChosen({
         isFillable,
         selectors,
         text: getAssertText(target),
@@ -78,7 +73,7 @@ export class ElementChooserController {
     const text = getAssertText(target);
 
     // notify element chosen immediately so choose placeholder goes away
-    this._notifyElementChosen({ isFillable, selectors: [], text });
+    notifyElementChosen({ isFillable, selectors: [], text });
 
     // separate raf to prevent blocking the ui update
     requestAnimationFrame(() => {
@@ -100,4 +95,9 @@ export class ElementChooserController {
 
     this._view.stop();
   }
+}
+
+function notifyElementChosen(value: ElementChosen): void {
+  const callback = (window as any).qawElementChosen;
+  if (callback) callback(value);
 }
