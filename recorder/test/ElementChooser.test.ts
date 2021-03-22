@@ -37,7 +37,7 @@ afterAll(() => launched.browser.close());
 async function getStyle(selector: string) {
   const element = await page.$(selector);
   return element.evaluate((element) => {
-    const { style } = element;
+    const style = element.style;
     return {
       background: style.background,
       border: style.border,
@@ -72,28 +72,28 @@ it("highlights an element while hovered", async () => {
       height: "0px",
       width: "0px",
     });
-  }, 1000);
+  });
 });
 
 it("chooses an element on click", async () => {
-  await page.click("select");
-
-  expect(await getStyle("#qawolf-chooser")).toEqual({
-    background: "",
-    border: "1px solid rgb(15, 120, 243)",
-    height: "50px",
-    left: "50px",
-    top: "0px",
-    width: "50px",
-  });
+  await page.click("button");
 
   await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-chooser")).toEqual({
+      background: "",
+      border: "1px solid rgb(15, 120, 243)",
+      height: "50px",
+      left: "100px",
+      top: "0px",
+      width: "50px",
+    });
+
     expect(chosen).toMatchObject({
       isFillable: false,
-      selectors: expect.arrayContaining(["select"]),
-      text: "a",
+      selectors: expect.arrayContaining(["text=hello", "button"]),
+      text: "hello",
     });
-  }, 1000);
+  });
 
   // clears on scroll
   await page.evaluate(() => {
@@ -106,28 +106,7 @@ it("chooses an element on click", async () => {
       height: "0px",
       width: "0px",
     });
-  }, 1000);
-});
-
-it("stop hides the chooser and highlight", async () => {
-  await page.click("input");
-
-  await page.evaluate(() => {
-    const qawolf: QAWolfWeb = (window as any).qawolf;
-    qawolf.elementChooser.stop();
   });
-
-  await waitForExpect(async () => {
-    expect(await getStyle("#qawolf-chooser")).toMatchObject({
-      height: "0px",
-      width: "0px",
-    });
-
-    expect(await getStyle("#qawolf-highlight")).toMatchObject({
-      height: "0px",
-      width: "0px",
-    });
-  }, 1000);
 });
 
 it("start shows the chooser and highlight", async () => {
@@ -137,7 +116,7 @@ it("start shows the chooser and highlight", async () => {
     qawolf.elementChooser.start();
   });
 
-  await page.click("input");
+  await page.click("button");
 
   await waitForExpect(async () => {
     expect(await getStyle("#qawolf-chooser")).toMatchObject({
@@ -149,7 +128,28 @@ it("start shows the chooser and highlight", async () => {
       height: "50px",
       width: "50px",
     });
-  }, 1000);
+  });
+});
+
+it("stop hides the chooser and highlight", async () => {
+  await page.click("button");
+
+  await page.evaluate(() => {
+    const qawolf: QAWolfWeb = (window as any).qawolf;
+    qawolf.elementChooser.stop();
+  });
+
+  await waitForExpect(async () => {
+    expect(await getStyle("#qawolf-highlight")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+
+    expect(await getStyle("#qawolf-chooser")).toMatchObject({
+      height: "0px",
+      width: "0px",
+    });
+  }, 100);
 });
 
 it("updates the chosen text when it changes", async () => {
@@ -157,11 +157,11 @@ it("updates the chosen text when it changes", async () => {
 
   await waitForExpect(() => {
     expect(chosen).toMatchObject({ text: "123" });
-  }, 1000);
+  });
 
   await page.fill("input", "999");
 
   await waitForExpect(() => {
     expect(chosen).toMatchObject({ text: "999" });
-  }, 1000);
+  });
 });

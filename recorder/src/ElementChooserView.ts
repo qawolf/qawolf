@@ -84,10 +84,12 @@ export class ElementChooserView {
     document.removeEventListener("mouseup", this._onMouseMouse, true);
     document.removeEventListener("scroll", this._onScroll, true);
 
-    this._chooser.style.height = "0px";
-    this._chooser.style.width = "0px";
-    this._highlight.style.height = "0px";
-    this._highlight.style.width = "0px";
+    requestAnimationFrame(() => {
+      this._chooser.style.height = "0px";
+      this._chooser.style.width = "0px";
+      this._highlight.style.height = "0px";
+      this._highlight.style.width = "0px";
+    });
 
     this._started = false;
   }
