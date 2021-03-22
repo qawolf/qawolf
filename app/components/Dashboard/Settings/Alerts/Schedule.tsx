@@ -4,7 +4,9 @@ import { ChangeEvent } from "react";
 import { useUpdateTeam } from "../../../../hooks/mutations";
 import { TeamWithUsers } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
+import { edgeSize } from "../../../../theme/theme";
 import Divider from "../../../shared/Divider";
+import RadioButtonGroup from "../../../shared/RadioButtonGroup";
 import Text from "../../../shared/Text";
 import Alert from "./Alert";
 
@@ -29,26 +31,33 @@ export default function Schedule({ team }: Props): JSX.Element {
     });
   };
 
+  const value = team.alert_only_on_failure
+    ? copy.alertsOnlyOnFailure
+    : copy.alertsAlways;
+
   return (
     <Box margin={{ bottom: "medium" }}>
-      <Text color="gray9" margin={{ bottom: "xxsmall" }} size="componentBold">
+      <Text color="gray9" margin={{ bottom: "small" }} size="componentBold">
         {copy.alertsReceive}
       </Text>
-      <Alert
-        isChecked={!team.alert_only_on_failure}
-        label={copy.alertsAlways}
-        noIcon
+      <RadioButtonGroup
+        direction="column"
+        gap={edgeSize.small}
+        name={copy.alertsReceive}
+        options={[
+          {
+            label: copy.alertsAlways,
+            value: copy.alertsAlways,
+          },
+          {
+            label: copy.alertsOnlyOnFailure,
+            value: copy.alertsOnlyOnFailure,
+          },
+        ]}
         onChange={handleChange}
-        value={copy.alertsAlways}
+        value={value}
       />
-      <Alert
-        isChecked={team.alert_only_on_failure}
-        label={copy.alertsOnlyOnFailure}
-        noIcon
-        onChange={handleChange}
-        value={copy.alertsOnlyOnFailure}
-      />
-      <Divider />
+      <Divider margin={{ top: "medium" }} />
     </Box>
   );
 }

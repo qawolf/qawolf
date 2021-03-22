@@ -3,6 +3,7 @@ import { Icon, Slack } from "grommet-icons";
 import { ChangeEvent } from "react";
 
 import { Integration } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
 import {
   border,
   colors,
@@ -16,10 +17,7 @@ import Text from "../../../shared/Text";
 type Props = {
   integration?: Integration;
   isChecked?: boolean;
-  label: string;
-  noIcon?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: string;
 };
 
 export const emailValue = "email";
@@ -27,31 +25,26 @@ export const emailValue = "email";
 export default function Alert({
   integration,
   isChecked,
-  label,
-  noIcon,
   onChange,
-  value,
 }: Props): JSX.Element {
   const a11yTitle = `select ${
     integration ? integration.slack_channel : emailValue
   }`;
 
-  let IconComponent: Icon | null = null;
-  if (!noIcon) IconComponent = integration ? Slack : Email;
+  const IconComponent = integration ? Slack : Email;
+
+  const label = integration?.team_name || copy.email;
+  const value = integration?.id || emailValue;
 
   const labelHtml = (
-    <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
+    <Box align="center" direction="row">
       {!!IconComponent && (
         <IconComponent
           color={integration ? "plain" : colors.gray9}
           size={edgeSize.small}
         />
       )}
-      <Text
-        color="gray9"
-        margin={noIcon ? undefined : { left: "xxsmall" }}
-        size="component"
-      >
+      <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
         {label}
       </Text>
     </Box>

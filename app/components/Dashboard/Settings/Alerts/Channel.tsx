@@ -53,26 +53,19 @@ export default function Channel({ integrations, team }: Props): JSX.Element {
         integration={i}
         isChecked={i.id === selectedValue}
         key={i.id}
-        label={i.team_name}
         onChange={handleChange}
-        value={i.id}
       />
     );
   });
 
   return (
     <>
-      <Text color="gray9" margin={{ bottom: "xxsmall" }} size="componentBold">
+      <Text color="gray9" margin={{ bottom: "small" }} size="componentBold">
         {copy.alertsChannel}
       </Text>
       <AddSlackChannel teamId={team.id} />
       <Box margin={{ top: "medium" }}>
-        <Alert
-          isChecked={selectedValue === "email"}
-          label={copy.email}
-          onChange={handleChange}
-          value="email"
-        />
+        <Alert isChecked={selectedValue === "email"} onChange={handleChange} />
         {slackAlertsHtml}
       </Box>
       <Divider />
