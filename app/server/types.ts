@@ -494,6 +494,7 @@ export type UpdateRunnerMutation = {
 
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
+  alert_only_on_failure?: boolean;
   helpers?: string | null;
   helpers_version?: number;
   id: string;

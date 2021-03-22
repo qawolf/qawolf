@@ -16,32 +16,34 @@ import Text from "../../../shared/Text";
 
 type Props = {
   integration?: Integration;
+  isChecked?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  selectedValue: string;
 };
 
 export const emailValue = "email";
 
 export default function Alert({
   integration,
+  isChecked,
   onChange,
-  selectedValue,
 }: Props): JSX.Element {
-  const value = integration?.id || emailValue;
-
   const a11yTitle = `select ${
     integration ? integration.slack_channel : emailValue
   }`;
 
   const IconComponent = integration ? Slack : Email;
+
   const label = integration?.team_name || copy.email;
+  const value = integration?.id || emailValue;
 
   const labelHtml = (
-    <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
-      <IconComponent
-        color={integration ? "plain" : colors.gray9}
-        size={edgeSize.small}
-      />
+    <Box align="center" direction="row">
+      {!!IconComponent && (
+        <IconComponent
+          color={integration ? "plain" : colors.gray9}
+          size={edgeSize.small}
+        />
+      )}
       <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
         {label}
       </Text>
@@ -58,7 +60,7 @@ export default function Alert({
     >
       <RadioButton
         a11yTitle={a11yTitle}
-        checked={value === selectedValue}
+        checked={isChecked}
         label={labelHtml}
         name="alert"
         onChange={onChange}

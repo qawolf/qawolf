@@ -345,6 +345,11 @@ type Team {
   "The ID of a Slack integration associated with this team"
   alert_integration_id: ID
 
+  """
+  True if all users on the associated team should be alerted only when a test run fails, rather than always when a test runs.
+  """
+  alert_only_on_failure: Boolean!
+
   "The API key for the team"
   api_key: String!
 
@@ -361,8 +366,7 @@ type Team {
   inbox: String!
 
   """
-  True if all users on the associated team should be alerted by email whenever
-  a test run finishes.
+  True if all users on the associated team should be alerted by email whenever a test run finishes.
   """
   is_email_alert_enabled: Boolean!
 
@@ -1021,6 +1025,11 @@ type Mutation {
     changed. If it is `null`, it will be cleared.
     """
     alert_integration_id: String
+
+    """
+    Whether the team members receive alerts only when tests fail
+    """
+    alert_only_on_failure: Boolean
 
     """
     Updated helpers for the team

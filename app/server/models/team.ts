@@ -10,6 +10,7 @@ const DEFAULT_NAME = "My Team";
 
 type UpdateTeam = {
   alert_integration_id?: string | null;
+  alert_only_on_failure?: boolean;
   helpers?: string;
   helpers_version?: number;
   id: string;
@@ -120,6 +121,7 @@ export const findTeamsForUser = async (
 export const updateTeam = async (
   {
     alert_integration_id,
+    alert_only_on_failure,
     helpers,
     helpers_version,
     id,
@@ -143,6 +145,9 @@ export const updateTeam = async (
 
   if (alert_integration_id !== undefined) {
     updates.alert_integration_id = alert_integration_id;
+  }
+  if (!isNil(alert_only_on_failure)) {
+    updates.alert_only_on_failure = alert_only_on_failure;
   }
 
   if (!isNil(helpers)) updates.helpers = helpers;

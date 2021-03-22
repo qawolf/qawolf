@@ -62,6 +62,7 @@ describe("updateTeamResolver", () => {
       {},
       {
         alert_integration_id: "integrationId",
+        alert_only_on_failure: true,
         id: "teamId",
         is_email_alert_enabled: false,
       },
@@ -70,6 +71,7 @@ describe("updateTeamResolver", () => {
 
     expect(team).toMatchObject({
       alert_integration_id: "integrationId",
+      alert_only_on_failure: true,
       api_key: "qawolf_api_key",
       is_email_alert_enabled: false,
     });
