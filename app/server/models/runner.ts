@@ -248,7 +248,7 @@ export const deleteUnhealthyRunners = async ({
     return;
   }
 
-  log.alert("delete unhealthy runners", ids.join(","));
+  log.debug("delete unhealthy runners", ids.join(","));
 
   await Promise.all(
     ids.map((id) =>
