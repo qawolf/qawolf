@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite } from "../../models/suite";
 import { validateApiKeyForTeam } from "../../models/team";
-import { ModelOptions, RunStatus,Suite, SuiteRun } from "../../types";
+import { ModelOptions, RunStatus, Suite, SuiteRun } from "../../types";
 
 class AuthenticationError extends Error {
   code: number;
@@ -90,8 +90,8 @@ export const handleSuiteRequest = async (
       pick(r, ["id", "status", "test_name"])
     );
 
-    const is_complete = !runs.some((r) => r.status === "created");
     const status = getStatusForSuite(runs);
+    const is_complete = status !== "created";
 
     res.status(200).send({ id, is_complete, runs: formattedRuns, status });
 
