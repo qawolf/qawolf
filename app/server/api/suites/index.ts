@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import environment from "../environment";
-import { createSuiteForTrigger } from "../models/suite";
-import { validateApiKeyForTeam } from "../models/team";
-import { findTrigger } from "../models/trigger";
-import { ModelOptions, Trigger } from "../types";
+import environment from "../../environment";
+import { createSuiteForTrigger } from "../../models/suite";
+import { validateApiKeyForTeam } from "../../models/team";
+import { findTrigger } from "../../models/trigger";
+import { ModelOptions, Trigger } from "../../types";
 
 class AuthenticationError extends Error {
   code: number;
@@ -90,8 +90,10 @@ export const handleSuitesRequest = async (
       throw new Error("No tests found");
     }
 
-    const url = `${environment.APP_URL}/suites/${result.suite.id}`;
-    res.status(200).send({ url });
+    const suiteId = result.suite.id;
+    const url = `${environment.APP_URL}/suites/${suiteId}`;
+
+    res.status(200).send({ id: suiteId, url });
 
     log.debug("completed");
   } catch (error) {
