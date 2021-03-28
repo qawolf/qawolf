@@ -1,33 +1,25 @@
 import pick from "lodash/pick";
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { ApiAuthenticationError } from "../../errors";
 import { findRunsForSuite } from "../../models/run";
 import { findSuite } from "../../models/suite";
 import { validateApiKeyForTeam } from "../../models/team";
 import { ModelOptions, RunStatus, Suite, SuiteRun } from "../../types";
-
-class AuthenticationError extends Error {
-  code: number;
-
-  constructor({ code, message }: { code: number; message: string }) {
-    super(message);
-    this.code = code;
-  }
-}
 
 // errors example: https://stripe.com/docs/api/errors
 const ensureSuiteAccess = async (
   req: NextApiRequest,
   options: ModelOptions
 ): Promise<Suite> => {
-  const log = options.logger.prefix("ensureTriggerAccess");
+  const log = options.logger.prefix("ensureSuiteAccess");
 
   const api_key = req.headers.authorization;
   const suite_id = req.query.suite_id as string;
 
   if (!api_key) {
     log.error("no api key provided");
-    throw new AuthenticationError({
+    throw new ApiAuthenticationError({
       code: 401,
       message: "No API key provided",
     });
@@ -35,7 +27,7 @@ const ensureSuiteAccess = async (
 
   if (!suite_id) {
     log.error("no suite id provided");
-    throw new AuthenticationError({
+    throw new ApiAuthenticationError({
       code: 400,
       message: "No suite id provided",
     });
@@ -46,20 +38,20 @@ const ensureSuiteAccess = async (
 
     await validateApiKeyForTeam({ api_key, team_id: suite.team_id }, options);
 
-    log.debug("no errors for suite", suite.id);
+    log.debug("has access", suite.id);
 
     return suite;
   } catch (error) {
     if (error.message.includes("not found")) {
       log.error("suite not found");
-      throw new AuthenticationError({
+      throw new ApiAuthenticationError({
         code: 404,
         message: "Invalid suite id",
       });
     }
 
     log.error("invalid api key");
-    throw new AuthenticationError({
+    throw new ApiAuthenticationError({
       code: 403,
       message: "API key cannot get suite",
     });

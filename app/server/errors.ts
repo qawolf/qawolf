@@ -6,6 +6,15 @@ import {
 // These errors are forwarded to the client / user
 export const CLIENT_ERROR_CODES = ["CLIENT", "UNAUTHENTICATED"];
 
+export class ApiAuthenticationError extends Error {
+  code: number;
+
+  constructor({ code, message }: { code: number; message: string }) {
+    super(message);
+    this.code = code;
+  }
+}
+
 export class AuthenticationError extends ApolloAuthenticationError {
   constructor(message = "unauthorized") {
     super(message);
