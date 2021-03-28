@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextApiRequest } from "next";
 
-import { handleSuitesRequest } from "../../../server/api/suites";
-import { encrypt } from "../../../server/models/encrypt";
-import { prepareTestDb } from "../db";
+import { handleSuitesRequest } from "../../../../server/api/suites";
+import { prepareTestDb } from "../../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
@@ -13,7 +12,7 @@ import {
   buildTrigger,
   buildUser,
   logger,
-} from "../utils";
+} from "../../utils";
 
 const send = jest.fn();
 const status = jest.fn().mockReturnValue({ send });
@@ -24,11 +23,7 @@ const db = prepareTestDb();
 describe("handleSuitesRequest", () => {
   beforeAll(async () => {
     await db("users").insert(buildUser({}));
-    await db("teams").insert(buildTeam({}));
-
-    await db("teams")
-      .where({ id: "teamId" })
-      .update({ api_key: encrypt("qawolf_api_key") });
+    await db("teams").insert(buildTeam({ apiKey: "qawolf_api_key" }));
 
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
@@ -44,19 +39,7 @@ describe("handleSuitesRequest", () => {
   afterAll(async () => {
     jest.restoreAllMocks();
 
-    await db("api_keys").del();
-    await db("environment_variables").del();
-    await db("environments").del();
-    await db("users").del();
-
-    await db("test_triggers").del();
-    await db("tests").del();
-    await db("triggers").del();
-
-    await db("runs").del();
-    await db("suites").del();
-
-    return db("teams").del();
+    await db.del();
   });
 
   it("returns 401 if api key not provided", async () => {
@@ -137,9 +120,10 @@ describe("handleSuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(200);
-    expect(send).toBeCalledWith({ url: expect.any(String) });
-
     const suite = await db.select("*").from("suites").first();
+
+    expect(send).toBeCalledWith({ id: suite.id, url: expect.any(String) });
+
     expect(send.mock.calls[0][0].url).toMatch(`/suites/${suite.id}`);
     expect(suite.environment_variables).toBeTruthy();
 
