@@ -51,7 +51,7 @@ Let's revisit the API call example we copied when we created our trigger. If you
 
 `curl -H "Authorization: qawolf_api_key" -H "Content-Type: application/json" https://www.qawolf.com/api/suites -d '{"env": { "MY_VARIABLE": "secret" }, "trigger_id": "xxxv8y6ii000008mocm506o3l"}'`
 
-This API call makes a `POST` request to the `suites` endpoint. It includes a few parts:
+This API call makes a `POST` request to the `/suites` endpoint. It includes a few parts:
 
 - The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: qawolf_api_key"`
 - The `trigger_id` in the request body tells QA Wolf to run tests assigned to that trigger: `"trigger_id": "xxxv8y6ii000008mocm506o3l"`
