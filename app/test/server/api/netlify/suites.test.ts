@@ -3,8 +3,10 @@ import { NextApiRequest } from "next";
 
 import { handleNetlifySuitesRequest } from "../../../../server/api/netlify/suites";
 import { encrypt } from "../../../../server/models/encrypt";
+import * as gitHubService from "../../../../server/services/gitHub/app";
 import { prepareTestDb } from "../../db";
 import {
+  buildIntegration,
   buildTeam,
   buildTest,
   buildTestTrigger,
@@ -45,6 +47,7 @@ describe("handleNetlifySuitesRequest", () => {
   afterEach(async () => {
     jest.clearAllMocks();
 
+    await db("github_commit_statuses").del();
     await db("runs").del();
     return db("suites").del();
   });
@@ -108,6 +111,7 @@ describe("handleNetlifySuitesRequest", () => {
           deployment_environment: "deploy-preview",
           deployment_url: "url",
           netlify_event: "onSuccess",
+          sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
@@ -116,14 +120,93 @@ describe("handleNetlifySuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(200);
-    expect(send).toBeCalledWith({ suite_ids: [expect.any(String)] });
 
     const suites = await db("suites");
+
     expect(suites).toMatchObject([
       {
         environment_variables: encrypt(JSON.stringify({ URL: "url" })),
         trigger_id: "triggerId",
       },
     ]);
+    expect(send).toBeCalledWith({ suite_ids: [suites[0].id] });
+
+    const commitStatuses = await db("github_commit_statuses");
+    expect(commitStatuses).toEqual([]);
+  });
+
+  it("creates a GitHub commit status if possible", async () => {
+    jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
+      context: "QA Wolf - trigger1",
+    } as gitHubService.GitHubCommitStatus);
+
+    await db("integrations").insert(
+      buildIntegration({
+        github_installation_id: 123,
+        github_repo_id: 11,
+        github_repo_name: "owner/repo",
+        type: "github",
+      })
+    );
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: "integrationId" });
+
+    await handleNetlifySuitesRequest(
+      {
+        body: {
+          deployment_environment: "deploy-preview",
+          deployment_url: "url",
+          netlify_event: "onSuccess",
+          sha: "sha",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    const suites = await db("suites");
+
+    expect(suites).toMatchObject([
+      {
+        environment_variables: encrypt(JSON.stringify({ URL: "url" })),
+        trigger_id: "triggerId",
+      },
+    ]);
+    expect(send).toBeCalledWith({ suite_ids: [suites[0].id] });
+
+    expect(gitHubService.createCommitStatus).toBeCalledWith(
+      {
+        context: "QA Wolf - trigger1",
+        installationId: 123,
+        owner: "owner",
+        repo: "repo",
+        sha: "sha",
+        suiteId: suites[0].id,
+      },
+      expect.anything()
+    );
+
+    const commitStatuses = await db("github_commit_statuses");
+
+    expect(commitStatuses).toMatchObject([
+      {
+        context: "QA Wolf - trigger1",
+        github_installation_id: 123,
+        owner: "owner",
+        repo: "repo",
+        sha: "sha",
+        suite_id: suites[0].id,
+        trigger_id: "triggerId",
+      },
+    ]);
+
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: null });
+    await db("integrations").del();
   });
 });

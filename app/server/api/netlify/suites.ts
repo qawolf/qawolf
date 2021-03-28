@@ -1,9 +1,24 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { createGitHubCommitStatus } from "../../models/github_commit_status";
+import { findIntegration } from "../../models/integration";
 import { createSuiteForTrigger } from "../../models/suite";
 import { findTeamForApiKey } from "../../models/team";
 import { findTriggersForNetlifyIntegration } from "../../models/trigger";
-import { ModelOptions, Team } from "../../types";
+import { createCommitStatus } from "../../services/gitHub/app";
+import { Integration, ModelOptions, Suite, Team, Trigger } from "../../types";
+
+type CreateCommitStatusForIntegration = {
+  integration: Integration | null;
+  suite_id: string;
+  trigger: Trigger;
+};
+
+type CreateSuite = {
+  integration_id: string;
+  team_id: string;
+  trigger: Trigger;
+};
 
 class AuthenticationError extends Error {
   code: number;
@@ -14,6 +29,79 @@ class AuthenticationError extends Error {
   }
 }
 
+const createCommitStatusForIntegration = async (
+  req: NextApiRequest,
+  { integration, suite_id, trigger }: CreateCommitStatusForIntegration,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("createCommitStatusForIntegration");
+  const { deployment_url, sha } = req.body;
+
+  if (!integration) {
+    log.debug("skip: no integration");
+    return;
+  }
+
+  const [owner, repo] = integration.github_repo_name.split("/");
+
+  const commitStatus = await createCommitStatus(
+    {
+      context: `QA Wolf - ${trigger.name}`,
+      installationId: integration.github_installation_id,
+      owner,
+      repo,
+      sha,
+      suiteId: suite_id,
+    },
+    options
+  );
+
+  await createGitHubCommitStatus(
+    {
+      context: commitStatus.context,
+      deployment_url,
+      github_installation_id: integration.github_installation_id,
+      owner,
+      repo,
+      sha,
+      suite_id,
+      trigger_id: trigger.id,
+    },
+    options
+  );
+};
+
+const createSuite = async (
+  req: NextApiRequest,
+  { integration_id, team_id, trigger }: CreateSuite,
+  options: ModelOptions
+): Promise<Suite | null> => {
+  const { deployment_url } = req.body;
+
+  const integration = integration_id
+    ? await findIntegration(integration_id, options)
+    : null;
+
+  const result = await createSuiteForTrigger(
+    {
+      environment_variables: { URL: deployment_url },
+      team_id,
+      trigger_id: trigger.id,
+    },
+    options
+  );
+
+  if (result) {
+    await createCommitStatusForIntegration(
+      req,
+      { integration, suite_id: result.suite.id, trigger },
+      options
+    );
+  }
+
+  return result ? result.suite : null;
+};
+
 const createSuitesForRequest = async (
   req: NextApiRequest,
   options: ModelOptions
@@ -21,7 +109,7 @@ const createSuitesForRequest = async (
   const log = options.logger.prefix("createSuitesForRequest");
 
   const team = await findTeamForRequest(req, options);
-  const { deployment_environment, deployment_url, netlify_event } = req.body;
+  const { deployment_environment, netlify_event } = req.body;
 
   if (!["deploy-preview", "production"].includes(deployment_environment)) {
     log.debug("skip: deployment_environment", deployment_environment);
@@ -35,18 +123,19 @@ const createSuitesForRequest = async (
 
   const suites = await Promise.all(
     triggers.map((t) => {
-      return createSuiteForTrigger(
+      return createSuite(
+        req,
         {
-          environment_variables: { URL: deployment_url },
+          integration_id: t.deployment_integration_id,
           team_id: team.id,
-          trigger_id: t.id,
+          trigger: t,
         },
         options
       );
     })
   );
 
-  const suite_ids = suites.filter((s) => s).map((s) => s.suite.id);
+  const suite_ids = suites.filter((s) => s).map((s) => s.id);
   log.debug("created suites", suite_ids);
 
   return suite_ids;
