@@ -45,14 +45,7 @@ export default function DeployFields({
     } else if (deployProvider === "vercel") {
       if (deployEnv === "deploy-preview") setDeployEnv("preview");
     }
-  }, [
-    deployEnv,
-    deployProvider,
-    netlifyEvent,
-    setDeployBranches,
-    setDeployEnv,
-    setNetlifyEvent,
-  ]);
+  }, [deployEnv, deployProvider, setDeployBranches, setDeployEnv]);
 
   return (
     <>

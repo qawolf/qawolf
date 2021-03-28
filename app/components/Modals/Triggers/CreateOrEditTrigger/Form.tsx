@@ -24,7 +24,7 @@ import {
   TriggerMode,
 } from "../helpers";
 import ApiFields from "./ApiFields";
-import DeploymentFields from "./DeployFields";
+import DeployFields from "./DeployFields";
 import ModeTabs from "./ModeTabs";
 import ScheduleFields from "./ScheduleFields";
 
@@ -138,7 +138,7 @@ export default function Form({
           />
         )}
         {mode === "deployment" && (
-          <DeploymentFields
+          <DeployFields
             deployBranches={deployBranches}
             deployEnv={deployEnv}
             deployIntegrationId={deployIntegrationId}
