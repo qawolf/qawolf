@@ -2,6 +2,7 @@ import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createDefaultTeam,
   findTeam,
+  findTeamForApiKey,
   findTeamForEmail,
   findTeamsForUser,
   updateTeam,
@@ -74,8 +75,28 @@ describe("team model", () => {
     });
   });
 
+  describe("findTeamForApiKey", () => {
+    beforeAll(() => {
+      return db("teams").insert(buildTeam({ apiKey: "qawolf_api_key" }));
+    });
+
+    afterAll(() => db("teams").del());
+
+    it("returns team for api key", async () => {
+      const team = await findTeamForApiKey("qawolf_api_key", options);
+
+      expect(team).toMatchObject({ id: "teamId" });
+    });
+
+    it("returns null if team not found", async () => {
+      const team = await findTeamForApiKey("fake_api_key", options);
+
+      expect(team).toBeNull();
+    });
+  });
+
   describe("findTeamForEmail", () => {
-    beforeAll(async () => {
+    beforeAll(() => {
       return db("teams").insert(
         buildTeam({ inbox: "pumpkin@dev.qawolf.email" })
       );

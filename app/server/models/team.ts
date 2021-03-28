@@ -83,6 +83,21 @@ export const findTeam = async (
   return formatTeam(team);
 };
 
+export const findTeamForApiKey = async (
+  api_key: string,
+  { db, logger }: ModelOptions
+): Promise<Team | null> => {
+  const log = logger.prefix("findTeamForApiKey");
+
+  const encryptedApiKey = encrypt(api_key);
+
+  const team = await db("teams").where({ api_key: encryptedApiKey }).first();
+
+  log.debug(team ? `found ${team.id}` : "not found");
+
+  return team || null;
+};
+
 export const findTeamForEmail = async (
   email: string,
   { db, logger }: ModelOptions
