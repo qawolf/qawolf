@@ -92,7 +92,11 @@ export default function Form({
     setHasDeployError(false);
     setNameError("");
 
-    if (!deployIntegrationId && deployProvider === "vercel") {
+    if (
+      mode === "deployment" &&
+      !deployIntegrationId &&
+      deployProvider === "vercel"
+    ) {
       setHasDeployError(true);
       return;
     }
