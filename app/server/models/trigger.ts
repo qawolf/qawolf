@@ -1,6 +1,12 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import { DeploymentEnvironment, ModelOptions, Trigger } from "../types";
+import {
+  DeploymentEnvironment,
+  DeploymentProvider,
+  ModelOptions,
+  NetlifyEvent,
+  Trigger,
+} from "../types";
 import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
@@ -21,10 +27,18 @@ type CreateTrigger = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  deployment_provider?: DeploymentProvider | null;
   environment_id?: string;
   id?: string;
   name: string;
+  netlify_event?: NetlifyEvent | null;
   repeat_minutes?: number | null;
+  team_id: string;
+};
+
+type FindTriggersForNetlifyIntegration = {
+  deployment_environment: DeploymentEnvironment;
+  netlify_event: NetlifyEvent;
   team_id: string;
 };
 
@@ -32,9 +46,11 @@ type UpdateTrigger = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;
   id: string;
   name?: string;
+  netlify_event?: NetlifyEvent | null;
   repeat_minutes?: number | null;
 };
 
@@ -115,9 +131,11 @@ export const createTrigger = async (
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
+    deployment_provider,
     environment_id,
     id,
     name,
+    netlify_event,
     repeat_minutes,
     team_id,
   }: CreateTrigger,
@@ -136,9 +154,11 @@ export const createTrigger = async (
     deployment_branches: formatBranches(deployment_branches),
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
+    deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
     id: id || cuid(),
     name,
+    netlify_event: netlify_event || null,
     next_at: getNextAt(repeat_minutes),
     repeat_minutes: repeat_minutes || null,
     team_id,
@@ -216,6 +236,36 @@ export const findTriggersForGitHubIntegration = async (
   return triggers;
 };
 
+export const findTriggersForNetlifyIntegration = async (
+  {
+    deployment_environment,
+    netlify_event,
+    team_id,
+  }: FindTriggersForNetlifyIntegration,
+  { db, logger }: ModelOptions
+): Promise<Trigger[]> => {
+  const log = logger.prefix("findTriggersForNetlifyIntegration");
+  log.debug("team", team_id);
+
+  const triggers = await db("triggers")
+    .where((builder) => {
+      builder
+        .where({ deployment_environment })
+        .orWhere({ deployment_environment: null });
+    })
+    .andWhere({
+      deleted_at: null,
+      deployment_provider: "netlify",
+      netlify_event,
+      team_id,
+    })
+    .orderBy("triggers.name", "asc");
+
+  log.debug(`found ${triggers.length} triggers`);
+
+  return triggers;
+};
+
 export const deleteTrigger = async (
   id: string,
   { db, logger }: ModelOptions
@@ -277,9 +327,11 @@ export const updateTrigger = async (
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
+    deployment_provider,
     environment_id,
     id,
     name,
+    netlify_event,
     repeat_minutes,
   }: UpdateTrigger,
   { db, logger }: ModelOptions
@@ -303,10 +355,14 @@ export const updateTrigger = async (
     if (deployment_integration_id !== undefined) {
       updates.deployment_integration_id = deployment_integration_id;
     }
+    if (deployment_provider !== undefined) {
+      updates.deployment_provider = deployment_provider;
+    }
     if (environment_id !== undefined) {
       updates.environment_id = environment_id;
     }
     if (name !== undefined) updates.name = name;
+    if (netlify_event !== undefined) updates.netlify_event = netlify_event;
 
     if (repeat_minutes !== undefined) {
       updates.repeat_minutes = repeat_minutes;

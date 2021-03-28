@@ -18,6 +18,7 @@ const {
   findTrigger,
   findTriggerOrNull,
   findTriggersForGitHubIntegration,
+  findTriggersForNetlifyIntegration,
   findTriggersForTeam,
   findPendingTriggers,
   getNextAt,
@@ -119,9 +120,11 @@ describe("trigger model", () => {
           creator_id: "userId",
           deleted_at: null,
           deployment_integration_id: null,
+          deployment_provider: null,
           environment_id: null,
           id: expect.any(String),
           name: "Schedule (once an hour)",
+          netlify_event: null,
           next_at: expect.any(Date),
           repeat_minutes: 60,
           team_id: "teamId",
@@ -136,9 +139,11 @@ describe("trigger model", () => {
           deployment_branches: "develop, main",
           deployment_environment: "preview",
           deployment_integration_id: "integrationId",
+          deployment_provider: "vercel",
           environment_id: "environmentId",
           id: "deployTriggerId",
-          name: "Hourly (Staging)",
+          name: "Deployment",
+          netlify_event: null,
           repeat_minutes: 60,
           team_id: "teamId",
         },
@@ -154,12 +159,47 @@ describe("trigger model", () => {
           deployment_branches: "develop,main",
           deployment_environment: "preview",
           deployment_integration_id: "integrationId",
+          deployment_provider: "vercel",
           environment_id: "environmentId",
           id: "deployTriggerId",
-          name: "Hourly (Staging)",
+          name: "Deployment",
+          netlify_event: null,
           repeat_minutes: 60,
         },
       ]);
+
+      await createTrigger(
+        {
+          creator_id: "userId",
+          deployment_branches: null,
+          deployment_environment: "deploy-preview",
+          deployment_integration_id: "integrationId",
+          deployment_provider: "netlify",
+          environment_id: "environmentId",
+          id: "deployTrigger2Id",
+          name: "Deployment (Netlify)",
+          netlify_event: "onPostBuild",
+          repeat_minutes: 60,
+          team_id: "teamId",
+        },
+        options
+      );
+
+      const trigger2 = await db
+        .select("*")
+        .from("triggers")
+        .orderBy("created_at", "desc")
+        .first();
+
+      expect(trigger2).toMatchObject({
+        deployment_branches: null,
+        deployment_environment: "deploy-preview",
+        deployment_integration_id: "integrationId",
+        deployment_provider: "netlify",
+        id: "deployTrigger2Id",
+        name: "Deployment (Netlify)",
+        netlify_event: "onPostBuild",
+      });
     });
 
     it("throws an error if trigger name taken", async () => {
@@ -293,6 +333,64 @@ describe("trigger model", () => {
 
       expect(triggers).toMatchObject([
         { deployment_integration_id: "integration3Id", id: "triggerId" },
+      ]);
+    });
+  });
+
+  describe("findTriggersForNetlifyIntegration", () => {
+    beforeAll(() => {
+      return db("triggers").insert([
+        buildTrigger({
+          deployment_environment: "production",
+          deployment_provider: "netlify",
+          name: "A Trigger",
+          netlify_event: "onPostBuild",
+        }),
+        {
+          ...buildTrigger({
+            deployment_provider: "netlify",
+            name: "deleted",
+            netlify_event: "onPostBuild",
+          }),
+          deleted_at: minutesFromNow(),
+          id: "deletedTriggerId",
+        },
+        buildTrigger({
+          deployment_provider: "netlify",
+          i: 2,
+          team_id: "team2Id",
+        }),
+        buildTrigger({
+          deployment_environment: null,
+          deployment_provider: "netlify",
+          i: 3,
+          name: "B Trigger",
+          netlify_event: "onPostBuild",
+        }),
+        buildTrigger({
+          deployment_provider: "netlify",
+          i: 4,
+          name: "C Trigger",
+          netlify_event: "onSuccess",
+        }),
+      ]);
+    });
+
+    afterAll(() => db("triggers").del());
+
+    it("returns triggers for a netlify integration", async () => {
+      const triggers = await findTriggersForNetlifyIntegration(
+        {
+          deployment_environment: "production",
+          netlify_event: "onPostBuild",
+          team_id: "teamId",
+        },
+        options
+      );
+
+      expect(triggers).toMatchObject([
+        { name: "A Trigger" },
+        { name: "B Trigger" },
       ]);
     });
   });
@@ -475,6 +573,7 @@ describe("trigger model", () => {
         {
           deployment_branches: "main, develop",
           deployment_integration_id: "integration2Id",
+          deployment_provider: "vercel",
           id: "triggerId",
         },
         options
@@ -483,13 +582,17 @@ describe("trigger model", () => {
 
       expect(updatedTrigger.deployment_branches).toBe("main,develop");
       expect(updatedTrigger.deployment_environment).toBeNull();
+      expect(updatedTrigger.deployment_provider).toBe("vercel");
+      expect(updatedTrigger.netlify_event).toBeNull();
 
       await updateTrigger(
         {
           deployment_branches: null,
           deployment_environment: "preview",
           deployment_integration_id: "integration2Id",
+          deployment_provider: "netlify",
           id: "triggerId",
+          netlify_event: "onPostBuild",
         },
         options
       );
@@ -497,6 +600,8 @@ describe("trigger model", () => {
 
       expect(updatedTrigger2.deployment_branches).toBeNull();
       expect(updatedTrigger2.deployment_environment).toBe("preview");
+      expect(updatedTrigger2.deployment_provider).toBe("netlify");
+      expect(updatedTrigger2.netlify_event).toBe("onPostBuild");
     });
 
     it("updates trigger environment", async () => {

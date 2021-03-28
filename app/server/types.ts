@@ -66,7 +66,9 @@ export type CreateUserWithEmail = WolfFields & {
 
 export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
-export type DeploymentEnvironment = "preview" | "production";
+export type DeploymentEnvironment = "deploy-preview" | "preview" | "production";
+
+export type DeploymentProvider = "netlify" | "vercel";
 
 export type Email = {
   created_at?: string;
@@ -159,6 +161,8 @@ export type ModelOptions = {
   db: knex | Transaction;
   logger: Logger;
 };
+
+export type NetlifyEvent = "onPostBuild" | "onSuccess";
 
 export type RunStatus = "created" | "fail" | "pass";
 
@@ -305,9 +309,11 @@ export type Trigger = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  deployment_provider?: DeploymentProvider | null;
   environment_id: string | null;
   id: string;
   name: string;
+  netlify_event?: NetlifyEvent | null;
   next_at: string | null;
   repeat_minutes: number | null;
   team_id: string;
@@ -391,8 +397,10 @@ export type CreateTriggerMutation = {
   deployment_branches: string | null;
   deployment_environment: DeploymentEnvironment | null;
   deployment_integration_id: string | null;
+  deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
   name: string;
+  netlify_event: NetlifyEvent | null;
   repeat_minutes: number | null;
   team_id: string;
   test_ids: string[] | null;
@@ -467,9 +475,11 @@ export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: DeploymentEnvironment | null;
   deployment_integration_id?: string | null;
+  deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;
   id: string;
   name?: string;
+  netlify_event?: NetlifyEvent | null;
   repeat_minutes?: number | null;
 };
 

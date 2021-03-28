@@ -4,6 +4,7 @@ import { Logger } from "../../server/Logger";
 import { encrypt } from "../../server/models/encrypt";
 import {
   DeploymentEnvironment,
+  DeploymentProvider,
   Email,
   Environment,
   EnvironmentVariable,
@@ -12,6 +13,7 @@ import {
   Integration,
   IntegrationType,
   Invite,
+  NetlifyEvent,
   Run,
   Runner,
   RunStatus,
@@ -145,9 +147,11 @@ type BuildTrigger = {
   deployment_branches?: string;
   deployment_environment?: DeploymentEnvironment;
   deployment_integration_id?: string;
+  deployment_provider?: DeploymentProvider;
   environment_id?: string;
   i?: number;
   name?: string;
+  netlify_event?: NetlifyEvent;
   next_at?: string | null;
   repeat_minutes?: number | null;
   team_id?: string;
@@ -455,9 +459,11 @@ export const buildTrigger = ({
   deployment_branches,
   deployment_environment,
   deployment_integration_id,
+  deployment_provider,
   environment_id,
   i,
   name,
+  netlify_event,
   next_at,
   repeat_minutes,
   team_id,
@@ -471,9 +477,11 @@ export const buildTrigger = ({
     deployment_branches: deployment_branches || null,
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
+    deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
     id: `trigger${finalI === 1 ? "" : i}Id`,
     name: name || `trigger${finalI}`,
+    netlify_event: netlify_event || null,
     next_at: next_at || null,
     repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,
     team_id: team_id || "teamId",
