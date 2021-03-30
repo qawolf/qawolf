@@ -3,7 +3,7 @@ name: App Tests
 on:
   push:
     paths:
-      - ".github/workflows/test_server.yml"
+      - ".github/workflows/test_app.yml"
       - "app/**"
 
 jobs:
