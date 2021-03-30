@@ -1,11 +1,12 @@
 import Link from "next/link";
 
 import Image from "./Image";
+import SubHeader from "./SubHeader";
 
 export default function ChooseEnvironment(): JSX.Element {
   return (
     <>
-      <h3>Choose Environment</h3>
+      <SubHeader>Choose Environment</SubHeader>
       <p>
         If you have created any{" "}
         <Link href="use-environment-variables">environments</Link>, choose the

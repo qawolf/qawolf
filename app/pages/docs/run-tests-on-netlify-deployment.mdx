@@ -17,11 +17,115 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 In this tutorial, we'll set up our tests to run on <a href="https://www.netlify.com/" target="_blank">Netlify</a> deployments. This helps ensure our critical workflows don't break when we make changes.
 
-Specifically, we'll run our tests whenever a <a href="https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify/" target="_blank">Netlify Deploy Preview</a> succeeds in a <a href="https://github.com/" target="_blank">GitHub</a> pull request. If you have a different workflow, please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink>.
+QA Wolf maintains a <ExternalLink href="https://github.com/qawolf/netlify-plugin-qawolf">Netlify Build Plugin</ExternalLink> that runs your tests on <ExternalLink href="https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify">deploy previews</ExternalLink> or production deployments. If you have a different workflow, please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink>.
 
 <SubHeader>Create Deployment Trigger</SubHeader>
 
-<CreateTrigger description="on Netlify Deploy Previews" />
+<CreateTrigger description="on Netlify deployments" />
+
+Select the "Deployment" tab in the middle, and choose Netlify as your deploy service.
+You can also optionally rename your trigger.
+
+<Image
+  alt="Create deploy trigger"
+  height={301}
+  src={`/docs/run-tests-on-netlify-deployment/create-deploy-trigger.png`}
+  width={483}
+/>
+
+<SubHeader>Install QA Wolf Build Plugin</SubHeader>
+
+The next part of the modal provides one-time set up instructions for integrating QA Wolf with your Netlify project. If you have already completed these steps, you can skip this section.
+
+<Image
+  alt="Netlify set up"
+  height={158}
+  src={`/docs/run-tests-on-netlify-deployment/netlify-set-up.png`}
+  width={485}
+/>
+
+First we need to install the QA Wolf Build Plugin. There are two ways to do this: from the Netlify UI (recommended) or with <ExternalLink href="https://www.npmjs.com/">npm</ExternalLink>.
+
+### 1. Install from the Netlify UI (Recommended)
+
+Click <ExternalLink href="https://app.netlify.com/plugins">
+this link to install the QA Wolf Build Plugin</ExternalLink>.
+
+You can also find the QA Wolf Build Plugin listed in the <ExternalLink href="https://app.netlify.com/plugins">Netlify Plugins directory</ExternalLink>.
+
+### 2. Install with npm
+
+You can also use <ExternalLink href="https://www.npmjs.com/">npm</ExternalLink> to install the QA Wolf Build Plugin.
+
+Run the following command in your repository to install the plugin as a dev dependency:
+
+```bash
+npm install --save-dev netlify-plugin-qawolf
+```
+
+Then update the list of plugins in your `netlify.toml` file to include the QA Wolf plugin:
+
+```toml
+[[plugins]]
+  # runs QA Wolf tests against the deployed URL
+  package = "netlify-plugin-qawolf"
+```
+
+<SubHeader>Set QAWOLF_API_KEY Environment Variable in Netlify</SubHeader>
+
+The other one-time step we need to do is to set the `QAWOLF_API_KEY` environment variable in Netlify. This variable identifies your QA Wolf team in the Netlify Build Plugin.
+
+If you have already done this, you can skip this section. Otherwise, follow <ExternalLink href="https://docs.netlify.com/configure-builds/environment-variables/#declare-variables">these instructions</ExternalLink> to create an environment variable in Netlify.
+
+Specifically, create an environment variable named `QAWOLF_API_KEY` with the value provided in the modal.
+
+<Image
+  alt="Netlify set up API key"
+  height={158}
+  src={`/docs/run-tests-on-netlify-deployment/netlify-set-up-api-key.png`}
+  width={485}
+/>
+
+<Image
+  alt="Netlify set environment variable"
+  height={695}
+  src={`/docs/run-tests-on-netlify-deployment/set-environment-variable.png`}
+  width={1600}
+/>
+
+<SubHeader>Choose Deploy Context</SubHeader>
+
+QA Wolf supports running tests on two Netlify <ExternalLink href="https://docs.netlify.com/site-deploys/overview/#deploy-contexts">deploy contexts</ExternalLink>: `deploy-preview` and `production`.
+
+Production deployments happen when you deploy to your production branch (example: `main`). Preview deployments correspond to the preview URLs for pull requests.
+
+QA Wolf allows you to run your tests on all deployments (preview and production), just preview deployments, or just production deployments. Choose which deployments you want to test in the popup. In our example, we choose to only test preview deployments.
+
+<Image
+  alt="Netlify deploy context"
+  height={60}
+  src={`/docs/run-tests-on-netlify-deployment/deploy-context.png`}
+  width={488}
+/>
+
+<SubHeader>Choose Whether to Block Deployments</SubHeader>
+
+You can also optionally choose to block deployments if your tests fail. This option is presented under the label **Block deployment if tests fail?**
+
+If you choose **No (run tests onSuccess)**, your tests will run after your deployment succeeds. This means that even if your tests fail, your deployment will still be live.
+
+If you choose **Yes (run tests onPostBuild)**, your tests will run after your site builds but before it is deployed. This means that if your tests fail, your build will not be deployed. Only if your tests pass will your deployment be live.
+
+Learn more about Netlify events <ExternalLink href="https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-into-events">here</ExternalLink>.
+
+<Image
+  alt="Block Netlify deployment"
+  height={65.5}
+  src={`/docs/run-tests-on-netlify-deployment/block-deployment.png`}
+  width={488}
+/>
+
+<SubHeader>Optional: Install GitHub App</SubHeader>
 
 <InstallGitHubApp service="netlify" />
 
@@ -31,9 +135,9 @@ Specifically, we'll run our tests whenever a <a href="https://www.netlify.com/bl
 
 <AssignTrigger doc="run-tests-on-netlify-deployment" />
 
-<SubHeader>Update Tests to Use Deploy Preview URL</SubHeader>
+<SubHeader>Update Tests to Use URL from Netlify</SubHeader>
 
-Because our Netlify Deploy Preview URL isn't known in advance, QA Wolf passes it as an <Link href="use-environment-variables">environment variable</Link> (`process.env.URL`) when a Deploy Preview succeeds.
+Because a Netlify deployment URL isn't known in advance, QA Wolf passes it as an <Link href="use-environment-variables">environment variable</Link> (`process.env.URL`) when the deployment succeeds.
 
 We need to update our tests to use this environment variable when specified.
 
@@ -60,7 +164,7 @@ await page.goto(process.env.URL || "https://default.netlify.app/", {
 
 <SubHeader>See QA Wolf Results in GitHub</SubHeader>
 
-Now when you make a pull request on GitHub, your tests will run after your Netlify Preview Deploy succeeds.
+If you <Link href="#optional-install-git-hub-app">installed the QA Wolf GitHub app</Link>, you will be able to see QA Wolf status checks in GitHub.
 
 <Image
   alt="See QA Wolf results in GitHub"
@@ -69,6 +173,6 @@ Now when you make a pull request on GitHub, your tests will run after your Netli
   width={600}
 />
 
-<ViewRunHistory description="on Netlify Deploy Previews" />
+<ViewRunHistory description="on Netlify deployments" />
 
 </Layout>
