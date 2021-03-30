@@ -83,6 +83,28 @@ describe("handleNetlifySuitesRequest", () => {
     expect(send).toBeCalledWith("Invalid API Key");
   });
 
+  it("does not create suites if skip specified", async () => {
+    await handleNetlifySuitesRequest(
+      {
+        body: {
+          deployment_environment: "production",
+          deployment_url: "url",
+          netlify_event: "onSuccess",
+          skip: "true",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(200);
+    expect(send).toBeCalledWith({ suite_ids: [] });
+
+    const suites = await db("suites");
+    expect(suites).toEqual([]);
+  });
+
   it("does not create suites if unsupported deploy context", async () => {
     await handleNetlifySuitesRequest(
       {

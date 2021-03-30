@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { ApiAuthenticationError } from "../../errors";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findIntegration } from "../../models/integration";
 import { createSuiteForTrigger } from "../../models/suite";
@@ -19,15 +20,6 @@ type CreateSuite = {
   team_id: string;
   trigger: Trigger;
 };
-
-class AuthenticationError extends Error {
-  code: number;
-
-  constructor({ code, message }: { code: number; message: string }) {
-    super(message);
-    this.code = code;
-  }
-}
 
 const createCommitStatusForIntegration = async (
   req: NextApiRequest,
@@ -109,7 +101,12 @@ const createSuitesForRequest = async (
   const log = options.logger.prefix("createSuitesForRequest");
 
   const team = await findTeamForRequest(req, options);
-  const { deployment_environment, netlify_event } = req.body;
+  const { deployment_environment, netlify_event, skip } = req.body;
+
+  if (skip && ["true", "t"].includes(skip.toLowerCase())) {
+    log.debug("skip: skip", skip);
+    return [];
+  }
 
   if (!["deploy-preview", "production"].includes(deployment_environment)) {
     log.debug("skip: deployment_environment", deployment_environment);
@@ -152,7 +149,7 @@ const findTeamForRequest = async (
 
   if (!api_key) {
     log.error("no api key provided");
-    throw new AuthenticationError({
+    throw new ApiAuthenticationError({
       code: 401,
       message: "No API key provided",
     });
@@ -168,14 +165,14 @@ const findTeamForRequest = async (
   } catch (error) {
     if (error.message.includes("not found")) {
       log.error("invalid api key");
-      throw new AuthenticationError({
+      throw new ApiAuthenticationError({
         code: 403,
         message: "Invalid API Key",
       });
     }
 
     log.error(error.message);
-    throw new AuthenticationError({
+    throw new ApiAuthenticationError({
       code: 500,
       message: "Internal Server Error",
     });
