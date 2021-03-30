@@ -1,5 +1,8 @@
 import * as testModel from "../../../server/models/test";
-import { updateTestToPending } from "../../../server/models/test";
+import {
+  countTestsForTeam,
+  updateTestToPending,
+} from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
@@ -95,6 +98,37 @@ describe("buildTestName", () => {
 
     const testName = await buildTestName({ team_id: "teamId" }, options);
     expect(testName).toBe("My Test 3");
+  });
+});
+
+describe("countTestsForTeam", () => {
+  beforeAll(async () => {
+    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+
+    await db("test_triggers").insert([
+      {
+        id: "testTriggerId",
+        test_id: "testId",
+        trigger_id: "triggerId",
+      },
+      {
+        id: "testTrigger2Id",
+        test_id: "test2Id",
+        trigger_id: "triggerId",
+      },
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("test_triggers").del();
+    await db("tests").del();
+  });
+
+  it("counts enabled and scheduled tests", async () => {
+    expect(await countTestsForTeam("teamId", options)).toEqual({
+      test_enabled_count: 2,
+      test_with_trigger_count: 2,
+    });
   });
 });
 
