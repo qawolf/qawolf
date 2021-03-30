@@ -107,12 +107,14 @@ const createSuitesForRequest = async (
   const team = await findTeamForRequest(req, options);
   const { deployment_environment, netlify_event } = req.body;
 
-  if (!shouldCreateSuites(req, options)) return [];
+  if (!shouldCreateSuites(deployment_environment, options)) return [];
 
   const triggers = await findTriggersForNetlifyIntegration(
     {
       deployment_environment:
-        deployment_environment === "production" ? "production" : "preview",
+        deployment_environment === "deploy-preview"
+          ? "preview"
+          : deployment_environment,
       netlify_event,
       team_id: team.id,
     },
@@ -181,17 +183,13 @@ const findTeamForRequest = async (
 };
 
 export const shouldCreateSuites = (
-  req: NextApiRequest,
+  deployment_environment: string,
   { logger }: ModelOptions
 ): boolean => {
   const log = logger.prefix("shouldCreateSuites");
 
-  const { deployment_environment, is_pull_request } = req.body;
-
-  if (deployment_environment !== "production" && is_pull_request !== "true") {
-    log.debug(
-      `no: context ${deployment_environment} and pull request ${is_pull_request}`
-    );
+  if (!["deploy-preview", "production"].includes(deployment_environment)) {
+    log.debug("no: context", deployment_environment);
     return false;
   }
 

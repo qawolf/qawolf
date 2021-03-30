@@ -217,55 +217,15 @@ describe("handleNetlifySuitesRequest", () => {
 });
 
 describe("shouldCreateSuites", () => {
-  it("returns false if not production and not a pull request", () => {
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            deployment_environment: "deploy-preview",
-            is_pull_request: "false",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(false);
+  it("returns false if not production or deploy-preview", () => {
+    expect(shouldCreateSuites("branch-deploy", options)).toBe(false);
 
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            deployment_environment: "staging",
-            is_pull_request: "false",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(false);
+    expect(shouldCreateSuites("staging", options)).toBe(false);
   });
 
   it("returns true otherwise", () => {
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            deployment_environment: "staging",
-            is_pull_request: "true",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(true);
+    expect(shouldCreateSuites("deploy-preview", options)).toBe(true);
 
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            deployment_environment: "production",
-            is_pull_request: "false",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(true);
+    expect(shouldCreateSuites("production", options)).toBe(true);
   });
 });
