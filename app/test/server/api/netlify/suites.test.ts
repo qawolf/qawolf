@@ -87,28 +87,6 @@ describe("handleNetlifySuitesRequest", () => {
     expect(send).toBeCalledWith("Invalid API Key");
   });
 
-  it("does not create suites if skip specified", async () => {
-    await handleNetlifySuitesRequest(
-      {
-        body: {
-          deployment_environment: "production",
-          deployment_url: "url",
-          netlify_event: "onSuccess",
-          skip: "true",
-        },
-        headers: { authorization: "qawolf_api_key" },
-      } as NextApiRequest,
-      res as any,
-      options
-    );
-
-    expect(status).toBeCalledWith(200);
-    expect(send).toBeCalledWith({ suite_ids: [] });
-
-    const suites = await db("suites");
-    expect(suites).toEqual([]);
-  });
-
   it("does not create suites if unsupported deploy context", async () => {
     await handleNetlifySuitesRequest(
       {
@@ -239,30 +217,6 @@ describe("handleNetlifySuitesRequest", () => {
 });
 
 describe("shouldCreateSuites", () => {
-  it("returns false if skip specified", () => {
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            skip: "TRUE",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(false);
-
-    expect(
-      shouldCreateSuites(
-        {
-          body: {
-            skip: "t",
-          },
-        } as NextApiRequest,
-        options
-      )
-    ).toBe(false);
-  });
-
   it("returns false if not production and not a pull request", () => {
     expect(
       shouldCreateSuites(
@@ -296,7 +250,6 @@ describe("shouldCreateSuites", () => {
           body: {
             deployment_environment: "staging",
             is_pull_request: "true",
-            skip: "f",
           },
         } as NextApiRequest,
         options

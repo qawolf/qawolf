@@ -186,12 +186,7 @@ export const shouldCreateSuites = (
 ): boolean => {
   const log = logger.prefix("shouldCreateSuites");
 
-  const { deployment_environment, is_pull_request, skip } = req.body;
-
-  if (skip && ["true", "t"].includes(skip.toLowerCase())) {
-    log.debug("no: skip", skip);
-    return false;
-  }
+  const { deployment_environment, is_pull_request } = req.body;
 
   if (deployment_environment !== "production" && is_pull_request !== "true") {
     log.debug(
