@@ -4,11 +4,6 @@ export type AuthenticatedUser = {
   user: User;
 };
 
-export type DeploymentEnvironment =
-  | "all"
-  | "deploy-preview"
-  | "preview"
-  | "production";
 export type DeploymentProvider = "netlify" | "vercel";
 
 export type Env = { [name: string]: string };
@@ -184,7 +179,7 @@ export type ShortTrigger = {
 export type Trigger = ShortTrigger & {
   created_at: string;
   deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
+  deployment_environment: string | null;
   deployment_integration_id: string | null;
   environment_id: string | null;
   netlify_event: NetlifyEvent | null;
@@ -253,7 +248,7 @@ export type TestTriggers = {
 
 export type TriggerFields = {
   deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
+  deployment_environment: string | null;
   deployment_integration_id: string | null;
   deployment_provider: DeploymentProvider | null;
   environment_id: string | null;

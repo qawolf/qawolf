@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextApiRequest } from "next";
 
-import { handleNetlifySuitesRequest } from "../../../../server/api/netlify/suites";
+import {
+  handleNetlifySuitesRequest,
+  shouldCreateSuites,
+} from "../../../../server/api/netlify/suites";
 import { encrypt } from "../../../../server/models/encrypt";
 import * as gitHubService from "../../../../server/services/gitHub/app";
 import { prepareTestDb } from "../../db";
@@ -20,6 +23,7 @@ const status = jest.fn().mockReturnValue({ send });
 const res = { status };
 
 const db = prepareTestDb();
+const options = { db, logger };
 
 describe("handleNetlifySuitesRequest", () => {
   beforeAll(async () => {
@@ -33,7 +37,7 @@ describe("handleNetlifySuitesRequest", () => {
         netlify_event: "onSuccess",
       }),
       buildTrigger({
-        deployment_environment: "deploy-preview",
+        deployment_environment: "preview",
         deployment_provider: "netlify",
         i: 2,
         netlify_event: "onSuccess",
@@ -52,10 +56,10 @@ describe("handleNetlifySuitesRequest", () => {
     return db("suites").del();
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     jest.restoreAllMocks();
 
-    await db.del();
+    return db.del();
   });
 
   it("returns 401 if api key not provided", async () => {
@@ -76,7 +80,7 @@ describe("handleNetlifySuitesRequest", () => {
         headers: { authorization: "fake_api_key" },
       } as NextApiRequest,
       res as any,
-      { db, logger }
+      options
     );
 
     expect(status).toBeCalledWith(403);
@@ -95,7 +99,7 @@ describe("handleNetlifySuitesRequest", () => {
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
-      { db, logger }
+      options
     );
 
     expect(status).toBeCalledWith(200);
@@ -116,7 +120,7 @@ describe("handleNetlifySuitesRequest", () => {
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
-      { db, logger }
+      options
     );
 
     expect(status).toBeCalledWith(200);
@@ -130,7 +134,7 @@ describe("handleNetlifySuitesRequest", () => {
     await handleNetlifySuitesRequest(
       {
         body: {
-          deployment_environment: "deploy-preview",
+          deployment_environment: "production",
           deployment_url: "url",
           netlify_event: "onSuccess",
           sha: "sha",
@@ -138,7 +142,7 @@ describe("handleNetlifySuitesRequest", () => {
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
-      { db, logger }
+      options
     );
 
     expect(status).toBeCalledWith(200);
@@ -179,13 +183,14 @@ describe("handleNetlifySuitesRequest", () => {
         body: {
           deployment_environment: "deploy-preview",
           deployment_url: "url",
+          is_pull_request: "true",
           netlify_event: "onSuccess",
           sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
-      { db, logger }
+      options
     );
 
     expect(status).toBeCalledWith(200);
@@ -230,5 +235,84 @@ describe("handleNetlifySuitesRequest", () => {
       .where({ id: "triggerId" })
       .update({ deployment_integration_id: null });
     await db("integrations").del();
+  });
+});
+
+describe("shouldCreateSuites", () => {
+  it("returns false if skip specified", () => {
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            skip: "TRUE",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(false);
+
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            skip: "t",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(false);
+  });
+
+  it("returns false if not production and not a pull request", () => {
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            deployment_environment: "deploy-preview",
+            is_pull_request: "false",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(false);
+
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            deployment_environment: "staging",
+            is_pull_request: "false",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(false);
+  });
+
+  it("returns true otherwise", () => {
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            deployment_environment: "staging",
+            is_pull_request: "true",
+            skip: "f",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(true);
+
+    expect(
+      shouldCreateSuites(
+        {
+          body: {
+            deployment_environment: "production",
+            is_pull_request: "false",
+          },
+        } as NextApiRequest,
+        options
+      )
+    ).toBe(true);
   });
 });

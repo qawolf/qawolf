@@ -1,7 +1,6 @@
 import capitalize from "lodash/capitalize";
 import { ChangeEvent } from "react";
 
-import { DeploymentEnvironment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
 import Text from "../../../shared/Text";
@@ -11,9 +10,9 @@ import { radioButtonProps } from "./NetlifyFields";
 
 type Props = {
   deployBranches: string | null;
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   setDeployBranches: (branches: string | null) => void;
-  setDeployEnv: (env: DeploymentEnvironment | null) => void;
+  setDeployEnv: (env: string | null) => void;
 };
 
 const deployEnvOptions = ["all", "preview", "production"].map((option) => {
@@ -30,7 +29,7 @@ export default function VercelFields({
   setDeployEnv,
 }: Props): JSX.Element {
   const handleDeployEnvChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setDeployEnv(e.target.value as DeploymentEnvironment);
+    setDeployEnv(e.target.value);
   };
 
   return (

@@ -1,7 +1,6 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import {
-  DeploymentEnvironment,
   DeploymentProvider,
   ModelOptions,
   NetlifyEvent,
@@ -25,7 +24,7 @@ export const TRIGGER_COLORS = [
 type CreateTrigger = {
   creator_id: string;
   deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
+  deployment_environment?: string | null;
   deployment_integration_id?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string;
@@ -37,14 +36,14 @@ type CreateTrigger = {
 };
 
 type FindTriggersForNetlifyIntegration = {
-  deployment_environment: DeploymentEnvironment;
+  deployment_environment: string;
   netlify_event: NetlifyEvent;
   team_id: string;
 };
 
 type UpdateTrigger = {
   deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
+  deployment_environment?: string | null;
   deployment_integration_id?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;

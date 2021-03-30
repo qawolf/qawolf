@@ -1,7 +1,6 @@
 import capitalize from "lodash/capitalize";
 
 import {
-  DeploymentEnvironment,
   DeploymentProvider,
   NetlifyEvent,
   TestTriggers,
@@ -15,7 +14,7 @@ export type TriggerMode = "api" | "deployment" | "schedule";
 
 type BuildTriggerFields = {
   deployBranches: string | null;
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   deployIntegrationId: string | null;
   deployProvider: DeploymentProvider | null;
   environmentId: string;
@@ -39,7 +38,7 @@ type GetSelectState = {
 };
 
 type GetDefaultName = {
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   mode: TriggerMode;
   repeatMinutes: number;
   triggers: Trigger[];
@@ -81,13 +80,8 @@ export const buildTriggerFields = ({
       ...constantFields,
       deployment_branches:
         deployBranches && deployProvider === "vercel" ? deployBranches : null,
-      deployment_environment: [
-        "deploy-preview",
-        "preview",
-        "production",
-      ].includes(deployEnv)
-        ? deployEnv
-        : null,
+      deployment_environment:
+        deployEnv && deployEnv !== "all" ? deployEnv : null,
       deployment_integration_id: deployIntegrationId || null,
       deployment_provider: deployProvider,
       repeat_minutes: null,
@@ -134,12 +128,9 @@ export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
   return "api";
 };
 
-const getDeploymentName = (deployEnv: DeploymentEnvironment): string => {
-  if (["deploy-preview", "preview"].includes(deployEnv)) {
-    return capitalize(`Preview ${copy.deployment}`);
-  }
-  if (deployEnv === "production") {
-    return capitalize(`Production ${copy.deployment}`);
+const getDeploymentName = (deployEnv: string): string => {
+  if (["preview", "production"].includes(deployEnv)) {
+    return capitalize(`${deployEnv} ${copy.deployment}`);
   }
 
   return copy.deployment;

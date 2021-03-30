@@ -3,7 +3,6 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
 import {
-  DeploymentEnvironment,
   DeploymentProvider,
   NetlifyEvent,
   Trigger,
@@ -58,7 +57,7 @@ export default function Form({
   const [deployBranches, setDeployBranches] = useState<string | null>(
     editTrigger?.deployment_branches || null
   );
-  const [deployEnv, setDeployEnv] = useState<DeploymentEnvironment | null>(
+  const [deployEnv, setDeployEnv] = useState(
     editTrigger?.deployment_environment || "all"
   );
   const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(

@@ -172,7 +172,7 @@ describe("trigger model", () => {
         {
           creator_id: "userId",
           deployment_branches: null,
-          deployment_environment: "deploy-preview",
+          deployment_environment: "preview",
           deployment_integration_id: "integrationId",
           deployment_provider: "netlify",
           environment_id: "environmentId",
@@ -193,7 +193,7 @@ describe("trigger model", () => {
 
       expect(trigger2).toMatchObject({
         deployment_branches: null,
-        deployment_environment: "deploy-preview",
+        deployment_environment: "preview",
         deployment_integration_id: "integrationId",
         deployment_provider: "netlify",
         id: "deployTrigger2Id",

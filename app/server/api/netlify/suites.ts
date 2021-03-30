@@ -66,32 +66,36 @@ const createCommitStatusForIntegration = async (
 const createSuite = async (
   req: NextApiRequest,
   { integration_id, team_id, trigger }: CreateSuite,
-  options: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Suite | null> => {
   const { deployment_url } = req.body;
 
   const integration = integration_id
-    ? await findIntegration(integration_id, options)
+    ? await findIntegration(integration_id, { db, logger })
     : null;
 
-  const result = await createSuiteForTrigger(
-    {
-      environment_variables: { URL: deployment_url },
-      team_id,
-      trigger_id: trigger.id,
-    },
-    options
-  );
+  return db.transaction(async (trx) => {
+    const options = { db: trx, logger };
 
-  if (result) {
-    await createCommitStatusForIntegration(
-      req,
-      { integration, suite_id: result.suite.id, trigger },
+    const result = await createSuiteForTrigger(
+      {
+        environment_variables: { URL: deployment_url },
+        team_id,
+        trigger_id: trigger.id,
+      },
       options
     );
-  }
 
-  return result ? result.suite : null;
+    if (result) {
+      await createCommitStatusForIntegration(
+        req,
+        { integration, suite_id: result.suite.id, trigger },
+        options
+      );
+    }
+
+    return result ? result.suite : null;
+  });
 };
 
 const createSuitesForRequest = async (
@@ -101,20 +105,17 @@ const createSuitesForRequest = async (
   const log = options.logger.prefix("createSuitesForRequest");
 
   const team = await findTeamForRequest(req, options);
-  const { deployment_environment, netlify_event, skip } = req.body;
+  const { deployment_environment, netlify_event } = req.body;
 
-  if (skip && ["true", "t"].includes(skip.toLowerCase())) {
-    log.debug("skip: skip", skip);
-    return [];
-  }
-
-  if (!["deploy-preview", "production"].includes(deployment_environment)) {
-    log.debug("skip: deployment_environment", deployment_environment);
-    return [];
-  }
+  if (!shouldCreateSuites(req, options)) return [];
 
   const triggers = await findTriggersForNetlifyIntegration(
-    { deployment_environment, netlify_event, team_id: team.id },
+    {
+      deployment_environment:
+        deployment_environment === "production" ? "production" : "preview",
+      netlify_event,
+      team_id: team.id,
+    },
     options
   );
 
@@ -177,6 +178,29 @@ const findTeamForRequest = async (
       message: "Internal Server Error",
     });
   }
+};
+
+export const shouldCreateSuites = (
+  req: NextApiRequest,
+  { logger }: ModelOptions
+): boolean => {
+  const log = logger.prefix("shouldCreateSuites");
+
+  const { deployment_environment, is_pull_request, skip } = req.body;
+
+  if (skip && ["true", "t"].includes(skip.toLowerCase())) {
+    log.debug("no: skip", skip);
+    return false;
+  }
+
+  if (deployment_environment !== "production" && is_pull_request !== "true") {
+    log.debug(
+      `no: context ${deployment_environment} and pull request ${is_pull_request}`
+    );
+    return false;
+  }
+
+  return true;
 };
 
 export const handleNetlifySuitesRequest = async (

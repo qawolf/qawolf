@@ -1,7 +1,7 @@
 import capitalize from "lodash/capitalize";
 import { ChangeEvent } from "react";
 
-import { DeploymentEnvironment, NetlifyEvent } from "../../../../lib/types";
+import { NetlifyEvent } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
@@ -10,9 +10,9 @@ import { labelTextProps } from "../helpers";
 import NetlifyBuildPlugin from "./NetlifyBuildPlugin";
 
 type Props = {
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   netlifyEvent: NetlifyEvent | null;
-  setDeployEnv: (env: DeploymentEnvironment | null) => void;
+  setDeployEnv: (env: string | null) => void;
   setNetlifyEvent: (netlifyEvent: NetlifyEvent) => void;
 };
 
@@ -21,14 +21,12 @@ export const radioButtonProps = {
   gap: edgeSize.medium,
 };
 
-const deployEnvOptions = ["all", "deploy-preview", "production"].map(
-  (option) => {
-    return {
-      label: capitalize(option.split("-").join(" ")),
-      value: option,
-    };
-  }
-);
+const deployEnvOptions = ["all", "preview", "production"].map((option) => {
+  return {
+    label: capitalize(option),
+    value: option,
+  };
+});
 
 const netlifyEventOptions = [
   {
@@ -48,7 +46,7 @@ export default function NetlifyFields({
   setNetlifyEvent,
 }: Props): JSX.Element {
   const handleDeployEnvChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setDeployEnv(e.target.value as DeploymentEnvironment);
+    setDeployEnv(e.target.value);
   };
 
   const handleNetlifyEventChange = (e: ChangeEvent<HTMLInputElement>): void => {

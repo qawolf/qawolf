@@ -66,8 +66,6 @@ export type CreateUserWithEmail = WolfFields & {
 
 export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
-export type DeploymentEnvironment = "deploy-preview" | "preview" | "production";
-
 export type DeploymentProvider = "netlify" | "vercel";
 
 export type Email = {
@@ -307,7 +305,7 @@ export type Trigger = {
   creator_id: string;
   deleted_at: string | null;
   deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
+  deployment_environment?: string | null;
   deployment_integration_id: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id: string | null;
@@ -395,7 +393,7 @@ export type CreateTestMutation = {
 
 export type CreateTriggerMutation = {
   deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
+  deployment_environment: string | null;
   deployment_integration_id: string | null;
   deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
@@ -473,7 +471,7 @@ export type UpdateGroupMutation = {
 
 export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
-  deployment_environment?: DeploymentEnvironment | null;
+  deployment_environment?: string | null;
   deployment_integration_id?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;

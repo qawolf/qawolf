@@ -3,7 +3,6 @@ import { Transaction } from "knex";
 import { Logger } from "../../server/Logger";
 import { encrypt } from "../../server/models/encrypt";
 import {
-  DeploymentEnvironment,
   DeploymentProvider,
   Email,
   Environment,
@@ -145,7 +144,7 @@ type BuildTest = {
 
 type BuildTrigger = {
   deployment_branches?: string;
-  deployment_environment?: DeploymentEnvironment;
+  deployment_environment?: string;
   deployment_integration_id?: string;
   deployment_provider?: DeploymentProvider;
   environment_id?: string;
