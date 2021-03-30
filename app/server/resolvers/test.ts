@@ -9,6 +9,7 @@ import {
   updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
+import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
   CreateTestMutation,
@@ -22,7 +23,6 @@ import {
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
-import { trackSegmentEvent } from "./segment";
 import {
   ensureGroupAccess,
   ensureTeamAccess,

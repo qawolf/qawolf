@@ -7,8 +7,8 @@ import {
 } from "../models/invite";
 import { createTeamUser } from "../models/team_user";
 import { sendEmailForInvite } from "../services/alert/email";
+import { trackSegmentEvent } from "../services/segment";
 import { Context, CreateInviteMutation, IdQuery, Invite, Team } from "../types";
-import { trackSegmentEvent } from "./segment";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
 /**

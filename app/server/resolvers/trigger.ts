@@ -9,6 +9,7 @@ import {
   findTriggersForTeam,
   updateTrigger,
 } from "../models/trigger";
+import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
   CreateTriggerMutation,
@@ -18,7 +19,6 @@ import {
   UpdateTriggerMutation,
 } from "../types";
 import { cuid } from "../utils";
-import { trackSegmentEvent } from "./segment";
 import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
 
 /**
