@@ -326,6 +326,7 @@ export type User = {
   github_login: string | null;
   id: string;
   is_enabled?: boolean;
+  last_seen_at: string;
   login_code_digest: string | null;
   login_code_expires_at: string | null;
   name: string | null;

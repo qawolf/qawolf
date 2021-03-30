@@ -497,6 +497,7 @@ export const buildUser = ({ i, is_enabled }: BuildUser): User => {
     github_login: `github_${finalI}`,
     id: `user${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled !== undefined ? is_enabled : true,
+    last_seen_at: minutesFromNow(),
     login_code_digest: null,
     login_code_expires_at: null,
     name: null,
