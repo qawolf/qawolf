@@ -10,7 +10,7 @@ import Rocket from "./icons/Rocket";
 type Props = { trigger: ShortTrigger | null };
 
 const getTriggerIconComponent = (trigger: ShortTrigger): Icon => {
-  if (trigger.deployment_integration_id) return Rocket;
+  if (trigger.deployment_provider) return Rocket;
   if (trigger.repeat_minutes) return Clock;
 
   return Plug;

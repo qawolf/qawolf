@@ -1,17 +1,16 @@
 import { Box } from "grommet";
 import { SiNetlify, SiZeit } from "react-icons/si";
 
+import { DeploymentProvider } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
-export type Provider = "netlify" | "vercel";
-
 type Props = {
-  provider: Provider;
-  setProvider: (provider: Provider) => void;
+  provider: DeploymentProvider | null;
+  setProvider: (provider: DeploymentProvider) => void;
 };
 
 const buttonProps = {

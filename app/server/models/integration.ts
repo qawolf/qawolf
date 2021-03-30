@@ -93,7 +93,6 @@ export const deleteIntegrations = async (
     .whereIn("deployment_integration_id", integrationIds)
     .update({
       deployment_branches: null,
-      deployment_environment: null,
       deployment_integration_id: null,
     });
 

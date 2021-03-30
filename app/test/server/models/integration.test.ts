@@ -130,6 +130,7 @@ describe("deleteIntegrations", () => {
       buildTrigger({
         deployment_branches: "main",
         deployment_integration_id: "integrationId",
+        deployment_provider: "vercel",
         repeat_minutes: null,
       })
     );
@@ -161,7 +162,6 @@ describe("deleteIntegrations", () => {
     expect(triggers).toMatchObject([
       {
         deployment_branches: null,
-        deployment_environment: null,
         deployment_integration_id: null,
       },
     ]);

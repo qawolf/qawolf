@@ -1,18 +1,18 @@
 import capitalize from "lodash/capitalize";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent } from "react";
 
-import { DeploymentEnvironment } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 import DeployBranches from "./DeployBranches";
+import { radioButtonProps } from "./NetlifyFields";
 
 type Props = {
   deployBranches: string | null;
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   setDeployBranches: (branches: string | null) => void;
-  setDeployEnv: (env: DeploymentEnvironment | null) => void;
+  setDeployEnv: (env: string | null) => void;
 };
 
 const deployEnvOptions = ["all", "preview", "production"].map((option) => {
@@ -28,21 +28,15 @@ export default function VercelFields({
   setDeployBranches,
   setDeployEnv,
 }: Props): JSX.Element {
-  // use default deploy environment if none specified
-  useEffect(() => {
-    if (!deployEnv) setDeployEnv("all");
-  }, [deployEnv, setDeployEnv]);
-
   const handleDeployEnvChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setDeployEnv(e.target.value as DeploymentEnvironment);
+    setDeployEnv(e.target.value);
   };
 
   return (
     <>
       <Text {...labelTextProps}>{copy.vercelDeploymentType}</Text>
       <RadioButtonGroup
-        direction="row"
-        gap="medium"
+        {...radioButtonProps}
         name="deploy-environment"
         onChange={handleDeployEnvChange}
         options={deployEnvOptions}

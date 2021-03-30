@@ -3,7 +3,8 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
 import {
-  DeploymentEnvironment,
+  DeploymentProvider,
+  NetlifyEvent,
   Trigger,
   TriggerFields,
 } from "../../../../lib/types";
@@ -22,7 +23,7 @@ import {
   TriggerMode,
 } from "../helpers";
 import ApiFields from "./ApiFields";
-import DeploymentFields from "./DeploymentFields";
+import DeployFields from "./DeployFields";
 import ModeTabs from "./ModeTabs";
 import ScheduleFields from "./ScheduleFields";
 
@@ -56,13 +57,19 @@ export default function Form({
   const [deployBranches, setDeployBranches] = useState<string | null>(
     editTrigger?.deployment_branches || null
   );
-  const [deployEnv, setDeployEnv] = useState<DeploymentEnvironment | null>(
-    editTrigger?.deployment_environment || null
+  const [deployEnv, setDeployEnv] = useState(
+    editTrigger?.deployment_environment || "all"
   );
   const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(
     editTrigger?.deployment_integration_id || null
   );
+  const [deployProvider, setDeployProvider] = useState<DeploymentProvider>(
+    editTrigger?.deployment_provider || "vercel"
+  );
   const [hasDeployError, setHasDeployError] = useState(false);
+  const [netlifyEvent, setNetlifyEvent] = useState<NetlifyEvent | null>(
+    editTrigger?.netlify_event || "onSuccess"
+  );
   // environment
   const [environmentId, setEnvironmentId] = useState<string>(
     editTrigger?.environment_id || stateEnvironmentId || ""
@@ -84,12 +91,16 @@ export default function Form({
     setHasDeployError(false);
     setNameError("");
 
-    if (!name) {
-      setNameError(copy.required);
+    if (
+      mode === "deployment" &&
+      !deployIntegrationId &&
+      deployProvider === "vercel"
+    ) {
+      setHasDeployError(true);
       return;
     }
-    if (mode === "deployment" && !deployIntegrationId) {
-      setHasDeployError(true);
+    if (!name) {
+      setNameError(copy.required);
       return;
     }
 
@@ -98,9 +109,11 @@ export default function Form({
         deployBranches,
         deployEnv,
         deployIntegrationId,
+        deployProvider,
         environmentId,
         mode,
         name,
+        netlifyEvent,
         repeatMinutes,
       })
     );
@@ -128,14 +141,18 @@ export default function Form({
           />
         )}
         {mode === "deployment" && (
-          <DeploymentFields
+          <DeployFields
             deployBranches={deployBranches}
             deployEnv={deployEnv}
             deployIntegrationId={deployIntegrationId}
+            deployProvider={deployProvider}
             hasDeployError={hasDeployError}
+            netlifyEvent={netlifyEvent}
             setDeployBranches={setDeployBranches}
             setDeployEnv={setDeployEnv}
             setDeployIntegrationId={setDeployIntegrationId}
+            setDeployProvider={setDeployProvider}
+            setNetlifyEvent={setNetlifyEvent}
           />
         )}
         {mode === "api" && <ApiFields editTriggerId={editTrigger?.id} />}

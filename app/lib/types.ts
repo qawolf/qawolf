@@ -4,7 +4,7 @@ export type AuthenticatedUser = {
   user: User;
 };
 
-export type DeploymentEnvironment = "all" | "preview" | "production";
+export type DeploymentProvider = "netlify" | "vercel";
 
 export type Env = { [name: string]: string };
 
@@ -43,6 +43,8 @@ export type Invite = {
   wolf_number: number;
   wolf_variant: string;
 };
+
+export type NetlifyEvent = "onPostBuild" | "onSuccess";
 
 export type Onboarding = {
   has_added_trigger_to_test: boolean;
@@ -168,7 +170,7 @@ export type TestSummary = {
 
 export type ShortTrigger = {
   color: string;
-  deployment_integration_id: string | null;
+  deployment_provider: DeploymentProvider | null;
   id: string;
   name: string;
   repeat_minutes: number | null;
@@ -177,8 +179,10 @@ export type ShortTrigger = {
 export type Trigger = ShortTrigger & {
   created_at: string;
   deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
+  deployment_environment: string | null;
+  deployment_integration_id: string | null;
   environment_id: string | null;
+  netlify_event: NetlifyEvent | null;
   next_at: string | null;
 };
 
@@ -244,10 +248,12 @@ export type TestTriggers = {
 
 export type TriggerFields = {
   deployment_branches: string | null;
-  deployment_environment: DeploymentEnvironment | null;
+  deployment_environment: string | null;
   deployment_integration_id: string | null;
+  deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
   name: string;
+  netlify_event: NetlifyEvent | null;
   repeat_minutes: number | null;
 };
 

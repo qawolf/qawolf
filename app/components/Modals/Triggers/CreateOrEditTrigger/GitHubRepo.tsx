@@ -13,13 +13,15 @@ import { labelTextProps } from "../helpers";
 
 type Props = {
   deployIntegrationId: string | null;
-  hasDeployError: boolean;
+  hasError?: boolean;
+  label?: string;
   setDeployIntegrationId: (integrationId: string | null) => void;
 };
 
 export default function GitHubRepo({
   deployIntegrationId,
-  hasDeployError,
+  hasError,
+  label,
   setDeployIntegrationId,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
@@ -76,18 +78,18 @@ export default function GitHubRepo({
 
   return (
     <>
-      <Text {...labelTextProps}>{copy.gitHubRepo}</Text>
+      <Text {...labelTextProps}>{label || copy.gitHubRepo}</Text>
       {gitHubIntegrations.length ? (
         <Box align="center" direction="row">
           <Button {...buttonProps} margin={{ right: "xxsmall" }} />
-          <Select hasError={hasDeployError} label={selectLabel}>
+          <Select hasError={hasError} label={selectLabel}>
             {optionsHtml}
           </Select>
         </Box>
       ) : (
         <Button
           {...buttonProps}
-          hasError={hasDeployError}
+          hasError={hasError}
           justify="center"
           label={data?.integrations ? copy.connectGitHubRepo : copy.loading}
         />

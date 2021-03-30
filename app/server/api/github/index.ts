@@ -6,7 +6,6 @@ import environment from "../../environment";
 import { AuthenticationError } from "../../errors";
 import { Logger } from "../../Logger";
 import { ModelOptions } from "../../types";
-import { handleCommitStatusEvent } from "./commit_status";
 import { handleDeploymentStatusEvent } from "./deployment_status";
 
 // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/securing-your-webhooks
@@ -47,9 +46,6 @@ export const handleGitHubRequest = async (
     switch (event) {
       case "deployment_status":
         await handleDeploymentStatusEvent(req.body, options);
-        break;
-      case "status":
-        await handleCommitStatusEvent(req.body, options);
         break;
       default:
         log.debug("ignore event", event);

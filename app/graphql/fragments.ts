@@ -73,7 +73,7 @@ export const runnerFragment = gql`
 export const shortTriggerFragment = gql`
   fragment ShortTriggerFragment on Trigger {
     color
-    deployment_integration_id
+    deployment_provider
     id
     name
     repeat_minutes
@@ -156,9 +156,11 @@ export const triggerFragment = gql`
     deployment_branches
     deployment_environment
     deployment_integration_id
+    deployment_provider
     environment_id
     id
     name
+    netlify_event
     next_at
     repeat_minutes
   }

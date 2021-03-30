@@ -22,13 +22,13 @@ type AuthenticatedUser {
   user: User!
 }
 
-"Environment for a deployment"
-enum DeploymentEnvironment {
-  "Preview"
-  preview
+"Provider for a deployment"
+enum DeploymentProvider {
+  "Netlify"
+  netlify
 
-  "Production"
-  production
+  "Vercel"
+  vercel
 }
 
 "An email sent to a test email address"
@@ -114,6 +114,7 @@ type Group {
 enum IntegrationType {
   "GitHub (https://github.com/)"
   github
+
   "Slack (https://slack.com/)"
   slack
 }
@@ -155,6 +156,15 @@ type Invite {
 
   "The name of the wolf variant assigned to this user"
   wolf_variant: String!
+}
+
+"Netlify build event after which tests should be run"
+enum NetlifyEvent {
+  "onPostBuild event, runs after build but before deploy"
+  onPostBuild
+
+  "onSuccess event, runs when the deploy succeeds"
+  onSuccess
 }
 
 "Status of a user's onboarding in context of a team"
@@ -467,10 +477,13 @@ type Trigger {
   deployment_branches: String
 
   "The deployment environment to run tests on for the GitHub integration."
-  deployment_environment: DeploymentEnvironment
+  deployment_environment: String
 
   "The ID of a deployment integration associated with this test trigger"
   deployment_integration_id: ID
+
+  "The deployment provider"
+  deployment_provider: DeploymentProvider
 
   "The ID of an environment associated with this test trigger"
   environment_id: ID
@@ -480,6 +493,9 @@ type Trigger {
 
   "A name for the trigger, for users to identify it in the UI"
   name: String!
+
+  "When to run tests if Netlify build plugin installed"
+  netlify_event: NetlifyEvent
 
   "Date and time at which this test trigger is next scheduled to run"
   next_at: String
@@ -608,18 +624,24 @@ type Mutation {
     """
     If specified, run tests only on this deployment environment.
     """
-    deployment_environment: DeploymentEnvironment
+    deployment_environment: String
 
     """
     The ID of the integration for the connected GitHub repository.
     """
     deployment_integration_id: ID
 
+    "The deployment provider"
+    deployment_provider: DeploymentProvider
+
     "ID of the environment on the trigger"
     environment_id: ID
 
     "Name of the trigger"
     name: String!
+
+    "When to run tests if Netlify build plugin installed"
+    netlify_event: NetlifyEvent
 
     "Interval to run the trigger on"
     repeat_minutes: Int
@@ -1157,13 +1179,16 @@ type Mutation {
     Updated value for this field. If this field is omitted, it will
     not be changed. If it is `null`, it will be cleared.
     """
-    deployment_environment: DeploymentEnvironment
+    deployment_environment: String
 
     """
     Updated deployment integration ID. If this field is omitted, it will not be
     changed. If it is `null`, it will be cleared.
     """
     deployment_integration_id: ID
+
+    "The deployment provider"
+    deployment_provider: DeploymentProvider
 
     """
     Updated environment ID. If this field is omitted, it will not be changed.
@@ -1179,6 +1204,9 @@ type Mutation {
     not be changed. If it is `null`, it will be cleared.
     """
     name: String
+
+    "When to run tests if Netlify build plugin installed"
+    netlify_event: NetlifyEvent
 
     """
     Updated time in minutes between test runs for the trigger.

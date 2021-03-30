@@ -1,7 +1,8 @@
 import capitalize from "lodash/capitalize";
 
 import {
-  DeploymentEnvironment,
+  DeploymentProvider,
+  NetlifyEvent,
   TestTriggers,
   Trigger,
   TriggerFields,
@@ -13,11 +14,13 @@ export type TriggerMode = "api" | "deployment" | "schedule";
 
 type BuildTriggerFields = {
   deployBranches: string | null;
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   deployIntegrationId: string | null;
+  deployProvider: DeploymentProvider | null;
   environmentId: string;
   mode: TriggerMode;
   name: string;
+  netlifyEvent: NetlifyEvent | null;
   repeatMinutes: number;
 };
 
@@ -35,7 +38,7 @@ type GetSelectState = {
 };
 
 type GetDefaultName = {
-  deployEnv: DeploymentEnvironment | null;
+  deployEnv: string | null;
   mode: TriggerMode;
   repeatMinutes: number;
   triggers: Trigger[];
@@ -47,15 +50,19 @@ const nullDeploymentFields = {
   deployment_branches: null,
   deployment_environment: null,
   deployment_integration_id: null,
+  deployment_provider: null,
+  netlify_event: null,
 };
 
 export const buildTriggerFields = ({
   deployBranches,
   deployEnv,
   deployIntegrationId,
+  deployProvider,
   environmentId,
   mode,
   name,
+  netlifyEvent,
   repeatMinutes,
 }: BuildTriggerFields): TriggerFields => {
   const constantFields = { environment_id: environmentId || null, name };
@@ -71,12 +78,15 @@ export const buildTriggerFields = ({
   if (mode === "deployment") {
     return {
       ...constantFields,
-      deployment_branches: deployBranches || null,
-      deployment_environment: ["preview", "production"].includes(deployEnv)
-        ? deployEnv
-        : null,
-      deployment_integration_id: deployIntegrationId,
+      deployment_branches:
+        deployBranches && deployProvider === "vercel" ? deployBranches : null,
+      deployment_environment:
+        deployEnv && deployEnv !== "all" ? deployEnv : null,
+      deployment_integration_id: deployIntegrationId || null,
+      deployment_provider: deployProvider,
       repeat_minutes: null,
+      netlify_event:
+        netlifyEvent && deployProvider === "netlify" ? netlifyEvent : null,
     };
   }
 
@@ -113,9 +123,17 @@ export const buildUpdateTestTriggersResponse = ({
 
 export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
   if (!trigger || trigger.repeat_minutes) return "schedule";
-  if (trigger.deployment_integration_id) return "deployment";
+  if (trigger.deployment_provider) return "deployment";
 
   return "api";
+};
+
+const getDeploymentName = (deployEnv: string): string => {
+  if (["preview", "production"].includes(deployEnv)) {
+    return capitalize(`${deployEnv} ${copy.deployment}`);
+  }
+
+  return copy.deployment;
 };
 
 export const getDefaultName = ({
@@ -129,9 +147,7 @@ export const getDefaultName = ({
   if (mode === "schedule") {
     defaultName = repeatMinutes === 60 ? copy.hourly : copy.daily;
   } else if (mode === "deployment") {
-    defaultName = ["preview", "production"].includes(deployEnv)
-      ? capitalize(`${deployEnv} ${copy.deployment}`)
-      : copy.deployment;
+    defaultName = getDeploymentName(deployEnv);
   }
 
   if (triggers.some((t) => t.name === defaultName)) {
