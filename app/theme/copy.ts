@@ -226,7 +226,7 @@ export const copy = {
     "Set the QAWOLF_API_KEY environment variable in Netlify",
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
-  netlifyEvent: "Prevent deployment if tests fail?",
+  netlifyEvent: "Block deployment if tests fail?",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
   noEmail: "Please enter a valid email address",
   noGroup: "No group",
