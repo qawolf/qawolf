@@ -108,23 +108,6 @@ QA Wolf allows you to run your tests on all deployments (preview and production)
   width={488}
 />
 
-<SubHeader>Choose Whether to Block Deployments</SubHeader>
-
-You can also optionally choose to block deployments if your tests fail. This option is presented under the label **Block deployment if tests fail?**
-
-If you choose **No (run tests onSuccess)**, your tests will run after your deployment succeeds. This means that even if your tests fail, your deployment will still be live.
-
-If you choose **Yes (run tests onPostBuild)**, your tests will run after your site builds but before it is deployed. This means that if your tests fail, your build will not be deployed. Only if your tests pass will your deployment be live.
-
-Learn more about Netlify events <ExternalLink href="https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-into-events">here</ExternalLink>.
-
-<Image
-  alt="Block Netlify deployment"
-  height={65.5}
-  src={`/docs/run-tests-on-netlify-deployment/block-deployment.png`}
-  width={488}
-/>
-
 <SubHeader>Optional: Install GitHub App</SubHeader>
 
 <InstallGitHubApp service="netlify" />
