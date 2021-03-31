@@ -296,6 +296,21 @@ export const deleteTests = async (
   return tests;
 };
 
+export const hasIntroGuide = async (
+  creator_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasIntroGuide");
+  log.debug("user", creator_id);
+
+  const guide = await db("tests")
+    .where({ creator_id, guide: "Create a Test" })
+    .first();
+  log.debug(guide ? `found ${guide.id}` : "not found");
+
+  return !!guide;
+};
+
 export const hasTest = async (
   team_id: string,
   { db, logger }: ModelOptions
