@@ -1,13 +1,17 @@
 import Analytics from "analytics-node";
 
 import environment from "../environment";
-import { User } from "../types";
 
 const analytics = environment.SEGMENT_WRITE_KEY
   ? new Analytics(environment.SEGMENT_WRITE_KEY)
   : null;
 
-export const flushSegment = async (timeout = 100): Promise<void> => {
+type Identify = {
+  id: string;
+  email?: string;
+};
+
+export const flushSegment = async (timeout = 1000): Promise<void> => {
   if (!analytics) return;
 
   const flushPromise = await new Promise<void>((resolve) => {
@@ -22,7 +26,7 @@ export const flushSegment = async (timeout = 100): Promise<void> => {
 };
 
 export const trackSegmentEvent = (
-  user: User,
+  identify: Identify,
   event: string,
   properties: Record<string, unknown> = {}
 ): void => {
@@ -30,8 +34,10 @@ export const trackSegmentEvent = (
 
   analytics.track({
     event,
-    properties: { ...properties, email: user.email },
-    userId: user.id,
+    properties: identify.email
+      ? { ...properties, email: identify.email }
+      : properties,
+    userId: identify.id,
   });
 };
 
