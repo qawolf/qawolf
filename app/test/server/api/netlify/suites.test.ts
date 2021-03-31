@@ -34,13 +34,11 @@ describe("handleNetlifySuitesRequest", () => {
       buildTrigger({
         deployment_environment: null,
         deployment_provider: "netlify",
-        netlify_event: "onSuccess",
       }),
       buildTrigger({
         deployment_environment: "preview",
         deployment_provider: "netlify",
         i: 2,
-        netlify_event: "onSuccess",
       }),
     ]);
     await db("tests").insert(buildTest({}));
@@ -91,9 +89,8 @@ describe("handleNetlifySuitesRequest", () => {
     await handleNetlifySuitesRequest(
       {
         body: {
-          deployment_environment: "staging",
+          deployment_environment: "branch-deploy",
           deployment_url: "url",
-          netlify_event: "onSuccess",
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
@@ -114,7 +111,6 @@ describe("handleNetlifySuitesRequest", () => {
         body: {
           deployment_environment: "production",
           deployment_url: "url",
-          netlify_event: "onSuccess",
           sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },
@@ -162,7 +158,6 @@ describe("handleNetlifySuitesRequest", () => {
           deployment_environment: "deploy-preview",
           deployment_url: "url",
           is_pull_request: "true",
-          netlify_event: "onSuccess",
           sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },

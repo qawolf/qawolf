@@ -105,7 +105,7 @@ const createSuitesForRequest = async (
   const log = options.logger.prefix("createSuitesForRequest");
 
   const team = await findTeamForRequest(req, options);
-  const { deployment_environment, netlify_event } = req.body;
+  const { deployment_environment } = req.body;
 
   if (!shouldCreateSuites(deployment_environment, options)) return [];
 
@@ -115,7 +115,6 @@ const createSuitesForRequest = async (
         deployment_environment === "deploy-preview"
           ? "preview"
           : deployment_environment,
-      netlify_event,
       team_id: team.id,
     },
     options
