@@ -33,9 +33,8 @@ export default function Section({
   onToggleOpen,
   section,
 }: Props): JSX.Element {
-  const buttonLabel = isComplete
-    ? completeButtonLabels[section] || buttonLabels[section]
-    : buttonLabels[section];
+  const buttonLabel =
+    (isComplete && completeButtonLabels[section]) || buttonLabels[section];
 
   return (
     <Box {...containerProps}>
