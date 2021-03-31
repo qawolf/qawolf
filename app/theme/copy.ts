@@ -221,7 +221,7 @@ export const copy = {
   nameWolf: "Name your wolf",
   nameWolfMaxLength: "Character limit reached",
   netlify: "Netlify",
-  netlifyBuildPlugin: "Install the QA Wolf Build Plugin for Netlify",
+  netlifyBuildPlugin: "Install the QA Wolf Build Plugin",
   netlifyBuildVariable:
     "Set the QAWOLF_API_KEY environment variable in Netlify",
   netlifyDeployContext: "Netlify deploy context",
