@@ -155,7 +155,6 @@ export const createTriggerMutation = gql`
     $deployment_provider: DeploymentProvider
     $environment_id: ID
     $name: String!
-    $netlify_event: NetlifyEvent
     $repeat_minutes: Int
     $team_id: ID!
     $test_ids: [ID!]
@@ -167,7 +166,6 @@ export const createTriggerMutation = gql`
       deployment_provider: $deployment_provider
       environment_id: $environment_id
       name: $name
-      netlify_event: $netlify_event
       repeat_minutes: $repeat_minutes
       team_id: $team_id
       test_ids: $test_ids
@@ -391,7 +389,6 @@ export const updateTriggerMutation = gql`
     $environment_id: ID
     $id: ID!
     $name: String
-    $netlify_event: NetlifyEvent
     $repeat_minutes: Int
   ) {
     updateTrigger(
@@ -402,7 +399,6 @@ export const updateTriggerMutation = gql`
       environment_id: $environment_id
       id: $id
       name: $name
-      netlify_event: $netlify_event
       repeat_minutes: $repeat_minutes
     ) {
       ...TriggerFragment

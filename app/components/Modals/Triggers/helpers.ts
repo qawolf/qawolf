@@ -2,7 +2,6 @@ import capitalize from "lodash/capitalize";
 
 import {
   DeploymentProvider,
-  NetlifyEvent,
   TestTriggers,
   Trigger,
   TriggerFields,
@@ -20,7 +19,6 @@ type BuildTriggerFields = {
   environmentId: string;
   mode: TriggerMode;
   name: string;
-  netlifyEvent: NetlifyEvent | null;
   repeatMinutes: number;
 };
 
@@ -51,7 +49,6 @@ const nullDeploymentFields = {
   deployment_environment: null,
   deployment_integration_id: null,
   deployment_provider: null,
-  netlify_event: null,
 };
 
 export const buildTriggerFields = ({
@@ -62,7 +59,6 @@ export const buildTriggerFields = ({
   environmentId,
   mode,
   name,
-  netlifyEvent,
   repeatMinutes,
 }: BuildTriggerFields): TriggerFields => {
   const constantFields = { environment_id: environmentId || null, name };
@@ -85,8 +81,6 @@ export const buildTriggerFields = ({
       deployment_integration_id: deployIntegrationId || null,
       deployment_provider: deployProvider,
       repeat_minutes: null,
-      netlify_event:
-        netlifyEvent && deployProvider === "netlify" ? netlifyEvent : null,
     };
   }
 

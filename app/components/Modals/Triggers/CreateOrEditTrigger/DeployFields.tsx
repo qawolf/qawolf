@@ -1,4 +1,4 @@
-import { DeploymentProvider, NetlifyEvent } from "../../../../lib/types";
+import { DeploymentProvider } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import DeployProviders from "./DeployProviders";
 import GitHubRepo from "./GitHubRepo";
@@ -11,12 +11,10 @@ type Props = {
   deployIntegrationId: string | null;
   deployProvider: DeploymentProvider;
   hasDeployError: boolean;
-  netlifyEvent: NetlifyEvent | null;
   setDeployBranches: (branches: string | null) => void;
   setDeployEnv: (env: string | null) => void;
   setDeployIntegrationId: (integrationId: string | null) => void;
   setDeployProvider: (deployProvider: DeploymentProvider) => void;
-  setNetlifyEvent: (netlifyEvent: NetlifyEvent | null) => void;
 };
 
 export default function DeployFields({
@@ -25,12 +23,10 @@ export default function DeployFields({
   deployIntegrationId,
   deployProvider,
   hasDeployError,
-  netlifyEvent,
   setDeployBranches,
   setDeployEnv,
   setDeployIntegrationId,
   setDeployProvider,
-  setNetlifyEvent,
 }: Props): JSX.Element {
   return (
     <>
@@ -54,12 +50,7 @@ export default function DeployFields({
         </>
       ) : (
         <>
-          <NetlifyFields
-            deployEnv={deployEnv}
-            netlifyEvent={netlifyEvent}
-            setDeployEnv={setDeployEnv}
-            setNetlifyEvent={setNetlifyEvent}
-          />
+          <NetlifyFields deployEnv={deployEnv} setDeployEnv={setDeployEnv} />
           <GitHubRepo
             deployIntegrationId={deployIntegrationId}
             label={copy.netlifyGitHub}

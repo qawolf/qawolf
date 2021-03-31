@@ -44,8 +44,6 @@ export type Invite = {
   wolf_variant: string;
 };
 
-export type NetlifyEvent = "onPostBuild" | "onSuccess";
-
 export type Onboarding = {
   has_added_trigger_to_test: boolean;
   has_completed_tutorial: boolean;
@@ -182,7 +180,6 @@ export type Trigger = ShortTrigger & {
   deployment_environment: string | null;
   deployment_integration_id: string | null;
   environment_id: string | null;
-  netlify_event: NetlifyEvent | null;
   next_at: string | null;
 };
 
@@ -253,7 +250,6 @@ export type TriggerFields = {
   deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
   name: string;
-  netlify_event: NetlifyEvent | null;
   repeat_minutes: number | null;
 };
 

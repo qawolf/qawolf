@@ -160,7 +160,6 @@ export const triggerFragment = gql`
     environment_id
     id
     name
-    netlify_event
     next_at
     repeat_minutes
   }
