@@ -12,6 +12,7 @@ import {
   findUsersForTeam,
   updateGitHubFields,
   updateUser,
+  updateUserLastSeenAt,
 } from "../models/user";
 import { signAccessToken } from "../services/access";
 import { sendEmailForLoginCode } from "../services/alert/email";
@@ -119,7 +120,7 @@ const createUserWithTeam = async (
 export const currentUserResolver = async (
   _: Record<string, unknown>,
   __: Record<string, unknown>,
-  { logger, teams, user: contextUser }: Context
+  { db, logger, teams, user: contextUser }: Context
 ): Promise<CurrentUser | null> => {
   const log = logger.prefix("currentUserResolver");
   if (!contextUser) {
@@ -131,7 +132,12 @@ export const currentUserResolver = async (
 
   log.debug("current user", currentUser.id);
 
-  return currentUser;
+  const last_seen_at = await updateUserLastSeenAt(currentUser.id, {
+    db,
+    logger,
+  });
+
+  return { ...currentUser, last_seen_at };
 };
 
 /**

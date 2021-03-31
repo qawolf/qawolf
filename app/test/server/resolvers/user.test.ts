@@ -69,6 +69,7 @@ describe("currentUserResolver", () => {
 
     expect(user).toMatchObject({
       ...context.user,
+      last_seen_at: expect.any(String),
       teams,
     });
   });
@@ -81,6 +82,14 @@ describe("currentUserResolver", () => {
     );
 
     expect(user).toBeNull();
+  });
+
+  it("updates user last seen at", async () => {
+    const user = await currentUserResolver({}, {}, context);
+
+    expect(
+      new Date(user.last_seen_at) > new Date(context.user.last_seen_at)
+    ).toBe(true);
   });
 });
 
@@ -157,6 +166,7 @@ describe("sendLoginCodeResolver", () => {
       user: {
         ...newUser,
         created_at: undefined,
+        last_seen_at: expect.any(String),
         login_code_expires_at: expect.any(String),
         updated_at: undefined,
       },
@@ -181,6 +191,7 @@ describe("sendLoginCodeResolver", () => {
 
     expect(newUser).toMatchObject({
       email,
+      last_seen_at: expect.any(Date),
       login_code_digest: expect.any(String),
       login_code_expires_at: expect.any(Date),
       wolf_name: invite.wolf_name,
@@ -196,6 +207,7 @@ describe("sendLoginCodeResolver", () => {
       user: {
         ...newUser,
         created_at: undefined,
+        last_seen_at: expect.any(String),
         login_code_expires_at: expect.any(String),
         updated_at: undefined,
       },

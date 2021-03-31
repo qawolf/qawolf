@@ -75,6 +75,7 @@ export const createUserWithEmail = async (
     github_login: null,
     id: cuid(),
     is_enabled: true,
+    last_seen_at: minutesFromNow(),
     login_code_digest: await buildDigest(fields.login_code),
     login_code_expires_at: minutesFromNow(LOGIN_CODE_EXPIRY_MINUTES),
     name: null,
@@ -103,6 +104,7 @@ export const createUserWithGitHub = async (
     email: fields.email.toLowerCase(),
     id: cuid(),
     is_enabled: true,
+    last_seen_at: minutesFromNow(),
     login_code_digest: null,
     login_code_expires_at: null,
     onboarded_at: null,
@@ -267,4 +269,20 @@ export const updateUser = async (
   log.debug("updated", id);
 
   return { ...existingUser, ...updates };
+};
+
+export const updateUserLastSeenAt = async (
+  id: string,
+  { db, logger }: ModelOptions
+): Promise<string> => {
+  const log = logger.prefix("updateUserLastSeenAt");
+  log.debug(id);
+
+  const last_seen_at = minutesFromNow();
+
+  await db("users").where({ id }).update({ last_seen_at });
+
+  log.debug("updated", id);
+
+  return last_seen_at;
 };

@@ -97,6 +97,29 @@ export const countIncompleteTests = async (
   return result;
 };
 
+export const countTestsForTeam = async (
+  team_id: string,
+  { db }: ModelOptions
+): Promise<{ test_enabled_count: number; test_with_trigger_count: number }> => {
+  const [enabledResult, triggeredResult] = await Promise.all([
+    db.raw(
+      `SELECT COUNT(*) as count FROM tests WHERE team_id = ? AND deleted_at IS NULL AND is_enabled = TRUE`,
+      [team_id]
+    ),
+    db.raw(
+      `SELECT COUNT(DISTINCT test_id) as count 
+      FROM test_triggers JOIN tests ON test_triggers.test_id = tests.id 
+      WHERE tests.team_id = ? AND tests.deleted_at IS NULL AND tests.is_enabled = TRUE`,
+      [team_id]
+    ),
+  ]);
+
+  return {
+    test_enabled_count: Number(enabledResult.rows[0].count),
+    test_with_trigger_count: Number(triggeredResult.rows[0].count),
+  };
+};
+
 export const createTest = async (
   { code, creator_id, group_id, guide, team_id }: CreateTest,
   { db, logger }: ModelOptions

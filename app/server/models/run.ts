@@ -5,6 +5,7 @@ import {
   getArtifactsOptions,
 } from "../services/aws/storage";
 import { updateCommitStatus } from "../services/gitHub/app";
+import { trackSegmentEvent } from "../services/segment";
 import {
   ModelOptions,
   Run,
@@ -20,6 +21,7 @@ import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
 import { findEnvironmentIdForRun } from "./environment";
 import { buildEnvironmentVariables } from "./environment_variable";
+import { findTest } from "./test";
 
 type CreateRunsForTests = {
   suite_id: string;
@@ -324,6 +326,12 @@ export const updateRun = async (
     // ensure started_at is set, so the run is no longer pending
     // this could happen if the run started request never made it through
     if (!run.started_at) updates.started_at = timestamp;
+
+    const test = await findTest(run.test_id, { db, logger });
+    trackSegmentEvent({ id: test.creator_id }, "Run Completed", {
+      run_id: run.id,
+      status: updates.status,
+    });
   }
 
   await db("runs").where({ id }).update(updates);
