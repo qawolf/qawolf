@@ -45,7 +45,6 @@ describe("createTriggerResolver", () => {
         deployment_provider: null,
         environment_id: "environmentId",
         name: "Daily",
-        netlify_event: null,
         repeat_minutes: 1440,
         team_id: "teamId",
         test_ids: null,
@@ -62,7 +61,6 @@ describe("createTriggerResolver", () => {
       environment_id: "environmentId",
       id: team.next_trigger_id,
       name: "Daily",
-      netlify_event: null,
       repeat_minutes: 1440,
       team_id: "teamId",
     });
@@ -89,7 +87,6 @@ describe("createTriggerResolver", () => {
         deployment_provider: null,
         environment_id: "environmentId",
         name: "Daily",
-        netlify_event: null,
         repeat_minutes: 1440,
         team_id: "teamId",
         test_ids: ["testId"],
@@ -193,7 +190,6 @@ describe("updateTriggerResolver", () => {
         deployment_integration_id: "integration2Id",
         deployment_provider: "vercel",
         id: "triggerId",
-        netlify_event: null,
         repeat_minutes: null,
       },
       context
@@ -204,7 +200,6 @@ describe("updateTriggerResolver", () => {
       deployment_environment: "preview",
       deployment_integration_id: "integration2Id",
       deployment_provider: "vercel",
-      netlify_event: null,
       repeat_minutes: null,
     });
   });

@@ -158,15 +158,6 @@ type Invite {
   wolf_variant: String!
 }
 
-"Netlify build event after which tests should be run"
-enum NetlifyEvent {
-  "onPostBuild event, runs after build but before deploy"
-  onPostBuild
-
-  "onSuccess event, runs when the deploy succeeds"
-  onSuccess
-}
-
 "Status of a user's onboarding in context of a team"
 type Onboarding {
   "Whether the current team has assigned a trigger to a test"
@@ -494,9 +485,6 @@ type Trigger {
   "A name for the trigger, for users to identify it in the UI"
   name: String!
 
-  "When to run tests if Netlify build plugin installed"
-  netlify_event: NetlifyEvent
-
   "Date and time at which this test trigger is next scheduled to run"
   next_at: String
 
@@ -639,9 +627,6 @@ type Mutation {
 
     "Name of the trigger"
     name: String!
-
-    "When to run tests if Netlify build plugin installed"
-    netlify_event: NetlifyEvent
 
     "Interval to run the trigger on"
     repeat_minutes: Int
@@ -1204,9 +1189,6 @@ type Mutation {
     not be changed. If it is `null`, it will be cleared.
     """
     name: String
-
-    "When to run tests if Netlify build plugin installed"
-    netlify_event: NetlifyEvent
 
     """
     Updated time in minutes between test runs for the trigger.
