@@ -29,6 +29,7 @@ const {
   findTest,
   findTestForRun,
   findTestsForTeam,
+  hasIntroGuide,
   hasTest,
   updateTest,
   updateTestsGroup,
@@ -38,7 +39,7 @@ const db = prepareTestDb();
 const options = { db, logger };
 
 beforeAll(async () => {
-  await db("users").insert(buildUser({}));
+  await db("users").insert([buildUser({}), buildUser({ i: 2 })]);
   await db("teams").insert(buildTeam({}));
   await db("triggers").insert(buildTrigger({}));
   await db("groups").insert(buildGroup({}));
@@ -508,6 +509,35 @@ describe("findTestsForTeam", () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);
+  });
+});
+
+describe("hasIntroGuide", () => {
+  beforeAll(() =>
+    db("tests").insert([
+      buildTest({
+        guide: "Create a Test",
+      }),
+      buildTest({ creator_id: "user2Id", i: 2 }),
+    ])
+  );
+
+  afterAll(() => db("tests").del());
+
+  it("returns true if user has intro guide", async () => {
+    expect(await hasIntroGuide("userId", options)).toBe(true);
+
+    await db("tests")
+      .update({ deleted_at: new Date().toISOString() })
+      .where({ id: "testId" });
+
+    expect(await hasIntroGuide("userId", options)).toBe(true);
+
+    await db("tests").update({ deleted_at: null }).where({ id: "testId" });
+  });
+
+  it("returns false if user does not have intro guide", async () => {
+    expect(await hasIntroGuide("user2Id", options)).toBe(false);
   });
 });
 
