@@ -108,6 +108,12 @@ export const createSlackIntegrationUrlMutation = gql`
   }
 `;
 
+export const createStripeCheckoutSessionMutation = gql`
+  mutation createStripeCheckoutSession {
+    createStripeCheckoutSession
+  }
+`;
+
 export const createSubscriberMutation = gql`
   mutation createSubscriber($email: String!) {
     createSubscriber(email: $email)

@@ -50,6 +50,7 @@ export default {
   SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID!,
   SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET!,
   SLACK_UPDATES_WEBHOOK: process.env.SLACK_UPDATES_WEBHOOK || null,
+  STRIPE_API_KEY: process.env.STRIPE_API_KEY!,
   VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA || "",
   VERCEL_URL: process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`

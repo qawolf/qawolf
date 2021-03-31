@@ -38,6 +38,7 @@ import {
   createSlackIntegrationUrlResolver,
   sendSlackUpdateResolver,
 } from "./resolvers/slack";
+import { createStripeCheckoutSessionResolver } from "./resolvers/stripe";
 import { createSubscriberResolver } from "./resolvers/subscriber";
 import {
   createSuiteResolver,
@@ -93,6 +94,7 @@ export const resolvers = {
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
     createSlackIntegrationUrl: createSlackIntegrationUrlResolver,
+    createStripeCheckoutSession: createStripeCheckoutSessionResolver,
     createSubscriber: createSubscriberResolver,
     createSuite: createSuiteResolver,
     createTest: createTestResolver,

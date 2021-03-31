@@ -1,4 +1,6 @@
 import "../theme/global.css";
+// https://github.com/stripe/stripe-js#import-as-a-side-effect
+import "@stripe/stripe-js";
 
 import { ApolloProvider } from "@apollo/client";
 import { MDXProvider } from "@mdx-js/react";

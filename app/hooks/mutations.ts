@@ -12,6 +12,7 @@ import {
   createSignInUrlMutation,
   createSlackIntegrationMutation,
   createSlackIntegrationUrlMutation,
+  createStripeCheckoutSessionMutation,
   createSubscriberMutation,
   createSuiteMutation,
   createTestMutation,
@@ -135,6 +136,10 @@ type CreateSlackIntegrationUrlData = {
 
 type CreateSlackIntegrationUrlVariables = {
   redirect_uri: string;
+};
+
+type CreateStripeCheckoutSessionData = {
+  createStripeCheckoutSession: string;
 };
 
 type CreateSubscriberData = {
@@ -517,6 +522,16 @@ export const useCreateSlackIntegrationUrl = (
     CreateSlackIntegrationUrlData,
     CreateSlackIntegrationUrlVariables
   >(createSlackIntegrationUrlMutation, { onError, variables });
+};
+
+export const useCreateStripeCheckoutSession = (): MutationTuple<
+  CreateStripeCheckoutSessionData,
+  Record<string, never>
+> => {
+  return useMutation<CreateStripeCheckoutSessionData>(
+    createStripeCheckoutSessionMutation,
+    { onError }
+  );
 };
 
 export const useCreateSubscriber = (): MutationTuple<

@@ -1,11 +1,25 @@
 import { Box } from "grommet";
+
+import { useCreateStripeCheckoutSession } from "../../hooks/mutations";
+import { stripe } from "../../lib/stripe";
 import { copy } from "../../theme/copy";
 import { border } from "../../theme/theme";
-
 import Button from "./AppButton";
 
 export default function SubscribeBanner(): JSX.Element {
+  const [
+    createStripeCheckoutSession,
+    { loading },
+  ] = useCreateStripeCheckoutSession();
   // TODO: return null if already paid or not near limit
+
+  const handleClick = (): void => {
+    createStripeCheckoutSession().then(({ data }) => {
+      if (!data?.createStripeCheckoutSession) return;
+
+      stripe.redirectToCheckout(data.createStripeCheckoutSession);
+    });
+  };
 
   return (
     <Box
@@ -16,7 +30,12 @@ export default function SubscribeBanner(): JSX.Element {
       flex={false}
       pad="xxsmall"
     >
-      <Button label={copy.subscribe} type="primary" />
+      <Button
+        isDisabled={loading}
+        label={copy.subscribe}
+        onClick={handleClick}
+        type="primary"
+      />
     </Box>
   );
 }
