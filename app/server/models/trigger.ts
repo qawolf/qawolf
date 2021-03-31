@@ -1,11 +1,6 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import {
-  DeploymentProvider,
-  ModelOptions,
-  NetlifyEvent,
-  Trigger,
-} from "../types";
+import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
 
 const DAILY_HOUR = 16; // 9 am PST
@@ -30,14 +25,12 @@ type CreateTrigger = {
   environment_id?: string;
   id?: string;
   name: string;
-  netlify_event?: NetlifyEvent | null;
   repeat_minutes?: number | null;
   team_id: string;
 };
 
 type FindTriggersForNetlifyIntegration = {
   deployment_environment: string;
-  netlify_event: NetlifyEvent;
   team_id: string;
 };
 
@@ -49,7 +42,6 @@ type UpdateTrigger = {
   environment_id?: string | null;
   id: string;
   name?: string;
-  netlify_event?: NetlifyEvent | null;
   repeat_minutes?: number | null;
 };
 
@@ -134,7 +126,6 @@ export const createTrigger = async (
     environment_id,
     id,
     name,
-    netlify_event,
     repeat_minutes,
     team_id,
   }: CreateTrigger,
@@ -157,7 +148,6 @@ export const createTrigger = async (
     environment_id: environment_id || null,
     id: id || cuid(),
     name,
-    netlify_event: netlify_event || null,
     next_at: getNextAt(repeat_minutes),
     repeat_minutes: repeat_minutes || null,
     team_id,
@@ -236,11 +226,7 @@ export const findTriggersForGitHubIntegration = async (
 };
 
 export const findTriggersForNetlifyIntegration = async (
-  {
-    deployment_environment,
-    netlify_event,
-    team_id,
-  }: FindTriggersForNetlifyIntegration,
+  { deployment_environment, team_id }: FindTriggersForNetlifyIntegration,
   { db, logger }: ModelOptions
 ): Promise<Trigger[]> => {
   const log = logger.prefix("findTriggersForNetlifyIntegration");
@@ -255,7 +241,6 @@ export const findTriggersForNetlifyIntegration = async (
     .andWhere({
       deleted_at: null,
       deployment_provider: "netlify",
-      netlify_event,
       team_id,
     })
     .orderBy("triggers.name", "asc");
@@ -330,7 +315,6 @@ export const updateTrigger = async (
     environment_id,
     id,
     name,
-    netlify_event,
     repeat_minutes,
   }: UpdateTrigger,
   { db, logger }: ModelOptions
@@ -361,7 +345,6 @@ export const updateTrigger = async (
       updates.environment_id = environment_id;
     }
     if (name !== undefined) updates.name = name;
-    if (netlify_event !== undefined) updates.netlify_event = netlify_event;
 
     if (repeat_minutes !== undefined) {
       updates.repeat_minutes = repeat_minutes;

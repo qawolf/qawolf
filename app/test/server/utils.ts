@@ -12,7 +12,6 @@ import {
   Integration,
   IntegrationType,
   Invite,
-  NetlifyEvent,
   Run,
   Runner,
   RunStatus,
@@ -150,7 +149,6 @@ type BuildTrigger = {
   environment_id?: string;
   i?: number;
   name?: string;
-  netlify_event?: NetlifyEvent;
   next_at?: string | null;
   repeat_minutes?: number | null;
   team_id?: string;
@@ -462,7 +460,6 @@ export const buildTrigger = ({
   environment_id,
   i,
   name,
-  netlify_event,
   next_at,
   repeat_minutes,
   team_id,
@@ -480,7 +477,6 @@ export const buildTrigger = ({
     environment_id: environment_id || null,
     id: `trigger${finalI === 1 ? "" : i}Id`,
     name: name || `trigger${finalI}`,
-    netlify_event: netlify_event || null,
     next_at: next_at || null,
     repeat_minutes: repeat_minutes === undefined ? 60 : repeat_minutes,
     team_id: team_id || "teamId",

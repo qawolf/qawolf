@@ -4,7 +4,6 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useOnHotKey } from "../../../../hooks/onHotKey";
 import {
   DeploymentProvider,
-  NetlifyEvent,
   Trigger,
   TriggerFields,
 } from "../../../../lib/types";
@@ -67,9 +66,7 @@ export default function Form({
     editTrigger?.deployment_provider || "vercel"
   );
   const [hasDeployError, setHasDeployError] = useState(false);
-  const [netlifyEvent, setNetlifyEvent] = useState<NetlifyEvent | null>(
-    editTrigger?.netlify_event || "onSuccess"
-  );
+
   // environment
   const [environmentId, setEnvironmentId] = useState<string>(
     editTrigger?.environment_id || stateEnvironmentId || ""
@@ -113,7 +110,6 @@ export default function Form({
         environmentId,
         mode,
         name,
-        netlifyEvent,
         repeatMinutes,
       })
     );
@@ -147,12 +143,10 @@ export default function Form({
             deployIntegrationId={deployIntegrationId}
             deployProvider={deployProvider}
             hasDeployError={hasDeployError}
-            netlifyEvent={netlifyEvent}
             setDeployBranches={setDeployBranches}
             setDeployEnv={setDeployEnv}
             setDeployIntegrationId={setDeployIntegrationId}
             setDeployProvider={setDeployProvider}
-            setNetlifyEvent={setNetlifyEvent}
           />
         )}
         {mode === "api" && <ApiFields editTriggerId={editTrigger?.id} />}
