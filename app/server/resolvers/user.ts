@@ -18,6 +18,7 @@ import { signAccessToken } from "../services/access";
 import { sendEmailForLoginCode } from "../services/alert/email";
 import { postMessageToSlack } from "../services/alert/slack";
 import { findGitHubFields } from "../services/gitHub/user";
+import { hashUserId } from "../services/intercom";
 import {
   AuthenticatedUser,
   Context,
@@ -52,7 +53,7 @@ const buildAuthenticatedUser = async (
 
   return {
     access_token,
-    user: { ...user, teams: teams || [] },
+    user: { ...user, intercom_hash: hashUserId(user.id), teams: teams || [] },
   };
 };
 
@@ -137,7 +138,11 @@ export const currentUserResolver = async (
     logger,
   });
 
-  return { ...currentUser, last_seen_at };
+  return {
+    ...currentUser,
+    intercom_hash: hashUserId(currentUser.id),
+    last_seen_at,
+  };
 };
 
 /**
@@ -315,5 +320,9 @@ export const updateUserResolver = async (
     { db, logger }
   );
 
-  return { ...updatedUser, teams: teams || [] };
+  return {
+    ...updatedUser,
+    intercom_hash: hashUserId(user.id),
+    teams: teams || [],
+  };
 };

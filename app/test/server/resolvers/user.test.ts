@@ -69,6 +69,7 @@ describe("currentUserResolver", () => {
 
     expect(user).toMatchObject({
       ...context.user,
+      intercom_hash: expect.any(String),
       last_seen_at: expect.any(String),
       teams,
     });

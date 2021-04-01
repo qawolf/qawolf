@@ -9,7 +9,8 @@ import ExternalLink from "../../../shared/ExternalLink";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
-const pluginHref = "https://app.netlify.com/plugins"; // TODO: update
+const pluginHref =
+  "https://app.netlify.com/plugins/netlify-plugin-qawolf/install";
 const variablesHref =
   "https://docs.netlify.com/configure-builds/environment-variables/#declare-variables";
 

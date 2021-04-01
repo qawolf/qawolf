@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { isServer } from "../lib/detection";
+import { User } from "../lib/types";
 
 const hasIntercom = !isServer() && (window as any).Intercom;
 
@@ -18,12 +19,14 @@ export const resetIntercom = (): void => {
   (window as any).Intercom("boot", bootOptions);
 };
 
-export const updateIntercomUser = (email: string): void => {
+export const updateIntercomUser = (user: User): void => {
   if (!hasIntercom) return;
 
   (window as any).Intercom("boot", {
     ...bootOptions,
-    email,
+    email: user.email,
+    user_hash: user.intercom_hash,
+    user_id: user.id,
   });
 };
 

@@ -506,6 +506,9 @@ type User {
   "User ID"
   id: ID!
 
+  "Hash for intercom verification"
+  intercom_hash: String
+
   "Date and time at which this user was onboarded, if they were"
   onboarded_at: String
 

@@ -55,7 +55,7 @@ export const UserProvider: FC = ({ children }) => {
     if (!user) return;
 
     identifySegmentUser(user);
-    updateIntercomUser(user.email);
+    updateIntercomUser(user);
   }, [user]);
 
   useSegmentPage(user);

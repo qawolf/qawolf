@@ -1,3 +1,4 @@
+import ExternalLink from "./ExternalLink";
 import Image from "./Image";
 
 type Props = { description: string };
@@ -12,7 +13,11 @@ export default function CreateTrigger({ description }: Props): JSX.Element {
       <p>
         You can manage triggers from the dashboard or from the test editor. The
         button to open the triggers popup is in the top right corner of the test
-        editor and in the sidebar of the dashboard.
+        editor and in the sidebar of the{" "}
+        <ExternalLink href="https://www.qawolf.com/tests">
+          dashboard
+        </ExternalLink>
+        .
       </p>
       <Image
         alt="Add trigger from test editor"

@@ -273,9 +273,9 @@ export type Test = {
   code: string;
   deleted_at: string | null;
   group_id: string | null;
+  guide?: string | null;
   id: string;
   is_enabled: boolean;
-  is_guide?: boolean;
   name: string;
   runner_locations?: string | null;
   runner_requested_at?: string | null;
@@ -534,6 +534,7 @@ export type UseTestSessionMutation = {
 
 // Query types
 export type CurrentUser = User & {
+  intercom_hash: string;
   teams: Team[];
 };
 
