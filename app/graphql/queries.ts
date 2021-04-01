@@ -21,6 +21,7 @@ import {
 export const currentUserQuery = gql`
   query currentUser {
     currentUser {
+      intercom_hash
       ...UserFragment
     }
   }

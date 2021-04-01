@@ -534,6 +534,7 @@ export type UseTestSessionMutation = {
 
 // Query types
 export type CurrentUser = User & {
+  intercom_hash: string;
   teams: Team[];
 };
 
