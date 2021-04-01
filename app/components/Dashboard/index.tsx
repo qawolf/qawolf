@@ -6,7 +6,6 @@ import { useEnsureUser } from "../../hooks/ensureUser";
 import { useGroups } from "../../hooks/queries";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
-import SubscribeBanner from "../shared/SubscribeBanner";
 import { StateContext } from "../StateContext";
 import GetStarted from "./GetStarted";
 import Settings from "./Settings";
@@ -42,7 +41,6 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <Box data-hj-suppress height="100vh">
-      <SubscribeBanner />
       <Box direction="row" fill>
         <Sidebar groups={groups} />
         {innerHtml}

@@ -234,7 +234,7 @@ export type SuiteRun = {
   test_name: string;
 };
 
-export type TeamPlan = "free" | "business";
+export type TeamPlan = "business" | "custom" | "free";
 
 export type Team = {
   alert_integration_id: string | null;
