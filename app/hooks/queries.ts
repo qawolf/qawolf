@@ -350,13 +350,21 @@ export const useTeam = (
 };
 
 export const useTest = (
-  variables: TestQueryVariables
+  variables: TestQueryVariables,
+  { teamId }: { teamId: string }
 ): QueryResult<TestData, TestQueryVariables> => {
   const { replace } = useRouter();
 
   return useQuery<TestData, TestQueryVariables>(testQuery, {
     fetchPolicy,
     nextFetchPolicy,
+    onCompleted: (response) => {
+      const { test } = response || {};
+      // set correct team id if needed
+      if (test?.test?.team_id && test.test.team_id !== teamId) {
+        state.setTeamId(test.test.team_id);
+      }
+    },
     onError: (error: ApolloError) => {
       if (
         error.message.includes("cannot access") ||

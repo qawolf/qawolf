@@ -137,6 +137,7 @@ export const testFragment = gql`
     id
     is_enabled
     name
+    team_id
     updated_at
     version
   }
