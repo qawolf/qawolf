@@ -17,7 +17,7 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 In this tutorial, we'll set up our tests to run on <a href="https://www.netlify.com/" target="_blank">Netlify</a> deployments. This helps ensure our critical workflows don't break when we make changes.
 
-QA Wolf maintains a <ExternalLink href="https://github.com/qawolf/netlify-plugin-qawolf">Netlify Build Plugin</ExternalLink> that runs your tests on <ExternalLink href="https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify">deploy previews</ExternalLink> or production deployments. If you have a different workflow, please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink>.
+QA Wolf maintains a <ExternalLink href="https://app.netlify.com/plugins/netlify-plugin-qawolf/install">Netlify Build Plugin</ExternalLink> that runs your tests on <ExternalLink href="https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify">deploy previews</ExternalLink> or production deployments. If you have a different workflow, please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink>.
 
 <SubHeader>Create Deployment Trigger</SubHeader>
 
@@ -44,12 +44,19 @@ The next part of the modal provides one-time set up instructions for integrating
   width={485}
 />
 
-First we need to install the QA Wolf Build Plugin. There are two ways to do this: from the Netlify UI (recommended) or with <ExternalLink href="https://www.npmjs.com/">npm</ExternalLink>.
+First we need to install the QA Wolf Build Plugin. There are two ways to do this: from the <ExternalLink href="https://app.netlify.com/plugins/netlify-plugin-qawolf/install">Netlify UI</ExternalLink> (recommended) or with <ExternalLink href="https://www.npmjs.com/">npm</ExternalLink>.
 
 ### A. Install from the Netlify UI (Recommended)
 
-Click <ExternalLink href="https://app.netlify.com/plugins">
-this link to install the QA Wolf Build Plugin</ExternalLink>.
+Click <ExternalLink href="https://app.netlify.com/plugins/netlify-plugin-qawolf/install">
+this link to install the QA Wolf Build Plugin</ExternalLink>. You will be redirected to Netlify and asked to choose your site.
+
+<Image
+  alt="Install plugin"
+  height={437}
+  src={`/docs/run-tests-on-netlify-deployment/install-plugin.png`}
+  width={704}
+/>
 
 You can also find the QA Wolf Build Plugin listed in the <ExternalLink href="https://app.netlify.com/plugins">Netlify Plugins directory</ExternalLink>.
 
