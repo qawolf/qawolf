@@ -187,6 +187,7 @@ export type User = {
   avatar_url: string | null;
   email: string;
   id: string;
+  intercom_hash?: string;
   onboarded_at: string | null;
   teams: ShortTeam[];
   wolf_name: string;
