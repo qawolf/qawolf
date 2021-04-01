@@ -18,14 +18,15 @@ export default async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const db = connectDb();
-
   const logger = new Logger({ prefix: "worker" });
 
   if (req.headers.authorization !== environment.JOB_SECRET) {
     logger.debug("unauthorized");
     res.status(403).end();
+    return;
   }
+
+  const db = connectDb();
 
   const job: Job = req.body.job;
 

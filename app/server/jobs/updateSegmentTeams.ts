@@ -7,12 +7,15 @@ import { ModelOptions } from "../types";
 export const updateSegmentTeams = async (
   options: ModelOptions
 ): Promise<void> => {
-  const seenTeams = await findTeamsSeenAfter(minutesFromNow(-30), options);
+  const log = options.logger.prefix("updateSegmentTeams");
+  const seenTeams = await findTeamsSeenAfter(minutesFromNow(-100), options);
 
   const promises = seenTeams.map(async ({ name, plan, team_id, user_id }) => {
     const counts = await countTestsForTeam(team_id, options);
 
-    trackSegmentGroup(team_id, user_id, { name, plan, ...counts });
+    const traits = { name, plan, ...counts };
+    log.debug("track segment group", team_id, traits);
+    trackSegmentGroup(team_id, user_id, traits);
   });
 
   await Promise.all(promises);
