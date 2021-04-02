@@ -12,6 +12,7 @@ type UseOnStripeCheckout = {
 
 export const useOnStripeCheckout = (): UseOnStripeCheckout => {
   const { pathname } = useRouter();
+
   const { teamId } = useContext(StateContext);
 
   const [
@@ -21,7 +22,11 @@ export const useOnStripeCheckout = (): UseOnStripeCheckout => {
 
   const handleClick = (): void => {
     createStripeCheckoutSession({
-      variables: { cancel_uri: pathname, team_id: teamId },
+      variables: {
+        app_url: window.location.origin,
+        cancel_uri: pathname,
+        team_id: teamId,
+      },
     }).then(({ data }) => {
       if (!data?.createStripeCheckoutSession) return;
 

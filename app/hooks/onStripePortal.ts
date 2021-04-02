@@ -20,7 +20,11 @@ export const useOnStripePortal = (): UseOnStripePortal => {
 
   const handleClick = (): void => {
     createStripePortalSession({
-      variables: { return_uri: pathname, team_id: teamId },
+      variables: {
+        app_url: window.location.origin,
+        return_uri: pathname,
+        team_id: teamId,
+      },
     }).then(({ data }) => {
       if (!data?.createStripePortalSession) return;
 

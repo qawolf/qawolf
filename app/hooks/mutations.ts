@@ -144,6 +144,7 @@ type CreateStripeCheckoutSessionData = {
 };
 
 type CreateStripeCheckoutSessionVariables = {
+  app_url: string;
   cancel_uri: string;
   team_id: string;
 };
@@ -153,6 +154,7 @@ type CreateStripePortalSessionData = {
 };
 
 type CreateStripePortalSessionVariables = {
+  app_url: string;
   return_uri: string;
   team_id: string;
 };

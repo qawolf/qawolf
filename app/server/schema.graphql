@@ -690,6 +690,11 @@ type Mutation {
   """
   createStripeCheckoutSession(
     """
+    App URL
+    """
+    app_url: String!
+
+    """
     Relative app URL to redirect to if checkout cancelled
     """
     cancel_uri: String!
@@ -706,6 +711,11 @@ type Mutation {
   Requires that you have access to the team.
   """
   createStripePortalSession(
+    """
+    App URL
+    """
+    app_url: String!
+
     """
     Relative app URL to return to after the portal session ends
     """
