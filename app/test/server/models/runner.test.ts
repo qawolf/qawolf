@@ -1,4 +1,3 @@
-import environment from "../../../server/environment";
 import * as runModel from "../../../server/models/run";
 import { findRun } from "../../../server/models/run";
 import {
@@ -20,6 +19,7 @@ import * as locationService from "../../../server/services/location";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildEnvironmentVariable,
   buildRun,
   buildRunner,
   buildTeam,
@@ -88,14 +88,26 @@ describe("countExcessRunners", () => {
     buildRunner({ api_key: "apiKey", i: 2, ready_at: minutesFromNow() }),
   ];
 
-  beforeAll(() => db("runners").insert(runners));
-  afterAll(() => db("runners").del());
+  beforeAll(async () => {
+    await db("runners").insert(runners);
+
+    return db("environment_variables").insert({
+      ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+      environment_id: null,
+      is_system: true,
+      team_id: null,
+      value: JSON.stringify({
+        westus2: { buffer: 2, latitude: 0, longitude: 0, reserved: 1 },
+      }),
+    });
+  });
+
+  afterAll(async () => {
+    await db("runners").del();
+    return db("environment_variables").del();
+  });
 
   it("subtracts reserved from available runners", async () => {
-    environment.RUNNER_LOCATIONS = {
-      westus2: { buffer: 2, latitude: 0, longitude: 0, reserved: 1 },
-    };
-
     const count = await countExcessRunners("westus2", options);
     expect(count).toEqual(1);
   });

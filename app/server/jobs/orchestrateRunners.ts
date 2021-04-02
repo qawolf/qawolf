@@ -1,4 +1,4 @@
-import environment from "../environment";
+import { findRunnerLocations } from "../models/environment_variable";
 import { countIncompleteRuns } from "../models/run";
 import {
   createRunners,
@@ -17,6 +17,7 @@ export const calculateRunnerPool = async (
   options: ModelOptions
 ): Promise<LocationCount[]> => {
   const log = options.logger.prefix("calculateRunnerPool");
+  const runnerLocations = await findRunnerLocations(options);
 
   // Each location should have enough runners for the buffer and
   // the incomplete (pending / in progress) incompleteTests and runs
@@ -25,8 +26,8 @@ export const calculateRunnerPool = async (
 
   const pool: LocationCount[] = [];
 
-  Object.keys(environment.RUNNER_LOCATIONS).forEach((location) => {
-    const entry = environment.RUNNER_LOCATIONS[location];
+  Object.keys(runnerLocations).forEach((location) => {
+    const entry = runnerLocations[location];
 
     const buffer = entry?.buffer || 0;
 

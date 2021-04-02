@@ -4,6 +4,7 @@ import {
   EnvironmentVariable,
   FormattedVariables,
   ModelOptions,
+  RunnerLocations,
 } from "../types";
 import { cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
@@ -141,6 +142,17 @@ export const buildEnvironmentVariables = async (
     env: JSON.stringify({ ...formattedVariables, ...(custom_variables || {}) }),
     variables,
   };
+};
+
+export const findRunnerLocations = async (
+  options: ModelOptions
+): Promise<RunnerLocations> => {
+  const locationsVariable = await findSystemEnvironmentVariable(
+    "RUNNER_LOCATIONS",
+    options
+  );
+
+  return JSON.parse(locationsVariable.value);
 };
 
 export const findSystemEnvironmentVariable = async (

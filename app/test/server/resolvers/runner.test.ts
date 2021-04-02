@@ -9,6 +9,7 @@ import { Runner } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
+  buildEnvironmentVariable,
   buildRun,
   buildRunner,
   buildTest,
@@ -31,6 +32,16 @@ const options = { db, logger };
 beforeAll(async () => {
   await db("users").insert(context.user);
   await db("teams").insert(context.teams[0]);
+
+  await db("environment_variables").insert({
+    ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+    environment_id: null,
+    is_system: true,
+    team_id: null,
+    value: JSON.stringify({
+      westus2: { buffer: 2, latitude: 0, longitude: 0, reserved: 1 },
+    }),
+  });
 });
 
 describe("authenticateRunner", () => {
