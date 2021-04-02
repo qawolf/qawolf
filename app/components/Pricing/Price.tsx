@@ -20,7 +20,7 @@ export default function Price({ price }: Props): JSX.Element {
       </Text>
       {isNumber(price) && (
         <Text color="textDark" size="medium" weight="normal">
-          {copy.perUserPerMonth}
+          {copy.perMonth}
         </Text>
       )}
     </Box>

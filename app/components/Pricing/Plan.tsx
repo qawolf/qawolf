@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { ReactNode } from "react";
 import styled from "styled-components";
 
 import {
@@ -16,14 +17,17 @@ import Price from "./Price";
 
 export type PlanType = {
   highlight: boolean;
-  href: string;
-  label: string;
+  href?: string;
+  label?: string;
   name: string;
   price: number | string;
   valueProps: string[];
 };
 
-type Props = { plan: PlanType };
+type Props = {
+  children?: ReactNode;
+  plan: PlanType;
+};
 
 const iconSize = edgeSize.small;
 
@@ -49,7 +53,7 @@ const StyledPaw = styled(Paw)`
   }
 `;
 
-export default function Plan({ plan }: Props): JSX.Element {
+export default function Plan({ children, plan }: Props): JSX.Element {
   const { highlight, href, label, name, price, valueProps } = plan;
 
   const valuePropsHtml = valueProps.map((valueProp, i) => {
@@ -77,20 +81,28 @@ export default function Plan({ plan }: Props): JSX.Element {
       pad="xlarge"
       round="xsmall"
     >
-      <Text color={highlight ? "primaryFill" : "textLight"} size="eyebrow">
-        {name}
-      </Text>
-      <Price price={price} />
-      <Box gap="xxsmall" margin={{ bottom: "medium" }}>
-        {valuePropsHtml}
+      <Box flex={false}>
+        <Text color={highlight ? "primaryFill" : "textLight"} size="eyebrow">
+          {name}
+        </Text>
+        <Price price={price} />
       </Box>
-      <Button
-        borderColor={highlight ? undefined : colors.fill30}
-        href={href}
-        label={label}
-        size="medium"
-        type={highlight ? "primary" : "outlineDark"}
-      />
+      <Box fill="vertical" justify="between">
+        <Box gap="xxsmall" margin={{ bottom: "medium" }}>
+          {valuePropsHtml}
+        </Box>
+        {children ? (
+          children
+        ) : (
+          <Button
+            borderColor={colors.fill30}
+            href={href}
+            label={label}
+            size="medium"
+            type="outlineDark"
+          />
+        )}
+      </Box>
     </StyledBox>
   );
 }
