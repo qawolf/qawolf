@@ -12,7 +12,6 @@ type UseOnStripeCheckout = {
 
 export const useOnStripeCheckout = (): UseOnStripeCheckout => {
   const { pathname } = useRouter();
-
   const { teamId } = useContext(StateContext);
 
   const [
