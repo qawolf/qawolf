@@ -7,6 +7,7 @@ import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
 import Alerts from "./Alerts";
 import Members from "./Members";
+import Plan from "./Plan";
 import Team from "./Team";
 
 const maxWidth = "640px";
@@ -36,6 +37,7 @@ export default function Settings({ teamId }: Props): JSX.Element {
       <Box overflow={{ vertical: "auto" }}>
         <Box flex={false} pad="medium" style={{ maxWidth }}>
           <Team team={team} />
+          <Plan team={team} />
           <Members team={team} />
           <Alerts integrations={slackIntegrations} team={team} />
         </Box>

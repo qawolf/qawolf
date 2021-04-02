@@ -40,9 +40,11 @@ export default function Dashboard(): JSX.Element {
   }
 
   return (
-    <Box data-hj-suppress direction="row" height="100vh">
-      <Sidebar groups={groups} />
-      {innerHtml}
+    <Box data-hj-suppress height="100vh">
+      <Box direction="row" fill>
+        <Sidebar groups={groups} />
+        {innerHtml}
+      </Box>
     </Box>
   );
 }

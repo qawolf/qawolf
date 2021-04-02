@@ -605,46 +605,6 @@ type Mutation {
   ): Group!
 
   """
-  Create a new test trigger.
-
-  Requires that you have access to the team.
-  """
-  createTrigger(
-    """
-    If specified, run tests only when these branches (comma separated list) are deployed.
-    """
-    deployment_branches: String
-
-    """
-    If specified, run tests only on this deployment environment.
-    """
-    deployment_environment: String
-
-    """
-    The ID of the integration for the connected GitHub repository.
-    """
-    deployment_integration_id: ID
-
-    "The deployment provider"
-    deployment_provider: DeploymentProvider
-
-    "ID of the environment on the trigger"
-    environment_id: ID
-
-    "Name of the trigger"
-    name: String!
-
-    "Interval to run the trigger on"
-    repeat_minutes: Int
-
-    "ID of the team that should own the trigger"
-    team_id: ID!
-
-    "IDs of the tests to add the trigger to"
-    test_ids: [ID!]
-  ): Trigger!
-
-  """
   Creates a new environment variable record for an environment.
 
   Requires that you have access to the team that owns the environment.
@@ -724,6 +684,40 @@ type Mutation {
   ): String!
 
   """
+  Create a new Stripe Checkout session.
+
+  Requires that you have access to the team.
+  """
+  createStripeCheckoutSession(
+    """
+    Relative app URL to redirect to if checkout cancelled
+    """
+    cancel_uri: String!
+
+    """
+    Team ID
+    """
+    team_id: ID!
+  ): String!
+
+  """
+  Create a new Stripe portal session.
+
+  Requires that you have access to the team.
+  """
+  createStripePortalSession(
+    """
+    Relative app URL to return to after the portal session ends
+    """
+    return_uri: String!
+
+    """
+    Team ID
+    """
+    team_id: ID!
+  ): String!
+
+  """
   Join the QA Wolf email list.
   """
   createSubscriber(
@@ -784,6 +778,46 @@ type Mutation {
     """
     url: String!
   ): Test!
+
+  """
+  Create a new test trigger.
+
+  Requires that you have access to the team.
+  """
+  createTrigger(
+    """
+    If specified, run tests only when these branches (comma separated list) are deployed.
+    """
+    deployment_branches: String
+
+    """
+    If specified, run tests only on this deployment environment.
+    """
+    deployment_environment: String
+
+    """
+    The ID of the integration for the connected GitHub repository.
+    """
+    deployment_integration_id: ID
+
+    "The deployment provider"
+    deployment_provider: DeploymentProvider
+
+    "ID of the environment on the trigger"
+    environment_id: ID
+
+    "Name of the trigger"
+    name: String!
+
+    "Interval to run the trigger on"
+    repeat_minutes: Int
+
+    "ID of the team that should own the trigger"
+    team_id: ID!
+
+    "IDs of the tests to add the trigger to"
+    test_ids: [ID!]
+  ): Trigger!
 
   """
   Deletes an environment record by ID and all its associated

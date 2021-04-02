@@ -126,6 +126,7 @@ export const teamFragment = gql`
     is_enabled
     name
     next_trigger_id
+    plan
   }
 `;
 

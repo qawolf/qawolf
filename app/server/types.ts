@@ -234,7 +234,7 @@ export type SuiteRun = {
   test_name: string;
 };
 
-export type TeamPlan = "free" | "business";
+export type TeamPlan = "business" | "custom" | "free";
 
 export type Team = {
   alert_integration_id: string | null;
@@ -369,6 +369,16 @@ export type CreateInviteMutation = {
 export type CreateSlackIntegrationMutation = {
   redirect_uri: string;
   slack_code: string;
+  team_id: string;
+};
+
+export type CreateStripeCheckoutSessionMutation = {
+  cancel_uri: string;
+  team_id: string;
+};
+
+export type CreateStripePortalSessionMutation = {
+  return_uri: string;
   team_id: string;
 };
 

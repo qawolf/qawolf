@@ -124,6 +124,7 @@ export type Team = ShortTeam & {
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   next_trigger_id: string;
+  plan: "business" | "custom" | "free";
   renewed_at: string | null;
 };
 

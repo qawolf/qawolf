@@ -1,5 +1,6 @@
 export const routes = {
   blog: "/blog",
+  checkoutSuccess: "/checkout-success",
   confirmEmail: "/confirm-email",
   docs: "/docs",
   getStarted: "/get-started",

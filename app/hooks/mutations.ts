@@ -12,6 +12,8 @@ import {
   createSignInUrlMutation,
   createSlackIntegrationMutation,
   createSlackIntegrationUrlMutation,
+  createStripeCheckoutSessionMutation,
+  createStripePortalSessionMutation,
   createSubscriberMutation,
   createSuiteMutation,
   createTestMutation,
@@ -135,6 +137,24 @@ type CreateSlackIntegrationUrlData = {
 
 type CreateSlackIntegrationUrlVariables = {
   redirect_uri: string;
+};
+
+type CreateStripeCheckoutSessionData = {
+  createStripeCheckoutSession: string;
+};
+
+type CreateStripeCheckoutSessionVariables = {
+  cancel_uri: string;
+  team_id: string;
+};
+
+type CreateStripePortalSessionData = {
+  createStripePortalSession: string;
+};
+
+type CreateStripePortalSessionVariables = {
+  return_uri: string;
+  team_id: string;
 };
 
 type CreateSubscriberData = {
@@ -517,6 +537,26 @@ export const useCreateSlackIntegrationUrl = (
     CreateSlackIntegrationUrlData,
     CreateSlackIntegrationUrlVariables
   >(createSlackIntegrationUrlMutation, { onError, variables });
+};
+
+export const useCreateStripeCheckoutSession = (): MutationTuple<
+  CreateStripeCheckoutSessionData,
+  CreateStripeCheckoutSessionVariables
+> => {
+  return useMutation<
+    CreateStripeCheckoutSessionData,
+    CreateStripeCheckoutSessionVariables
+  >(createStripeCheckoutSessionMutation, { onError });
+};
+
+export const useCreateStripePortalSession = (): MutationTuple<
+  CreateStripePortalSessionData,
+  CreateStripePortalSessionVariables
+> => {
+  return useMutation<
+    CreateStripePortalSessionData,
+    CreateStripePortalSessionVariables
+  >(createStripePortalSessionMutation, { onError });
 };
 
 export const useCreateSubscriber = (): MutationTuple<

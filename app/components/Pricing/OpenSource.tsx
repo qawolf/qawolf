@@ -1,15 +1,24 @@
 import { Box } from "grommet";
+import styled from "styled-components";
 
 import { copy } from "../../theme/copy";
-import { colors } from "../../theme/theme";
+import { breakpoints, colors, edgeSize } from "../../theme/theme";
 import Button from "../shared/Button";
 import Text from "../shared/Text";
 
 const href = "mailto:hello@qawolf.com";
 
+const StyledBox = styled(Box)`
+  margin-top: ${edgeSize.xxxlarge};
+
+  @media screen and (min-width: ${breakpoints.medium.value}px) {
+    margin-top: 80px;
+  }
+`;
+
 export default function OpenSource(): JSX.Element {
   return (
-    <Box
+    <StyledBox
       align="center"
       background="fill0"
       margin={{ top: "80px" }}
@@ -37,6 +46,6 @@ export default function OpenSource(): JSX.Element {
         size="medium"
         type="outlineDark"
       />
-    </Box>
+    </StyledBox>
   );
 }
