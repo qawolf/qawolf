@@ -31,7 +31,7 @@ export const createStripeCheckoutSessionResolver = async (
     // is redirected to the success page.
     success_url:
       "https://example.com/success.html?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "https://example.com/canceled.html",
+    cancel_url: new URL("/pricing", environment.APP_URL).href,
   });
   console.log("SESSION", session);
   log.debug("created session", session.id);

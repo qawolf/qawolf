@@ -1,4 +1,4 @@
-import { loadStripe,Stripe as StripeType } from "@stripe/stripe-js";
+import { loadStripe, Stripe as StripeType } from "@stripe/stripe-js";
 
 class Stripe {
   private stripe: StripeType | null = null;
