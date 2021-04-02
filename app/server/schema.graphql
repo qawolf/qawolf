@@ -419,6 +419,9 @@ type Test {
   "A name for the test, for display in UI"
   name: String!
 
+  "The ID of a team associated with this test"
+  team_id: ID!
+
   "Date and time at which this test was last updated"
   updated_at: String!
 

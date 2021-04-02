@@ -142,6 +142,7 @@ export type Test = ShortTest & {
   code: string;
   deleted_at: string | null;
   is_enabled: boolean;
+  team_id: string;
   updated_at: string;
   version: number;
 };

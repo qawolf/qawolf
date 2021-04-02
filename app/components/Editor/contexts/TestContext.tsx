@@ -43,10 +43,13 @@ export const TestProvider: FC = ({ children }) => {
   const test_id = query.test_id as string;
 
   const { data: teamData, refetch: refetchTeam } = useTeam({ id: teamId });
-  const { data, loading, startPolling, stopPolling } = useTest({
-    id: test_id,
-    run_id,
-  });
+  const { data, loading, startPolling, stopPolling } = useTest(
+    {
+      id: test_id,
+      run_id,
+    },
+    { teamId }
+  );
 
   const run = data?.test?.run || null;
   const team = teamData?.team || null;
