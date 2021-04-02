@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { routes } from "../../lib/routes";
 import { copy } from "../../theme/copy";
-import { breakpoints } from "../../theme/theme";
+import { breakpoints, edgeSize } from "../../theme/theme";
 import Section from "../shared/Section";
 import Text from "../shared/Text";
 import OpenSource from "./OpenSource";
@@ -42,6 +42,7 @@ const StyledBox = styled(Box)`
   @media screen and (min-width: ${breakpoints.medium.value}px) {
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: ${edgeSize.xlarge};
   }
 `;
 
@@ -55,12 +56,9 @@ export default function Plans(): JSX.Element {
       <Text color="textDark" size="large" weight="bold">
         {copy.pricing}
       </Text>
-      <StyledBox margin={{ bottom: "xlarge", top: "xxlarge" }} width="full">
+      <StyledBox margin={{ top: "xxlarge" }} width="full">
         {plansHtml}
       </StyledBox>
-      <Text color="textLight" size="xsmall" textAlign="center" weight="normal">
-        {copy.subjectToFairUse}
-      </Text>
       <OpenSource />
     </Section>
   );

@@ -82,7 +82,7 @@ export const copy = {
   createFirstTest: "Create your first test",
   createFirstTestDetail:
     "Create a test for a critical path to find bugs before customers do.",
-  createOnline: "Create and run tests online",
+  createOnline: "Create unlimited tests online",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
   createTrigger: "Create trigger",
@@ -261,6 +261,7 @@ export const copy = {
   roadmap: "Roadmap",
   run: "Run",
   runHistory: "Run history",
+  runInParallel: "Run tests in 100% parallel",
   runOnDeployment: (repoName: string): string =>
     `Run on ${repoName} deployment`,
   runTagline: "Run tests without rocket science",
@@ -308,7 +309,6 @@ export const copy = {
   saveTest: "Save Test",
   schedule: "Schedule",
   scheduleOnboarding: "Schedule onboarding",
-  scheduleOneClick: "Schedule or run tests on deployments with one click",
   search: "Search",
   select: "Select",
   selected: (count: number): string => `${count} selected`,
@@ -341,14 +341,12 @@ export const copy = {
   stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeSuccess: "Thanks for subscribing 🎉",
-  subjectToFairUse:
-    "Each plan is subject to our fair use policy. Starter plans are limited to non-commercial use.",
   team: "Team",
   teamName: "Team name",
   teamNamePlaceholder: "My Team",
   teamSettings: "Team settings",
   terms: "Terms",
-  testAcrossBrowsers: "Test in Chromium, Firefox, and WebKit",
+  testAcrossBrowsers: "Test on Chromium, Firefox, and WebKit",
   testCount: (count: number): string =>
     `${count} test${count === 1 ? "" : "s"}`,
   testFail: "Fail",
@@ -367,6 +365,7 @@ export const copy = {
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",
   tryForFree: "Try for free",
+  unlimitedTeamMembers: "Unlimited team members",
   upgrade: "Upgrade",
   urlPlaceholder: "https://myawesomesite.com",
   value: "Value",

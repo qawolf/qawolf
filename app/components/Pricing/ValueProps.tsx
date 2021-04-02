@@ -8,10 +8,11 @@ import ValueProp from "./ValueProp";
 
 const valueProps = [
   copy.createOnline,
-  copy.scheduleOneClick,
+  copy.runInParallel,
+  copy.unlimitedTeamMembers,
+  copy.testAcrossBrowsers,
   copy.debugEasily,
   copy.connectToFailures,
-  copy.testAcrossBrowsers,
 ];
 
 export default function ValueProps(): JSX.Element {
