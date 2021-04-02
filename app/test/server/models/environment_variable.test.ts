@@ -16,6 +16,7 @@ const {
   deleteEnvironmentVariable,
   findEnvironmentVariable,
   findEnvironmentVariablesForEnvironment,
+  findRunnerLocations,
   findSystemEnvironmentVariable,
   updateEnvironmentVariable,
 } = environmentVariableModel;
@@ -276,6 +277,24 @@ describe("findEnvironmentVariablesForEnvironment", () => {
       { id: "environmentVariable2Id", name: "A_VAR", value: "secret" },
       { id: "environmentVariableId", name: "B_VAR", value: "another secret" },
     ]);
+  });
+});
+
+describe("findRunnerLocations", () => {
+  beforeAll(() => {
+    return db("environment_variables").insert({
+      ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+      is_system: true,
+      value: JSON.stringify({ secret: "value" }),
+    });
+  });
+
+  afterAll(() => db("environment_variables").del());
+
+  it("finds runner locations", async () => {
+    const locations = await findRunnerLocations(options);
+
+    expect(locations).toEqual({ secret: "value" });
   });
 });
 

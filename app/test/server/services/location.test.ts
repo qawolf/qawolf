@@ -1,15 +1,17 @@
 import axios from "axios";
 
-import environment from "../../../server/environment";
 import {
   calculateDistance,
   getPossibleLocations,
   getUserLocation,
   rankLocations,
 } from "../../../server/services/location";
-import { logger } from "../utils";
+import { prepareTestDb } from "../db";
+import { buildEnvironmentVariable, logger } from "../utils";
 
 jest.mock("axios");
+
+const db = prepareTestDb();
 
 describe("calculateDistance", () => {
   it("calculates the distance in km between two locations", () => {
@@ -24,13 +26,17 @@ describe("calculateDistance", () => {
 
 describe("getPossibleLocations", () => {
   it("sorts possible locations by putting US first", () => {
-    environment.RUNNER_LOCATIONS = {
+    const locations = {
       westus2: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
       japan: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
       eastus: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
     };
 
-    expect(getPossibleLocations()).toEqual(["eastus", "westus2", "japan"]);
+    expect(getPossibleLocations(locations)).toEqual([
+      "eastus",
+      "westus2",
+      "japan",
+    ]);
   });
 });
 
@@ -70,29 +76,44 @@ describe("getUserLocation", () => {
 });
 
 describe("rankLocations", () => {
-  it("ranks possible locations by distance to user", async () => {
-    environment.RUNNER_LOCATIONS = {
-      westus2: {
-        buffer: 1,
-        latitude: 47.233,
-        longitude: -119.852,
-        reserved: 1,
-      },
-      japaneast: { buffer: 1, latitude: 35.68, longitude: 139.77, reserved: 1 },
-      eastus2: {
-        buffer: 1,
-        latitude: 36.6681,
-        longitude: -78.3889,
-        reserved: 1,
-      },
-    };
+  beforeAll(() => {
+    return db("environment_variables").insert({
+      ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+      environment_id: null,
+      is_system: true,
+      team_id: null,
+      value: JSON.stringify({
+        westus2: {
+          buffer: 1,
+          latitude: 47.233,
+          longitude: -119.852,
+          reserved: 1,
+        },
+        japaneast: {
+          buffer: 1,
+          latitude: 35.68,
+          longitude: 139.77,
+          reserved: 1,
+        },
+        eastus2: {
+          buffer: 1,
+          latitude: 36.6681,
+          longitude: -78.3889,
+          reserved: 1,
+        },
+      }),
+    });
+  });
 
+  afterAll(() => db("environment_variables").del());
+
+  it("ranks possible locations by distance to user", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     (axios.get as any).mockResolvedValue({
       data: { latitude: 45.657, longitude: -111.203 },
     });
 
-    const locations = await rankLocations({ ip: "127.0.0.1", logger });
+    const locations = await rankLocations("127.0.0.1", { db, logger });
     expect(locations).toEqual(["westus2", "eastus2", "japaneast"]);
   });
 });

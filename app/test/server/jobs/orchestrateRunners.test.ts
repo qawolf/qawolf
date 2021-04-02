@@ -1,12 +1,24 @@
-import environment from "../../../server/environment";
 import * as orchestrateRunners from "../../../server/jobs/orchestrateRunners";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
+import { RunnerLocations } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
-import { buildRunner, logger } from "../utils";
+import { buildEnvironmentVariable, buildRunner, logger } from "../utils";
 
 const db = prepareTestDb();
+
+const insertRunnerLocations = async (
+  locations: RunnerLocations
+): Promise<void> => {
+  return db("environment_variables").insert({
+    ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+    environment_id: null,
+    is_system: true,
+    team_id: null,
+    value: JSON.stringify(locations),
+  });
+};
 
 describe("calculateRunnerPool", () => {
   let countIncompleteRuns: jest.SpyInstance;
@@ -19,13 +31,15 @@ describe("calculateRunnerPool", () => {
     countIncompleteTests = jest.spyOn(testModel, "countIncompleteTests");
   });
 
+  afterEach(() => db("environment_variables").del());
+
   afterAll(() => jest.restoreAllMocks());
 
   it("includes the buffer", async () => {
-    environment.RUNNER_LOCATIONS = {
+    await insertRunnerLocations({
       eastus2: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
       japaneast: { buffer: 2, latitude: 0, longitude: 0, reserved: 2 },
-    };
+    });
 
     countIncompleteTests.mockResolvedValue([]);
 
@@ -40,9 +54,9 @@ describe("calculateRunnerPool", () => {
   });
 
   it("includes the incomplete tests", async () => {
-    environment.RUNNER_LOCATIONS = {
+    await insertRunnerLocations({
       eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
-    };
+    });
 
     countIncompleteTests.mockResolvedValue([{ count: 3, location: "eastus2" }]);
 
@@ -54,9 +68,9 @@ describe("calculateRunnerPool", () => {
   });
 
   it("includes the incomplete runs", async () => {
-    environment.RUNNER_LOCATIONS = {
+    await insertRunnerLocations({
       eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
-    };
+    });
 
     countIncompleteRuns.mockResolvedValue(3);
     countIncompleteTests.mockResolvedValue([{ count: 1, location: "eastus2" }]);

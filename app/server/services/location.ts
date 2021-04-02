@@ -2,6 +2,8 @@ import axios from "axios";
 
 import environment from "../environment";
 import { Logger } from "../Logger";
+import { findRunnerLocations } from "../models/environment_variable";
+import { ModelOptions, RunnerLocations } from "../types";
 
 const EARTH_RADIUS_KM = 6371;
 
@@ -39,8 +41,8 @@ export const calculateDistance = (
   return c * EARTH_RADIUS_KM;
 };
 
-export const getPossibleLocations = (): string[] => {
-  const possibleLocations = Object.keys(environment.RUNNER_LOCATIONS);
+export const getPossibleLocations = (locations: RunnerLocations): string[] => {
+  const possibleLocations = Object.keys(locations);
 
   possibleLocations.sort((a, b) => {
     // rank the US at the top in case no IP address is provided
@@ -84,11 +86,12 @@ export const getUserLocation = async ({
 };
 
 const sortLocationsByDistance = (
+  locations: RunnerLocations,
   userLocation: Location
 ): ((a: string, b: string) => number) => {
   return (a: string, b: string): number => {
-    const locationA = environment.RUNNER_LOCATIONS[a];
-    const locationB = environment.RUNNER_LOCATIONS[b];
+    const locationA = locations[a];
+    const locationB = locations[b];
 
     return (
       calculateDistance(userLocation, locationA) -
@@ -97,13 +100,14 @@ const sortLocationsByDistance = (
   };
 };
 
-export const rankLocations = async ({
-  ip,
-  logger,
-}: IpLogger): Promise<string[]> => {
+export const rankLocations = async (
+  ip: string | null,
+  { db, logger }: ModelOptions
+): Promise<string[]> => {
   const log = logger.prefix("rankLocations");
+  const locations = await findRunnerLocations({ db, logger });
 
-  const possibleLocations = getPossibleLocations();
+  const possibleLocations = getPossibleLocations(locations);
   const userLocation = await getUserLocation({ ip, logger });
 
   if (!userLocation) {
@@ -111,7 +115,7 @@ export const rankLocations = async ({
     return possibleLocations;
   }
 
-  possibleLocations.sort(sortLocationsByDistance(userLocation));
+  possibleLocations.sort(sortLocationsByDistance(locations, userLocation));
 
   log.debug(
     "sort locations by closeness to user",

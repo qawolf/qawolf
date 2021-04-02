@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import dotenv from "dotenv";
 
-import { RunnerLocations } from "./types";
-
 dotenv.config(process.env.DOTENV_PATH ? { path: process.env.DOTENV_PATH } : {});
 
 const databaseSsl = process.env.DATABASE_SSL;
@@ -38,9 +36,6 @@ export default {
   JWT_SECRET: process.env.JWT_SECRET!,
   NODE_ENV: process.env.NODE_ENV || "development",
   RUNNER_IMAGE: process.env.RUNNER_IMAGE!,
-  RUNNER_LOCATIONS: JSON.parse(
-    process.env.RUNNER_LOCATIONS || "{}"
-  ) as RunnerLocations,
   QAWOLF_AWS_ACCESS_KEY_ID: process.env.QAWOLF_AWS_ACCESS_KEY_ID!,
   QAWOLF_AWS_REGION: process.env.QAWOLF_AWS_REGION!,
   QAWOLF_AWS_SECRET_ACCESS_KEY: process.env.QAWOLF_AWS_SECRET_ACCESS_KEY!,

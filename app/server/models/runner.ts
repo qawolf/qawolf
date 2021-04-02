@@ -1,8 +1,8 @@
 import { minutesFromNow } from "../../shared/utils";
-import environment from "../environment";
 import { rankLocations } from "../services/location";
 import { ModelOptions, Runner, Test } from "../types";
 import { cuid } from "../utils";
+import { findRunnerLocations } from "./environment_variable";
 import { findPendingRun, findRun, UpdateRun, updateRun } from "./run";
 import { findPendingTest, updateTest, updateTestToPending } from "./test";
 
@@ -98,6 +98,7 @@ export const countExcessRunners = async (
   { db, logger }: ModelOptions
 ): Promise<number> => {
   const log = logger.prefix("countExcessRunners");
+  const locations = await findRunnerLocations({ db, logger });
 
   const [result] = await db("runners")
     .count("id")
@@ -105,7 +106,7 @@ export const countExcessRunners = async (
     .whereNotNull("ready_at");
 
   const available = parseInt(result.count as string, 10);
-  const reserved = environment.RUNNER_LOCATIONS[location]?.reserved || 0;
+  const reserved = locations[location]?.reserved || 0;
   const excess = available - reserved;
 
   log.debug(
@@ -361,7 +362,7 @@ export const requestRunnerForTest = async (
   { test, ip }: RequestRunnerForTest,
   options: ModelOptions
 ): Promise<Runner | null> => {
-  const locations = await rankLocations({ ip, logger: options.logger });
+  const locations = await rankLocations(ip, options);
 
   const runner = await findRunner(
     { locations, is_ready: true, run_id: null, test_id: null },
