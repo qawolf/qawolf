@@ -14,7 +14,9 @@ class Stripe {
   }
 
   private async load(): Promise<void> {
-    this.stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY);
+    this.stripe = await loadStripe(
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    );
   }
 }
 

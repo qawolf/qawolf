@@ -5,6 +5,7 @@ import Confetti from "react-confetti";
 import Button from "../components/shared/AppButton";
 import WolfParty from "../components/shared/icons/WolfParty";
 import Text from "../components/shared/Text";
+import { StateContext } from "../components/StateContext";
 import { UserContext } from "../components/UserContext";
 import { useEnsureUser } from "../hooks/ensureUser";
 import { useWindowSize } from "../hooks/windowSize";
@@ -27,6 +28,7 @@ export default function CheckoutSuccess(): JSX.Element {
   useEnsureUser();
   const { height, width } = useWindowSize();
 
+  const { dashboardUri } = useContext(StateContext);
   const { wolf } = useContext(UserContext);
 
   return (
@@ -43,7 +45,11 @@ export default function CheckoutSuccess(): JSX.Element {
       >
         {copy.checkoutSuccess}
       </Text>
-      <Button href={routes.tests} label={copy.backToDashboard} type="primary" />
+      <Button
+        href={dashboardUri || routes.tests}
+        label={copy.backToDashboard}
+        type="primary"
+      />
     </Box>
   );
 }

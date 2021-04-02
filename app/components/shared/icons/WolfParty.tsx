@@ -14,7 +14,7 @@ export default function WolfParty({ color }: Props): JSX.Element {
     <svg
       fill="none"
       viewBox="0 0 167 234"
-      width="160"
+      width="140"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

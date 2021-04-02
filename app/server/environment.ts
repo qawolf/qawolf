@@ -54,6 +54,7 @@ export default {
   STRIPE_API_KEY: process.env.STRIPE_API_KEY!,
   STRIPE_BASE_PRICE_ID: process.env.STRIPE_BASE_PRICE_ID!,
   STRIPE_METERED_PRICE_ID: process.env.STRIPE_METERED_PRICE_ID!,
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
   VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA || "",
   VERCEL_URL: process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
