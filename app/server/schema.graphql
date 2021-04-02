@@ -685,7 +685,12 @@ type Mutation {
 
   Requires that you are signed in.
   """
-  createStripeCheckoutSession: String!
+  createStripeCheckoutSession(
+    """
+    Relative app URL to redirect to if checkout cancelled
+    """
+    cancel_uri: String!
+  ): String!
 
   """
   Join the QA Wolf email list.

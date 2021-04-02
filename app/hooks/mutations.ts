@@ -142,6 +142,10 @@ type CreateStripeCheckoutSessionData = {
   createStripeCheckoutSession: string;
 };
 
+type CreateStripeCheckoutSessionVariables = {
+  cancel_uri: string;
+};
+
 type CreateSubscriberData = {
   createSubscriber: boolean;
 };
@@ -526,12 +530,12 @@ export const useCreateSlackIntegrationUrl = (
 
 export const useCreateStripeCheckoutSession = (): MutationTuple<
   CreateStripeCheckoutSessionData,
-  Record<string, never>
+  CreateStripeCheckoutSessionVariables
 > => {
-  return useMutation<CreateStripeCheckoutSessionData>(
-    createStripeCheckoutSessionMutation,
-    { onError }
-  );
+  return useMutation<
+    CreateStripeCheckoutSessionData,
+    CreateStripeCheckoutSessionVariables
+  >(createStripeCheckoutSessionMutation, { onError });
 };
 
 export const useCreateSubscriber = (): MutationTuple<

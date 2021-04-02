@@ -109,8 +109,8 @@ export const createSlackIntegrationUrlMutation = gql`
 `;
 
 export const createStripeCheckoutSessionMutation = gql`
-  mutation createStripeCheckoutSession {
-    createStripeCheckoutSession
+  mutation createStripeCheckoutSession($cancel_uri: String!) {
+    createStripeCheckoutSession(cancel_uri: $cancel_uri)
   }
 `;
 
