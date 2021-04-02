@@ -16,7 +16,7 @@ const stripe = new Stripe(environment.STRIPE_API_KEY, {
 
 export const createStripeCheckoutSessionResolver = async (
   _: Record<string, unknown>,
-  { cancel_uri, team_id }: CreateStripeCheckoutSessionMutation,
+  { app_url, cancel_uri, team_id }: CreateStripeCheckoutSessionMutation,
   { logger, teams, user: contextUser }: Context
 ): Promise<string> => {
   const log = logger.prefix("createStripeCheckoutSessionResolver");
@@ -26,7 +26,7 @@ export const createStripeCheckoutSessionResolver = async (
   ensureTeamAccess({ logger, team_id, teams });
 
   const { id } = await stripe.checkout.sessions.create({
-    cancel_url: new URL(cancel_uri, environment.APP_URL).href,
+    cancel_url: new URL(cancel_uri, app_url).href,
     customer_email: user.email,
     line_items: [
       { price: environment.STRIPE_BASE_PRICE_ID, quantity: 1 },
@@ -40,7 +40,7 @@ export const createStripeCheckoutSessionResolver = async (
     subscription_data: { metadata: { plan: "business", team_id } },
     success_url: new URL(
       "/checkout-success?session_id={CHECKOUT_SESSION_ID}",
-      environment.APP_URL
+      app_url
     ).href,
   });
   log.debug("created", id);
@@ -50,7 +50,7 @@ export const createStripeCheckoutSessionResolver = async (
 
 export const createStripePortalSessionResolver = async (
   _: Record<string, unknown>,
-  { return_uri, team_id }: CreateStripePortalSessionMutation,
+  { app_url, return_uri, team_id }: CreateStripePortalSessionMutation,
   { logger, teams }: Context
 ): Promise<string> => {
   const log = logger.prefix("createStripePortalSessionResolver");
@@ -65,7 +65,7 @@ export const createStripePortalSessionResolver = async (
 
   const { url } = await stripe.billingPortal.sessions.create({
     customer: team.stripe_customer_id,
-    return_url: new URL(return_uri, environment.APP_URL).href,
+    return_url: new URL(return_uri, app_url).href,
   });
   log.debug("created", url);
 

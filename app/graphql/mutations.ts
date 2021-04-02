@@ -109,14 +109,30 @@ export const createSlackIntegrationUrlMutation = gql`
 `;
 
 export const createStripeCheckoutSessionMutation = gql`
-  mutation createStripeCheckoutSession($cancel_uri: String!, $team_id: ID!) {
-    createStripeCheckoutSession(cancel_uri: $cancel_uri, team_id: $team_id)
+  mutation createStripeCheckoutSession(
+    $app_url: String!
+    $cancel_uri: String!
+    $team_id: ID!
+  ) {
+    createStripeCheckoutSession(
+      app_url: $app_url
+      cancel_uri: $cancel_uri
+      team_id: $team_id
+    )
   }
 `;
 
 export const createStripePortalSessionMutation = gql`
-  mutation createStripePortalSession($return_uri: String!, $team_id: ID!) {
-    createStripePortalSession(return_uri: $return_uri, team_id: $team_id)
+  mutation createStripePortalSession(
+    $app_url: String!
+    $return_uri: String!
+    $team_id: ID!
+  ) {
+    createStripePortalSession(
+      app_url: $app_url
+      return_uri: $return_uri
+      team_id: $team_id
+    )
   }
 `;
 

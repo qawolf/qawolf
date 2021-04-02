@@ -373,11 +373,13 @@ export type CreateSlackIntegrationMutation = {
 };
 
 export type CreateStripeCheckoutSessionMutation = {
+  app_url: string;
   cancel_uri: string;
   team_id: string;
 };
 
 export type CreateStripePortalSessionMutation = {
+  app_url: string;
   return_uri: string;
   team_id: string;
 };
