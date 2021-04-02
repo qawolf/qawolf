@@ -374,6 +374,7 @@ export type CreateSlackIntegrationMutation = {
 
 export type CreateStripeCheckoutSessionMutation = {
   cancel_uri: string;
+  team_id: string;
 };
 
 export type CreateSubscriberMutation = {

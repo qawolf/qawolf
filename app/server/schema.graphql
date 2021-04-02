@@ -690,6 +690,11 @@ type Mutation {
     Relative app URL to redirect to if checkout cancelled
     """
     cancel_uri: String!
+
+    """
+    Team ID
+    """
+    team_id: ID!
   ): String!
 
   """

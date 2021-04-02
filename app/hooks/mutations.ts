@@ -144,6 +144,7 @@ type CreateStripeCheckoutSessionData = {
 
 type CreateStripeCheckoutSessionVariables = {
   cancel_uri: string;
+  team_id: string;
 };
 
 type CreateSubscriberData = {

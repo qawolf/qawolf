@@ -31,7 +31,9 @@ export default function CheckoutSuccess(): JSX.Element {
 
   return (
     <Box align="center" margin={{ top: "xxlarge" }}>
-      <Confetti colors={confettiColors} height={height} width={width} />
+      {!!width && (
+        <Confetti colors={confettiColors} height={height} width={width} />
+      )}
       {!!wolf && <WolfParty color={wolf.variant} />}
       <Text
         color="gray9"

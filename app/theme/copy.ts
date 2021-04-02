@@ -51,7 +51,7 @@ export const copy = {
   branchesPlaceholder: "Example: develop,main",
   cancel: "Cancel",
   checkEmail: "Check your email for a code",
-  checkoutSuccess: "🎉 You subscribed to the business plan!",
+  checkoutSuccess: "🎉 Thanks for subscribing!",
   chooseElement: "Choose element",
   chooseElementDetail:
     "Select an element, then add a snippet with your chosen action and selector.",
