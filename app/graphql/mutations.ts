@@ -114,6 +114,12 @@ export const createStripeCheckoutSessionMutation = gql`
   }
 `;
 
+export const createStripePortalSessionMutation = gql`
+  mutation createStripePortalSession($return_uri: String!, $team_id: ID!) {
+    createStripePortalSession(return_uri: $return_uri, team_id: $team_id)
+  }
+`;
+
 export const createSubscriberMutation = gql`
   mutation createSubscriber($email: String!) {
     createSubscriber(email: $email)

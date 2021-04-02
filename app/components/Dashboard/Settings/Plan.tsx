@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import capitalize from "lodash/capitalize";
 
 import { useOnStripeCheckout } from "../../../hooks/onStripeCheckout";
+import { useOnStripePortal } from "../../../hooks/onStripePortal";
 import { routes } from "../../../lib/routes";
 import { TeamWithUsers } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -11,8 +12,20 @@ import Text from "../../shared/Text";
 
 type Props = { team: TeamWithUsers };
 
+const contactHref = "mailto:hello@qawolf.com";
+
 export default function Plan({ team }: Props): JSX.Element {
-  const { isLoading, onClick } = useOnStripeCheckout();
+  const {
+    isLoading: isCheckoutLoading,
+    onClick: onCheckoutClick,
+  } = useOnStripeCheckout();
+  const {
+    isLoading: isPortalLoading,
+    onClick: onPortalClick,
+  } = useOnStripePortal();
+
+  const isSubscribed = team.plan === "business";
+  const showButtons = ["business", "free"].includes(team.plan);
 
   const plan = capitalize(team.plan);
 
@@ -25,18 +38,18 @@ export default function Plan({ team }: Props): JSX.Element {
         <Text color="gray9" size="component">
           {plan}
         </Text>
-        {team.plan === "free" && (
+        {showButtons && (
           <Box align="center" direction="row">
             <Button
-              href={routes.pricing}
-              label={copy.seePricing}
+              href={isSubscribed ? contactHref : routes.pricing}
+              label={isSubscribed ? copy.contactUs : copy.seePricing}
               margin={{ right: "small" }}
               type="secondary"
             />
             <Button
-              isDisabled={isLoading}
-              label={copy.upgrade}
-              onClick={onClick}
+              isDisabled={isCheckoutLoading || isPortalLoading}
+              label={isSubscribed ? copy.manageBilling : copy.upgrade}
+              onClick={isSubscribed ? onPortalClick : onCheckoutClick}
               type="primary"
             />
           </Box>

@@ -211,6 +211,7 @@ export const copy = {
   logs: "Logs",
   loveOpenSource: "We 💖 open source",
   mailingListSubscribe: "Receive product and company updates",
+  manageBilling: "Manage billing",
   manageTriggers: "Manage triggers",
   manuallyTriggered: "Manually triggered",
   meet: "Meet your QA Wolf",

@@ -683,13 +683,30 @@ type Mutation {
   """
   Create a new Stripe Checkout session.
 
-  Requires that you are signed in.
+  Requires that you have access to the team.
   """
   createStripeCheckoutSession(
     """
     Relative app URL to redirect to if checkout cancelled
     """
     cancel_uri: String!
+
+    """
+    Team ID
+    """
+    team_id: ID!
+  ): String!
+
+  """
+  Create a new Stripe portal session.
+
+  Requires that you have access to the team.
+  """
+  createStripePortalSession(
+    """
+    Relative app URL to return to after the portal session ends
+    """
+    return_uri: String!
 
     """
     Team ID

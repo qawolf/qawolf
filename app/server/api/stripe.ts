@@ -184,7 +184,7 @@ export const handleStripeRequest = async (
         options
       );
     } else {
-      log.debug(`stripe event ${event.type} not supported`);
+      log.debug("ignore  event", event.type);
     }
 
     log.debug("completed");

@@ -1,7 +1,12 @@
 import Stripe from "stripe";
 
 import environment from "../environment";
-import { Context, CreateStripeCheckoutSessionMutation } from "../types";
+import { ClientError } from "../errors";
+import {
+  Context,
+  CreateStripeCheckoutSessionMutation,
+  CreateStripePortalSessionMutation,
+} from "../types";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
 const stripe = new Stripe(environment.STRIPE_API_KEY, {
@@ -20,7 +25,7 @@ export const createStripeCheckoutSessionResolver = async (
   const user = ensureUser({ logger, user: contextUser });
   ensureTeamAccess({ logger, team_id, teams });
 
-  const session = await stripe.checkout.sessions.create({
+  const { id } = await stripe.checkout.sessions.create({
     cancel_url: new URL(cancel_uri, environment.APP_URL).href,
     customer_email: user.email,
     line_items: [
@@ -38,6 +43,31 @@ export const createStripeCheckoutSessionResolver = async (
       environment.APP_URL
     ).href,
   });
+  log.debug("created", id);
 
-  return session.id;
+  return id;
+};
+
+export const createStripePortalSessionResolver = async (
+  _: Record<string, unknown>,
+  { return_uri, team_id }: CreateStripePortalSessionMutation,
+  { logger, teams }: Context
+): Promise<string> => {
+  const log = logger.prefix("createStripePortalSessionResolver");
+  log.debug("team", team_id);
+
+  const team = ensureTeamAccess({ logger, team_id, teams });
+
+  if (!team.stripe_customer_id) {
+    log.error("no stripe customer id for team", team.id);
+    throw new ClientError("No Stripe subscription to manage");
+  }
+
+  const { url } = await stripe.billingPortal.sessions.create({
+    customer: team.stripe_customer_id,
+    return_url: new URL(return_uri, environment.APP_URL).href,
+  });
+  log.debug("created", url);
+
+  return url;
 };

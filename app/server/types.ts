@@ -377,6 +377,11 @@ export type CreateStripeCheckoutSessionMutation = {
   team_id: string;
 };
 
+export type CreateStripePortalSessionMutation = {
+  return_uri: string;
+  team_id: string;
+};
+
 export type CreateSubscriberMutation = {
   email: string;
 };
