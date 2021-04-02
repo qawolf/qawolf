@@ -7,7 +7,6 @@ import WolfParty from "../components/shared/icons/WolfParty";
 import Text from "../components/shared/Text";
 import { StateContext } from "../components/StateContext";
 import { UserContext } from "../components/UserContext";
-import { useEnsureUser } from "../hooks/ensureUser";
 import { useWindowSize } from "../hooks/windowSize";
 import { routes } from "../lib/routes";
 import { copy } from "../theme/copy";
@@ -25,7 +24,6 @@ const confettiColors = [
 ];
 
 export default function CheckoutSuccess(): JSX.Element {
-  useEnsureUser();
   const { height, width } = useWindowSize();
 
   const { dashboardUri } = useContext(StateContext);
