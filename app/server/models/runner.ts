@@ -359,7 +359,7 @@ export const findRunners = async (
 };
 
 export const requestRunnerForTest = async (
-  { test, ip }: RequestRunnerForTest,
+  { ip, test }: RequestRunnerForTest,
   options: ModelOptions
 ): Promise<Runner | null> => {
   const locations = await rankLocations(ip, options);
