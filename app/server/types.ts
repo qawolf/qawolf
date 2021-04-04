@@ -340,14 +340,6 @@ export type AuthenticatedUser = {
   user: CurrentUser;
 };
 
-export type CreateEmailMutation = {
-  from: string;
-  html?: string;
-  subject?: string;
-  text?: string;
-  to: string;
-};
-
 export type CreateEnvironmentMutation = {
   name: string;
   team_id: string;
@@ -442,6 +434,14 @@ export type RunnerRun = {
 export type RunTestStatus = {
   message: string;
   pass: boolean;
+};
+
+export type SendEmailMutation = {
+  from: string;
+  html?: string;
+  subject?: string;
+  text?: string;
+  to: string;
 };
 
 export type SendLoginCodeMutation = {

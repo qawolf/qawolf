@@ -2,7 +2,7 @@ import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
 type CreateEmail = {
-  created_at: string;
+  created_at?: string;
   from: string;
   html: string;
   is_outbound?: boolean;
@@ -26,6 +26,7 @@ export const createEmail = async (
 
   const email = {
     ...fields,
+    created_at: fields.created_at || new Date().toISOString(),
     from: fields.from.toLowerCase(),
     id: cuid(),
     is_outbound: fields.is_outbound || false,
@@ -36,6 +37,24 @@ export const createEmail = async (
   log.debug("created", email.id);
 
   return email;
+};
+
+export const countOutboundEmailsForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<number> => {
+  const log = logger.prefix("countOutboundEmailsForTeam");
+  log.debug("team", team_id);
+
+  const result = await db("emails")
+    .count("id")
+    .where({ is_outbound: true, team_id })
+    .first();
+
+  const count = Number(result.count);
+  log.debug("count", count);
+
+  return count;
 };
 
 export const deleteOldEmails = async ({

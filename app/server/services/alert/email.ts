@@ -14,6 +14,12 @@ import {
 
 sgMail.setApiKey(environment.SENDGRID_API_KEY);
 
+type SendEmailAlert = {
+  runs: SuiteRun[];
+  suite: Suite;
+  trigger: Trigger | null;
+};
+
 type SendEmailForLoginCode = {
   logger: Logger;
   login_code: string;
@@ -26,12 +32,6 @@ type SendEmailForSuite = {
   suite_id: string;
   trigger: Trigger | null;
   user: User;
-};
-
-type SendEmailAlert = {
-  runs: SuiteRun[];
-  suite: Suite;
-  trigger: Trigger | null;
 };
 
 const buildFrom = (wolfName: string): MailDataRequired["from"] => {

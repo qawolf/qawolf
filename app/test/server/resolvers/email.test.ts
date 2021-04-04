@@ -1,20 +1,27 @@
 import { encrypt } from "../../../server/models/encrypt";
-import { emailResolver } from "../../../server/resolvers/email";
+import {
+  emailResolver,
+  ensureCanSendEmail,
+} from "../../../server/resolvers/email";
 import { Email } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import { buildEmail, buildTeam, buildUser, testContext } from "../utils";
+import * as emailModel from "../../../server/models/email";
 
 const api_key = "qawolf_api_key";
 
 const db = prepareTestDb();
 
+const options = { db, logger: testContext.logger };
+const team = {
+  ...buildTeam({ inbox: "inbox@dev.qawolf.email" }),
+  api_key: encrypt(api_key),
+};
+
 beforeAll(async () => {
   await db("users").insert(buildUser({}));
 
-  return db("teams").insert({
-    ...buildTeam({ inbox: "inbox@dev.qawolf.email" }),
-    api_key: encrypt(api_key),
-  });
+  return db("teams").insert(team);
 });
 
 describe("emailResolver", () => {
@@ -66,5 +73,39 @@ describe("emailResolver", () => {
         );
       }
     ).rejects.toThrowError("unauthorized");
+  });
+});
+
+describe("ensureCanSendEmail", () => {
+  it("throws an error if no team", async () => {
+    await expect(ensureCanSendEmail(null, options)).rejects.toThrowError(
+      "unauthorized"
+    );
+  });
+
+  it("throws an error if team on the free plan", async () => {
+    await expect(ensureCanSendEmail(team, options)).rejects.toThrowError(
+      "contact us"
+    );
+  });
+
+  it("throws an error if team has reached email limit", async () => {
+    jest
+      .spyOn(emailModel, "countOutboundEmailsForTeam")
+      .mockResolvedValueOnce(1500);
+
+    await expect(
+      ensureCanSendEmail({ ...team, plan: "business" }, options)
+    ).rejects.toThrowError("maximum number of emails");
+  });
+
+  it("does not throw an error otherwise", async () => {
+    jest
+      .spyOn(emailModel, "countOutboundEmailsForTeam")
+      .mockResolvedValueOnce(1);
+
+    await expect(
+      ensureCanSendEmail({ ...team, plan: "business" }, options)
+    ).resolves.not.toThrowError();
   });
 });

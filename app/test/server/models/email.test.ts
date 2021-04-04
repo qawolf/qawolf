@@ -1,4 +1,5 @@
 import {
+  countOutboundEmailsForTeam,
   createEmail,
   deleteOldEmails,
   findEmail,
@@ -10,9 +11,35 @@ import { buildEmail, buildTeam, logger } from "../utils";
 const db = prepareTestDb();
 const options = { db, logger };
 
-beforeAll(() => db("teams").insert(buildTeam({})));
+beforeAll(() => db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]));
 
 describe("email model", () => {
+  describe("countOutboundEmailsForTeam", () => {
+    beforeAll(() => {
+      return db("emails").insert([
+        buildEmail({ is_outbound: true }),
+        buildEmail({ i: 2, is_outbound: true }),
+        buildEmail({ i: 3, is_outbound: false }),
+        buildEmail({
+          i: 4,
+          team_id: "team2Id",
+        }),
+      ]);
+    });
+
+    afterAll(() => db("emails").del());
+
+    it("returns the count of emails belonging to a team", async () => {
+      const count = await countOutboundEmailsForTeam("teamId", options);
+
+      expect(count).toBe(2);
+
+      const count2 = await countOutboundEmailsForTeam("fakeId", options);
+
+      expect(count2).toBe(0);
+    });
+  });
+
   describe("createEmail", () => {
     afterEach(() => db("emails").del());
 
@@ -44,7 +71,6 @@ describe("email model", () => {
     it("creates an outbound email", async () => {
       const email = await createEmail(
         {
-          created_at: new Date("2021-01-01").toISOString(),
           from: "spirit@qawolf.com",
           is_outbound: true,
           html: "html",
@@ -64,7 +90,7 @@ describe("email model", () => {
         is_outbound: true,
         to: "teamid@test.com",
       });
-      expect(dbEmail.created_at).toEqual(new Date("2021-01-01"));
+      expect(dbEmail.created_at).not.toEqual(new Date("2021-01-01"));
     });
   });
 

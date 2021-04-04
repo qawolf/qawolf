@@ -31,6 +31,8 @@ import { minutesFromNow } from "../../shared/utils";
 type BuildEmail = {
   created_at?: string;
   i?: number;
+  is_outbound?: boolean;
+  team_id?: string;
   to?: string;
 };
 
@@ -167,7 +169,13 @@ export const buildArtifacts = (): SaveArtifacts => ({
   videoUrl: "video_url",
 });
 
-export const buildEmail = ({ created_at, i, to }: BuildEmail): Email => {
+export const buildEmail = ({
+  created_at,
+  i,
+  is_outbound,
+  team_id,
+  to,
+}: BuildEmail): Email => {
   const finalI = i || 1;
 
   return {
@@ -175,9 +183,9 @@ export const buildEmail = ({ created_at, i, to }: BuildEmail): Email => {
     from: "testing@email.com",
     html: "html",
     id: `email${finalI === 1 ? "" : i}Id`,
-    is_outbound: false,
+    is_outbound: is_outbound || false,
     subject: "subject",
-    team_id: "teamId",
+    team_id: team_id || "teamId",
     text: "text",
     to: to || "spirit@test.com",
   };
