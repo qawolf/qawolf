@@ -44,6 +44,8 @@ export const getInbox = (
   }
 
   const sendMessage = (options: SendMessage): Promise<Email> => {
+    if (!options.to) throw new Error("must include the to field");
+
     return sendEmail({
       ...options,
       from: email,
