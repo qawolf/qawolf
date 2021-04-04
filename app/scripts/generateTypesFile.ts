@@ -178,7 +178,13 @@ declare function assertText(page: import('playwright').Page | import('playwright
 declare function getInbox(options?: { id?: string; new?: boolean; }): 
   {
     email: string; 
-    waitForMessage: function({ after?: Date, timeout?: number }): Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
+    sendMessage: (options: {
+      html?: string;
+      subject?: string;
+      text?: string;
+      to: string;
+    }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
+    waitForMessage: (options?: { after?: Date; timeout?: number; }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
   };
 `;
 

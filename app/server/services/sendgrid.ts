@@ -21,10 +21,6 @@ export const sendEmail = async ({
   text,
   to,
 }: SendEmail): Promise<void> => {
-  if (!html && !text) {
-    throw new Error("must provide email html or text");
-  }
-
   const message = {
     from,
     html,

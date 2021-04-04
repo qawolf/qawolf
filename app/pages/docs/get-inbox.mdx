@@ -8,22 +8,22 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>getInbox([options])</Header>
 
-Get an email address and receive an email message in your test.
+Get an email address and send or receive an email message in your test.
 
-See the <Link href="receive-an-email">Receive an Email guide</Link>.
+See <Link href="receive-an-email">this guide</Link> to learn more about receiving an email.
 
 ```js
 // get your team's email address
 // example: my-team@qawolf.email
-const { email, waitForMessage } = getInbox();
+const { email, sendMessage, waitForMessage } = getInbox();
 
 // get a new email address
 // example: my-team+a25sa5q@qawolf.email
-const { email, waitForMessage } = getInbox({ new: true });
+const { email, sendMessage, waitForMessage } = getInbox({ new: true });
 
 // get a custom email address
 // example: my-team+admin@qawolf.email
-const { email, waitForMessage } = getInbox({ id: "admin" });
+const { email, sendMessage, waitForMessage } = getInbox({ id: "admin" });
 
 // use the email to fill out a form
 await page.fill('[name="email"]', email);
@@ -34,6 +34,14 @@ const message = await waitForMessage();
 
 // wait for a message up to 3 minutes
 const message = await waitForMessage({ timeout: 3 * 60000 });
+
+// send a message from your team's email address
+const message = await sendMessage({
+  html: "<b>HTML</b>",
+  subject: "Subject",
+  text: "Text",
+  to: "test@email.com",
+});
 ```
 
 <SubHeader>Arguments</SubHeader>
@@ -46,7 +54,47 @@ const message = await waitForMessage({ timeout: 3 * 60000 });
 **Returns:** `{ email, waitForMessage }`
 
 - email (string): An email address to send your email to.
+- sendMessage (Function): Send a message from the email address.
 - waitForMessage (Function): Wait for a message sent to the email address.
+
+<Header>sendMessage([options])</Header>
+
+Send a message from the email address returned from `getInbox`. If the message is not sent successfully, an error is thrown. 
+
+**To prevent spam, your team must be approved to call this function.** Please <a href="mailto:hello@qawolf.com">contact us</a> to get approved.
+
+```js
+// send a message
+const message = await sendMessage({
+  html: "<b>HTML</b>",
+  subject: "Subject",
+  text: "Text",
+  to: "test@email.com",
+});
+
+// send a message with no subject or HTML body
+const message = await sendMessage({
+  text: "Minimalist email",
+  to: "test@email.com",
+});
+```
+
+<SubHeader>sendMessage Arguments</SubHeader>
+
+**[options]** (Object)
+
+- [html] (string): HTML body of the email. Default: `null`
+- [subject] (string): Subject of the email. Default: `null`
+- [text] (string): Text body of the email. Default: `null`
+- to (string): Recipient of the email.
+
+**Returns:** `Promise<Message>`
+
+- from (string): Sender of the email. Example: `"my-team@qawolf.email"`
+- html (string): HTML body of the email. Example: `"<div\>I'm the email body</div\>"`
+- subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
+- text (string): Email body in plain text. Example: `"I'm the email body"`
+- to (string): Recipient of the email. Example: `"test@email.com"`
 
 <Header>waitForMessage([options])</Header>
 
@@ -93,6 +141,6 @@ const { subject } = await waitForMessage({ after });
 - html (string): HTML body of the email. Example: `"<div\>I'm the email body</div\>"`
 - subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
 - text (string): Email body in plain text. Example: `"I'm the email body"`
-- to (string): Recipient of the email. Example: `"qawolf@spirit.qawolf.email"`
+- to (string): Recipient of the email. Example: `"my-team@qawolf.email"`
 
 </Layout>

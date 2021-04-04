@@ -1,7 +1,7 @@
 import { slug } from "cuid";
 
 import { Email } from "../types";
-import { pollForEmail } from "./api";
+import { pollForEmail, sendEmail } from "./api";
 
 export type GetInbox = {
   id?: string;
@@ -43,15 +43,11 @@ export const getInbox = (
     email = `${inbox}+${args.id || slug()}@${domain}`;
   }
 
-  const sendMessage = ({
-    html,
-    subject,
-    text,
-    to,
-  }: SendMessage): Promise<Email> => {
-    if (!html && !text) {
-      throw new Error("must provide email html or text");
-    }
+  const sendMessage = (options: SendMessage): Promise<Email> => {
+    return sendEmail({
+      ...options,
+      from: email,
+    });
   };
 
   const waitForMessage = ({
