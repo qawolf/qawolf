@@ -1,12 +1,13 @@
+import * as emailModel from "../../../server/models/email";
 import { encrypt } from "../../../server/models/encrypt";
 import {
   emailResolver,
   ensureCanSendEmail,
+  sendEmailResolver,
 } from "../../../server/resolvers/email";
-import { Email } from "../../../server/types";
+import * as sendGridService from "../../../server/services/sendgrid";
 import { prepareTestDb } from "../db";
 import { buildEmail, buildTeam, buildUser, testContext } from "../utils";
-import * as emailModel from "../../../server/models/email";
 
 const api_key = "qawolf_api_key";
 
@@ -62,16 +63,14 @@ describe("emailResolver", () => {
 
   it("throws an error if api key cannot access team", async () => {
     await expect(
-      (): Promise<Email | null> => {
-        return emailResolver(
-          {},
-          {
-            created_after: new Date().toISOString(),
-            to: "anotherInbox@test.com",
-          },
-          { ...testContext, api_key: "fakeApiKey", db }
-        );
-      }
+      emailResolver(
+        {},
+        {
+          created_after: new Date().toISOString(),
+          to: "anotherInbox@test.com",
+        },
+        { ...testContext, api_key: "fakeApiKey", db }
+      )
     ).rejects.toThrowError("unauthorized");
   });
 });
@@ -107,5 +106,44 @@ describe("ensureCanSendEmail", () => {
     await expect(
       ensureCanSendEmail({ ...team, plan: "business" }, options)
     ).resolves.not.toThrowError();
+  });
+});
+
+describe("sendEmailResolver", () => {
+  beforeAll(() => db("teams").update({ plan: "business" }));
+
+  afterAll(() => db("teams").update({ plan: "free" }));
+
+  const email = {
+    from: "inbox@dev.qawolf.email",
+    subject: "Test",
+    text: "Content",
+    to: "test@other.com",
+  };
+
+  it("sends an email and creates a record in the database", async () => {
+    jest.spyOn(sendGridService, "sendEmail").mockResolvedValue();
+
+    await sendEmailResolver({}, email, {
+      ...testContext,
+      api_key,
+      db,
+    });
+
+    expect(sendGridService.sendEmail).toBeCalledWith(email);
+
+    const dbEmail = await db("emails").first();
+
+    expect(dbEmail).toMatchObject({ ...email, team_id: "teamId" });
+  });
+
+  it("throws an error if api key cannot access team", async () => {
+    await expect(
+      sendEmailResolver({}, email, {
+        ...testContext,
+        api_key: "fakeApiKey",
+        db,
+      })
+    ).rejects.toThrowError("unauthorized");
   });
 });

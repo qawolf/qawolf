@@ -6,12 +6,13 @@ import {
 } from "../models/email";
 import { decrypt } from "../models/encrypt";
 import { findTeamForEmail } from "../models/team";
+import { sendEmail } from "../services/sendgrid";
 import {
   Context,
-  SendEmailMutation,
   Email,
   EmailQuery,
   ModelOptions,
+  SendEmailMutation,
   Team,
 } from "../types";
 
@@ -91,8 +92,23 @@ export const sendEmailResolver = async (
   validateApiKey({ api_key, team }, logger);
   await ensureCanSendEmail(team, { db, logger });
 
-  return createEmail(
-    { from, html, subject, team_id: team.id, text, to },
-    { db, logger }
-  );
+  try {
+    await sendEmail({
+      from,
+      html,
+      subject,
+      text,
+      to,
+    });
+    log.debug("email sent");
+
+    return createEmail(
+      { from, html, subject, team_id: team.id, text, to },
+      { db, logger }
+    );
+  } catch (error) {
+    log.alert("error", error.message);
+
+    throw new Error(`Error sending email: ${error.message}`);
+  }
 };

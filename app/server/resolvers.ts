@@ -1,5 +1,5 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
-import { sendEmailResolver, emailResolver } from "./resolvers/email";
+import { emailResolver,sendEmailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
   deleteEnvironmentResolver,
