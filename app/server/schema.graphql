@@ -555,6 +555,28 @@ type Mutation {
   ): Invite!
 
   """
+  Create an email.
+
+  Requires that you have access to the team that owns the inbox.
+  """
+  createEmail(
+    "Email sender"
+    from: String!
+
+    "Email HTML"
+    html: String
+
+    "Email subject line"
+    subject: String
+
+    "Email text"
+    text: String
+
+    "Email recipient"
+    to: String!
+  ): Email!
+
+  """
   Create an environment.
 
   Requires that you have access to the team.

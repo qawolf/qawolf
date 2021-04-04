@@ -15,7 +15,15 @@ type GetInboxContext = {
 
 type GetInboxResult = {
   email: string;
+  sendMessage: (options: SendMessage) => Promise<Email>;
   waitForMessage: (options: WaitForMessage) => Promise<Email>;
+};
+
+type SendMessage = {
+  html?: string;
+  subject?: string;
+  text?: string;
+  to: string;
 };
 
 type WaitForMessage = {
@@ -35,6 +43,17 @@ export const getInbox = (
     email = `${inbox}+${args.id || slug()}@${domain}`;
   }
 
+  const sendMessage = ({
+    html,
+    subject,
+    text,
+    to,
+  }: SendMessage): Promise<Email> => {
+    if (!html && !text) {
+      throw new Error("must provide email html or text");
+    }
+  };
+
   const waitForMessage = ({
     after,
     timeout,
@@ -51,5 +70,5 @@ export const getInbox = (
     });
   };
 
-  return { email, waitForMessage };
+  return { email, sendMessage, waitForMessage };
 };

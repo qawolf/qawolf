@@ -175,6 +175,7 @@ export const buildEmail = ({ created_at, i, to }: BuildEmail): Email => {
     from: "testing@email.com",
     html: "html",
     id: `email${finalI === 1 ? "" : i}Id`,
+    is_outbound: false,
     subject: "subject",
     team_id: "teamId",
     text: "text",

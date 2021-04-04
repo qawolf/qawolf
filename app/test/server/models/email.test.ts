@@ -16,7 +16,7 @@ describe("email model", () => {
   describe("createEmail", () => {
     afterEach(() => db("emails").del());
 
-    it("creates an email", async () => {
+    it("creates an inbound email", async () => {
       const email = await createEmail(
         {
           created_at: new Date("2021-01-01").toISOString(),
@@ -35,6 +35,33 @@ describe("email model", () => {
       expect(dbEmail).toMatchObject({
         ...email,
         created_at: new Date(email.created_at),
+        is_outbound: false,
+        to: "teamid@test.com",
+      });
+      expect(dbEmail.created_at).toEqual(new Date("2021-01-01"));
+    });
+
+    it("creates an outbound email", async () => {
+      const email = await createEmail(
+        {
+          created_at: new Date("2021-01-01").toISOString(),
+          from: "spirit@qawolf.com",
+          is_outbound: true,
+          html: "html",
+          subject: "subject",
+          team_id: "teamId",
+          text: "text",
+          to: "teamId@test.com",
+        },
+        options
+      );
+
+      const dbEmail = await db("emails").first();
+
+      expect(dbEmail).toMatchObject({
+        ...email,
+        created_at: new Date(email.created_at),
+        is_outbound: true,
         to: "teamid@test.com",
       });
       expect(dbEmail.created_at).toEqual(new Date("2021-01-01"));
@@ -45,10 +72,10 @@ describe("email model", () => {
     beforeAll(() => {
       return db("emails").insert([
         buildEmail({
-          created_at: minutesFromNow(-55),
+          created_at: minutesFromNow(-5 * 24 * 60),
         }),
         buildEmail({
-          created_at: minutesFromNow(-65),
+          created_at: minutesFromNow(-32 * 24 * 60),
           i: 2,
         }),
         buildEmail({

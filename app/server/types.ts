@@ -73,11 +73,11 @@ export type Email = {
   from: string;
   html: string;
   id: string;
+  is_outbound: boolean;
   subject: string;
   team_id: string;
   text: string;
   to: string;
-  updated_at?: string;
 };
 
 export type Environment = {
@@ -338,6 +338,14 @@ export type User = {
 export type AuthenticatedUser = {
   access_token: string;
   user: CurrentUser;
+};
+
+export type CreateEmailMutation = {
+  from: string;
+  html?: string;
+  subject?: string;
+  text?: string;
+  to: string;
 };
 
 export type CreateEnvironmentMutation = {

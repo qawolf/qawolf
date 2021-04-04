@@ -2,7 +2,16 @@ import { AuthenticationError } from "../errors";
 import { findEmail } from "../models/email";
 import { decrypt } from "../models/encrypt";
 import { findTeamForEmail } from "../models/team";
-import { Context, Email, EmailQuery } from "../types";
+import { Context, CreateEmailMutation, Email, EmailQuery } from "../types";
+
+export const createEmailResolver = async (
+  _: Record<string, unknown>,
+  { from, subject, text, to, html }: CreateEmailMutation,
+  { api_key, db, logger }: Context
+): Promise<Email> => {
+  const log = logger.prefix("createEmailResolver");
+  log.debug("to", to);
+};
 
 export const emailResolver = async (
   _: Record<string, unknown>,
