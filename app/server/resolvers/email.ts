@@ -1,4 +1,4 @@
-import { AuthenticationError } from "../errors";
+import { AuthenticationError, ClientError } from "../errors";
 import {
   countOutboundEmailsForTeam,
   createEmail,
@@ -29,7 +29,7 @@ export const ensureCanSendEmail = async (
 
   if (team.plan === "free") {
     log.error(`team ${team.id} cannot send email`);
-    throw new Error(
+    throw new ClientError(
       "Your team must be whitelisted to send emails. Please contact us at hello@qawolf.com for support."
     );
   }
@@ -37,7 +37,7 @@ export const ensureCanSendEmail = async (
   const count = await countOutboundEmailsForTeam(team.id, { db, logger });
   if (count > 1000) {
     log.alert(`team ${team.id} at email limit with ${count} emails`);
-    throw new Error(
+    throw new ClientError(
       "You have sent the maximum number of emails allowed this month"
     );
   }
@@ -106,6 +106,6 @@ export const sendEmailResolver = async (
   } catch (error) {
     log.alert("error", error.message);
 
-    throw new Error(`Error sending email: ${error.message}`);
+    throw new ClientError(`Error sending email: ${error.message}`);
   }
 };
