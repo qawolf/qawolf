@@ -46,6 +46,7 @@ const PENALTY_MAP = {
   // since they are often presentational
   class: 21,
   height: 100,
+  style: 100,
   viewBox: 100,
   width: 100,
   xmlns: 100,

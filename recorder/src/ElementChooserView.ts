@@ -69,7 +69,7 @@ export class ElementChooserView {
     this._highlight.style.width = "0px";
   };
 
-  start() {
+  start(): void {
     if (this._isStarted) return;
     this._isStarted = true;
 
@@ -80,7 +80,7 @@ export class ElementChooserView {
     document.addEventListener("scroll", this._onScroll, true);
   }
 
-  stop() {
+  stop(): void {
     if (!this._isStarted) return;
     this._isChosen = false;
 

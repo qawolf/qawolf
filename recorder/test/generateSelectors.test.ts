@@ -102,6 +102,11 @@ describe("getSelector", () => {
       await expectSelector("img", "#child");
     });
 
+    it("targets the iframe always despite having likely ancestor", async () => {
+      await setBody(page, "<a><iframe></iframe><a>");
+      await expectSelector("iframe", "iframe");
+    });
+
     it("targets a contenteditable/input/textarea despite having a likely ancestor", async () => {
       await setBody(page, '<a><div contenteditable="true"></div></a>');
       await expectSelector(
