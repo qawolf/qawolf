@@ -87,6 +87,7 @@ describe("isElementMatch", () => {
   <div id="exact-match-overlap" style="${fixedSize} top: 500px">
     <input type="date" style="${fixedSize} top: 500px">
     <textarea style="${fixedSize} top: 500px"></textarea>
+    <iframe style="${fixedSize} top: 500px"></iframe>
   </div>
   <div id="boundary" style="${fixedSize} left:500px; top: 500px;">
       <div id="same-boundary"></div>
@@ -135,6 +136,8 @@ describe("isElementMatch", () => {
     expect(await isElementMatch("#exact-match-overlap", "textarea")).toBe(
       false
     );
+
+    expect(await isElementMatch("#exact-match-overlap", "iframe")).toBe(false);
   });
 
   it("return false if element crosses a click boundary", async () => {

@@ -2,7 +2,7 @@ import { getDescriptor, isFillable } from "./element";
 import { Rect } from "./types";
 
 export const CLICK_TYPES =
-  "a,button,input,label,textarea,[contenteditable=true],[role=button],[role=checkbox],[role=radio]";
+  "a,button,iframe,input,label,textarea,[contenteditable=true],[role=button],[role=checkbox],[role=radio]";
 
 export function hasCommonAncestor(
   element: HTMLElement,
@@ -37,8 +37,7 @@ export function isElementMatch(
 ): boolean {
   if (element === target) return true;
 
-  // do not allow position match if the element is fillable
-  if (isFillable(getDescriptor(target))) return false;
+  if (requireExactMatch(target)) return false;
 
   // check the middle of the element is within the target
   let targetRect = cache.get(target);
@@ -85,4 +84,14 @@ export function isWithin(other: Rect, container: Rect): boolean {
     container.y <= middle.y &&
     middle.y <= container.y + container.height
   );
+}
+
+export function requireExactMatch(target: HTMLElement) {
+  // do not allow position match for iframes
+  if (target.tagName === "IFRAME") return true;
+
+  // do not allow position match if the element is fillable
+  if (isFillable(getDescriptor(target))) return true;
+
+  return false;
 }
