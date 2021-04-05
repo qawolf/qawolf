@@ -29,6 +29,7 @@ type RunStartedParams = {
 };
 
 type SendEmail = {
+  apiKey: string;
   from: string;
   html?: string;
   subject?: string;
@@ -227,27 +228,35 @@ export const pollForEmail = async ({
   return Promise.race([requestPromise, timeoutPromise]);
 };
 
-export const sendEmail = async (email: SendEmail): Promise<Email> => {
-  const result = await mutateWithRetry(
+export const sendEmail = async ({
+  apiKey,
+  ...email
+}: SendEmail): Promise<Email> => {
+  debugPublic(`send email to ${email.to}`);
+
+  const result = await axios.post(
+    `${config.API_URL}/graphql`,
     {
       query: sendEmailMutation,
       variables: email,
     },
-    "sendEmail"
+    { headers: { authorization: apiKey } }
   );
 
-  const sentEmail = result.data?.sendEmail;
+  const { data, errors } = result?.data || {};
+  const sentEmail = data?.sendEmail || null;
+
   if (!sentEmail) {
     let message = "";
 
-    if (result.errors?.length) {
-      message = result.errors
-        .map((e: { message: string }) => e.message)
-        .join(", ");
+    if (errors?.length) {
+      message = errors.map((e: { message: string }) => e.message).join(", ");
     }
 
     throw new Error(`Error sending email${message ? ": " + message : ""}`);
   }
+
+  debugPublic(`sent email to ${email.to}`);
 
   return sentEmail;
 };

@@ -48,6 +48,7 @@ export const getInbox = (
 
     return sendEmail({
       ...options,
+      apiKey,
       from: email,
     });
   };
