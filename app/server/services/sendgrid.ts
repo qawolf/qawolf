@@ -8,7 +8,7 @@ type SendEmail = {
   from: MailDataRequired["from"];
   html?: string;
   reply_to?: string;
-  subject: string;
+  subject?: string;
   text?: string;
   to: string;
 };
@@ -23,10 +23,10 @@ export const sendEmail = async ({
 }: SendEmail): Promise<void> => {
   const message = {
     from,
-    html,
+    html: html || "",
     reply_to: reply_to ? { email: reply_to } : undefined,
-    subject,
-    text,
+    subject: subject || "",
+    text: text || "",
     to: [{ email: to }],
   };
 
