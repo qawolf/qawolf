@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 
 import { copy } from "../../../theme/copy";
@@ -23,6 +23,7 @@ const StyledBox = styled(Box)`
 
 export default function Wolf(): JSX.Element {
   const { wolf } = useContext(UserContext);
+  const [isPlaying, setIsPlaying] = useState(true); // TODO: update
 
   if (!wolf) return null;
 
