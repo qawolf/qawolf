@@ -76,12 +76,6 @@ describe("emailResolver", () => {
 });
 
 describe("ensureCanSendEmail", () => {
-  it("throws an error if no team", async () => {
-    await expect(ensureCanSendEmail(null, options)).rejects.toThrowError(
-      "unauthorized"
-    );
-  });
-
   it("throws an error if team on the free plan", async () => {
     await expect(ensureCanSendEmail(team, options)).rejects.toThrowError(
       "contact us"

@@ -18,16 +18,14 @@ import {
 
 type ValidateApiKey = {
   api_key: string;
-  team: Team;
+  team: Team | null;
 };
 
 export const ensureCanSendEmail = async (
-  team: Team | null,
+  team: Team,
   { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("ensureCanSendEmail");
-
-  if (!team) throw new AuthenticationError();
 
   if (team.plan === "free") {
     log.error(`team ${team.id} cannot send email`);
@@ -51,7 +49,7 @@ const validateApiKey = (
 ): void => {
   const log = logger.prefix("validateApiKey");
 
-  if (api_key !== decrypt(team.api_key)) {
+  if (!team || api_key !== decrypt(team.api_key)) {
     log.debug("invalid api key", api_key);
     throw new AuthenticationError();
   }
@@ -66,7 +64,6 @@ export const emailResolver = async (
   log.debug("to", to);
 
   const team = await findTeamForEmail(to, { db, logger });
-  if (!team) throw new AuthenticationError();
 
   validateApiKey({ api_key, team }, logger);
 
