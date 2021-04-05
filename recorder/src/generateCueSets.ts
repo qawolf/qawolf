@@ -1,5 +1,4 @@
 import { combine } from "./combine";
-import { getDescriptor, isFillable } from "./element";
 import { getCues } from "./getCues";
 import { requireExactMatch } from "./isElementMatch";
 import { Cue, CueSet } from "./types";

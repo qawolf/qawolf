@@ -86,7 +86,7 @@ export function isWithin(other: Rect, container: Rect): boolean {
   );
 }
 
-export function requireExactMatch(target: HTMLElement) {
+export function requireExactMatch(target: HTMLElement): boolean {
   // do not allow position match for iframes
   if (target.tagName === "IFRAME") return true;
 
