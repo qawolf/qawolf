@@ -32,7 +32,7 @@ export const ensureCanSendEmail = async (
   if (team.plan === "free") {
     log.error(`team ${team.id} cannot send email`);
     throw new Error(
-      "Your team must be whitelisted to send emails. Please contact us at hello@qawolf for support."
+      "Your team must be whitelisted to send emails. Please contact us at hello@qawolf.com for support."
     );
   }
 
@@ -103,7 +103,7 @@ export const sendEmailResolver = async (
     log.debug("email sent");
 
     return createEmail(
-      { from, html, subject, team_id: team.id, text, to },
+      { from, html, is_outbound: true, subject, team_id: team.id, text, to },
       { db, logger }
     );
   } catch (error) {
