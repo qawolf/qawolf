@@ -2,10 +2,9 @@ import { Box } from "grommet";
 import { useContext } from "react";
 import styled from "styled-components";
 
-import { isServer } from "../../../lib/detection";
 import { copy } from "../../../theme/copy";
 import { transitionDuration } from "../../../theme/theme";
-import WolfSitting from "../../shared/icons/WolfSitting";
+import WolfSittingRight from "../../shared/icons/WolfSittingRight";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
 
@@ -25,7 +24,7 @@ const StyledBox = styled(Box)`
 export default function Wolf(): JSX.Element {
   const { wolf } = useContext(UserContext);
 
-  if (isServer() || !wolf) return null;
+  if (!wolf) return null;
 
   return (
     <StyledBox alignSelf="center" flex={false}>
@@ -37,7 +36,7 @@ export default function Wolf(): JSX.Element {
       >
         {copy.wolfGreeting(wolf.name)}
       </Text>
-      <WolfSitting color={wolf.variant} />
+      <WolfSittingRight color={wolf.variant} />
     </StyledBox>
   );
 }
