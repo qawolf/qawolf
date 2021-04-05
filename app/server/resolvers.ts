@@ -1,5 +1,5 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
-import { emailResolver } from "./resolvers/email";
+import { emailResolver, sendEmailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
   deleteEnvironmentResolver,
@@ -108,6 +108,7 @@ export const resolvers = {
     deleteGroup: deleteGroupResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
+    sendEmail: sendEmailResolver,
     sendLoginCode: sendLoginCodeResolver,
     sendSlackUpdate: sendSlackUpdateResolver,
     signInWithEmail: signInWithEmailResolver,

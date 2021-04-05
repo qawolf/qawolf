@@ -1,10 +1,10 @@
-import sgMail, { MailDataRequired } from "@sendgrid/mail";
+import { MailDataRequired } from "@sendgrid/mail";
 
-import environment from "../../environment";
 import { Logger } from "../../Logger";
 import { deleteInvite, findInvite } from "../../models/invite";
 import { findUsersForTeam } from "../../models/user";
 import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
+import { sendEmail } from "../sendgrid";
 import {
   buildInviteHtml,
   buildLoginCode,
@@ -12,7 +12,11 @@ import {
   buildSuiteHtml,
 } from "./html";
 
-sgMail.setApiKey(environment.SENDGRID_API_KEY);
+type SendEmailAlert = {
+  runs: SuiteRun[];
+  suite: Suite;
+  trigger: Trigger | null;
+};
 
 type SendEmailForLoginCode = {
   logger: Logger;
@@ -26,12 +30,6 @@ type SendEmailForSuite = {
   suite_id: string;
   trigger: Trigger | null;
   user: User;
-};
-
-type SendEmailAlert = {
-  runs: SuiteRun[];
-  suite: Suite;
-  trigger: Trigger | null;
 };
 
 const buildFrom = (wolfName: string): MailDataRequired["from"] => {
@@ -51,15 +49,14 @@ export const sendEmailForInvite = async (
   const invite = await findInvite(inviteId, options);
 
   try {
-    const message = {
-      to: [{ email: invite.email }],
+    await sendEmail({
       from: buildFrom(invite.wolf_name),
-      subject: `🐺 ${invite.creator_email} has invited you to join the team ${invite.team_name}`,
       html: buildInviteHtml(invite),
-      reply_to: { email: "hello@qawolf.com" },
-    };
+      subject: `🐺 ${invite.creator_email} has invited you to join the team ${invite.team_name}`,
+      reply_to: "hello@qawolf.com",
+      to: invite.email,
+    });
 
-    await sgMail.send(message);
     log.debug("email sent");
   } catch (error) {
     log.alert("error: email invite", invite);
@@ -82,15 +79,14 @@ export const sendEmailForLoginCode = async ({
   }
 
   try {
-    const message = {
-      to: [{ email: user.email }],
+    await sendEmail({
       from: buildFrom(user.wolf_name),
-      subject: `🐺 QA Wolf code: ${buildLoginCode(login_code)}`,
       html: buildLoginCodeHtml({ login_code, user }),
-      reply_to: { email: "hello@qawolf.com" },
-    };
+      reply_to: "hello@qawolf.com",
+      subject: `🐺 QA Wolf code: ${buildLoginCode(login_code)}`,
+      to: user.email,
+    });
 
-    await sgMail.send(message);
     log.debug(`sent email to ${user.email}`);
   } catch (error) {
     logger.alert("error: email code", user.email, error.message);
@@ -115,16 +111,15 @@ export const sendEmailForSuite = async ({
     : `🎉 All good! Your ${triggerName} tests passed.`;
 
   try {
-    const message = {
-      to: [{ email: user.email }],
+    await sendEmail({
       from: buildFrom(user.wolf_name),
-      subject,
       html: buildSuiteHtml({ runs, suite_id, trigger }),
-      reply_to: { email: "hello@qawolf.com" },
-    };
+      reply_to: "hello@qawolf.com",
+      subject,
+      to: user.email,
+    });
 
-    log.debug("send email to %s", user.email);
-    await sgMail.send(message);
+    log.debug("sent email to %s", user.email);
   } catch (error) {
     log.alert("error: email alert", user.email, error.message);
   }

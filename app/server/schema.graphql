@@ -885,6 +885,28 @@ type Mutation {
   ): [Test!]!
 
   """
+  Send a test email and create an associated record in the database.
+
+  Requires that you have access to the team that owns the inbox.
+  """
+  sendEmail(
+    "Email sender"
+    from: String!
+
+    "Email HTML"
+    html: String
+
+    "Email subject line"
+    subject: String
+
+    "Email text"
+    text: String
+
+    "Email recipient"
+    to: String!
+  ): Email!
+
+  """
   A multi-purpose mutation that always ends with sending a magic logic code
   to an email address, which can then be used as a parameter value for the
   `signInWithEmail` mutation.

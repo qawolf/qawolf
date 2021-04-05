@@ -1,7 +1,7 @@
 import { slug } from "cuid";
 
 import { Email } from "../types";
-import { pollForEmail } from "./api";
+import { pollForEmail, sendEmail } from "./api";
 
 export type GetInbox = {
   id?: string;
@@ -15,7 +15,15 @@ type GetInboxContext = {
 
 type GetInboxResult = {
   email: string;
+  sendMessage: (options: SendMessage) => Promise<Email>;
   waitForMessage: (options: WaitForMessage) => Promise<Email>;
+};
+
+type SendMessage = {
+  html?: string;
+  subject?: string;
+  text?: string;
+  to: string;
 };
 
 type WaitForMessage = {
@@ -35,6 +43,15 @@ export const getInbox = (
     email = `${inbox}+${args.id || slug()}@${domain}`;
   }
 
+  const sendMessage = (options: SendMessage): Promise<Email> => {
+    if (!options.to) throw new Error("must include the to field");
+
+    return sendEmail({
+      ...options,
+      from: email,
+    });
+  };
+
   const waitForMessage = ({
     after,
     timeout,
@@ -51,5 +68,5 @@ export const getInbox = (
     });
   };
 
-  return { email, waitForMessage };
+  return { email, sendMessage, waitForMessage };
 };

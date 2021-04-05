@@ -1,11 +1,11 @@
-import { minutesFromNow } from "../../shared/utils";
 import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
 type CreateEmail = {
-  created_at: string;
+  created_at?: string;
   from: string;
   html: string;
+  is_outbound?: boolean;
   subject: string;
   team_id: string;
   text: string;
@@ -24,12 +24,37 @@ export const createEmail = async (
   const log = logger.prefix("createEmail");
   log.debug(`create email for team ${fields.team_id}`);
 
-  const email = { ...fields, id: cuid(), to: fields.to.toLowerCase() };
+  const email = {
+    ...fields,
+    created_at: fields.created_at || new Date().toISOString(),
+    from: fields.from.toLowerCase(),
+    id: cuid(),
+    is_outbound: fields.is_outbound || false,
+    to: fields.to.toLowerCase(),
+  };
   await db("emails").insert(email);
 
   log.debug("created", email.id);
 
   return email;
+};
+
+export const countOutboundEmailsForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<number> => {
+  const log = logger.prefix("countOutboundEmailsForTeam");
+  log.debug("team", team_id);
+
+  const result = await db("emails")
+    .count("id")
+    .where({ is_outbound: true, team_id })
+    .first();
+
+  const count = Number(result.count);
+  log.debug("count", count);
+
+  return count;
 };
 
 export const deleteOldEmails = async ({
@@ -38,8 +63,11 @@ export const deleteOldEmails = async ({
 }: ModelOptions): Promise<void> => {
   const log = logger.prefix("deleteOldEmails");
 
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setDate(oneMonthAgo.getDate() - 31);
+
   const deleteCount = await db("emails")
-    .where("created_at", "<", minutesFromNow(-60))
+    .where("created_at", "<", oneMonthAgo.toISOString())
     .del();
 
   log.debug(`deleted ${deleteCount} emails`);

@@ -28,6 +28,14 @@ type RunStartedParams = {
   run_id: string;
 };
 
+type SendEmail = {
+  from: string;
+  html?: string;
+  subject?: string;
+  text?: string;
+  to: string;
+};
+
 type UpdateRunner = {
   is_healthy?: boolean;
   is_ready?: boolean;
@@ -39,6 +47,18 @@ const debugPublic = Debug("qawolf:public");
 const emailQuery = `
 query email($created_after: String!, $to: String!) {
   email(created_after: $created_after, to: $to) {
+    from
+    html
+    subject
+    text
+    to
+  }
+}
+`;
+
+const sendEmailMutation = `
+mutation sendEmail($from: String!, $html: String, $subject: String, $text: String, $to: String!) {
+  sendEmail(from: $from, html: $html, subject: $subject, text: $text, to: $to) {
     from
     html
     subject
@@ -205,6 +225,31 @@ export const pollForEmail = async ({
   });
 
   return Promise.race([requestPromise, timeoutPromise]);
+};
+
+export const sendEmail = async (email: SendEmail): Promise<Email> => {
+  const result = await mutateWithRetry(
+    {
+      query: sendEmailMutation,
+      variables: email,
+    },
+    "sendEmail"
+  );
+
+  const sentEmail = result.data?.sendEmail;
+  if (!sentEmail) {
+    let message = "";
+
+    if (result.errors?.length) {
+      message = result.errors
+        .map((e: { message: string }) => e.message)
+        .join(", ");
+    }
+
+    throw new Error(`Error sending email${message ? ": " + message : ""}`);
+  }
+
+  return sentEmail;
 };
 
 export const updateRunner = async ({
