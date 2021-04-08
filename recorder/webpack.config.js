@@ -7,7 +7,7 @@ const virtualModules = new VirtualModulesPlugin({
   let pwQuerySelector;
   (() => {
     ${injectedScriptSource.source}
-    const injected = new pwExport([]);
+    const injected = new pwExport(1, false, []);
     pwQuerySelector = (selector, root) => {
       const parsed = injected.parseSelector(selector);
       return injected.querySelector(parsed, root);
