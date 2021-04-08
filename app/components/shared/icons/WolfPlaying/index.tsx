@@ -17,7 +17,7 @@ const tailWagKeyFrames = keyframes`
     transform: rotate(0deg) translate(0px, 0px);
 }
 50% {
-    transform: rotate(10deg) translate(1%, 1%);
+    transform: rotate(5deg) translate(0.5%, 0.5%);
 }
 `;
 
