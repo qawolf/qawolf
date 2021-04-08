@@ -76,7 +76,6 @@ describe("email model", () => {
           html: "html",
           subject: "subject",
           team_id: "teamId",
-          text: "text",
           to: "teamId@test.com",
         },
         options
@@ -88,6 +87,7 @@ describe("email model", () => {
         ...email,
         created_at: new Date(email.created_at),
         is_outbound: true,
+        text: "",
         to: "teamid@test.com",
       });
       expect(dbEmail.created_at).not.toEqual(new Date("2021-01-01"));

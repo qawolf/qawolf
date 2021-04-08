@@ -4,11 +4,11 @@ import { cuid } from "../utils";
 type CreateEmail = {
   created_at?: string;
   from: string;
-  html: string;
+  html?: string;
   is_outbound?: boolean;
-  subject: string;
+  subject?: string;
   team_id: string;
-  text: string;
+  text?: string;
   to: string;
 };
 
@@ -25,11 +25,14 @@ export const createEmail = async (
   log.debug(`create email for team ${fields.team_id}`);
 
   const email = {
-    ...fields,
     created_at: fields.created_at || new Date().toISOString(),
     from: fields.from.toLowerCase(),
+    html: fields.html || "",
     id: cuid(),
     is_outbound: fields.is_outbound || false,
+    subject: fields.subject || "",
+    team_id: fields.team_id,
+    text: fields.text || "",
     to: fields.to.toLowerCase(),
   };
   await db("emails").insert(email);
