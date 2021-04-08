@@ -1,8 +1,6 @@
 import { Box } from "grommet";
 
 import { useApiKey } from "../../../../hooks/apiKey";
-import { isServer } from "../../../../lib/detection";
-import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import CodeBlock from "../../../shared/CodeBlock";
 import ExternalLink, {
