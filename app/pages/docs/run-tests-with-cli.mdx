@@ -1,6 +1,10 @@
+import Link from "next/link";
+
+import AssignTrigger from "../../components/Docs/AssignTrigger";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
 
@@ -13,5 +17,40 @@ In this tutorial, we'll trigger our tests with the QA Wolf CLI. This is useful i
 <SubHeader>Create API Trigger</SubHeader>
 
 <CreateTrigger description="when we call the QA Wolf CLI" />
+
+Select the "API" tab on the right.
+
+<Image
+  alt="Create trigger"
+  height={563}
+  src="/docs/run-tests-with-cli/create-trigger.png"
+  width={488}
+/>
+
+You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
+
+<Image
+  alt="Choose environment"
+  height={159}
+  src="/docs/run-tests-with-api/choose-environment.png"
+  width={486}
+/>
+
+You'll notice the second gray box provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
+
+<Image
+  alt="Create trigger example"
+  height={98}
+  src="/docs/run-tests-with-cli/create-trigger-example.png"
+  width={438}
+/>
+
+Once you are done, click the "Create trigger" button to save your trigger.
+
+<SubHeader>Assign API Trigger to Test</SubHeader>
+
+<AssignTrigger doc="run-tests-with-api" />
+
+<SubHeader>Run Tests with QA Wolf CLI</SubHeader>
 
 </Layout>

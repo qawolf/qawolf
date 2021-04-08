@@ -58,7 +58,7 @@ export const copy = {
     "Select an element, then add a snippet with your chosen action and selector.",
   chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
-  cliDetail: "Or trigger tests with the",
+  cliDetail: "Trigger tests with the",
   cliDetail2: "QA Wolf CLI",
   clickMe: "Click me",
   clickMeClicked: "Clicked!",
