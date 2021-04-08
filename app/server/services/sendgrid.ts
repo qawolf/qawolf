@@ -23,10 +23,10 @@ export const sendEmail = async ({
 }: SendEmail): Promise<void> => {
   const message = {
     from,
-    html: html || " ",
+    html: html ? html : undefined,
     reply_to: reply_to ? { email: reply_to } : undefined,
-    subject: subject || " ",
-    text: text || " ",
+    subject: subject ? subject : undefined,
+    text: text ? text : undefined,
     to: [{ email: to }],
   };
 
