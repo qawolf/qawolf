@@ -439,7 +439,7 @@ export type RunTestStatus = {
 export type SendEmailMutation = {
   from: string;
   html?: string;
-  subject?: string;
+  subject: string;
   text?: string;
   to: string;
 };

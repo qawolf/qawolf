@@ -32,7 +32,7 @@ type SendEmail = {
   apiKey: string;
   from: string;
   html?: string;
-  subject?: string;
+  subject: string;
   text?: string;
   to: string;
 };
@@ -58,7 +58,7 @@ query email($created_after: String!, $to: String!) {
 `;
 
 const sendEmailMutation = `
-mutation sendEmail($from: String!, $html: String, $subject: String, $text: String, $to: String!) {
+mutation sendEmail($from: String!, $html: String, $subject: String!, $text: String, $to: String!) {
   sendEmail(from: $from, html: $html, subject: $subject, text: $text, to: $to) {
     from
     html
