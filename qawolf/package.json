@@ -23,6 +23,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "axios": "^0.21.1",
     "better-opn": "2.1.1",
     "cli-progress": "^3.8.2",
     "commander": "^7.0.0",
