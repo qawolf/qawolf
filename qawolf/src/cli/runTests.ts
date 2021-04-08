@@ -89,10 +89,7 @@ export default async function runTests({
   ensureApiKey();
   const suiteId = await createSuite({ env, triggerId });
 
-  if (!wait) {
-    console.log("🐺 complete, do not wait for tests to run");
-    return;
-  }
+  if (!wait) return;
 
   const status = await waitForSuite(suiteId);
 
