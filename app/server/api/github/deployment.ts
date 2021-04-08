@@ -49,7 +49,7 @@ export const buildDeploymentUrlForTeam = async (
   log.debug("branches", branches, "url", deploymentUrl);
 
   if (branches.length > 1) {
-    log.alert(`multiple branches ${branches} for team ${team_id}`);
+    log.error(`multiple branches ${branches} for team ${team_id}`);
     return deploymentUrl;
   }
 

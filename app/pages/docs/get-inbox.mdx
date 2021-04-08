@@ -88,6 +88,8 @@ const message = await sendMessage({
 - [text] (string): Text body of the email. Default: `null`
 - to (string): Recipient of the email.
 
+Note: You must provide at least one of `html` and `text` to specify the email content.
+
 **Returns:** `Promise<Message>`
 
 - from (string): Sender of the email. Example: `"my-team@qawolf.email"`
