@@ -897,7 +897,7 @@ type Mutation {
     html: String
 
     "Email subject line"
-    subject: String
+    subject: String!
 
     "Email text"
     text: String
