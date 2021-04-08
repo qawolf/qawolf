@@ -5,7 +5,9 @@ import { isServer } from "../../../../lib/detection";
 import { routes } from "../../../../lib/routes";
 import { copy } from "../../../../theme/copy";
 import CodeBlock from "../../../shared/CodeBlock";
-import ExternalLink from "../../../shared/ExternalLink";
+import ExternalLink, {
+  buildQaWolfDocsLink,
+} from "../../../shared/ExternalLink";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
@@ -17,10 +19,9 @@ const variablesHref =
 export default function NetlifyBuildPlugin(): JSX.Element {
   const { apiKey } = useApiKey();
 
-  const docsHref = new URL(
-    `${routes.docs}/run-tests-on-netlify-deployment#install-qa-wolf-build-plugin`,
-    isServer() ? "https://www.qawolf.com" : window.location.origin
-  ).href;
+  const docsHref = buildQaWolfDocsLink(
+    "/run-tests-on-netlify-deployment#install-qa-wolf-build-plugin"
+  );
 
   return (
     <>

@@ -54,6 +54,10 @@ export const docs: Section[] = [
         name: "Run Tests with API",
       },
       {
+        href: `${routes.docs}/run-tests-with-cli`,
+        name: "Run Tests with CLI",
+      },
+      {
         href: `${routes.docs}/invite-team-members`,
         name: "Invite Team Members",
       },
