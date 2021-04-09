@@ -16,20 +16,25 @@ const qaWolfUrl = process.env.QAWOLF_URL || "https://www.qawolf.com";
 const createSuite = async ({
   env,
   triggerId,
-}: CreateSuite): Promise<string> => {
+}: CreateSuite): Promise<{ id: string; url: string }> => {
   const suitesUrl = new URL("/api/suites", qaWolfUrl).href;
 
-  const {
-    data: { id, url },
-  } = await axios.post(
-    suitesUrl,
-    { env, trigger_id: triggerId },
-    { headers: { authorization: process.env.QAWOLF_API_KEY } }
-  );
+  try {
+    const {
+      data: { id, url },
+    } = await axios.post(
+      suitesUrl,
+      { env, trigger_id: triggerId },
+      { headers: { authorization: process.env.QAWOLF_API_KEY } }
+    );
 
-  console.log("Created suite, see details at", url);
+    console.log("Created suite, see details at", url);
 
-  return id;
+    return { id, url };
+  } catch (error) {
+    console.log(red(`Error creating suite: ${error.response?.data}`));
+    process.exit(1);
+  }
 };
 
 const ensureApiKey = (): void => {
@@ -41,7 +46,7 @@ const ensureApiKey = (): void => {
 };
 
 const waitForSuite = async (suiteId: string): Promise<Status> => {
-  console.log("waiting for tests to run...");
+  console.log("Waiting for tests to run...");
 
   const suiteUrl = new URL(`/api/suites/${suiteId}`, qaWolfUrl).href;
 
@@ -72,7 +77,7 @@ const waitForSuite = async (suiteId: string): Promise<Status> => {
   const timeoutPromise = new Promise<Status>((_, reject) => {
     setTimeout(() => {
       timeout = true;
-      reject(new Error("suite not complete"));
+      reject(new Error("Suite not complete"));
     }, timeoutMs);
   });
 
@@ -87,16 +92,14 @@ export default async function runTests({
   console.log(bold(`\n🐺  Run QA Wolf tests for trigger ${triggerId}`));
 
   ensureApiKey();
-  const suiteId = await createSuite({ env, triggerId });
+  const { id: suiteId, url } = await createSuite({ env, triggerId });
 
   if (!wait) return;
 
   const status = await waitForSuite(suiteId);
 
   const colorFn = status === "fail" ? red : green;
-  console.log(colorFn(`🐺 complete, suite ${status}ed`));
+  console.log(colorFn(`🐺 Complete, suite ${status}ed: ${url}`));
 
-  if (status === "pass") return;
-
-  process.exit(1);
+  if (status === "fail") process.exit(1);
 }
