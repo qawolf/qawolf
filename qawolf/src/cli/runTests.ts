@@ -89,7 +89,7 @@ export default async function runTests({
   triggerId,
   wait,
 }: RunTests): Promise<void> {
-  console.log(bold(`\n🐺  Run QA Wolf tests for trigger ${triggerId}`));
+  console.log(bold(`\n🐺 Run QA Wolf tests for trigger ${triggerId}`));
 
   ensureApiKey();
   const { id: suiteId, url } = await createSuite({ env, triggerId });
