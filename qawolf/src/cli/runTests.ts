@@ -11,7 +11,7 @@ type RunTests = CreateSuite & { wait: boolean };
 
 type Status = "fail" | "pass";
 
-const qaWolfUrl = "https://www.qawolf.com";
+const qaWolfUrl = process.env.QAWOLF_URL || "https://www.qawolf.com";
 
 const createSuite = async ({
   env,
