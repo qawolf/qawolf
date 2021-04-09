@@ -79,7 +79,11 @@ env:
 
 <SubHeader>Run Tests with CLI</SubHeader>
 
-Now you can run your tests with the QA Wolf CLI. Make sure to specify the trigger ID with the `--trigger` flag. You can also optionally pass any environment variables you want to provide to your tests with the `--env` flag.
+You can run your tests with the QA Wolf CLI. Below are the available options:
+
+- `--trigger` (required): the trigger ID.
+- `--env` (optional): JSON string of environment variables to pass to your tests.
+- `--no-wait` (optional): do not wait for tests to run before exiting.
 
 The second gray box from above provides an example:
 
