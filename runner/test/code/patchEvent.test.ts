@@ -54,23 +54,28 @@ line 2`)
 });
 
 describe("buildEventCode", () => {
-  it("builds the selector", () => {
+  it("builds an action with a selector", () => {
     expect(buildEventCode(clickEvent, "page")).toEqual(
       `await page.click(".input");`
     );
   });
 
-  it("builds the value", () => {
+  it("builds an action with a value", () => {
     expect(
       buildEventCode({ ...clickEvent, action: "fill", value: "hello" }, "page")
     ).toEqual(`await page.fill(".input", "hello");`);
   });
 
-  it("builds waitUntil option for goto and reload", () => {
+  it("builds a goto action", () => {
     expect(
-      buildEventCode({ action: "goto", page: 0 as any, time }, "page")
-    ).toEqual(`await page.goto();`);
+      buildEventCode(
+        { action: "goto", page: 0 as any, time, value: "https://google.com" },
+        "page"
+      )
+    ).toEqual(`await page.goto("https://google.com");`);
+  });
 
+  it("builds a reload action", () => {
     expect(
       buildEventCode({ action: "reload", page: 0 as any, time }, "page")
     ).toEqual(`await page.reload();`);
