@@ -1,3 +1,4 @@
+import { buildTestCode } from "../../shared/utils";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTest,
@@ -49,11 +50,9 @@ export const createTestResolver = async (
   const event = guide ? "Guide Created" : "Test Created";
   trackSegmentEvent(user, event, { acValue: guide || url });
 
-  const code = `const { context } = await launch();\nconst page = await context.newPage();\nawait page.goto('${url}', { waitUntil: "domcontentloaded" });\n// 🐺 QA Wolf will create code here`;
-
-  return createTest(
+  const test = await createTest(
     {
-      code,
+      code: buildTestCode(url),
       creator_id: user.id,
       group_id,
       guide,
@@ -61,6 +60,8 @@ export const createTestResolver = async (
     },
     { db, logger }
   );
+
+  return { ...test, url };
 };
 
 /**

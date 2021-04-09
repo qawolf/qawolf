@@ -104,6 +104,7 @@ describe("createTestResolver", () => {
       guide: null,
       id: expect.any(String),
       name: "My Test",
+      url: "https://google.com",
     });
 
     await db("tests").where({ id: test.id }).del();

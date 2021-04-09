@@ -282,6 +282,7 @@ export type Test = {
   runner_requested_at?: string | null;
   team_id: string;
   updated_at: string;
+  url?: string;
   version: number;
 };
 
