@@ -1,13 +1,16 @@
 import { Box } from "grommet";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { isServer } from "../../../lib/detection";
 import { copy } from "../../../theme/copy";
 import { transitionDuration } from "../../../theme/theme";
-import WolfSitting from "../../shared/icons/WolfSitting";
+import WolfPlaying from "../../shared/icons/WolfPlaying";
+import WolfSittingRight from "../../shared/icons/WolfSittingRight";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
+
+const height = "134px";
+const timeout = 3 * 1000;
 
 const StyledBox = styled(Box)`
   p {
@@ -25,10 +28,29 @@ const StyledBox = styled(Box)`
 export default function Wolf(): JSX.Element {
   const { wolf } = useContext(UserContext);
 
-  if (isServer() || !wolf) return null;
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  if (!wolf) return null;
+
+  const handleClick = (): void => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    setIsPlaying(true);
+
+    timeoutRef.current = setTimeout(() => {
+      setIsPlaying(false);
+      timeoutRef.current = null;
+    }, timeout);
+  };
+
+  const IconComponent = isPlaying ? WolfPlaying : WolfSittingRight;
 
   return (
-    <StyledBox alignSelf="center" flex={false}>
+    <StyledBox alignSelf="center" flex={false} onClick={handleClick}>
       <Text
         color="gray9"
         margin={{ bottom: "xxsmall" }}
@@ -37,7 +59,9 @@ export default function Wolf(): JSX.Element {
       >
         {copy.wolfGreeting(wolf.name)}
       </Text>
-      <WolfSitting color={wolf.variant} />
+      <Box height={height} justify="end">
+        <IconComponent color={wolf.variant} />
+      </Box>
     </StyledBox>
   );
 }
