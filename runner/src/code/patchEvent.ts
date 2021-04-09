@@ -43,10 +43,6 @@ export const buildEventCode = (
     args.push(formatArgument(event.value));
   }
 
-  if (["goto", "reload"].includes(event.action)) {
-    args.push('{ waitUntil: "domcontentloaded" }');
-  }
-
   const line = `await ${variable}.${event.action}(${args.join(", ")});`;
   return line;
 };

@@ -17,7 +17,7 @@ describe("Run", () => {
 
   it("catches and formats the error", async () => {
     const run = new Run({
-      logger: environment._logger,
+      logger: environment.logger,
       runOptions: {
         ...runOptions,
         code: "throw new Error('oh no!');",
@@ -37,7 +37,7 @@ describe("Run", () => {
     const code = "const a = 0;\nconst b = 1;";
 
     const run = new Run({
-      logger: environment._logger,
+      logger: environment.logger,
       runOptions: {
         ...runOptions,
         code,
@@ -80,7 +80,7 @@ describe("Run", () => {
     const code = "const b = 1;\na+b";
 
     const run = new Run({
-      logger: environment._logger,
+      logger: environment.logger,
       runOptions: {
         ...runOptions,
         code,
@@ -120,7 +120,7 @@ describe("Run", () => {
 
   it("runs hooks", async () => {
     const run = new Run({
-      logger: environment._logger,
+      logger: environment.logger,
       runOptions: {
         ...runOptions,
         code: "await new Promise((r) => setTimeout(r, 0))",
@@ -154,7 +154,7 @@ describe("Run", () => {
     const events: RunProgress[] = [];
 
     const run = new Run({
-      logger: environment._logger,
+      logger: environment.logger,
       runOptions: {
         ...runOptions,
         code:
@@ -177,5 +177,34 @@ describe("Run", () => {
     expect(run.progress).toMatchObject({
       completed_at: expect.any(String),
     });
+  });
+
+  it("uses code_to_run when provided", async () => {
+    const logs: string[] = [];
+
+    const logger = {
+      log(_: string, __: string, message: string): void {
+        logs.push(message);
+      },
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      on: () => {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    const environment = new Environment(logger);
+
+    const run = new Run({
+      logger: environment.logger,
+      runOptions: {
+        ...runOptions,
+        code: "console.log('code')",
+        code_to_run: "console.log('code_to_run')",
+      },
+      vm: environment._vm,
+    });
+
+    await run.run({}, []);
+
+    expect(logs).toEqual(['"code_to_run"']);
   });
 });

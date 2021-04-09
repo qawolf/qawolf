@@ -13,7 +13,7 @@ import { VM } from "./VM";
 const debug = Debug("qawolf:Environment");
 
 export class Environment extends EventEmitter {
-  readonly _logger = new Logger();
+  readonly _logger: Logger;
   readonly _vm: VM;
 
   _browser?: Browser;
@@ -22,8 +22,10 @@ export class Environment extends EventEmitter {
   _variables: Variables = {};
   _updater = new CodeUpdater(this._variables);
 
-  constructor() {
+  constructor(logger?: Logger) {
     super();
+
+    this._logger = logger || new Logger();
 
     this._elementChooser.on("elementchooser", (event) =>
       this.emit("elementchooser", event)

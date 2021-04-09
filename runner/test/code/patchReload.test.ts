@@ -17,7 +17,7 @@ describe("reload", () => {
     variables: { page: "p1" },
   };
 
-  const reloadCode = `await page.reload({ waitUntil: "domcontentloaded" });\n${PATCH_HANDLE}`;
+  const reloadCode = `await page.reload();\n${PATCH_HANDLE}`;
   const expressions = parseActionExpressions(reloadCode);
 
   it("does not insert a reload after a previous one", () => {

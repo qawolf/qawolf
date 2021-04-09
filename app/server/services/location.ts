@@ -52,6 +52,10 @@ export const getPossibleLocations = (locations: RunnerLocations): string[] => {
     return 0;
   });
 
+  if (process.env.NODE_ENV === "development") {
+    possibleLocations.push("local");
+  }
+
   return possibleLocations;
 };
 

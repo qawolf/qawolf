@@ -145,6 +145,7 @@ export type Test = ShortTest & {
   is_enabled: boolean;
   team_id: string;
   updated_at: string;
+  url?: string;
   version: number;
 };
 
@@ -290,6 +291,7 @@ export type Log = {
 
 export type RunOptions = {
   code: string;
+  code_to_run?: string;
   end_line?: number;
   env: Env;
   helpers?: string;

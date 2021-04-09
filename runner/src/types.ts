@@ -82,6 +82,7 @@ export type Run = {
 export type RunOptions = {
   artifacts?: Artifacts;
   code: string;
+  code_to_run?: string;
   end_line?: number;
   env?: Record<string, string>;
   helpers: string;

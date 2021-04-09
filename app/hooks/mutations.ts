@@ -58,6 +58,7 @@ import {
   User,
   Wolf,
 } from "../lib/types";
+import { buildTestCode } from "../shared/utils";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -595,10 +596,13 @@ export const useCreateTest = (
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
     onCompleted: (data: CreateTestData) => {
-      const { code, id, version } = data.createTest;
+      const { code, id, url, version } = data.createTest;
 
       state.setPendingRun({
         code,
+        // run the created test with a waitUntil: domcontentloaded so the user
+        // does not need to wait for the load event to start creating the test
+        code_to_run: buildTestCode(url, true),
         env: {},
         restart: true,
         test_id: id,
