@@ -23,9 +23,9 @@ Select the "API" tab on the right.
 
 <Image
   alt="Create trigger"
-  height={563}
+  height={659}
   src="/docs/run-tests-with-cli/create-trigger.png"
-  width={488}
+  width={486}
 />
 
 You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
@@ -37,13 +37,13 @@ You can rename your trigger, or keep the default name ("API" in our example). If
   width={486}
 />
 
-You'll notice the second gray box provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
+You'll notice the second set of gray boxes provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
 
 <Image
   alt="Create trigger example"
-  height={98}
+  height={179}
   src="/docs/run-tests-with-cli/create-trigger-example.png"
-  width={438}
+  width={440}
 />
 
 Once you are done, click the "Create trigger" button to save your trigger.
@@ -52,7 +52,60 @@ Once you are done, click the "Create trigger" button to save your trigger.
 
 <AssignTrigger doc="run-tests-with-api" />
 
-<SubHeader>Run Tests with QA Wolf CLI</SubHeader>
+<SubHeader>Set QAWOLF_API_KEY Environment Variable</SubHeader>
+
+In order to run your tests, you need to set the `QAWOLF_API_KEY` environment variable before calling the CLI. Your QA Wolf API key is provided in the first gray box in the CLI example.
+
+<Image
+  alt="Trigger API key"
+  height={179}
+  src="/docs/run-tests-with-cli/create-trigger-api-key.png"
+  width={440}
+/>
+
+For example, in GitHub Actions you can <ExternalLink href="https://docs.github.com/en/actions/reference/environment-variables#about-environment-variables">specify environment variables</ExternalLink> with the `env` key:
+
+```yaml
+env:
+  QAWOLF_API_KEY: qawolf_965c32418c984e50a44b05a23821dbda
+```
+
+**Warning: the above example is just an illustration. You should acutally store your QA Wolf API key as a secret in your CI provider.** For example, in GitHub Actions you would <ExternalLink href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-an-organization">create an encrypted secret</ExternalLink>:
+
+```yaml
+env:
+  QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
+```
+
+<SubHeader>Run tests with CLI</SubHeader>
+
+Now you can run your tests with the QA Wolf CLI. Make sure to specify the trigger ID with the `--trigger` flag. You can also optionally pass any environment variables you want to provide to your tests with the `--env` flag.
+
+The second gray box from above provides an example:
+
+```bash
+export QAWOLF_API_KEY=qawolf_965c32418c984e50a44b05a23821dbda # set API key
+
+npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq --env '{"env": { "MY_VARIABLE": "secret" } }'
+```
+
+Here is a full example of running tests in <ExternalLink href="https://github.com/features/actions">GitHub Actions</ExternalLink> on deployment:
+
+```yaml
+name: QA Wolf
+on: [deployment]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run QA Wolf tests
+        run: npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq
+        env:
+          QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
+```
+
+Please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink> if you have questions about integrating QA Wolf into your process.
 
 <ViewRunHistory description="when you use the QA Wolf CLI" />
 
