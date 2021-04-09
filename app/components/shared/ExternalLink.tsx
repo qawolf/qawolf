@@ -1,6 +1,8 @@
 import { Box, BoxProps } from "grommet";
 import styled from "styled-components";
 
+import { isServer } from "../../lib/detection";
+import { routes } from "../../lib/routes";
 import { colors } from "../../theme/theme";
 import Text from "./Text";
 
@@ -9,6 +11,13 @@ type Props = {
   isBold?: boolean;
   href: string;
   margin?: BoxProps["margin"];
+};
+
+export const buildQaWolfDocsLink = (href: string): string => {
+  return new URL(
+    `${routes.docs}${href}`,
+    isServer() ? "https://www.qawolf.com" : window.location.origin
+  ).href;
 };
 
 const StyledText = styled(Text)`

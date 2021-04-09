@@ -1,12 +1,20 @@
-import { Box } from "grommet";
+import { Box, BoxProps } from "grommet";
 
 import { borderSize, colors, textDesktop } from "../../theme/theme";
 
-type Props = { children: string };
+type Props = {
+  children: string;
+  margin?: BoxProps["margin"];
+};
 
-export default function CodeBlock({ children }: Props): JSX.Element {
+export default function CodeBlock({ children, margin }: Props): JSX.Element {
   return (
-    <Box background="gray2" pad="small" round={borderSize.small}>
+    <Box
+      background="gray2"
+      margin={margin}
+      pad="small"
+      round={borderSize.small}
+    >
       <code
         style={{
           color: colors.gray9,
