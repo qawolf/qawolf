@@ -600,6 +600,8 @@ export const useCreateTest = (
 
       state.setPendingRun({
         code,
+        // run the created test with a waitUntil: domcontentloaded so the user
+        // does not need to wait for the load event to start creating the test
         code_to_run: buildTestCode(url, true),
         env: {},
         restart: true,
