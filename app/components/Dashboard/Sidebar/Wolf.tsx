@@ -29,7 +29,7 @@ export default function Wolf(): JSX.Element {
   const { wolf } = useContext(UserContext);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false); // TODO: update
+  const [isPlaying, setIsPlaying] = useState(false);
 
   if (!wolf) return null;
 
