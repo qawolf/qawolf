@@ -13,7 +13,7 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 <Header>Run Tests with CLI</Header>
 
-In this tutorial, we'll trigger our tests with the QA Wolf CLI. This is useful if you want to run your tests in a CI provider like <ExternalLink href="https://github.com/features/actions">GitHub Actions</ExternalLink> or <ExternalLink href="https://circleci.com">CircleCI</ExternalLink>.
+In this tutorial, we'll trigger our tests with the QA Wolf CLI. This is useful if you want to run your tests in a CI provider like <ExternalLink href="https://github.com/features/actions">GitHub Actions</ExternalLink>, <ExternalLink href="https://docs.gitlab.com/ee/ci/">GitLab CI/CD</ExternalLink>, or <ExternalLink href="https://circleci.com">CircleCI</ExternalLink>.
 
 <SubHeader>Create API Trigger</SubHeader>
 
@@ -28,7 +28,7 @@ Select the "API" tab on the right.
   width={486}
 />
 
-You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
+You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you need to select one.
 
 <Image
   alt="Choose environment"
@@ -37,7 +37,7 @@ You can rename your trigger, or keep the default name ("API" in our example). If
   width={486}
 />
 
-You'll notice the second set of gray boxes provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
+You'll notice the second set of gray boxes provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it by editing the trigger.
 
 <Image
   alt="Create trigger example"
@@ -63,20 +63,6 @@ In order to run your tests, you need to set the `QAWOLF_API_KEY` environment var
   width={440}
 />
 
-For example, in GitHub Actions you can <ExternalLink href="https://docs.github.com/en/actions/reference/environment-variables#about-environment-variables">specify environment variables</ExternalLink> with the `env` key:
-
-```yaml
-env:
-  QAWOLF_API_KEY: qawolf_965c32418c984e50a44b05a23821dbda
-```
-
-**Warning: the above example is just an illustration. You should store your QA Wolf API key as a secret in your CI provider.** For example, in GitHub Actions you would <ExternalLink href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-an-organization">create an encrypted secret</ExternalLink>:
-
-```yaml
-env:
-  QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
-```
-
 <SubHeader>Run Tests with CLI</SubHeader>
 
 You can run your tests with the QA Wolf CLI. Below are the available options:
@@ -93,7 +79,11 @@ export QAWOLF_API_KEY=qawolf_965c32418c984e50a44b05a23821dbda # set API key
 npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq --env '{"env": { "MY_VARIABLE": "secret" } }'
 ```
 
-Here is a full example of running tests in <ExternalLink href="https://github.com/features/actions">GitHub Actions</ExternalLink> on deployment:
+<SubHeader>Run Tests with GitHub Actions</SubHeader>
+
+Create an <ExternalLink href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-an-organization">encrypted secret</ExternalLink> for your `QAWOLF_API_KEY`.
+
+Then run the cli in your workflow file. Here is an example running tests on deployment:
 
 ```yaml
 name: QA Wolf
@@ -107,6 +97,20 @@ jobs:
         run: npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq
         env:
           QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
+```
+
+<SubHeader>Run Tests with GitLab CI/CD</SubHeader>
+
+Create a <ExternalLink href="https://docs.gitlab.com/ee/ci/variables/#project-cicd-variables">protected variable</ExternalLink> for your `QAWOLF_API_KEY`.
+
+Then run the cli in your `.gitlab-ci.yaml` file. Here is an example workflow file:
+
+```yaml
+image: node
+
+qawolf:
+  script:
+    - npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq
 ```
 
 Please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink> if you have questions about integrating QA Wolf into your process.
