@@ -67,7 +67,7 @@ export const deleteOldEmails = async ({
   const log = logger.prefix("deleteOldEmails");
 
   const oneMonthAgo = new Date();
-  oneMonthAgo.setDate(oneMonthAgo.getDate() - 31);
+  oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
 
   const deleteCount = await db("emails")
     .where("created_at", "<", oneMonthAgo.toISOString())

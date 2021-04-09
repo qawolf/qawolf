@@ -101,5 +101,5 @@ export default async function runTests({
   const colorFn = status === "fail" ? red : green;
   console.log(colorFn(`🐺 Complete, suite ${status}ed: ${url}`));
 
-  if (status === "fail") process.exit(1);
+  process.exit(status === "fail" ? 1 : 0);
 }
