@@ -9,6 +9,7 @@ import WolfSittingRight from "../../shared/icons/WolfSittingRight";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
 
+const height = "134px";
 const timeout = 3 * 1000;
 
 const StyledBox = styled(Box)`
@@ -58,7 +59,7 @@ export default function Wolf(): JSX.Element {
       >
         {copy.wolfGreeting(wolf.name)}
       </Text>
-      <Box height="134px" justify="end">
+      <Box height={height} justify="end">
         <IconComponent color={wolf.variant} />
       </Box>
     </StyledBox>
