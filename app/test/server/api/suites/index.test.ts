@@ -106,7 +106,7 @@ describe("handleSuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(500);
-    expect(send).toBeCalledWith("No tests found");
+    expect(send).toBeCalledWith("No tests for trigger");
   });
 
   it("creates a suite and returns url", async () => {

@@ -79,7 +79,7 @@ export const handleSuitesRequest = async (
 
     if (!result) {
       log.error("no tests for trigger", id);
-      throw new Error("No tests found");
+      throw new Error("No tests for trigger");
     }
 
     const suiteId = result.suite.id;

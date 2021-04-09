@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
@@ -8,9 +9,9 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>getInbox([options])</Header>
 
-Get an email address and send or receive an email message in your test.
+Get an email address and send or receive an email message in your test. See <Link href="receive-an-email">this guide</Link> to learn more about receiving an email.
 
-See <Link href="receive-an-email">this guide</Link> to learn more about receiving an email.
+If you'd like QA Wolf to forward received emails so you can see them, please <ExternalLink href="https://slack.qawolf.com">contact us</ExternalLink>.
 
 ```js
 // get your team's email address
@@ -59,7 +60,7 @@ const message = await sendMessage({
 
 <Header>sendMessage([options])</Header>
 
-Send a message from the email address returned from `getInbox`. If the message is not sent successfully, an error is thrown. 
+Send a message from the email address returned from `getInbox`. If the message is not sent successfully, an error is thrown.
 
 **To prevent spam, your team must be approved to call this function.** Please <a href="mailto:hello@qawolf.com">contact us</a> to get approved.
 
