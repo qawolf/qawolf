@@ -56,13 +56,13 @@ export const forwardEmail = async ({
 }: ForwardEmail): Promise<void> => {
   const log = logger.prefix("forwardEmail");
 
-  if (!team.forward_emails) {
-    log.debug("skip, do not forward emails");
+  if (!team.forward_email) {
+    log.debug("skip, do not forward");
     return;
   }
-  log.debug("forward email to", team.forward_emails);
+  log.debug("forward email to", team.forward_email);
 
-  await sendEmail({ ...email, from: email.to, to: team.forward_emails });
+  await sendEmail({ ...email, from: email.to, to: team.forward_email });
 
   log.debug("complete");
 };

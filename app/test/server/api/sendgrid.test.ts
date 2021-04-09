@@ -108,7 +108,7 @@ describe("handleSendGridRequest", () => {
   });
 
   it("forwards email if specified", async () => {
-    await db("teams").update({ forward_emails: "test@email.com" });
+    await db("teams").update({ forward_email: "test@email.com" });
 
     jest.spyOn(sendGridApi, "buildEmailFields").mockResolvedValue({
       from: "spirit@qawolf.com",
@@ -133,7 +133,7 @@ describe("handleSendGridRequest", () => {
       to: "test@email.com",
     });
 
-    await db("teams").update({ forward_emails: null });
+    await db("teams").update({ forward_email: null });
   });
 });
 
