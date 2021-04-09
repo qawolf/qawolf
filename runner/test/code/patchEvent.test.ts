@@ -69,11 +69,11 @@ describe("buildEventCode", () => {
   it("builds waitUntil option for goto and reload", () => {
     expect(
       buildEventCode({ action: "goto", page: 0 as any, time }, "page")
-    ).toEqual(`await page.goto({ waitUntil: "domcontentloaded" });`);
+    ).toEqual(`await page.goto();`);
 
     expect(
       buildEventCode({ action: "reload", page: 0 as any, time }, "page")
-    ).toEqual(`await page.reload({ waitUntil: "domcontentloaded" });`);
+    ).toEqual(`await page.reload();`);
   });
 
   it("skips the selector for keyboard.press", () => {
@@ -250,7 +250,7 @@ describe("patchEvent", () => {
         variables: { page: "p1" },
       })
     ).toEqual(
-      `const page2 = await context.newPage();\nawait page2.goto("https://google.com", { waitUntil: "domcontentloaded" });\n${PATCH_HANDLE}`
+      `const page2 = await context.newPage();\nawait page2.goto("https://google.com");\n${PATCH_HANDLE}`
     );
   });
 });
