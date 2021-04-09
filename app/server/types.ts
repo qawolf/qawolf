@@ -242,6 +242,7 @@ export type Team = {
   api_key: string;
   created_at?: string;
   deleted_at?: string | null;
+  forward_emails?: string | null;
   id: string;
   inbox: string;
   helpers: string;

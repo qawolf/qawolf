@@ -3,6 +3,7 @@ import { NextApiRequest } from "next";
 
 import * as sendGridApi from "../../../server/api/sendgrid";
 import environment from "../../../server/environment";
+import * as sendGridService from "../../../server/services/sendgrid";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
 
@@ -88,6 +89,7 @@ describe("handleSendGridRequest", () => {
       text: "text",
       to: "inbox+new@dev.qawolf.com",
     });
+    jest.spyOn(sendGridService, "sendEmail");
 
     await handleSendGridRequest({ url } as NextApiRequest, res, { db, logger });
 
@@ -101,6 +103,37 @@ describe("handleSendGridRequest", () => {
         to: "inbox+new@dev.qawolf.com",
       },
     ]);
+
+    expect(sendGridService.sendEmail).not.toBeCalled();
+  });
+
+  it("forwards email if specified", async () => {
+    await db("teams").update({ forward_emails: "test@email.com" });
+
+    jest.spyOn(sendGridApi, "buildEmailFields").mockResolvedValue({
+      from: "spirit@qawolf.com",
+      headers: "Date: Thu, 18 Feb 2021 10:18:51 -0700\n",
+      html: "html",
+      subject: "subject",
+      text: "text",
+      to: "inbox+new@dev.qawolf.com",
+    });
+
+    const sendEmailSpy = jest
+      .spyOn(sendGridService, "sendEmail")
+      .mockResolvedValue();
+
+    await handleSendGridRequest({ url } as NextApiRequest, res, { db, logger });
+
+    expect(sendEmailSpy.mock.calls[0][0]).toMatchObject({
+      from: "inbox+new@dev.qawolf.com",
+      html: "html",
+      subject: "subject",
+      text: "text",
+      to: "test@email.com",
+    });
+
+    await db("teams").update({ forward_emails: null });
   });
 });
 

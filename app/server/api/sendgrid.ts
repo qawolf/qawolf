@@ -6,20 +6,28 @@ import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { createEmail } from "../models/email";
 import { findTeamForEmail } from "../models/team";
-import { ModelOptions } from "../types";
+import { sendEmail } from "../services/sendgrid";
+import { ModelOptions, Team } from "../types";
 
 type EmailFields = {
   from: string;
-  headers: string;
   html: string;
   subject: string;
   text: string;
   to: string;
 };
 
+type EmailRequestFields = EmailFields & { headers: string };
+
+type ForwardEmail = {
+  email: EmailFields;
+  logger: Logger;
+  team: Team;
+};
+
 export const buildEmailFields = async (
   req: NextApiRequest
-): Promise<EmailFields> => {
+): Promise<EmailRequestFields> => {
   return new Promise((resolve, reject): void => {
     const form = new IncomingForm();
 
@@ -27,7 +35,7 @@ export const buildEmailFields = async (
       if (err) return reject(err);
       const { from, headers, html, subject, text, to } = fields;
 
-      resolve({ from, headers, html, subject, text, to } as EmailFields);
+      resolve({ from, headers, html, subject, text, to } as EmailRequestFields);
     });
   });
 };
@@ -39,6 +47,24 @@ export const buildSendDate = (headers: string): string => {
   if (isNaN(date.getTime())) date = new Date();
 
   return date.toISOString();
+};
+
+export const forwardEmail = async ({
+  email,
+  logger,
+  team,
+}: ForwardEmail): Promise<void> => {
+  const log = logger.prefix("forwardEmail");
+
+  if (!team.forward_emails) {
+    log.debug("skip, do not forward emails");
+    return;
+  }
+  log.debug("forward email to", team.forward_emails);
+
+  await sendEmail({ ...email, from: email.to, to: team.forward_emails });
+
+  log.debug("complete");
 };
 
 export const verifyRequest = (url: string, logger: Logger): void => {
@@ -72,11 +98,12 @@ export const handleSendGridRequest = async (
         {
           ...fields,
           created_at: buildSendDate(headers),
-          html: fields.html || "",
           team_id: team.id,
         },
         { db, logger }
       );
+
+      await forwardEmail({ email: fields, logger, team });
     } else {
       log.debug("skip create email, no team for", fields.to);
     }
