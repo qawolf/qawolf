@@ -157,14 +157,16 @@ export const findRunnerLocations = async (
 
 export const findSystemEnvironmentVariable = async (
   name: string,
-  { db }: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<EnvironmentVariable> => {
+  const log = logger.prefix("findSystemEnvironmentVariable");
   const environmentVariable = await db("environment_variables")
     .select("*")
     .where({ is_system: true, name })
     .first();
 
   if (!environmentVariable) {
+    log.error("not found", name);
     throw new Error("environment variable not found");
   }
 
