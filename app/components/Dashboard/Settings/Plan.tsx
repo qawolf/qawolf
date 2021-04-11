@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import capitalize from "lodash/capitalize";
 
-import { useOnStripeCheckout } from "../../../hooks/onStripeCheckout";
+import { useBuildCheckoutHref } from "../../../hooks/buildCheckoutHref";
 import { useOnStripePortal } from "../../../hooks/onStripePortal";
 import { routes } from "../../../lib/routes";
 import { TeamWithUsers } from "../../../lib/types";
@@ -15,14 +15,9 @@ type Props = { team: TeamWithUsers };
 const contactHref = "mailto:hello@qawolf.com";
 
 export default function Plan({ team }: Props): JSX.Element {
-  const {
-    isLoading: isCheckoutLoading,
-    onClick: onCheckoutClick,
-  } = useOnStripeCheckout();
-  const {
-    isLoading: isPortalLoading,
-    onClick: onPortalClick,
-  } = useOnStripePortal();
+  const { isLoading, onClick } = useOnStripePortal();
+
+  const checkoutHref = useBuildCheckoutHref();
 
   const isSubscribed = team.plan === "business";
   const showButtons = ["business", "free"].includes(team.plan);
@@ -47,9 +42,10 @@ export default function Plan({ team }: Props): JSX.Element {
               type="secondary"
             />
             <Button
-              isDisabled={isCheckoutLoading || isPortalLoading}
+              href={isSubscribed ? undefined : checkoutHref}
+              isDisabled={isLoading}
               label={isSubscribed ? copy.manageBilling : copy.upgrade}
-              onClick={isSubscribed ? onPortalClick : onCheckoutClick}
+              onClick={isSubscribed ? onClick : undefined}
               type="primary"
             />
           </Box>
