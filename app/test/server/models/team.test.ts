@@ -367,6 +367,20 @@ describe("updateTeam", () => {
       stripe_subscription_id: "stripeSubscriptionId",
       updated_at: expect.anything(),
     });
+
+    await updateTeam(
+      {
+        id: "teamId",
+        limit_reached_at: null,
+      },
+      options
+    );
+
+    const updatedTeam2 = await db.select("*").from("teams").first();
+    expect(updatedTeam2).toMatchObject({
+      id: "teamId",
+      limit_reached_at: null,
+    });
   });
 
   it("updates next trigger id for a team", async () => {

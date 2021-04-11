@@ -407,9 +407,9 @@ export const buildTeam = ({
     name: name || "Awesome Company",
     next_trigger_id: cuid(),
     plan: plan || "free",
+    renewed_at: new Date().toISOString(),
     stripe_customer_id: null,
     stripe_subscription_id: null,
-    renewed_at: new Date().toISOString(),
   };
 };
 
