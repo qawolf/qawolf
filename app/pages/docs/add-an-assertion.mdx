@@ -41,9 +41,7 @@ Our test code now looks like this:
 ```js
 const { context } = await launch();
 const page = await context.newPage();
-await page.goto("http://todomvc.com/examples/react", {
-  waitUntil: "domcontentloaded",
-});
+await page.goto("http://todomvc.com/examples/react");
 await page.click(".new-todo");
 await page.fill(".new-todo", "create test!");
 await page.press(".new-todo", "Enter");

@@ -67,9 +67,7 @@ Replace the URL in your tests with `process.env.URL`. For example, let's say our
 ```js
 const { context } = await launch();
 const page = await context.newPage();
-await page.goto("https://default.vercel.app/", {
-  waitUntil: "domcontentloaded",
-});
+await page.goto("https://default.vercel.app/");
 ```
 
 Let's update the `page.goto` call to go to `process.env.URL` if it exists, and our default URL otherwise:
@@ -78,9 +76,7 @@ Let's update the `page.goto` call to go to `process.env.URL` if it exists, and o
 const { context } = await launch();
 const page = await context.newPage();
 // go to process.env.URL if specified, and the default URL otherwise
-await page.goto(process.env.URL || "https://default.vercel.app/", {
-  waitUntil: "domcontentloaded",
-});
+await page.goto(process.env.URL || "https://default.vercel.app/");
 ```
 
 <SubHeader>See QA Wolf Results in GitHub</SubHeader>
