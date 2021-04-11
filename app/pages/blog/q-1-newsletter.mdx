@@ -1,0 +1,116 @@
+import ExternalLink from "../../components/Docs/ExternalLink";
+import Layout from "../../components/Blog/Layout";
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+
+<Layout>
+
+<Header>Q1 Newsletter</Header>
+
+April 1, 2021
+
+<Image
+  alt="Wolf in snow"
+  height={684}
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/wolf-q1.jpg"
+  width={1024}
+/>
+
+Happy April 1st from the QA Wolf Team! 🐺
+
+It's not lost on us that our first newsletter is coming out on April Fool's Day 🥸.
+
+But rest assured, none of the updates below are jokes! We've been hard at work making QA Wolf the best browser testing tool available.
+
+Since we're catching up on the last several months, we have a lot to share, so buckle up and put on your blue light blocking glasses! Going forward, we'll stick to monthly updates.
+
+Let's get into it:
+
+### April (In progress)
+
+- **Netlify integration.** Run tests on Netlify deploys with the QA Wolf build plugin (<ExternalLink href="https://www.qawolf.com/docs/run-tests-on-netlify-deployment">Completed!</ExternalLink>)
+
+- **Decrease flakes.** This is an ongoing priority for us. We're aiming to decrease flakiness in your tests while also maintaining speed.
+
+- **Run tests with CLI.** Use the QA Wolf CLI to create tests and wait for results with one command (<ExternalLink href="https://www.qawolf.com/docs/run-tests-with-cli">Completed!</ExternalLink>)
+
+Want to influence our roadmap? [Email](mailto:hello@qawolf.com`) us with your suggestion!
+
+### March (Completed)
+
+- **Added Snippets - #1 requested feature.** Now you can add a snippet to choose a selector or assertion (Demo <ExternalLink href="https://www.youtube.com/watch?v=Kg_MQ14vqe4">here</ExternalLink>).
+
+<Image
+  alt="Snippets"
+  height="534"
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/snippets.png"
+  width="1000"
+/>
+
+- **Failure alerts only.** You can enable this feature if you only want to receive alerts when a test has failed (this option is found in your Settings and you can learn more <ExternalLink href="https://www.qawolf.com/docs/manage-alerts">here</ExternalLink>).
+
+- **Better selectors.** Rewrote the code generation engine to work faster and choose better selectors by default.
+
+- **Run tests with Chrome.** You can now use "chrome" instead of "chromium". This is useful if you are testing video playback since chrome has more video codecs than chromium (learn more <ExternalLink href="https://www.qawolf.com/docs/launch">here</ExternalLink>).
+
+- **Faker added.** Added <ExternalLink href="https://github.com/marak/Faker.js/#api">faker</ExternalLink> as a global so you can generate test data.
+
+- **Updated our Docs.** Added an <ExternalLink href="https://www.qawolf.com/docs/globals">API Section</ExternalLink>, a <ExternalLink href="https://www.qawolf.com/docs/why-qa-wolf">Why QA Wolf</ExternalLink>, and <ExternalLink href="https://www.qawolf.com/docs/your-testing-strategy">Testing Strategy</ExternalLink> as well as a search function.
+
+### February (Completed)
+
+- **Test receiving an email.** Do you send email login codes or password reset emails? Now you can test receiving an email with QA Wolf! (Demo <ExternalLink href="https://www.qawolf.com/docs/manage-alerts">here</ExternalLink>).
+
+- **Dashboard redesign.** We refreshed the testing dashboard and added an onboarding sequence. If you haven't logged in for a bit, check it out and let us know what you think!
+
+- **Test groups.** You can now organize tests into groups and search them by name or by trigger.
+
+- **Environment variables.** When you click "Edit Test" from a run it includes the environment variables for that run. For vercel or netlify deployments that means the same `process.env.URL` for that run is included.
+
+- **Stop tests mid-run.** Running a test and accidentally select the wrong selector? Don't wait for the test to fail; stop it instantly with the click of a button! (Demo <ExternalLink href="https://twitter.com/QAWolfHQ/status/1359640199945330695">here</ExternalLink>)
+
+- **View test run history.** When you're inside a test, you can now view the history of that test.
+
+<Image
+  alt="Test run history"
+  height="418"
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/run-history.png"
+  width="1000"
+/>
+
+- **Code editor resizing.** Adjust the size of your code editor to view more browser or more code.
+
+<Image
+  alt="Resize code editor"
+  height="1419"
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/resize-editor.gif"
+  width="2560"
+/>
+
+- **Analytics-friendly testing.** We now block tracking (google analytics & tag manager) by default to prevent tests from messing up your analytics. You can <ExternalLink href="https://www.qawolf.com/docs/launch#arguments">disable this</ExternalLink> by passing `allowTracking: true` to launch.
+
+### January (Completed)
+
+- <ExternalLink href="https://www.qawolf.com/blog/q-1-newsletter/why-we-open-sourced-everything">
+    Launched and open-sourced
+  </ExternalLink> QA Wolf 2.0 🎉
+
+- Added ability to <ExternalLink href="https://www.qawolf.com/docs/reuse-helper-code">share helpers</ExternalLink> across tests.
+
+- Added ability to <ExternalLink href="https://www.qawolf.com/docs/use-localhost">create tests on localhost</ExternalLink>.
+
+Phew. That was a lot to get off our chests - thanks for giving us a few minutes of your time.
+
+<Image
+  alt="Phew"
+  height="192"
+  layout="fixed"
+  src="https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/phew.gif"
+  width="320"
+/>
+
+Happy testing!
+
+— QA Wolf Team
+
+</Layout>
