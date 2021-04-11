@@ -10,6 +10,7 @@ import Text from "../shared/Text";
 
 type Props = {
   date: string;
+  imageUrl: string;
   title: string;
 };
 
@@ -19,10 +20,8 @@ const StyledAnchor = styled.a`
   width: 100%;
 
   @media screen and (min-width: ${width.content}) {
-    width: 50%;
-    // TODO: comment the below back in once we have more than one post
-    // margin: 0 calc(${edgeSize.xlarge} / 2) ${edgeSize.xlarge};
-    // width: calc(50% - ${edgeSize.xlarge});
+    margin: 0 calc(${edgeSize.xlarge} / 2) ${edgeSize.xlarge};
+    width: calc(50% - ${edgeSize.xlarge});
   }
 `;
 
@@ -35,7 +34,11 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export default function BlogLink({ date, title }: Props): JSX.Element {
+export default function BlogLink({
+  date,
+  imageUrl,
+  title,
+}: Props): JSX.Element {
   const link = kebabCase(title);
 
   return (
@@ -47,12 +50,7 @@ export default function BlogLink({ date, title }: Props): JSX.Element {
           round="medium"
           style={{ position: "relative" }}
         >
-          <Image
-            alt={title}
-            height={450}
-            src={`/blog/${link}/index.png`}
-            width={680}
-          />
+          <Image alt={title} height={450} src={imageUrl} width={680} />
           <StyledBox
             background="rgba(23,23,76,0.72)"
             height="full"

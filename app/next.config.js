@@ -40,5 +40,8 @@ module.exports = {
   experimental: {
     productionBrowserSourceMaps: true,
   },
+  images: {
+    domains: ["qawolf-public.s3.us-east-2.amazonaws.com"],
+  },
   target: "serverless",
 };
