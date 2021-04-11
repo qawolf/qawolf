@@ -249,10 +249,12 @@ export type Team = {
   helpers_version: number;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
+  last_synced_at: string | null;
+  limit_reached_at: string | null;
   name: string;
   next_trigger_id: string;
   plan: TeamPlan;
-  renewed_at: string | null;
+  renewed_at: string;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   updated_at?: string;

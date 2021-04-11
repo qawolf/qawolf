@@ -41,10 +41,12 @@ describe("createDefaultTeam", () => {
         inbox: expect.any(String),
         is_email_alert_enabled: true,
         is_enabled: true,
+        last_synced_at: null,
+        limit_reached_at: null,
         name: "My Team",
         next_trigger_id: expect.any(String),
         plan: "free",
-        renewed_at: null,
+        renewed_at: expect.any(Date),
         stripe_customer_id: null,
         stripe_subscription_id: null,
       },
@@ -150,12 +152,10 @@ describe("findTeamsForUser", () => {
         id: "team2Id",
         name: "Another Team",
         plan: "free",
-        renewed_at: null,
       },
       {
         id: "teamId",
         plan: "free",
-        renewed_at: null,
       },
     ]);
 
@@ -336,15 +336,18 @@ describe("updateTeam", () => {
     });
   });
 
-  it("updates Stripe data for a team", async () => {
-    const renewed_at = minutesFromNow();
+  it("updates subscription data for a team", async () => {
+    const timestamp = minutesFromNow();
+    const timestampDate = new Date(timestamp);
 
     const team = await updateTeam(
       {
         id: "teamId",
         is_enabled: true,
+        last_synced_at: timestamp,
+        limit_reached_at: timestamp,
         plan: "business",
-        renewed_at,
+        renewed_at: timestamp,
         stripe_customer_id: "stripeCustomerId",
         stripe_subscription_id: "stripeSubscriptionId",
       },
@@ -356,8 +359,10 @@ describe("updateTeam", () => {
       ...team,
       api_key: expect.any(String),
       is_enabled: true,
+      last_synced_at: timestampDate,
+      limit_reached_at: timestampDate,
       plan: "business",
-      renewed_at: new Date(renewed_at),
+      renewed_at: timestampDate,
       stripe_customer_id: "stripeCustomerId",
       stripe_subscription_id: "stripeSubscriptionId",
       updated_at: expect.anything(),

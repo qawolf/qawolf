@@ -24,6 +24,8 @@ type UpdateTeam = {
   id: string;
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
+  last_synced_at?: string;
+  limit_reached_at?: string | null;
   name?: string;
   next_trigger_id?: string;
   plan?: TeamPlan;
@@ -50,21 +52,27 @@ export const createDefaultTeam = async ({
   const log = logger.prefix("createDefaultTeam");
   log.debug(id);
 
+  const timestamp = new Date().toISOString();
+
   const team = {
     alert_integration_id: null,
     api_key: encrypt(buildApiKey()),
+    created_at: timestamp,
     helpers: "",
     helpers_version: 0,
     id,
     inbox: `${cuid()}@${environment.EMAIL_DOMAIN}`,
     is_email_alert_enabled: true,
     is_enabled: true,
+    last_synced_at: null,
+    limit_reached_at: null,
     name: DEFAULT_NAME,
     next_trigger_id: cuid(),
     plan: "free" as const,
-    renewed_at: null,
+    renewed_at: timestamp,
     stripe_customer_id: null,
     stripe_subscription_id: null,
+    updated_at: timestamp,
   };
 
   await db("teams").insert(team);
@@ -171,6 +179,8 @@ export const updateTeam = async (
     id,
     is_email_alert_enabled,
     is_enabled,
+    last_synced_at,
+    limit_reached_at,
     name,
     next_trigger_id,
     plan,
@@ -210,6 +220,10 @@ export const updateTeam = async (
     updates.is_email_alert_enabled = is_email_alert_enabled;
   }
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
+  if (!isNil(last_synced_at)) updates.last_synced_at = last_synced_at;
+  if (limit_reached_at !== undefined) {
+    updates.limit_reached_at = limit_reached_at;
+  }
   if (!isNil(name)) updates.name = name;
   if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;

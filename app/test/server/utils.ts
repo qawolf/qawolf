@@ -402,12 +402,14 @@ export const buildTeam = ({
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
+    last_synced_at: null,
+    limit_reached_at: null,
     name: name || "Awesome Company",
     next_trigger_id: cuid(),
     plan: plan || "free",
     stripe_customer_id: null,
     stripe_subscription_id: null,
-    renewed_at: null,
+    renewed_at: new Date().toISOString(),
   };
 };
 
