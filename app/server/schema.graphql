@@ -1384,6 +1384,13 @@ type Query {
   testHistory("The test ID" id: ID!): [Run!]!
 
   """
+  Returns the count of runs since the team subscription was renewed.
+
+  Requires that you have access to the team.
+  """
+  runCount("The team ID" team_id: ID!): Int!
+
+  """
   Returns a single test suite by ID.
 
   Requires that one of the teams you are on owns the test suite.

@@ -78,6 +78,12 @@ export const onboardingQuery = gql`
   }
 `;
 
+export const runCountQuery = gql`
+  query runCount($team_id: ID!) {
+    runCount(team_id: $team_id)
+  }
+`;
+
 export const runnerQuery = gql`
   query runner($run_id: ID, $should_request_runner: Boolean, $test_id: ID) {
     runner(
