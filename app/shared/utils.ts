@@ -14,6 +14,13 @@ export const buildTestCode = (
   return code;
 };
 
+export const daysFromNow = (days = 0): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+
+  return date.toISOString();
+};
+
 // https://stackoverflow.com/a/1214753
 export const minutesFromNow = (minutes = 0): string => {
   return new Date(Date.now() + minutes * 60000).toISOString();

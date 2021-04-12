@@ -8,14 +8,6 @@ import { decrypt, encrypt } from "./encrypt";
 
 const DEFAULT_NAME = "My Team";
 
-type SeenTeam = {
-  name: string;
-  plan: string;
-  team_id: string;
-  user_email: string;
-  user_id: string;
-};
-
 type UpdateTeam = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
@@ -149,25 +141,19 @@ export const findTeamsForUser = async (
   return teams.length ? teams.map((t: Team) => formatTeam(t)) : null;
 };
 
-export const findTeamsSeenAfter = async (
-  after: string,
+export const findTeamsToSync = async (
+  limit: number,
   { db, logger }: ModelOptions
-): Promise<SeenTeam[]> => {
-  const log = logger.prefix("findTeamsSeenAfter");
+): Promise<Team[]> => {
+  const log = logger.prefix("findTeamsToSync");
 
-  const result = await db.raw(
-    `SELECT DISTINCT ON (team_id) team_id, teams.name, teams.plan, user_id
-FROM team_users
-JOIN users ON team_users.user_id = users.id 
-JOIN teams ON teams.id = team_users.team_id
-WHERE users.last_seen_at >= ?`,
-    [after]
-  );
+  const teams = await db("teams")
+    .orderByRaw("last_synced_at ASC NULLS FIRST")
+    .limit(limit);
 
-  const rows = result.rows as SeenTeam[];
-  log.debug(rows.length);
+  log.debug(`found ${teams.length} teams`);
 
-  return rows;
+  return teams;
 };
 
 export const updateTeam = async (

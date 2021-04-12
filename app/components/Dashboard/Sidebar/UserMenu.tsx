@@ -1,9 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import { resetIntercom } from "../../../hooks/intercom";
 import { useLogOut } from "../../../hooks/onLogOut";
-import { JWT_KEY } from "../../../lib/client";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";

@@ -46,7 +46,6 @@ import {
   User,
   Wolf,
 } from "../lib/types";
-import { resetIntercom } from "./intercom";
 import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {

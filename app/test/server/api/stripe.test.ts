@@ -26,10 +26,9 @@ beforeAll(() => {
 
 describe("handleCheckoutCompleted", () => {
   beforeAll(() => {
-    return db("teams").insert({
-      ...buildTeam({}),
-      limit_reached_at: new Date().toISOString(),
-    });
+    return db("teams").insert(
+      buildTeam({ limit_reached_at: new Date().toISOString() })
+    );
   });
 
   afterAll(() => db("teams").del());
@@ -58,8 +57,7 @@ describe("handleCheckoutCompleted", () => {
 describe("handleInvoicePaid", () => {
   beforeAll(() => {
     return db("teams").insert({
-      ...buildTeam({}),
-      limit_reached_at: new Date().toISOString(),
+      ...buildTeam({ limit_reached_at: new Date().toISOString() }),
       stripe_subscription_id: "stripeSubscriptionId",
     });
   });

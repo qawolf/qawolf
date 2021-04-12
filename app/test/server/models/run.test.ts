@@ -1,6 +1,7 @@
 import { encrypt } from "../../../server/models/encrypt";
 import {
   countIncompleteRuns,
+  countRunsForTeam,
   createRunsForTests,
   findLatestRuns,
   findPendingRun,
@@ -118,6 +119,32 @@ describe("run model", () => {
   });
 
   afterAll(() => jest.restoreAllMocks());
+
+  describe("countRunsForTeam", () => {
+    beforeAll(async () => {
+      await db("tests").insert(buildTest({ i: 10, team_id: "team2Id" }));
+      await db("suites").insert(buildSuite({ i: 10 }));
+
+      return db("runs").insert(
+        buildRun({ i: 10, suite_id: "suite10Id", test_id: "test10Id" })
+      );
+    });
+
+    afterAll(async () => {
+      await db("runs").where({ id: "run10Id" }).del();
+      await db("suites").where({ id: "suite10Id" }).del();
+
+      return db("tests").where({ id: "team10Id" }).del();
+    });
+
+    it("counts runs for a team", async () => {
+      const team = await db("teams").where({ id: "teamId" }).first();
+
+      const result = await countRunsForTeam(team, options);
+
+      expect(result).toBe(6);
+    });
+  });
 
   describe("countIncompleteRuns", () => {
     it("counts the runs that have not completed", async () => {

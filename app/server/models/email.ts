@@ -1,3 +1,4 @@
+import { daysFromNow } from "../../shared/utils";
 import { Email, ModelOptions } from "../types";
 import { cuid } from "../utils";
 
@@ -66,11 +67,8 @@ export const deleteOldEmails = async ({
 }: ModelOptions): Promise<void> => {
   const log = logger.prefix("deleteOldEmails");
 
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
-
   const deleteCount = await db("emails")
-    .where("created_at", "<", oneMonthAgo.toISOString())
+    .where("created_at", "<", daysFromNow(-30))
     .del();
 
   log.debug(`deleted ${deleteCount} emails`);

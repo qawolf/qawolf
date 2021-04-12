@@ -5,7 +5,7 @@ import {
   findTeamForApiKey,
   findTeamForEmail,
   findTeamsForUser,
-  findTeamsSeenAfter,
+  findTeamsToSync,
   updateTeam,
   validateApiKeyForTeam,
 } from "../../../server/models/team";
@@ -170,47 +170,23 @@ describe("findTeamsForUser", () => {
   });
 });
 
-describe("findTeamsSeenAfter", () => {
+describe("findTeamsToSync", () => {
   beforeAll(async () => {
     await db("teams").insert([
       buildTeam({}),
-      buildTeam({ i: 2, name: "Another Team" }),
-    ]);
-
-    return db("team_users").insert([
-      buildTeamUser({}),
-      buildTeamUser({ i: 2, team_id: "team2Id" }),
+      buildTeam({ i: 2, last_synced_at: minutesFromNow(-10) }),
+      buildTeam({ i: 3, last_synced_at: minutesFromNow(0) }),
     ]);
   });
 
   afterAll(async () => {
-    await db("team_users").del();
     return db("teams").del();
   });
 
-  it("returns teams for recently seen users", async () => {
-    const teams = await findTeamsSeenAfter(minutesFromNow(-5), options);
+  it("returns teams to sync", async () => {
+    const teams = await findTeamsToSync(2, options);
 
-    expect(teams).toEqual([
-      {
-        name: "Another Team",
-        plan: "free",
-        team_id: "team2Id",
-        user_id: "userId",
-      },
-      {
-        name: "Awesome Company",
-        plan: "free",
-        team_id: "teamId",
-        user_id: "userId",
-      },
-    ]);
-  });
-
-  it("returns null if no teams found", async () => {
-    const teams = await findTeamsForUser("fakeId", options);
-
-    expect(teams).toBeNull();
+    expect(teams).toMatchObject([{ id: "teamId" }, { id: "team2Id" }]);
   });
 });
 
