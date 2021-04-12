@@ -12,7 +12,7 @@ export default function Meter({ a11yTitle, max, value }: Props): JSX.Element {
   const values = [{ value }];
 
   return (
-    <Box background="pink" overflow="hidden" round="xlarge">
+    <Box overflow="hidden" round="xlarge">
       <GrommetMeter
         a11yTitle={a11yTitle}
         background={colors.gray2}

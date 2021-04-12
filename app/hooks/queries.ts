@@ -46,6 +46,8 @@ import {
   User,
   Wolf,
 } from "../lib/types";
+import { resetIntercom } from "./intercom";
+import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
   currentUser: User;
@@ -194,15 +196,15 @@ const nextFetchPolicy = "cache-first";
 const onError = noop;
 
 export const useCurrentUser = (): QueryResult<CurrentUserData> => {
+  const handleLogOut = useLogOut();
+
   return useQuery<CurrentUserData>(currentUserQuery, {
     fetchPolicy,
     nextFetchPolicy,
     onCompleted: (response) => {
       const { currentUser } = response || {};
 
-      if (!currentUser) {
-        localStorage.removeItem(JWT_KEY);
-      }
+      if (!currentUser) handleLogOut();
     },
     onError,
     skip: isServer() || !localStorage.getItem(JWT_KEY),
