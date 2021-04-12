@@ -1,5 +1,4 @@
-import { renewTeam } from "../../../server/jobs/updateSegmentTeams";
-import * as teamModel from "../../../server/models/team";
+import { syncTeam } from "../../../server/jobs/updateSegmentTeams";
 import { daysFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
@@ -7,9 +6,11 @@ import { buildTeam, logger } from "../utils";
 const db = prepareTestDb();
 const options = { db, logger };
 
-describe("renewTeam", () => {
+describe("syncTeam", () => {
+  const timestamp = new Date().toISOString();
+
   const team = buildTeam({
-    limit_reached_at: new Date().toISOString(),
+    limit_reached_at: timestamp,
     renewed_at: daysFromNow(-31),
   });
 
@@ -17,47 +18,46 @@ describe("renewTeam", () => {
 
   afterAll(() => db("teams").del());
 
-  it("does nothing if team not on free plan", async () => {
-    jest.spyOn(teamModel, "updateTeam");
-
+  it("does not renew if team not on free plan", async () => {
     const modifiedTeam = {
       ...team,
       plan: "business" as const,
     };
 
-    const renewedTeam = await renewTeam(modifiedTeam, options);
+    const syncedTeam = await syncTeam(modifiedTeam, options);
 
-    expect(renewedTeam).toEqual(modifiedTeam);
-
-    expect(teamModel.updateTeam).not.toBeCalled();
+    expect(syncedTeam).toMatchObject({
+      id: "teamId",
+      last_synced_at: expect.any(String),
+      limit_reached_at: new Date(timestamp),
+      renewed_at: new Date(team.renewed_at),
+    });
   });
 
-  it("does nothing if team renewed recently", async () => {
-    jest.spyOn(teamModel, "updateTeam");
-
+  it("does not renew if team renewed recently", async () => {
     const modifiedTeam = {
       ...team,
       renewed_at: daysFromNow(-1),
     };
 
-    const renewedTeam = await renewTeam(modifiedTeam, options);
+    const syncedTeam = await syncTeam(modifiedTeam, options);
 
-    expect(renewedTeam).toEqual(modifiedTeam);
-
-    expect(teamModel.updateTeam).not.toBeCalled();
+    expect(syncedTeam).toMatchObject({
+      id: "teamId",
+      last_synced_at: expect.any(String),
+      limit_reached_at: new Date(timestamp),
+      renewed_at: new Date(team.renewed_at),
+    });
   });
 
   it("renews team otherwise", async () => {
-    jest.spyOn(teamModel, "updateTeam");
+    const syncedTeam = await syncTeam(team, options);
 
-    const renewedTeam = await renewTeam(team, options);
-
-    expect(renewedTeam).toMatchObject({
+    expect(syncedTeam).toMatchObject({
       limit_reached_at: null,
       renewed_at: expect.any(String),
+      last_synced_at: expect.any(String),
     });
-    expect(renewedTeam.renewed_at > daysFromNow(-1)).toBe(true);
-
-    expect(teamModel.updateTeam).toBeCalled();
+    expect(syncedTeam.renewed_at > daysFromNow(-1)).toBe(true);
   });
 });

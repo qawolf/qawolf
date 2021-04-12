@@ -6,24 +6,25 @@ import { findUsersForTeam } from "../models/user";
 import { flushSegment, trackSegmentGroup } from "../services/segment";
 import { ModelOptions, Team } from "../types";
 
-export const renewTeam = async (
+const freePlanLimit = 100;
+
+export const syncTeam = async (
   team: Team,
   options: ModelOptions
 ): Promise<Team> => {
-  const log = options.logger.prefix("updateTeamIfNeeded");
+  const log = options.logger.prefix("syncTeam");
+  const timestamp = minutesFromNow();
 
-  if (team.plan !== "free") {
-    log.debug("skip, plan", team.plan);
-    return team;
-  }
+  const shouldRenew =
+    team.plan === "free" && team.renewed_at < daysFromNow(-30);
+  log.debug("should renew?", shouldRenew);
 
-  if (team.renewed_at > daysFromNow(-30)) {
-    log.debug("skip, renewed_at", team.renewed_at);
-    return team;
-  }
+  const renewFields = shouldRenew
+    ? { limit_reached_at: null, renewed_at: timestamp }
+    : {};
 
   return updateTeam(
-    { id: team.id, limit_reached_at: null, renewed_at: minutesFromNow() },
+    { id: team.id, ...renewFields, last_synced_at: timestamp },
     options
   );
 };
@@ -34,14 +35,22 @@ export const updateSegmentTeam = async (
 ): Promise<void> => {
   const log = options.logger.prefix("updateSegmentTeam");
 
-  const team = await renewTeam(originalTeam, options);
+  const team = await syncTeam(originalTeam, options);
 
   const runCount = await countRunsForTeam(team, options);
   const testCounts = await countTestsForTeam(team.id, options);
 
-  const users = await findUsersForTeam(team.id, options);
+  const free_limit_reached = team.plan === "free" && runCount >= freePlanLimit;
+
+  if (free_limit_reached) {
+    await updateTeam(
+      { id: team.id, limit_reached_at: minutesFromNow() },
+      options
+    );
+  }
 
   const traits = {
+    free_limit_reached,
     name: team.name,
     plan: team.plan,
     monthly_run_count: runCount,
@@ -49,6 +58,7 @@ export const updateSegmentTeam = async (
   };
   log.debug("track segment group", team.id, traits);
 
+  const users = await findUsersForTeam(team.id, options);
   users.forEach((user) => trackSegmentGroup(team.id, user.id, traits));
 };
 
