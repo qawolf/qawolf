@@ -4,6 +4,7 @@ import { findTeamsToSync, updateTeam } from "../models/team";
 import { countTestsForTeam } from "../models/test";
 import { findUsersForTeam } from "../models/user";
 import { flushSegment, trackSegmentGroup } from "../services/segment";
+import { updateStripeUsage } from "../services/stripe";
 import { ModelOptions, Team } from "../types";
 
 const freePlanLimit = 100;
@@ -47,6 +48,8 @@ export const updateSegmentTeam = async (
       { id: team.id, limit_reached_at: minutesFromNow() },
       options
     );
+  } else if (team.plan === "business") {
+    await updateStripeUsage({ logger: options.logger, runCount, team });
   }
 
   const traits = {
