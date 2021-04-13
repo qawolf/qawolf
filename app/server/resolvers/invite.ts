@@ -68,7 +68,12 @@ export const createInvitesResolver = async (
   });
 
   const invites = await Promise.all(promises);
-  trackSegmentEvent(user, "Team Member Invited");
+
+  trackSegmentEvent({
+    active: true,
+    event: "Team Member Invited",
+    user,
+  });
 
   return invites;
 };
