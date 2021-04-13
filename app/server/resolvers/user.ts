@@ -1,6 +1,6 @@
+import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
 import { findInvite } from "../models/invite";
-import { createSubscriber } from "../models/subscriber";
 import { createDefaultTeam, findTeamsForUser } from "../models/team";
 import { createTeamUser } from "../models/team_user";
 import {
@@ -89,15 +89,19 @@ const createUserWithTeam = async (
     logger.alert("could not send slack message", error.message);
   });
 
+  const subscribed_at = isSubscribed ? minutesFromNow() : undefined;
+
   return db.transaction(async (trx) => {
     const user = gitHubFields
-      ? await createUserWithGitHub(gitHubFields, { db: trx, logger })
-      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        await createUserWithEmail(emailFields!, { db: trx, logger });
-
-    if (isSubscribed) {
-      await createSubscriber(user.email, { db: trx, logger });
-    }
+      ? await createUserWithGitHub(
+          { ...gitHubFields, subscribed_at },
+          { db: trx, logger }
+        )
+      : await createUserWithEmail(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          { ...emailFields!, subscribed_at },
+          { db: trx, logger }
+        );
 
     if (!hasInvite) {
       const team = await createDefaultTeam({

@@ -35,7 +35,7 @@ export default function MailingList(): JSX.Element {
     }
 
     setError("");
-    createSubscriber({ variables: { email } });
+    createSubscriber({ variables: { email } }).then(() => setEmail(""));
   };
 
   return (
