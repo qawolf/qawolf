@@ -85,6 +85,7 @@ describe("sendEmailAlert", () => {
         created_at: expect.any(Date),
         last_seen_at: expect.any(Date),
         onboarded_at: expect.any(Date),
+        subscribed_at: null,
         updated_at: expect.any(Date),
       },
     });
