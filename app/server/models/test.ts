@@ -103,13 +103,13 @@ export const countTestsForTeam = async (
 ): Promise<{ test_enabled_count: number; test_with_trigger_count: number }> => {
   const [enabledResult, triggeredResult] = await Promise.all([
     db.raw(
-      `SELECT COUNT(*) as count FROM tests WHERE team_id = ? AND deleted_at IS NULL AND is_enabled = TRUE`,
+      `SELECT COUNT(*) as count FROM tests WHERE team_id = ? AND deleted_at IS NULL AND is_enabled = TRUE AND guide IS NULL`,
       [team_id]
     ),
     db.raw(
       `SELECT COUNT(DISTINCT test_id) as count 
       FROM test_triggers JOIN tests ON test_triggers.test_id = tests.id 
-      WHERE tests.team_id = ? AND tests.deleted_at IS NULL AND tests.is_enabled = TRUE`,
+      WHERE tests.team_id = ? AND tests.deleted_at IS NULL AND tests.is_enabled = TRUE AND guide IS NULL`,
       [team_id]
     ),
   ]);

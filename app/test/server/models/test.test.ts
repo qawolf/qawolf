@@ -104,7 +104,11 @@ describe("buildTestName", () => {
 
 describe("countTestsForTeam", () => {
   beforeAll(async () => {
-    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ i: 3, guide: "Guide" }),
+    ]);
 
     await db("test_triggers").insert([
       {
