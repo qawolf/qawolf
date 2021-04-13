@@ -47,8 +47,11 @@ export const createTestResolver = async (
 
   log.debug(user.id);
 
-  const event = guide ? "Guide Created" : "Test Created";
-  trackSegmentEvent(user, event, { acValue: guide || url });
+  trackSegmentEvent({
+    active: true,
+    event: guide ? "Guide Created" : "Test Created",
+    user,
+  });
 
   const test = await createTest(
     {

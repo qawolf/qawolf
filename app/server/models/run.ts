@@ -348,9 +348,13 @@ export const updateRun = async (
     if (!run.started_at) updates.started_at = timestamp;
 
     const test = await findTest(run.test_id, { db, logger });
-    trackSegmentEvent({ id: test.creator_id }, "Run Completed", {
-      run_id: run.id,
-      status: updates.status,
+    trackSegmentEvent({
+      event: "Run Completed",
+      properties: {
+        run_id: run.id,
+        status: updates.status,
+      },
+      user: { id: test.creator_id },
     });
   }
 
