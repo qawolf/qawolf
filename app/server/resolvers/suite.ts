@@ -1,4 +1,3 @@
-import { ClientError } from "../errors";
 import { decrypt } from "../models/encrypt";
 import { findEnvironmentOrNull } from "../models/environment";
 import {
