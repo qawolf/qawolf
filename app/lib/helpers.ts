@@ -15,6 +15,15 @@ const monthNames = [
   "Dec",
 ];
 
+export const dateToText = (timestamp: string): string => {
+  const date = new Date(timestamp);
+
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+
+  return `${month} ${day}`;
+};
+
 export const durationToText = (
   startedAt: string,
   completedAt: string

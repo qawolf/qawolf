@@ -1,30 +1,27 @@
 import { Box } from "grommet";
 import capitalize from "lodash/capitalize";
 
-import { useOnStripeCheckout } from "../../../hooks/onStripeCheckout";
-import { useOnStripePortal } from "../../../hooks/onStripePortal";
-import { routes } from "../../../lib/routes";
-import { TeamWithUsers } from "../../../lib/types";
-import { copy } from "../../../theme/copy";
-import { border } from "../../../theme/theme";
-import Button from "../../shared/AppButton";
-import Text from "../../shared/Text";
+import { useBuildCheckoutHref } from "../../../../hooks/buildCheckoutHref";
+import { useOnStripePortal } from "../../../../hooks/onStripePortal";
+import { routes } from "../../../../lib/routes";
+import { TeamWithUsers } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
+import { border } from "../../../../theme/theme";
+import Button from "../../../shared/AppButton";
+import Text from "../../../shared/Text";
+import Usage from "./Usage";
 
 type Props = { team: TeamWithUsers };
 
 const contactHref = "mailto:hello@qawolf.com";
 
 export default function Plan({ team }: Props): JSX.Element {
-  const {
-    isLoading: isCheckoutLoading,
-    onClick: onCheckoutClick,
-  } = useOnStripeCheckout();
-  const {
-    isLoading: isPortalLoading,
-    onClick: onPortalClick,
-  } = useOnStripePortal();
+  const { isLoading, onClick: onPortalClick } = useOnStripePortal();
+
+  const checkoutHref = useBuildCheckoutHref();
 
   const isSubscribed = team.plan === "business";
+
   const showButtons = ["business", "free"].includes(team.plan);
 
   const plan = capitalize(team.plan);
@@ -47,14 +44,16 @@ export default function Plan({ team }: Props): JSX.Element {
               type="secondary"
             />
             <Button
-              isDisabled={isCheckoutLoading || isPortalLoading}
+              href={isSubscribed ? undefined : checkoutHref}
+              isDisabled={isLoading}
               label={isSubscribed ? copy.manageBilling : copy.upgrade}
-              onClick={isSubscribed ? onPortalClick : onCheckoutClick}
+              onClick={isSubscribed ? onPortalClick : undefined}
               type="primary"
             />
           </Box>
         )}
       </Box>
+      {showButtons && <Usage team={team} />}
     </Box>
   );
 }

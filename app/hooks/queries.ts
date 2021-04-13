@@ -9,6 +9,7 @@ import {
   groupsQuery,
   integrationsQuery,
   onboardingQuery,
+  runCountQuery,
   runnerQuery,
   shortSuiteQuery,
   suiteQuery,
@@ -46,6 +47,7 @@ import {
   User,
   Wolf,
 } from "../lib/types";
+import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
   currentUser: User;
@@ -94,11 +96,19 @@ type OnboardingVariables = {
   team_id: string;
 };
 
+type RunCountData = {
+  runCount: number;
+};
+
+type RunCountVariables = {
+  team_id: string;
+};
+
 type RunnerData = {
   runner: Runner;
 };
 
-type RunnerQueryVariables = {
+type RunnerVariables = {
   run_id?: string | null;
   should_request_runner?: boolean;
   test_id?: string;
@@ -194,15 +204,15 @@ const nextFetchPolicy = "cache-first";
 const onError = noop;
 
 export const useCurrentUser = (): QueryResult<CurrentUserData> => {
+  const handleLogOut = useLogOut();
+
   return useQuery<CurrentUserData>(currentUserQuery, {
     fetchPolicy,
     nextFetchPolicy,
     onCompleted: (response) => {
       const { currentUser } = response || {};
 
-      if (!currentUser) {
-        localStorage.removeItem(JWT_KEY);
-      }
+      if (!currentUser) handleLogOut();
     },
     onError,
     skip: isServer() || !localStorage.getItem(JWT_KEY),
@@ -284,11 +294,22 @@ export const useOnboarding = (
   });
 };
 
+export const useRunCount = (
+  variables: RunCountVariables
+): QueryResult<RunCountData, RunCountVariables> => {
+  return useQuery<RunCountData, RunCountVariables>(runCountQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
 export const useRunner = (
-  variables: RunnerQueryVariables,
+  variables: RunnerVariables,
   { skip }: { skip?: boolean }
-): QueryResult<RunnerData, RunnerQueryVariables> => {
-  return useQuery<RunnerData, RunnerQueryVariables>(runnerQuery, {
+): QueryResult<RunnerData, RunnerVariables> => {
+  return useQuery<RunnerData, RunnerVariables>(runnerQuery, {
     fetchPolicy,
     nextFetchPolicy,
     onError,

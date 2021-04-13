@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import { resetIntercom } from "../../../hooks/intercom";
-import { JWT_KEY } from "../../../lib/client";
+import { useLogOut } from "../../../hooks/onLogOut";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
@@ -25,15 +24,9 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { user } = useContext(UserContext);
 
+  const handleLogOut = useLogOut();
+
   if (!isOpen || !user) return null;
-
-  const handleLogOutClick = () => {
-    localStorage.removeItem(JWT_KEY);
-    state.clear();
-    resetIntercom();
-
-    replace(routes.home);
-  };
 
   const handleSettingsClick = (): void => {
     push(routes.settings);
@@ -69,7 +62,7 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
       <Option
         IconComponent={LogOut}
         label={copy.logOut}
-        onClick={handleLogOutClick}
+        onClick={handleLogOut}
       />
     </Menu>
   );

@@ -125,7 +125,7 @@ export type Team = ShortTeam & {
   is_enabled: boolean;
   next_trigger_id: string;
   plan: "business" | "custom" | "free";
-  renewed_at: string | null;
+  renewed_at: string;
 };
 
 export type TeamWithUsers = Team & {

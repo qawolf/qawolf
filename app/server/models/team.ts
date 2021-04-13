@@ -2,19 +2,12 @@ import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
+import { ClientError } from "../errors";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
 
 const DEFAULT_NAME = "My Team";
-
-type SeenTeam = {
-  name: string;
-  plan: string;
-  team_id: string;
-  user_email: string;
-  user_id: string;
-};
 
 type UpdateTeam = {
   alert_integration_id?: string | null;
@@ -24,6 +17,8 @@ type UpdateTeam = {
   id: string;
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
+  last_synced_at?: string;
+  limit_reached_at?: string | null;
   name?: string;
   next_trigger_id?: string;
   plan?: TeamPlan;
@@ -50,27 +45,51 @@ export const createDefaultTeam = async ({
   const log = logger.prefix("createDefaultTeam");
   log.debug(id);
 
+  const timestamp = new Date().toISOString();
+
   const team = {
     alert_integration_id: null,
     api_key: encrypt(buildApiKey()),
+    created_at: timestamp,
     helpers: "",
     helpers_version: 0,
     id,
     inbox: `${cuid()}@${environment.EMAIL_DOMAIN}`,
     is_email_alert_enabled: true,
     is_enabled: true,
+    last_synced_at: null,
+    limit_reached_at: null,
     name: DEFAULT_NAME,
     next_trigger_id: cuid(),
     plan: "free" as const,
-    renewed_at: null,
+    renewed_at: timestamp,
     stripe_customer_id: null,
     stripe_subscription_id: null,
+    updated_at: timestamp,
   };
 
   await db("teams").insert(team);
   log.debug("created", team);
 
   return formatTeam(team);
+};
+
+export const ensureTeamCanCreateSuite = (
+  team: Team,
+  logger: ModelOptions["logger"]
+): void => {
+  const log = logger.prefix("ensureTeamCanCreateSuite");
+  log.debug("team", team.id);
+
+  if (!team.is_enabled) {
+    log.error("disabled");
+    throw new ClientError("team disabled, please contact support");
+  }
+
+  if (team.limit_reached_at) {
+    log.error("limit reached at", team.limit_reached_at);
+    throw new ClientError("free plan limit reached, please upgrade");
+  }
 };
 
 export const findTeam = async (
@@ -141,25 +160,20 @@ export const findTeamsForUser = async (
   return teams.length ? teams.map((t: Team) => formatTeam(t)) : null;
 };
 
-export const findTeamsSeenAfter = async (
-  after: string,
+export const findTeamsToSync = async (
+  limit: number,
   { db, logger }: ModelOptions
-): Promise<SeenTeam[]> => {
-  const log = logger.prefix("findTeamsSeenAfter");
+): Promise<Team[]> => {
+  const log = logger.prefix("findTeamsToSync");
 
-  const result = await db.raw(
-    `SELECT DISTINCT ON (team_id) team_id, teams.name, teams.plan, user_id
-FROM team_users
-JOIN users ON team_users.user_id = users.id 
-JOIN teams ON teams.id = team_users.team_id
-WHERE users.last_seen_at >= ?`,
-    [after]
-  );
+  const teams = await db("teams")
+    .where({ last_synced_at: null })
+    .orWhere("last_synced_at", "<", minutesFromNow(-60))
+    .limit(limit);
 
-  const rows = result.rows as SeenTeam[];
-  log.debug(rows.length);
+  log.debug(`found ${teams.length} teams`);
 
-  return rows;
+  return teams;
 };
 
 export const updateTeam = async (
@@ -171,6 +185,8 @@ export const updateTeam = async (
     id,
     is_email_alert_enabled,
     is_enabled,
+    last_synced_at,
+    limit_reached_at,
     name,
     next_trigger_id,
     plan,
@@ -210,6 +226,10 @@ export const updateTeam = async (
     updates.is_email_alert_enabled = is_email_alert_enabled;
   }
   if (!isNil(is_enabled)) updates.is_enabled = is_enabled;
+  if (!isNil(last_synced_at)) updates.last_synced_at = last_synced_at;
+  if (limit_reached_at !== undefined) {
+    updates.limit_reached_at = limit_reached_at;
+  }
   if (!isNil(name)) updates.name = name;
   if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;

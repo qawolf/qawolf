@@ -6,7 +6,7 @@ import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
 import { findTeam, updateTeam } from "../models/team";
 import { postMessageToSlack } from "../services/alert/slack";
-import { ModelOptions, TeamPlan } from "../types";
+import { ModelOptions, Team, TeamPlan } from "../types";
 
 const stripe = new Stripe(environment.STRIPE_API_KEY, {
   apiVersion: "2020-08-27",
@@ -17,6 +17,13 @@ type SubscriptionMetadata = {
   ignore_webhook: boolean;
   plan: TeamPlan;
   team_id: string;
+};
+
+const buildTeamFieldsForPayment = (): Partial<Team> => {
+  return {
+    limit_reached_at: null,
+    renewed_at: minutesFromNow(),
+  };
 };
 
 export const shouldIgnoreInvoicePaidEvent = (
@@ -73,10 +80,9 @@ export const handleCheckoutCompleted = async (
 
   await updateTeam(
     {
+      ...buildTeamFieldsForPayment(),
       id: team_id,
-      is_enabled: true,
       plan,
-      renewed_at: minutesFromNow(),
       stripe_customer_id: customer as string,
       stripe_subscription_id: subscription as string,
     },
@@ -115,10 +121,9 @@ export const handleInvoicePaid = async (
 
   await updateTeam(
     {
+      ...buildTeamFieldsForPayment(),
       id: team_id,
-      is_enabled: true,
       plan,
-      renewed_at: minutesFromNow(),
       stripe_customer_id: customer as string,
       stripe_subscription_id: subscription as string,
     },

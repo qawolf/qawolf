@@ -15,6 +15,7 @@ import {
   RunWithGif,
   StatusCounts,
   SuiteRun,
+  Team,
   Test,
 } from "../types";
 import { cuid } from "../utils";
@@ -66,6 +67,25 @@ export const countIncompleteRuns = async ({
     .first();
 
   log.debug(result);
+
+  return Number(result.count);
+};
+
+export const countRunsForTeam = async (
+  { id, renewed_at }: Team,
+  { db, logger }: ModelOptions
+): Promise<number> => {
+  const log = logger.prefix("countRunsForTeam");
+  log.debug("team", id, "renewed_at", renewed_at);
+
+  const result = await db("runs")
+    .count("runs.*", { as: "count" })
+    .innerJoin("tests", "runs.test_id", "tests.id")
+    .where({ "tests.team_id": id })
+    .andWhere("runs.created_at", ">", renewed_at)
+    .first();
+
+  log.debug("count", result.count);
 
   return Number(result.count);
 };

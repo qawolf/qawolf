@@ -1,11 +1,12 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createDefaultTeam,
+  ensureTeamCanCreateSuite,
   findTeam,
   findTeamForApiKey,
   findTeamForEmail,
   findTeamsForUser,
-  findTeamsSeenAfter,
+  findTeamsToSync,
   updateTeam,
   validateApiKeyForTeam,
 } from "../../../server/models/team";
@@ -41,16 +42,43 @@ describe("createDefaultTeam", () => {
         inbox: expect.any(String),
         is_email_alert_enabled: true,
         is_enabled: true,
+        last_synced_at: null,
+        limit_reached_at: null,
         name: "My Team",
         next_trigger_id: expect.any(String),
         plan: "free",
-        renewed_at: null,
+        renewed_at: expect.any(Date),
         stripe_customer_id: null,
         stripe_subscription_id: null,
       },
     ]);
 
     expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
+  });
+});
+
+describe("ensureTeamCanCreateSuite", () => {
+  const team = buildTeam({});
+
+  it("throws an error if team not enabled", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite({ ...team, is_enabled: false }, logger);
+    }).toThrowError("disabled");
+  });
+
+  it("throws an error if team limit reached", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite(
+        { ...team, limit_reached_at: minutesFromNow() },
+        logger
+      );
+    }).toThrowError("limit reached");
+  });
+
+  it("does not throw an error otherwise", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite(team, logger);
+    }).not.toThrowError();
   });
 });
 
@@ -150,12 +178,10 @@ describe("findTeamsForUser", () => {
         id: "team2Id",
         name: "Another Team",
         plan: "free",
-        renewed_at: null,
       },
       {
         id: "teamId",
         plan: "free",
-        renewed_at: null,
       },
     ]);
 
@@ -170,47 +196,23 @@ describe("findTeamsForUser", () => {
   });
 });
 
-describe("findTeamsSeenAfter", () => {
+describe("findTeamsToSync", () => {
   beforeAll(async () => {
     await db("teams").insert([
       buildTeam({}),
-      buildTeam({ i: 2, name: "Another Team" }),
-    ]);
-
-    return db("team_users").insert([
-      buildTeamUser({}),
-      buildTeamUser({ i: 2, team_id: "team2Id" }),
+      buildTeam({ i: 2, last_synced_at: minutesFromNow(-70) }),
+      buildTeam({ i: 3, last_synced_at: minutesFromNow(-50) }),
     ]);
   });
 
   afterAll(async () => {
-    await db("team_users").del();
     return db("teams").del();
   });
 
-  it("returns teams for recently seen users", async () => {
-    const teams = await findTeamsSeenAfter(minutesFromNow(-5), options);
+  it("returns teams to sync", async () => {
+    const teams = await findTeamsToSync(2, options);
 
-    expect(teams).toEqual([
-      {
-        name: "Another Team",
-        plan: "free",
-        team_id: "team2Id",
-        user_id: "userId",
-      },
-      {
-        name: "Awesome Company",
-        plan: "free",
-        team_id: "teamId",
-        user_id: "userId",
-      },
-    ]);
-  });
-
-  it("returns null if no teams found", async () => {
-    const teams = await findTeamsForUser("fakeId", options);
-
-    expect(teams).toBeNull();
+    expect(teams).toMatchObject([{ id: "teamId" }, { id: "team2Id" }]);
   });
 });
 
@@ -336,15 +338,18 @@ describe("updateTeam", () => {
     });
   });
 
-  it("updates Stripe data for a team", async () => {
-    const renewed_at = minutesFromNow();
+  it("updates subscription data for a team", async () => {
+    const timestamp = minutesFromNow();
+    const timestampDate = new Date(timestamp);
 
     const team = await updateTeam(
       {
         id: "teamId",
         is_enabled: true,
+        last_synced_at: timestamp,
+        limit_reached_at: timestamp,
         plan: "business",
-        renewed_at,
+        renewed_at: timestamp,
         stripe_customer_id: "stripeCustomerId",
         stripe_subscription_id: "stripeSubscriptionId",
       },
@@ -356,11 +361,27 @@ describe("updateTeam", () => {
       ...team,
       api_key: expect.any(String),
       is_enabled: true,
+      last_synced_at: timestampDate,
+      limit_reached_at: timestampDate,
       plan: "business",
-      renewed_at: new Date(renewed_at),
+      renewed_at: timestampDate,
       stripe_customer_id: "stripeCustomerId",
       stripe_subscription_id: "stripeSubscriptionId",
       updated_at: expect.anything(),
+    });
+
+    await updateTeam(
+      {
+        id: "teamId",
+        limit_reached_at: null,
+      },
+      options
+    );
+
+    const updatedTeam2 = await db.select("*").from("teams").first();
+    expect(updatedTeam2).toMatchObject({
+      id: "teamId",
+      limit_reached_at: null,
     });
   });
 

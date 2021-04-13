@@ -118,8 +118,11 @@ type BuildTeam = {
   i?: number;
   inbox?: string;
   is_enabled?: boolean;
+  last_synced_at?: string;
+  limit_reached_at?: string;
   name?: string;
   plan?: TeamPlan;
+  renewed_at?: string;
 };
 
 type BuildTeamUser = {
@@ -388,8 +391,11 @@ export const buildTeam = ({
   i,
   inbox,
   is_enabled,
+  last_synced_at,
+  limit_reached_at,
   name,
   plan,
+  renewed_at,
 }: BuildTeam): Team => {
   const finalI = i || 1;
 
@@ -402,12 +408,14 @@ export const buildTeam = ({
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,
     is_enabled: is_enabled === undefined ? true : is_enabled,
+    last_synced_at: last_synced_at || null,
+    limit_reached_at: limit_reached_at || null,
     name: name || "Awesome Company",
     next_trigger_id: cuid(),
     plan: plan || "free",
+    renewed_at: renewed_at || new Date().toISOString(),
     stripe_customer_id: null,
     stripe_subscription_id: null,
-    renewed_at: null,
   };
 };
 

@@ -1,4 +1,3 @@
-import { ClientError } from "../errors";
 import { decrypt } from "../models/encrypt";
 import { findEnvironmentOrNull } from "../models/environment";
 import {
@@ -6,6 +5,7 @@ import {
   findSuite,
   findSuitesForTeam,
 } from "../models/suite";
+import { ensureTeamCanCreateSuite } from "../models/team";
 import { findEnabledTests } from "../models/test";
 import { findTriggerOrNull } from "../models/trigger";
 import {
@@ -49,23 +49,19 @@ export const createSuiteResolver = async (
   );
   const teamIds = testTeams.map((t) => t.id);
 
-  if (Array.from(new Set(teamIds)).length > 1) {
-    log.error("cannot create suite for multiple teams", teamIds);
-    throw new Error("tests on different teams");
+  if (Array.from(new Set(teamIds)).length !== 1) {
+    const message = teamIds.length
+      ? "tests on different teams"
+      : "no tests to run";
+
+    log.error(message, teamIds);
+    throw new Error(message);
   }
 
-  if (testTeams[0] && !testTeams[0].is_enabled) {
-    log.error("team disabled", testTeams.find((t) => !t.is_enabled)?.id);
-    throw new ClientError("team disabled, please contact support");
-  }
+  ensureTeamCanCreateSuite(testTeams[0], logger);
 
   const suite = await db.transaction(async (trx) => {
     const tests = await findEnabledTests(test_ids, { db: trx, logger });
-
-    if (!tests.length) {
-      log.error("no tests for test_ids", test_ids);
-      throw new ClientError("no tests to run");
-    }
 
     const formattedVariables = environment_variables?.length
       ? JSON.parse(environment_variables)

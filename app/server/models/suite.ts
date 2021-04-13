@@ -100,7 +100,6 @@ export const createSuiteForTrigger = async (
   { db, logger }: ModelOptions
 ): Promise<CreatedSuite | null> => {
   const log = logger.prefix("createSuiteForTrigger");
-
   log.debug("trigger", trigger_id, "team", team_id);
 
   const tests = await findEnabledTestsForTrigger(

@@ -2,6 +2,7 @@ import { RunStatus } from "../../lib/types";
 import { minutesFromNow } from "../../shared/utils";
 import { AuthenticationError } from "../errors";
 import {
+  countRunsForTeam,
   findRun,
   findRunsForSuite,
   findStatusCountsForSuite,
@@ -18,9 +19,10 @@ import {
   StatusCounts,
   Suite,
   SuiteRun,
+  TeamIdQuery,
   UpdateRunMutation,
 } from "../types";
-import { ensureTestAccess } from "./utils";
+import { ensureTeamAccess, ensureTestAccess } from "./utils";
 
 type ShouldRetry = {
   error?: string;
@@ -69,6 +71,22 @@ export const validateApiKey = async (
     log.error("incorrect api key for run", run?.id, "runner", runner?.id);
     throw new AuthenticationError("invalid api key");
   }
+};
+
+/**
+ * @returns Count of runs since team was renewed
+ */
+export const runCountResolver = async (
+  _: Record<string, unknown>,
+  { team_id }: TeamIdQuery,
+  { db, logger, teams }: Context
+): Promise<number> => {
+  const log = logger.prefix("runCountResolver");
+  log.debug("team", team_id);
+
+  const team = ensureTeamAccess({ logger, team_id, teams });
+
+  return countRunsForTeam(team, { db, logger });
 };
 
 /**

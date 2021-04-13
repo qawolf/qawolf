@@ -26,7 +26,9 @@ beforeAll(() => {
 
 describe("handleCheckoutCompleted", () => {
   beforeAll(() => {
-    return db("teams").insert(buildTeam({}));
+    return db("teams").insert(
+      buildTeam({ limit_reached_at: new Date().toISOString() })
+    );
   });
 
   afterAll(() => db("teams").del());
@@ -43,7 +45,7 @@ describe("handleCheckoutCompleted", () => {
     const team = await db.select("*").from("teams").first();
 
     expect(team).toMatchObject({
-      is_enabled: true,
+      limit_reached_at: null,
       plan: "business",
       renewed_at: expect.any(Date),
       stripe_customer_id: "stripeCustomerId",
@@ -55,8 +57,7 @@ describe("handleCheckoutCompleted", () => {
 describe("handleInvoicePaid", () => {
   beforeAll(() => {
     return db("teams").insert({
-      ...buildTeam({}),
-      renewed_at: null,
+      ...buildTeam({ limit_reached_at: new Date().toISOString() }),
       stripe_subscription_id: "stripeSubscriptionId",
     });
   });
@@ -73,6 +74,7 @@ describe("handleInvoicePaid", () => {
 
     expect(team).toMatchObject({
       is_enabled: true,
+      limit_reached_at: null,
       renewed_at: expect.any(Date),
       stripe_subscription_id: "stripeSubscriptionId",
     });

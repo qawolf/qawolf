@@ -127,6 +127,7 @@ export const teamFragment = gql`
     name
     next_trigger_id
     plan
+    renewed_at
   }
 `;
 

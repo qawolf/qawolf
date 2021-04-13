@@ -95,6 +95,24 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("API key cannot create suite");
   });
 
+  it("returns 403 if plan limit reached", async () => {
+    await db("teams").update({ limit_reached_at: new Date().toISOString() });
+
+    await handleSuitesRequest(
+      {
+        body: { trigger_id: "triggerId" },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(403);
+    expect(send).toBeCalledWith("Plan limit reached");
+
+    await db("teams").update({ limit_reached_at: null });
+  });
+
   it("returns 500 if no tests for trigger", async () => {
     await handleSuitesRequest(
       {
