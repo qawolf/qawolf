@@ -48,17 +48,17 @@ export const syncTeam = async (
   const runCount = await countRunsForTeam(team, options);
   const testCounts = await countTestsForTeam(team.id, options);
 
-  const free_limit_reached = team.plan === "free" && runCount >= freePlanLimit;
-
-  if (free_limit_reached) {
-    await updateTeam(
-      { id: team.id, limit_reached_at: minutesFromNow() },
-      options
-    );
-  } else if (team.plan === "business") {
+  if (team.plan === "business") {
     await updateStripeUsage({ logger: options.logger, runCount, team });
   }
-  await updateTeam({ id: team.id, last_synced_at: minutesFromNow() }, options);
+
+  const free_limit_reached = team.plan === "free" && runCount >= freePlanLimit;
+  const updates = {
+    last_synced_at: minutesFromNow(),
+    limit_reached_at: free_limit_reached ? minutesFromNow() : undefined,
+  };
+
+  await updateTeam({ id: team.id, ...updates }, options);
 
   const traits = {
     free_limit_reached,
