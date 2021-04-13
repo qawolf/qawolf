@@ -14,8 +14,8 @@ export const buildTestCode = (
   return code;
 };
 
-export const daysFromNow = (days = 0): string => {
-  const date = new Date();
+export const daysFromNow = (days = 0, existingDate?: number): string => {
+  const date = new Date(existingDate);
   date.setDate(date.getDate() + days);
 
   return date.toISOString();

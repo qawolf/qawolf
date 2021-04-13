@@ -36,26 +36,24 @@ export default function Plan({ team }: Props): JSX.Element {
           {plan}
         </Text>
         {showButtons && (
-          <>
-            <Box align="center" direction="row">
-              <Button
-                href={isSubscribed ? contactHref : routes.pricing}
-                label={isSubscribed ? copy.contactUs : copy.seePricing}
-                margin={{ right: "small" }}
-                type="secondary"
-              />
-              <Button
-                href={isSubscribed ? undefined : checkoutHref}
-                isDisabled={isLoading}
-                label={isSubscribed ? copy.manageBilling : copy.upgrade}
-                onClick={isSubscribed ? onClick : undefined}
-                type="primary"
-              />
-            </Box>
-            <Usage />
-          </>
+          <Box align="center" direction="row">
+            <Button
+              href={isSubscribed ? contactHref : routes.pricing}
+              label={isSubscribed ? copy.contactUs : copy.seePricing}
+              margin={{ right: "small" }}
+              type="secondary"
+            />
+            <Button
+              href={isSubscribed ? undefined : checkoutHref}
+              isDisabled={isLoading}
+              label={isSubscribed ? copy.manageBilling : copy.upgrade}
+              onClick={isSubscribed ? onClick : undefined}
+              type="primary"
+            />
+          </Box>
         )}
       </Box>
+      {showButtons && <Usage team={team} />}
     </Box>
   );
 }

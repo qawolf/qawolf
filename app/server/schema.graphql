@@ -393,7 +393,7 @@ type Team {
   plan: String!
 
   "Date and time at which this team's plan subscription was last renewed"
-  renewed_at: String
+  renewed_at: String!
 
   "All users who belong to this team, sorted by email ascending"
   users: [User!]!
