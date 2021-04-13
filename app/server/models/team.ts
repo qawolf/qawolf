@@ -167,7 +167,8 @@ export const findTeamsToSync = async (
   const log = logger.prefix("findTeamsToSync");
 
   const teams = await db("teams")
-    .orderByRaw("last_synced_at ASC NULLS FIRST")
+    .where({ last_synced_at: null })
+    .orWhere("last_synced_at", "<", minutesFromNow(-60))
     .limit(limit);
 
   log.debug(`found ${teams.length} teams`);

@@ -200,8 +200,8 @@ describe("findTeamsToSync", () => {
   beforeAll(async () => {
     await db("teams").insert([
       buildTeam({}),
-      buildTeam({ i: 2, last_synced_at: minutesFromNow(-10) }),
-      buildTeam({ i: 3, last_synced_at: minutesFromNow(0) }),
+      buildTeam({ i: 2, last_synced_at: minutesFromNow(-70) }),
+      buildTeam({ i: 3, last_synced_at: minutesFromNow(-50) }),
     ]);
   });
 

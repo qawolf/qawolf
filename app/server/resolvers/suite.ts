@@ -51,19 +51,18 @@ export const createSuiteResolver = async (
   const teamIds = testTeams.map((t) => t.id);
 
   if (Array.from(new Set(teamIds)).length !== 1) {
-    log.error("cannot create suite for multiple teams", teamIds);
-    throw new Error("tests on different teams");
+    const message = teamIds.length
+      ? "tests on different teams"
+      : "no tests to run";
+
+    log.error(message, teamIds);
+    throw new Error(message);
   }
 
   ensureTeamCanCreateSuite(testTeams[0], logger);
 
   const suite = await db.transaction(async (trx) => {
     const tests = await findEnabledTests(test_ids, { db: trx, logger });
-
-    if (!tests.length) {
-      log.error("no tests for test_ids", test_ids);
-      throw new ClientError("no tests to run");
-    }
 
     const formattedVariables = environment_variables?.length
       ? JSON.parse(environment_variables)
