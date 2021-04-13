@@ -34,6 +34,7 @@ export type GitHubFields = {
   github_id: number;
   github_login: string;
   name: string | null;
+  subscribed_at?: string;
 };
 
 export type GitHubUser = {
@@ -62,6 +63,7 @@ type WolfFields = {
 export type CreateUserWithEmail = WolfFields & {
   email: string;
   login_code: string;
+  subscribed_at?: string;
 };
 
 export type CreateUserWithGitHub = GitHubFields & WolfFields;
@@ -332,6 +334,7 @@ export type User = {
   login_code_expires_at: string | null;
   name: string | null;
   onboarded_at: string | null;
+  subscribed_at?: string | null;
   updated_at?: string;
   wolf_name: string;
   wolf_number: number;

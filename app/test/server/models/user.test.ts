@@ -128,7 +128,11 @@ describe("createUserWithEmail", () => {
   });
 
   it("creates a new user from email", async () => {
-    await createUserWithEmail({ email, login_code: "ABCDEF" }, options);
+    const subscribed_at = new Date().toISOString();
+    await createUserWithEmail(
+      { email, login_code: "ABCDEF", subscribed_at },
+      options
+    );
 
     const user = await db("users")
       .select("*")
@@ -146,6 +150,7 @@ describe("createUserWithEmail", () => {
       login_code_expires_at: expect.any(Date),
       name: null,
       onboarded_at: null,
+      subscribed_at: new Date(subscribed_at),
       wolf_number: expect.any(Number),
     });
 
@@ -167,7 +172,8 @@ describe("createUserWithGitHub", () => {
   const createUserTest = async (
     wolf_variant: string | null,
     wolf_name?: string,
-    wolf_number?: number
+    wolf_number?: number,
+    subscribed_at?: string
   ): Promise<User> => {
     await createUserWithGitHub(
       {
@@ -176,6 +182,7 @@ describe("createUserWithGitHub", () => {
         github_id: 345,
         github_login: "spirit",
         name: "name",
+        subscribed_at,
         wolf_name,
         wolf_number,
         wolf_variant,
@@ -187,7 +194,8 @@ describe("createUserWithGitHub", () => {
   };
 
   it("creates a new user with specified wolf", async () => {
-    const user = await createUserTest("husky", "Lena", 123);
+    const subscribed_at = new Date().toISOString();
+    const user = await createUserTest("husky", "Lena", 123, subscribed_at);
 
     expect(user).toMatchObject({
       avatar_url: "url",
@@ -197,6 +205,7 @@ describe("createUserWithGitHub", () => {
       is_enabled: true,
       name: "name",
       onboarded_at: null,
+      subscribed_at: new Date(subscribed_at),
       wolf_name: "Lena",
       wolf_number: 123,
       wolf_variant: "husky",
@@ -206,6 +215,7 @@ describe("createUserWithGitHub", () => {
   it("creates a new user with random wolf variant", async () => {
     const user = await createUserTest(null);
 
+    expect(user.subscribed_at).toBeNull();
     expect(WOLF_NAMES).toContain(user.wolf_name);
     expect(WOLF_VARIANTS).toContain(user.wolf_variant);
   });

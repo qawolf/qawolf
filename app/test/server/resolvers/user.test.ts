@@ -157,6 +157,7 @@ describe("sendLoginCodeResolver", () => {
       email,
       login_code_digest: expect.any(String),
       login_code_expires_at: expect.any(Date),
+      subscribed_at: expect.any(Date),
     });
 
     expect(result).toEqual({ email });
@@ -169,12 +170,10 @@ describe("sendLoginCodeResolver", () => {
         created_at: undefined,
         last_seen_at: expect.any(String),
         login_code_expires_at: expect.any(String),
+        subscribed_at: expect.any(String),
         updated_at: undefined,
       },
     });
-
-    const subscribers = await db("subscribers").where({ email }).first();
-    expect(subscribers).toBeTruthy();
 
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
@@ -195,6 +194,7 @@ describe("sendLoginCodeResolver", () => {
       last_seen_at: expect.any(Date),
       login_code_digest: expect.any(String),
       login_code_expires_at: expect.any(Date),
+      subscribed_at: null,
       wolf_name: invite.wolf_name,
       wolf_number: invite.wolf_number,
       wolf_variant: invite.wolf_variant,
@@ -213,9 +213,6 @@ describe("sendLoginCodeResolver", () => {
         updated_at: undefined,
       },
     });
-
-    const subscribers = await db("subscribers").where({ email }).first();
-    expect(subscribers).toBeFalsy();
 
     await db.transaction(async (trx) => deleteUser(newUser.id, trx));
   });
@@ -370,6 +367,7 @@ describe("signInWithGitHubResolver", () => {
     expect(access_token).toBeTruthy();
 
     expect(user).toMatchObject({
+      subscribed_at: expect.any(String),
       wolf_name: invite.wolf_name,
       wolf_number: invite.wolf_number,
       wolf_variant: invite.wolf_variant,
@@ -381,12 +379,6 @@ describe("signInWithGitHubResolver", () => {
       .where({ user_id: user.id });
     expect(teamUsers).toEqual([]);
 
-    const subscribers = await db("subscribers")
-      .where({ email: gitHubUser2.email })
-      .first();
-    expect(subscribers).toBeTruthy();
-
-    await db("subscribers").where({ email: gitHubUser2.email }).del();
     await db("users").where({ id: user.id }).del();
   });
 
@@ -406,6 +398,7 @@ describe("signInWithGitHubResolver", () => {
     expect(access_token).toBe("signedToken");
     expect(user).toMatchObject({
       ...gitHubUser2,
+      subscribed_at: undefined,
       teams: [{ plan: "free" }],
     });
     expect(user.teams[0].api_key).toMatch("qawolf_");
@@ -424,11 +417,6 @@ describe("signInWithGitHubResolver", () => {
       { team_id: "teamId" },
       { team_id: user.teams[0].id, role: "admin" },
     ]);
-
-    const subscribers = await db("subscribers")
-      .where({ email: gitHubUser2.email })
-      .first();
-    expect(subscribers).toBeFalsy();
 
     expect(userModel.updateGitHubFields).not.toBeCalled();
   });

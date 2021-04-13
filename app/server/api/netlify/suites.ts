@@ -220,9 +220,14 @@ export const handleNetlifySuitesRequest = async (
 
     log.debug("completed");
   } catch (error) {
-    const logFn = error.code === 500 ? log.alert : log.error;
-    logFn("create suites error", error.message);
+    const code = error.code || 500;
 
-    res.status(error.code || 500).send(error.message);
+    if (code === 500) {
+      log.alert(error.message);
+    } else {
+      log.error(error.message);
+    }
+
+    res.status(code).send(error.message);
   }
 };

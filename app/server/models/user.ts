@@ -80,6 +80,7 @@ export const createUserWithEmail = async (
     login_code_expires_at: minutesFromNow(LOGIN_CODE_EXPIRY_MINUTES),
     name: null,
     onboarded_at: null,
+    subscribed_at: fields.subscribed_at || null,
     wolf_name: fields.wolf_name || randomWolfName(),
     wolf_number: fields.wolf_number || randomWolfNumber(),
     wolf_variant: buildWolfVariant(fields.wolf_variant),
