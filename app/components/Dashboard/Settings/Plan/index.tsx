@@ -16,7 +16,7 @@ type Props = { team: TeamWithUsers };
 const contactHref = "mailto:hello@qawolf.com";
 
 export default function Plan({ team }: Props): JSX.Element {
-  const { isLoading, onClick } = useOnStripePortal();
+  const { isLoading, onClick: onPortalClick } = useOnStripePortal();
 
   const checkoutHref = useBuildCheckoutHref();
 
@@ -47,7 +47,7 @@ export default function Plan({ team }: Props): JSX.Element {
               href={isSubscribed ? undefined : checkoutHref}
               isDisabled={isLoading}
               label={isSubscribed ? copy.manageBilling : copy.upgrade}
-              onClick={isSubscribed ? onClick : undefined}
+              onClick={isSubscribed ? onPortalClick : undefined}
               type="primary"
             />
           </Box>
