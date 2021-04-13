@@ -42,7 +42,7 @@ export const syncTeam = async (
   options: ModelOptions
 ): Promise<void> => {
   const log = options.logger.prefix("syncTeam");
-  // must run before we count runs
+  // renew team if needed before we count runs
   const team = await renewTeam(originalTeam, options);
 
   const runCount = await countRunsForTeam(team, options);
