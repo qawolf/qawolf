@@ -2,6 +2,7 @@ import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
+import { ClientError } from "../errors";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
@@ -71,6 +72,24 @@ export const createDefaultTeam = async ({
   log.debug("created", team);
 
   return formatTeam(team);
+};
+
+export const ensureTeamCanCreateSuite = (
+  team: Team,
+  logger: ModelOptions["logger"]
+): void => {
+  const log = logger.prefix("ensureTeamCanCreateSuite");
+  log.debug("team", team.id);
+
+  if (!team.is_enabled) {
+    log.error("disabled");
+    throw new ClientError("team disabled, please contact support");
+  }
+
+  if (team.limit_reached_at) {
+    log.error("limit reached at", team.limit_reached_at);
+    throw new ClientError("free plan limit reached, please upgrade");
+  }
 };
 
 export const findTeam = async (

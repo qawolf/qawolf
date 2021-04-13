@@ -85,6 +85,24 @@ describe("handleNetlifySuitesRequest", () => {
     expect(send).toBeCalledWith("Invalid API Key");
   });
 
+  it("returns 403 if team limit reached", async () => {
+    await db("teams").update({ limit_reached_at: new Date().toISOString() });
+
+    await handleNetlifySuitesRequest(
+      {
+        body: {},
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      options
+    );
+
+    expect(status).toBeCalledWith(403);
+    expect(send).toBeCalledWith("Plan limit reached");
+
+    await db("teams").update({ limit_reached_at: null });
+  });
+
   it("does not create suites if unsupported deploy context", async () => {
     await handleNetlifySuitesRequest(
       {

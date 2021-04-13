@@ -1,6 +1,7 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
   createDefaultTeam,
+  ensureTeamCanCreateSuite,
   findTeam,
   findTeamForApiKey,
   findTeamForEmail,
@@ -53,6 +54,31 @@ describe("createDefaultTeam", () => {
     ]);
 
     expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
+  });
+});
+
+describe("ensureTeamCanCreateSuite", () => {
+  const team = buildTeam({});
+
+  it("throws an error if team not enabled", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite({ ...team, is_enabled: false }, logger);
+    }).toThrowError("disabled");
+  });
+
+  it("throws an error if team limit reached", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite(
+        { ...team, limit_reached_at: minutesFromNow() },
+        logger
+      );
+    }).toThrowError("limit reached");
+  });
+
+  it("does not throw an error otherwise", () => {
+    expect((): void => {
+      ensureTeamCanCreateSuite(team, logger);
+    }).not.toThrowError();
   });
 });
 

@@ -3,7 +3,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import environment from "../../environment";
 import { ApiAuthenticationError } from "../../errors";
 import { createSuiteForTrigger } from "../../models/suite";
-import { validateApiKeyForTeam } from "../../models/team";
+import {
+  ensureTeamCanCreateSuite,
+  findTeam,
+  validateApiKeyForTeam,
+} from "../../models/team";
 import { findTrigger } from "../../models/trigger";
 import { ModelOptions, Trigger } from "../../types";
 
@@ -35,8 +39,10 @@ const ensureTriggerAccess = async (
 
   try {
     const trigger = await findTrigger(trigger_id, options);
-
     await validateApiKeyForTeam({ api_key, team_id: trigger.team_id }, options);
+
+    const team = await findTeam(trigger.team_id, options);
+    ensureTeamCanCreateSuite(team, options.logger);
 
     log.debug("no errors for trigger", trigger.id);
 
@@ -47,6 +53,14 @@ const ensureTriggerAccess = async (
       throw new ApiAuthenticationError({
         code: 404,
         message: "Invalid trigger id",
+      });
+    }
+
+    if (error.message.includes("limit reached")) {
+      log.error("limit reached");
+      throw new ApiAuthenticationError({
+        code: 403,
+        message: "Plan limit reached",
       });
     }
 

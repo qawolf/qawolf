@@ -4,7 +4,7 @@ import { ApiAuthenticationError } from "../../errors";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findIntegration } from "../../models/integration";
 import { createSuiteForTrigger } from "../../models/suite";
-import { findTeamForApiKey } from "../../models/team";
+import { ensureTeamCanCreateSuite, findTeamForApiKey } from "../../models/team";
 import { findTriggersForNetlifyIntegration } from "../../models/trigger";
 import { createCommitStatus } from "../../services/gitHub/app";
 import { Integration, ModelOptions, Suite, Team, Trigger } from "../../types";
@@ -161,6 +161,7 @@ const findTeamForRequest = async (
     const team = await findTeamForApiKey(api_key, options);
     if (!team) throw new Error("not found");
 
+    ensureTeamCanCreateSuite(team, options.logger);
     log.debug("found team", team.id);
 
     return team;
@@ -170,6 +171,14 @@ const findTeamForRequest = async (
       throw new ApiAuthenticationError({
         code: 403,
         message: "Invalid API Key",
+      });
+    }
+
+    if (error.message.includes("limit reached")) {
+      log.error("limit reached");
+      throw new ApiAuthenticationError({
+        code: 403,
+        message: "Plan limit reached",
       });
     }
 

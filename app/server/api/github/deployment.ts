@@ -1,6 +1,7 @@
+import { logger } from "../../../test/server/utils";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { createSuiteForTests } from "../../models/suite";
-import { findTeam } from "../../models/team";
+import { ensureTeamCanCreateSuite, findTeam } from "../../models/team";
 import { findEnabledTestsForTrigger } from "../../models/test";
 import { findTriggersForGitHubIntegration } from "../../models/trigger";
 import {
@@ -129,6 +130,9 @@ const createSuiteForDeployment = async (
     return;
   }
 
+  const team = await findTeam(trigger.team_id, options);
+  ensureTeamCanCreateSuite(team, options.logger);
+
   const finalDeploymentUrl = await buildDeploymentUrlForTeam(
     { branches, deploymentUrl, team_id: trigger.team_id },
     options
@@ -195,27 +199,31 @@ export const createSuitesForDeployment = async (
   );
 
   return options.db.transaction(async (trx) => {
-    const triggers = await findTriggersForGitHubIntegration(repoId, {
-      db: trx,
-      logger: options.logger,
-    });
+    try {
+      const triggers = await findTriggersForGitHubIntegration(repoId, {
+        db: trx,
+        logger: options.logger,
+      });
 
-    await Promise.all(
-      triggers.map((trigger) =>
-        createSuiteForDeployment(
-          {
-            branches,
-            deploymentUrl,
-            environment,
-            installationId,
-            owner,
-            repo,
-            sha,
-            trigger,
-          },
-          { db: trx, logger: options.logger }
+      await Promise.all(
+        triggers.map((trigger) =>
+          createSuiteForDeployment(
+            {
+              branches,
+              deploymentUrl,
+              environment,
+              installationId,
+              owner,
+              repo,
+              sha,
+              trigger,
+            },
+            { db: trx, logger: options.logger }
+          )
         )
-      )
-    );
+      );
+    } catch (error) {
+      logger.alert("github error", error.message);
+    }
   });
 };

@@ -6,6 +6,7 @@ import {
   findSuite,
   findSuitesForTeam,
 } from "../models/suite";
+import { ensureTeamCanCreateSuite } from "../models/team";
 import { findEnabledTests } from "../models/test";
 import { findTriggerOrNull } from "../models/trigger";
 import {
@@ -49,15 +50,12 @@ export const createSuiteResolver = async (
   );
   const teamIds = testTeams.map((t) => t.id);
 
-  if (Array.from(new Set(teamIds)).length > 1) {
+  if (Array.from(new Set(teamIds)).length !== 1) {
     log.error("cannot create suite for multiple teams", teamIds);
     throw new Error("tests on different teams");
   }
 
-  if (testTeams[0] && !testTeams[0].is_enabled) {
-    log.error("team disabled", testTeams.find((t) => !t.is_enabled)?.id);
-    throw new ClientError("team disabled, please contact support");
-  }
+  ensureTeamCanCreateSuite(testTeams[0], logger);
 
   const suite = await db.transaction(async (trx) => {
     const tests = await findEnabledTests(test_ids, { db: trx, logger });
