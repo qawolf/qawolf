@@ -53,11 +53,11 @@ export const syncTeam = async (
   }
 
   const free_limit_reached = team.plan === "free" && runCount >= freePlanLimit;
+
   const updates = {
     last_synced_at: minutesFromNow(),
-    limit_reached_at: free_limit_reached ? minutesFromNow() : undefined,
+    limit_reached_at: free_limit_reached ? minutesFromNow() : null,
   };
-
   await updateTeam({ id: team.id, ...updates }, options);
 
   const traits = {
