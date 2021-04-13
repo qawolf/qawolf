@@ -62,9 +62,9 @@ export const syncTeam = async (
 
   const traits = {
     free_limit_reached,
+    monthly_run_count: runCount,
     name: team.name,
     plan: team.plan,
-    monthly_run_count: runCount,
     ...testCounts,
   };
   log.debug("track segment group", team.id, traits);
