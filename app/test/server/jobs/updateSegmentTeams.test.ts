@@ -1,10 +1,37 @@
-import { syncTeam } from "../../../server/jobs/updateSegmentTeams";
+import { shouldRenew, syncTeam } from "../../../server/jobs/updateSegmentTeams";
 import { daysFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
 
 const db = prepareTestDb();
 const options = { db, logger };
+
+describe("shouldRenew", () => {
+  const team = buildTeam({});
+
+  it("returns false if team not on free plan", () => {
+    expect(shouldRenew({ ...team, plan: "business" as const }, logger)).toBe(
+      false
+    );
+  });
+
+  it("returns false if team renewed recently", () => {
+    expect(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      shouldRenew({ ...team, renewed_at: new Date() as any }, logger)
+    ).toBe(false);
+
+    expect(shouldRenew({ ...team, renewed_at: daysFromNow(-29) }, logger)).toBe(
+      false
+    );
+  });
+
+  it("returns true otherwise", () => {
+    expect(shouldRenew({ ...team, renewed_at: daysFromNow(-31) }, logger)).toBe(
+      true
+    );
+  });
+});
 
 describe("syncTeam", () => {
   const timestamp = new Date().toISOString();

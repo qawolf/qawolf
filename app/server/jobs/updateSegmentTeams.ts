@@ -1,4 +1,5 @@
 import { daysFromNow, minutesFromNow } from "../../shared/utils";
+import { logger } from "../../test/server/utils";
 import { countRunsForTeam } from "../models/run";
 import { findTeamsToSync, updateTeam } from "../models/team";
 import { countTestsForTeam } from "../models/test";
@@ -9,18 +10,28 @@ import { ModelOptions, Team } from "../types";
 
 const freePlanLimit = 100;
 
+export const shouldRenew = (
+  team: Team,
+  logger: ModelOptions["logger"]
+): boolean => {
+  const log = logger.prefix("shouldRenew");
+  log.debug("team", team.id, "renewed at", team.renewed_at);
+
+  const isExpired = new Date(team.renewed_at) < new Date(daysFromNow(-30));
+  const renew = team.plan === "free" && isExpired;
+
+  log.debug("should renew?", renew);
+
+  return renew;
+};
+
 export const syncTeam = async (
   team: Team,
   options: ModelOptions
 ): Promise<Team> => {
-  const log = options.logger.prefix("syncTeam");
   const timestamp = minutesFromNow();
 
-  const shouldRenew =
-    team.plan === "free" && team.renewed_at < daysFromNow(-30);
-  log.debug("should renew?", shouldRenew);
-
-  const renewFields = shouldRenew
+  const renewFields = shouldRenew(team, logger)
     ? { limit_reached_at: null, renewed_at: timestamp }
     : {};
 
