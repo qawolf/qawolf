@@ -25,29 +25,25 @@ export const shouldRenew = (
   return renew;
 };
 
-export const syncTeam = async (
+export const renewTeam = async (
   team: Team,
   options: ModelOptions
 ): Promise<Team> => {
-  const timestamp = minutesFromNow();
-
-  const renewFields = shouldRenew(team, logger)
-    ? { limit_reached_at: null, renewed_at: timestamp }
-    : {};
+  if (!shouldRenew(team, logger)) return team;
 
   return updateTeam(
-    { id: team.id, ...renewFields, last_synced_at: timestamp },
+    { id: team.id, limit_reached_at: null, renewed_at: minutesFromNow() },
     options
   );
 };
 
-export const updateSegmentTeam = async (
+export const syncTeam = async (
   originalTeam: Team,
   options: ModelOptions
 ): Promise<void> => {
-  const log = options.logger.prefix("updateSegmentTeam");
-
-  const team = await syncTeam(originalTeam, options);
+  const log = options.logger.prefix("syncTeam");
+  // must run before we count runs
+  const team = await renewTeam(originalTeam, options);
 
   const runCount = await countRunsForTeam(team, options);
   const testCounts = await countTestsForTeam(team.id, options);
@@ -62,6 +58,7 @@ export const updateSegmentTeam = async (
   } else if (team.plan === "business") {
     await updateStripeUsage({ logger: options.logger, runCount, team });
   }
+  await updateTeam({ id: team.id, last_synced_at: minutesFromNow() }, options);
 
   const traits = {
     free_limit_reached,
@@ -76,14 +73,12 @@ export const updateSegmentTeam = async (
   users.forEach((user) => trackSegmentGroup(team.id, user.id, traits));
 };
 
-export const updateSegmentTeams = async (
-  options: ModelOptions
-): Promise<void> => {
-  const log = options.logger.prefix("updateSegmentTeams");
+export const syncTeams = async (options: ModelOptions): Promise<void> => {
+  const log = options.logger.prefix("syncTeams");
   const teams = await findTeamsToSync(500, options);
 
   const promises = teams.map(async (team) => {
-    return updateSegmentTeam(team, options);
+    return syncTeam(team, options);
   });
 
   await Promise.all(promises);

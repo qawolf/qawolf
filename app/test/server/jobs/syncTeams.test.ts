@@ -1,4 +1,4 @@
-import { shouldRenew, syncTeam } from "../../../server/jobs/updateSegmentTeams";
+import { renewTeam, shouldRenew } from "../../../server/jobs/syncTeams";
 import { daysFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
@@ -33,7 +33,7 @@ describe("shouldRenew", () => {
   });
 });
 
-describe("syncTeam", () => {
+describe("renewTeam", () => {
   const timestamp = new Date().toISOString();
 
   const team = buildTeam({
@@ -51,40 +51,39 @@ describe("syncTeam", () => {
       plan: "business" as const,
     };
 
-    const syncedTeam = await syncTeam(modifiedTeam, options);
+    const renewedTeam = await renewTeam(modifiedTeam, options);
 
-    expect(syncedTeam).toMatchObject({
+    expect(renewedTeam).toMatchObject({
       id: "teamId",
-      last_synced_at: expect.any(String),
-      limit_reached_at: new Date(timestamp),
-      renewed_at: new Date(team.renewed_at),
+      limit_reached_at: timestamp,
+      renewed_at: team.renewed_at,
     });
   });
 
   it("does not renew if team renewed recently", async () => {
+    const timestamp2 = daysFromNow(-1);
+
     const modifiedTeam = {
       ...team,
-      renewed_at: daysFromNow(-1),
+      renewed_at: timestamp2,
     };
 
-    const syncedTeam = await syncTeam(modifiedTeam, options);
+    const renewedTeam = await renewTeam(modifiedTeam, options);
 
-    expect(syncedTeam).toMatchObject({
+    expect(renewedTeam).toMatchObject({
       id: "teamId",
-      last_synced_at: expect.any(String),
-      limit_reached_at: new Date(timestamp),
-      renewed_at: new Date(team.renewed_at),
+      limit_reached_at: timestamp,
+      renewed_at: timestamp2,
     });
   });
 
   it("renews team otherwise", async () => {
-    const syncedTeam = await syncTeam(team, options);
+    const renewedTeam = await renewTeam(team, options);
 
-    expect(syncedTeam).toMatchObject({
+    expect(renewedTeam).toMatchObject({
       limit_reached_at: null,
       renewed_at: expect.any(String),
-      last_synced_at: expect.any(String),
     });
-    expect(syncedTeam.renewed_at > daysFromNow(-1)).toBe(true);
+    expect(renewedTeam.renewed_at > daysFromNow(-1)).toBe(true);
   });
 });

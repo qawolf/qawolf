@@ -8,8 +8,8 @@ import { deployRunners } from "../../server/jobs/deployRunners";
 import { orchestrateRunners } from "../../server/jobs/orchestrateRunners";
 import { orchestrateTriggers } from "../../server/jobs/orchestrateTriggers";
 import { restartRunners } from "../../server/jobs/restartRunners";
+import { syncTeams } from "../../server/jobs/syncTeams";
 import { Job, JOB_TYPES } from "../../server/jobs/types";
-import { updateSegmentTeams } from "../../server/jobs/updateSegmentTeams";
 import { Logger } from "../../server/Logger";
 import { deleteOldEmails } from "../../server/models/email";
 import { getAzureClient } from "../../server/services/azure/container";
@@ -45,8 +45,8 @@ export default async function (
       await orchestrateRunners(options);
     } else if (job === "orchestrateTriggers") {
       await orchestrateTriggers(options);
-    } else if (job === "updateSegmentTeams") {
-      await updateSegmentTeams(options);
+    } else if (job === "syncTeams") {
+      await syncTeams(options);
     } else {
       const client = await getAzureClient();
       if (job === "deleteRunners") {
