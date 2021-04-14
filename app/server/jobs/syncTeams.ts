@@ -65,6 +65,7 @@ export const syncTeam = async (
     monthly_run_count: runCount,
     name: team.name,
     plan: team.plan,
+    team_id: team.id,
     ...testCounts,
   };
   log.debug("track segment group", team.id, traits);
@@ -78,8 +79,7 @@ export const syncTeam = async (
 export const syncTeams = async (options: ModelOptions): Promise<void> => {
   const log = options.logger.prefix("syncTeams");
 
-  // intercom has 167 every 10 seconds limit
-  const teams = await findTeamsToSync(150, options);
+  const teams = await findTeamsToSync(500, options);
 
   const promises = teams.map(async (team) => {
     return syncTeam(team, options);
