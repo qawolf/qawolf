@@ -58,7 +58,7 @@ export const UserProvider: FC = ({ children }) => {
     updateIntercomUser(user);
   }, [user]);
 
-  useSegmentPage(user);
+  useSegmentPage();
 
   const value = { isLoggedIn, isUserLoading: !user && loading, user, wolf };
 
