@@ -46,9 +46,10 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     if (!value || (hasNewerVersion && isChanged)) {
       editor.setValue(team.helpers);
       // restore position
-      if (!helpersLine) return;
-      editor.revealLineInCenter(helpersLine);
-      editor.setPosition({ column: 1, lineNumber: helpersLine });
+      if (helpersLine) {
+        editor.revealLineInCenter(helpersLine);
+        editor.setPosition({ column: 1, lineNumber: helpersLine });
+      }
     }
 
     // update current team helpers version so it works in callback
