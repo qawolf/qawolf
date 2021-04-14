@@ -55,6 +55,7 @@ export class VideoArtifactsHook implements RunHook {
 
           if (gifUrl !== "local-only") {
             await uploadFile({
+              contentType: "image/gif",
               savePath: this._videoCapture.gifPath,
               url: gifUrl!,
             });

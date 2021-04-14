@@ -6,12 +6,14 @@ import { createReadStream, ReadStream, statSync } from "fs";
 const debug = Debug("qawolf:aws");
 
 type UploadFile = {
+  contentType?: string;
   data?: string;
   savePath?: string;
   url: string;
 };
 
 export const uploadFile = async ({
+  contentType,
   data,
   savePath,
   url,
@@ -24,7 +26,7 @@ export const uploadFile = async ({
 
   try {
     const headers: AxiosRequestConfig["headers"] = {
-      "content-type": "application/octet-stream",
+      "content-type": contentType || "application/octet-stream",
     };
 
     let body: ReadStream | string = data || "";
