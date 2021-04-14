@@ -19,6 +19,7 @@ import { sendEmailForLoginCode } from "../services/alert/email";
 import { postMessageToSlack } from "../services/alert/slack";
 import { findGitHubFields } from "../services/gitHub/user";
 import { hashUserId } from "../services/intercom";
+import { trackSegmentEvent } from "../services/segment";
 import {
   AuthenticatedUser,
   Context,
@@ -103,11 +104,10 @@ const createUserWithTeam = async (
           { db: trx, logger }
         );
 
+    trackSegmentEvent({ event: "Signed Up", user });
+
     if (!hasInvite) {
-      const team = await createDefaultTeam({
-        db: trx,
-        logger,
-      });
+      const team = await createDefaultTeam({ db: trx, logger });
 
       await createTeamUser(
         { team_id: team.id, user_id: user.id },
