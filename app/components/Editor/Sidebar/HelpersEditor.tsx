@@ -19,7 +19,7 @@ type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 const DEBOUNCE_MS = 250;
 
 export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
-  const { env } = useContext(RunnerContext);
+  const { helpersLine, env, onHelpersLineChange } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
   const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
 
@@ -45,13 +45,17 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
 
     if (!value || (hasNewerVersion && isChanged)) {
       editor.setValue(team.helpers);
+      // restore position
+      if (!helpersLine) return;
+      editor.revealLineInCenter(helpersLine);
+      editor.setPosition({ column: 1, lineNumber: helpersLine });
     }
 
     // update current team helpers version so it works in callback
     if (team.helpers_version > -1) {
       helpersVersionRef.current = team.helpers_version;
     }
-  }, [editor, team]);
+  }, [editor, helpersLine, team]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
 
@@ -59,6 +63,8 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
     setEditor(editor);
     setMonaco(monaco);
     includeTypes(monaco);
+
+    editor.onDidChangeCursorSelection(onHelpersLineChange);
 
     editor.onDidChangeModelContent(() => {
       const helpers = editor.getValue();

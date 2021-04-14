@@ -11,7 +11,11 @@ type OnSelectionChange = (
 ) => void;
 
 export type SelectionHook = {
+  codeLine: number | null;
+  helpersLine: number | null;
   mouseLineNumber: number | null;
+  onCodeLineChange: OnSelectionChange;
+  onHelpersLineChange: OnSelectionChange;
   onSelectionChange: OnSelectionChange;
   selection: Selection | null;
 };
@@ -20,9 +24,24 @@ export const useSelection = (): SelectionHook => {
   const [selection, setSelection] = useState<Selection | null>(null);
   const [mouseLineNumber, setMouseLineNumber] = useState<number | null>(null);
 
+  const [codeLine, setCodeLine] = useState<number | null>(null);
+  const [helpersLine, setHelpersLine] = useState<number | null>(null);
+
+  const onCodeLineChange = (
+    event: monacoEditor.editor.ICursorSelectionChangedEvent
+  ): void => {
+    setCodeLine(event.selection.startLineNumber);
+  };
+
+  const onHelpersLineChange = (
+    event: monacoEditor.editor.ICursorSelectionChangedEvent
+  ): void => {
+    setHelpersLine(event.selection.startLineNumber);
+  };
+
   const onSelectionChange = (
     event: monacoEditor.editor.ICursorSelectionChangedEvent
-  ) => {
+  ): void => {
     const {
       endColumn,
       endLineNumber,
@@ -46,5 +65,13 @@ export const useSelection = (): SelectionHook => {
     setSelection({ endLine: endLineNumber, startLine: startLineNumber });
   };
 
-  return { mouseLineNumber, onSelectionChange, selection };
+  return {
+    codeLine,
+    helpersLine,
+    mouseLineNumber,
+    onCodeLineChange,
+    onHelpersLineChange,
+    onSelectionChange,
+    selection,
+  };
 };

@@ -16,7 +16,13 @@ export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
-  const { env, progress, onSelectionChange } = useContext(RunnerContext);
+  const {
+    codeLine,
+    env,
+    progress,
+    onCodeLineChange,
+    onSelectionChange,
+  } = useContext(RunnerContext);
   const { code, controller, hasWriteAccess, team } = useContext(TestContext);
 
   useEnvTypes({ env, monaco });
@@ -28,7 +34,12 @@ export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
     setMonaco(monaco);
     includeTypes(monaco);
 
-    editor.onDidChangeCursorSelection(onSelectionChange);
+    editor.onDidChangeCursorSelection(
+      (event: monacoEditor.editor.ICursorSelectionChangedEvent) => {
+        onCodeLineChange(event);
+        onSelectionChange(event);
+      }
+    );
   };
 
   useEffect(() => {
@@ -36,6 +47,11 @@ export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
 
     // set the initial editor code
     editor.setValue(controller.code);
+    // restore position
+    if (codeLine) {
+      editor.revealLineInCenter(codeLine);
+      editor.setPosition({ column: 1, lineNumber: codeLine });
+    }
 
     // update the editor when the controller code updates
     const onCodeUpdated = (value: string) => {

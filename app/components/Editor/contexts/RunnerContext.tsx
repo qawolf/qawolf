@@ -23,11 +23,15 @@ type RunnerContext = ConnectRunnerHook &
 
 export const RunnerContext = createContext<RunnerContext>({
   apiKey: null,
+  codeLine: null,
   elementChooserValue: { isActive: false },
   env: null,
+  helpersLine: null,
   isRunnerConnected: false,
   isRunnerLoading: false,
   mouseLineNumber: null,
+  onCodeLineChange: () => null,
+  onHelpersLineChange: () => null,
   onSelectionChange: () => null,
   progress: null,
   runner: null,
@@ -41,7 +45,7 @@ export const RunnerContext = createContext<RunnerContext>({
 });
 
 export const RunnerProvider: FC = ({ children }) => {
-  const { mouseLineNumber, onSelectionChange, selection } = useSelection();
+  const selectionFields = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
   const { controller, run, suite, team } = useContext(TestContext);
@@ -77,17 +81,15 @@ export const RunnerProvider: FC = ({ children }) => {
   }, [controller, runner]);
 
   const value = {
+    ...selectionFields,
     apiKey,
     elementChooserValue,
     env,
     isRunnerConnected,
     isRunnerLoading,
-    mouseLineNumber,
-    onSelectionChange,
     progress,
     runner,
     runTest,
-    selection,
     shouldRequestRunner,
     startElementChooser,
     stopElementChooser,
