@@ -16,12 +16,6 @@ const width = "800px";
 export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
   const { environmentId, teamId } = useContext(StateContext);
 
-  // have internal state for selected environment so editing variables
-  // doesn't change environment id in global state
-  const [selectedEnvironmentId, setSelectedEnvironmentId] = useState<
-    string | null
-  >(environmentId);
-
   const [
     deleteEnvironment,
     setDeleteEnvironment,
@@ -32,13 +26,7 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     setDeleteEnvironmentVariable,
   ] = useState<EnvironmentVariable | null>(null);
 
-  const handleCloseDeleteEnvironment = (
-    deletedEnvironmentId?: string
-  ): void => {
-    if (deletedEnvironmentId === selectedEnvironmentId) {
-      setSelectedEnvironmentId(null);
-    }
-
+  const handleCloseDeleteEnvironment = (): void => {
     setDeleteEnvironment(null);
   };
 
@@ -84,14 +72,13 @@ export default function EnvironmentsModal({ closeModal }: Props): JSX.Element {
     <Modal closeModal={closeModal} width={width}>
       <Box direction="row">
         <Environments
-          environmentId={selectedEnvironmentId}
+          environmentId={environmentId}
           onDelete={handleDeleteEnvironment}
-          setSelectedEnvironmentId={setSelectedEnvironmentId}
           teamId={teamId}
         />
         <Variables
           closeModal={closeModal}
-          environmentId={selectedEnvironmentId}
+          environmentId={environmentId}
           onDelete={handleDeleteVariable}
         />
       </Box>

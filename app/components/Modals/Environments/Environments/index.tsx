@@ -15,7 +15,6 @@ import Text from "../../../shared/Text";
 type Props = {
   environmentId: string;
   onDelete: (fields: MutableListFields) => void;
-  setSelectedEnvironmentId: (environmentId: string) => void;
   teamId: string;
 };
 
@@ -24,7 +23,6 @@ const width = "240px";
 export default function Environments({
   environmentId,
   onDelete,
-  setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
@@ -63,15 +61,14 @@ export default function Environments({
           const id = data?.createEnvironment?.id;
           if (!id) return;
 
-          setSelectedEnvironmentId(id);
-          // select environment in state if none exist
-          if (!environmentId) state.setEnvironmentId(id);
-
+          state.setEnvironmentId(id);
           callback();
         }
       );
     }
   };
+
+  const handleClick = (id: string): void => state.setEnvironmentId(id);
 
   return (
     <Box flex={false} width={width}>
@@ -87,7 +84,7 @@ export default function Environments({
       </Box>
       <MutableList
         fieldsList={environments}
-        onClick={setSelectedEnvironmentId}
+        onClick={handleClick}
         onDelete={onDelete}
         overflow={{ vertical: "auto" }}
         pad={{ bottom: "medium", horizontal: "medium" }}
