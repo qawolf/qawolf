@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 
 import * as stripeFunction from "../../../server/api/stripe";
+import * as syncTeams from "../../../server/jobs/syncTeams";
 import * as teamModel from "../../../server/models/team";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
@@ -16,6 +17,8 @@ const {
 
 const db = prepareTestDb();
 const options = { db, logger };
+
+const syncTeamSpy = jest.spyOn(syncTeams, "syncTeam").mockResolvedValue();
 
 beforeAll(() => {
   jest.spyOn(stripeFunction, "findMetadataForSubscription").mockResolvedValue({
@@ -52,6 +55,9 @@ describe("handleCheckoutCompleted", () => {
       stripe_customer_id: "stripeCustomerId",
       stripe_subscription_id: "stripeSubscriptionId",
     });
+
+    expect(syncTeamSpy).toHaveBeenCalledTimes(1);
+    expect(syncTeamSpy.mock.calls[0][0]).toMatchObject({ id: team.id });
   });
 });
 

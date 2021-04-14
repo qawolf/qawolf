@@ -4,6 +4,7 @@ import Stripe from "stripe";
 
 import { minutesFromNow } from "../../shared/utils";
 import environment from "../environment";
+import { syncTeam } from "../jobs/syncTeams";
 import { findTeam, updateTeam } from "../models/team";
 import { postMessageToSlack } from "../services/alert/slack";
 import { ModelOptions, Team, TeamPlan } from "../types";
@@ -78,7 +79,7 @@ export const handleCheckoutCompleted = async (
     options
   );
 
-  await updateTeam(
+  const team = await updateTeam(
     {
       ...buildTeamFieldsForPayment(),
       id: team_id,
@@ -88,6 +89,8 @@ export const handleCheckoutCompleted = async (
     },
     options
   );
+
+  await syncTeam(team, options);
 
   if (environment.SLACK_UPDATES_WEBHOOK) {
     await postMessageToSlack({

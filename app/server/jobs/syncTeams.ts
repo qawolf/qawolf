@@ -4,7 +4,11 @@ import { countRunsForTeam } from "../models/run";
 import { findTeamsToSync, updateTeam } from "../models/team";
 import { countTestsForTeam } from "../models/test";
 import { findUsersForTeam } from "../models/user";
-import { flushSegment, trackSegmentGroup } from "../services/segment";
+import {
+  flushSegment,
+  trackSegmentGroup,
+  trackSegmentIdentify,
+} from "../services/segment";
 import { updateStripeUsage } from "../services/stripe";
 import { ModelOptions, Team } from "../types";
 
@@ -71,9 +75,18 @@ export const syncTeam = async (
   log.debug("track segment group", team.id, traits);
 
   const users = await findUsersForTeam(team.id, options);
-  users.forEach((user) =>
-    trackSegmentGroup({ groupId: team.id, traits, user })
-  );
+  users.forEach((user) => {
+    trackSegmentGroup({ groupId: team.id, traits, user });
+    trackSegmentIdentify({
+      traits: {
+        createdAt: user.created_at,
+        email: user.email,
+        is_subscribed: !!user.subscribed_at,
+        wolf_name: user.wolf_name,
+      },
+      user,
+    });
+  });
 };
 
 export const syncTeams = async (options: ModelOptions): Promise<void> => {

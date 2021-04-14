@@ -10,9 +10,7 @@ const hasSegment = !isServer() && (window as any).analytics;
 export const identifySegmentUser = ({ id, email }: User): void => {
   if (!hasSegment) return;
 
-  (window as any).analytics.identify(id, {
-    email,
-  });
+  (window as any).analytics.identify(id, { email });
 };
 
 export const trackSegmentEvent = (
