@@ -9,6 +9,7 @@ jest.mock("stripe");
 
 const {
   handleCheckoutCompleted,
+  handleCustomerSubscriptionDeleted,
   handleInvoicePaid,
   shouldIgnoreInvoicePaidEvent,
 } = stripeFunction;
@@ -50,6 +51,37 @@ describe("handleCheckoutCompleted", () => {
       renewed_at: expect.any(Date),
       stripe_customer_id: "stripeCustomerId",
       stripe_subscription_id: "stripeSubscriptionId",
+    });
+  });
+});
+
+describe("handleCustomerSubscriptionDeleted", () => {
+  beforeAll(() => {
+    return db("teams").insert({
+      ...buildTeam({ plan: "business" }),
+      stripe_customer_id: "stripeCustomerId",
+      stripe_subscription_id: "stripeSubscriptionId",
+    });
+  });
+
+  afterAll(() => db("teams").del());
+
+  it("reverts team to free plan", async () => {
+    await handleCustomerSubscriptionDeleted(
+      {
+        id: "stripeSubscriptionId",
+      } as Stripe.Subscription,
+      options
+    );
+
+    const team = await db.select("*").from("teams").first();
+
+    expect(team).toMatchObject({
+      limit_reached_at: null,
+      plan: "free",
+      renewed_at: expect.any(Date),
+      stripe_customer_id: null,
+      stripe_subscription_id: null,
     });
   });
 });

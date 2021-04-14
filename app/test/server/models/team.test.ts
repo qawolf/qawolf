@@ -374,6 +374,9 @@ describe("updateTeam", () => {
       {
         id: "teamId",
         limit_reached_at: null,
+        plan: "free",
+        stripe_customer_id: null,
+        stripe_subscription_id: null,
       },
       options
     );
@@ -382,6 +385,9 @@ describe("updateTeam", () => {
     expect(updatedTeam2).toMatchObject({
       id: "teamId",
       limit_reached_at: null,
+      plan: "free",
+      stripe_customer_id: null,
+      stripe_subscription_id: null,
     });
   });
 

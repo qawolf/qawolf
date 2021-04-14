@@ -234,8 +234,9 @@ export const updateTeam = async (
   if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;
   if (renewed_at) updates.renewed_at = renewed_at;
-  if (stripe_customer_id) updates.stripe_customer_id = stripe_customer_id;
-  if (stripe_subscription_id) {
+  if (stripe_customer_id !== undefined)
+    updates.stripe_customer_id = stripe_customer_id;
+  if (stripe_subscription_id !== undefined) {
     updates.stripe_subscription_id = stripe_subscription_id;
   }
 
