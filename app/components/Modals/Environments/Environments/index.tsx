@@ -5,6 +5,7 @@ import {
   useUpdateEnvironment,
 } from "../../../../hooks/mutations";
 import { useEnvironments } from "../../../../hooks/queries";
+import { state } from "../../../../lib/state";
 import { MutableListArgs, MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
@@ -59,11 +60,11 @@ export default function Environments({
       createEnvironment({ variables: { name, team_id: teamId } }).then(
         (response) => {
           const { data } = response || {};
+          const id = data?.createEnvironment.id;
 
-          // show newly created environment if possible
-          if (setSelectedEnvironmentId) {
-            setSelectedEnvironmentId(data?.createEnvironment.id);
-          }
+          setSelectedEnvironmentId(id);
+          // select environment in state if none exist
+          if (!environmentId) state.setEnvironmentId(id);
 
           callback();
         }
