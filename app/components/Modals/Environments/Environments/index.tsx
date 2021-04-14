@@ -5,6 +5,7 @@ import {
   useUpdateEnvironment,
 } from "../../../../hooks/mutations";
 import { useEnvironments } from "../../../../hooks/queries";
+import { state } from "../../../../lib/state";
 import { MutableListArgs, MutableListFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
@@ -14,7 +15,6 @@ import Text from "../../../shared/Text";
 type Props = {
   environmentId: string;
   onDelete: (fields: MutableListFields) => void;
-  setSelectedEnvironmentId: (environmentId: string) => void;
   teamId: string;
 };
 
@@ -23,7 +23,6 @@ const width = "240px";
 export default function Environments({
   environmentId,
   onDelete,
-  setSelectedEnvironmentId,
   teamId,
 }: Props): JSX.Element {
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
@@ -59,17 +58,17 @@ export default function Environments({
       createEnvironment({ variables: { name, team_id: teamId } }).then(
         (response) => {
           const { data } = response || {};
+          const id = data?.createEnvironment?.id;
+          if (!id) return;
 
-          // show newly created environment if possible
-          if (setSelectedEnvironmentId) {
-            setSelectedEnvironmentId(data?.createEnvironment.id);
-          }
-
+          state.setEnvironmentId(id);
           callback();
         }
       );
     }
   };
+
+  const handleClick = (id: string): void => state.setEnvironmentId(id);
 
   return (
     <Box flex={false} width={width}>
@@ -85,7 +84,7 @@ export default function Environments({
       </Box>
       <MutableList
         fieldsList={environments}
-        onClick={setSelectedEnvironmentId}
+        onClick={handleClick}
         onDelete={onDelete}
         overflow={{ vertical: "auto" }}
         pad={{ bottom: "medium", horizontal: "medium" }}
