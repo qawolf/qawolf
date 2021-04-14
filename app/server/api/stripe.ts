@@ -99,6 +99,67 @@ export const handleCheckoutCompleted = async (
   }
 };
 
+export const handleCustomerSubscriptionDeleted = async (
+  subscription: Stripe.Subscription,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("handleCustomerSubscriptionDeleted");
+
+  const { ignore_webhook, team_id } = await findMetadataForSubscription(
+    subscription.id,
+    options
+  );
+
+  if (ignore_webhook) {
+    log.debug("ignore webhook for subscription", subscription.id);
+    return;
+  }
+
+  await updateTeam(
+    {
+      ...buildTeamFieldsForPayment(),
+      id: team_id,
+      plan: "free",
+      stripe_customer_id: null,
+      stripe_subscription_id: null,
+    },
+    options
+  );
+};
+
+export const handleCustomerSubscriptionUpdated = async (
+  subscription: Stripe.Subscription,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("handleCustomerSubscriptionUpdated");
+
+  if (!subscription.cancel_at_period_end) {
+    log.debug("ignore, no cancellation for subscription", subscription.id);
+    return;
+  }
+
+  const { ignore_webhook, team_id } = await findMetadataForSubscription(
+    subscription.id,
+    options
+  );
+
+  if (ignore_webhook) {
+    log.debug("ignore webhook for subscription", subscription.id);
+    return;
+  }
+
+  if (environment.SLACK_UPDATES_WEBHOOK) {
+    const team = await findTeam(team_id, options);
+
+    await postMessageToSlack({
+      message: {
+        text: `🚫 subscription canceled for ${team.name} (${team.id})`,
+      },
+      webhook_url: environment.SLACK_UPDATES_WEBHOOK,
+    });
+  }
+};
+
 export const handleInvoicePaid = async (
   invoice: Stripe.Invoice,
   options: ModelOptions
@@ -179,6 +240,16 @@ export const handleStripeRequest = async (
     if (event.type === "checkout.session.completed") {
       await handleCheckoutCompleted(
         event.data.object as Stripe.Checkout.Session,
+        options
+      );
+    } else if (event.type === "customer.subscription.deleted") {
+      await handleCustomerSubscriptionDeleted(
+        event.data.object as Stripe.Subscription,
+        options
+      );
+    } else if (event.type === "customer.subscription.updated") {
+      await handleCustomerSubscriptionUpdated(
+        event.data.object as Stripe.Subscription,
         options
       );
     } else if (event.type === "invoice.paid") {
