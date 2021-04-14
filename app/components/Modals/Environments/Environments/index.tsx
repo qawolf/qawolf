@@ -60,7 +60,8 @@ export default function Environments({
       createEnvironment({ variables: { name, team_id: teamId } }).then(
         (response) => {
           const { data } = response || {};
-          const id = data?.createEnvironment.id;
+          const id = data?.createEnvironment?.id;
+          if (!id) return;
 
           setSelectedEnvironmentId(id);
           // select environment in state if none exist
