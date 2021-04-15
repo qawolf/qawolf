@@ -1,6 +1,7 @@
 import {
   createPullRequestComment,
   findPullRequestCommentForSuite,
+  findPullRequestCommentForTrigger,
   updatePullRequestComment,
 } from "../../../server/models/pull_request_comment";
 import { prepareTestDb } from "../db";
@@ -37,8 +38,8 @@ describe("createPullRequestComment", () => {
         body: "# Hello",
         comment_id: 8,
         deployment_integration_id: "integrationId",
-        issue_number: 213,
         last_commit_at: timestamp,
+        pull_request_id: 213,
         suite_id: "suiteId",
         trigger_id: "triggerId",
         user_id: "userId",
@@ -53,28 +54,61 @@ describe("createPullRequestComment", () => {
       last_commit_at: new Date(timestamp),
     });
   });
+});
 
-  describe("findPullRequestCommentForSuite", () => {
-    beforeAll(() =>
-      db("pull_request_comments").insert(buildPullRequestComment({}))
-    );
+describe("findPullRequestCommentForSuite", () => {
+  beforeAll(() =>
+    db("pull_request_comments").insert(buildPullRequestComment({}))
+  );
 
-    afterAll(() => db("pull_request_comments").del());
+  afterAll(() => db("pull_request_comments").del());
 
-    it("finds a pull request comment for a suite", async () => {
-      const comment = await findPullRequestCommentForSuite("suiteId", {
+  it("finds a pull request comment for a suite", async () => {
+    const comment = await findPullRequestCommentForSuite("suiteId", {
+      db,
+      logger,
+    });
+
+    expect(comment).toMatchObject({ suite_id: "suiteId" });
+  });
+
+  it("returns null if no pull request comment found", async () => {
+    const comment = await findPullRequestCommentForSuite("fakeId", options);
+
+    expect(comment).toBeNull();
+  });
+});
+
+describe("findPullRequestCommentForTrigger", () => {
+  beforeAll(() =>
+    db("pull_request_comments").insert(buildPullRequestComment({}))
+  );
+
+  afterAll(() => db("pull_request_comments").del());
+
+  it("finds a pull request comment for a trigger", async () => {
+    const comment = await findPullRequestCommentForTrigger(
+      { pull_request_id: 11, trigger_id: "triggerId" },
+      {
         db,
         logger,
-      });
+      }
+    );
 
-      expect(comment).toMatchObject({ suite_id: "suiteId" });
+    expect(comment).toMatchObject({
+      id: "pullRequestCommentId",
+      pull_request_id: 11,
+      trigger_id: "triggerId",
     });
+  });
 
-    it("returns null if no pull request comment found", async () => {
-      const comment = await findPullRequestCommentForSuite("fakeId", options);
+  it("returns null if no pull request comment found", async () => {
+    const comment = await findPullRequestCommentForTrigger(
+      { pull_request_id: 1, trigger_id: "fakeId" },
+      options
+    );
 
-      expect(comment).toBeNull();
-    });
+    expect(comment).toBeNull();
   });
 });
 

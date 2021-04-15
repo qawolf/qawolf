@@ -14,8 +14,8 @@ export async function up(knex: Knex): Promise<void> {
       .inTable("integrations")
       .onDelete("CASCADE");
     table.integer("comment_id").notNullable();
-    table.integer("issue_number").notNullable();
     table.timestamp("last_commit_at").notNullable();
+    table.integer("pull_request_id").notNullable();
     table.string("suite_id").notNullable().references("id").inTable("suites");
     table
       .string("trigger_id")

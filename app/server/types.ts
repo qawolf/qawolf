@@ -168,8 +168,8 @@ export type PullRequestComment = {
   comment_id: number;
   deployment_integration_id: string;
   id: string;
-  issue_number: number;
   last_commit_at: string;
+  pull_request_id: number;
   suite_id: string;
   trigger_id: string;
   user_id: string;

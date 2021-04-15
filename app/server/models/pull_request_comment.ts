@@ -1,15 +1,20 @@
-import { ModelOptions,PullRequestComment } from "../types";
+import { ModelOptions, PullRequestComment } from "../types";
 import { cuid } from "../utils";
 
 type CreatePullRequestComment = {
   body: string;
   comment_id: number;
   deployment_integration_id: string;
-  issue_number: number;
   last_commit_at: string;
+  pull_request_id: number;
   suite_id: string;
   trigger_id: string;
   user_id: string;
+};
+
+type FindPullRequestCommentForTrigger = {
+  pull_request_id: number;
+  trigger_id: string;
 };
 
 type UpdatePullRequestComment = {
@@ -47,6 +52,25 @@ export const findPullRequestCommentForSuite = async (
   const pullRequestComment = await db("pull_request_comments")
     .select("*")
     .where({ suite_id })
+    .first();
+
+  log.debug(
+    pullRequestComment ? `found ${pullRequestComment.id}` : "not found"
+  );
+
+  return pullRequestComment || null;
+};
+
+export const findPullRequestCommentForTrigger = async (
+  { pull_request_id, trigger_id }: FindPullRequestCommentForTrigger,
+  { db, logger }: ModelOptions
+): Promise<PullRequestComment | null> => {
+  const log = logger.prefix("findPullRequestCommentForTrigger");
+  log.debug("trigger", trigger_id, "pull request", pull_request_id);
+
+  const pullRequestComment = await db("pull_request_comments")
+    .select("*")
+    .where({ pull_request_id, trigger_id })
     .first();
 
   log.debug(
