@@ -104,7 +104,7 @@ const createUserWithTeam = async (
           { db: trx, logger }
         );
 
-    trackSegmentEvent({ event: "Signed Up", user });
+    trackSegmentEvent({ event: "User Signed Up", user });
 
     if (!hasInvite) {
       const team = await createDefaultTeam({ db: trx, logger });
