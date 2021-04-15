@@ -14,11 +14,14 @@ type TrackSegmentEvent = {
   user: User;
 };
 
-type TrackSegmentGroup = {
+type TrackSegmentIdentify = {
   active?: boolean;
-  groupId: string;
   traits?: Record<string, unknown>;
   user: User;
+};
+
+type TrackSegmentGroup = TrackSegmentIdentify & {
+  groupId: string;
 };
 
 const analytics = environment.SEGMENT_WRITE_KEY
@@ -78,6 +81,26 @@ export const trackSegmentGroup = ({
       active: !!active,
     },
     groupId,
+    traits,
+    userId: user.id,
+  });
+};
+
+export const trackSegmentIdentify = ({
+  active,
+  traits: originalTraits,
+  user,
+}: TrackSegmentIdentify): void => {
+  if (!analytics) return;
+
+  const traits = { ...originalTraits };
+  if (user.email) traits.email = user.email;
+
+  analytics.identify({
+    context: {
+      // default to false
+      active: !!active,
+    },
     traits,
     userId: user.id,
   });

@@ -10,9 +10,7 @@ const hasSegment = !isServer() && (window as any).analytics;
 export const identifySegmentUser = ({ id, email }: User): void => {
   if (!hasSegment) return;
 
-  (window as any).analytics.identify(id, {
-    email,
-  });
+  (window as any).analytics.identify(id, { email });
 };
 
 export const trackSegmentEvent = (
@@ -24,14 +22,14 @@ export const trackSegmentEvent = (
   (window as any).analytics.track(event, properties);
 };
 
-export const useSegmentPage = (user?: User | null): void => {
+export const useSegmentPage = (): void => {
   const { pathname } = useRouter();
 
   useEffect(() => {
-    if (!hasSegment || !user) return;
+    if (!hasSegment) return;
 
-    (window as any).analytics.page(pathname, { email: user.email });
-  }, [pathname, user]);
+    (window as any).analytics.page(pathname);
+  }, [pathname]);
 };
 
 export const useTrackSegmentEvent = (
