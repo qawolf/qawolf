@@ -1,12 +1,15 @@
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { findIntegration } from "../../models/integration";
 
 import * as pullRequestCommentModel from "../../models/pull_request_comment";
+import { findRun, findRunsForSuite } from "../../models/run";
+import { findSuite } from "../../models/suite";
+import { findTrigger } from "../../models/trigger";
 import { findUser, findUsersForTeam } from "../../models/user";
 import {
   Integration,
   ModelOptions,
   PullRequestComment,
-  Suite,
   SuiteRun,
   Trigger,
   User,
@@ -22,7 +25,7 @@ type CreateComment = {
   integration: Integration;
   pull_request_id: number;
   runs: SuiteRun[];
-  suite: Suite;
+  suite_id: string;
   trigger: Trigger;
 };
 
@@ -39,7 +42,7 @@ type UpdateComment = {
   committed_at?: string;
   integration: Integration;
   runs: SuiteRun[];
-  suite: Suite;
+  suite_id: string;
   trigger: Trigger;
 };
 
@@ -87,17 +90,17 @@ export const createComment = async (
     integration,
     pull_request_id,
     runs,
-    suite,
+    suite_id,
     trigger,
   }: CreateComment,
   options: ModelOptions
 ): Promise<void> => {
   const [owner, repo] = integration.github_repo_name.split("/");
 
-  const users = await findUsersForTeam(suite.team_id, options);
+  const users = await findUsersForTeam(trigger.team_id, options);
   const user = randomChoice(users) as User;
 
-  const body = buildCommentForSuite({ runs, suite, trigger, user });
+  const body = buildCommentForSuite({ runs, suite_id, trigger, user });
 
   const comment = await createPullRequestComment(
     {
@@ -117,7 +120,7 @@ export const createComment = async (
       deployment_integration_id: integration.id,
       last_commit_at: committed_at,
       pull_request_id,
-      suite_id: suite.id,
+      suite_id,
       trigger_id: trigger.id,
       user_id: user.id,
     },
@@ -126,13 +129,20 @@ export const createComment = async (
 };
 
 export const updateComment = async (
-  { comment, committed_at, integration, runs, suite, trigger }: UpdateComment,
+  {
+    comment,
+    committed_at,
+    integration,
+    runs,
+    suite_id,
+    trigger,
+  }: UpdateComment,
   options: ModelOptions
 ): Promise<void> => {
   const [owner, repo] = integration.github_repo_name.split("/");
   const user = await findUser({ id: comment.user_id }, options);
 
-  const body = buildCommentForSuite({ runs, suite, trigger, user });
+  const body = buildCommentForSuite({ runs, suite_id, trigger, user });
 
   await updatePullRequestComment(
     {
@@ -145,11 +155,41 @@ export const updateComment = async (
     options
   );
 
-  const updates = { body, last_commit_at: committed_at, suite_id: suite.id };
+  const updates = { body, last_commit_at: committed_at, suite_id };
   if (committed_at) updates.last_commit_at = committed_at;
 
   await pullRequestCommentModel.updatePullRequestComment(
     { ...updates, id: comment.id },
+    options
+  );
+};
+
+export const updateCommentForSuite = async (
+  suite_id: string,
+  options: ModelOptions
+): Promise<void> => {
+  const log = options.logger.prefix("updateCommentForSuite");
+  log.debug("suite", suite_id);
+
+  const comment = await pullRequestCommentModel.findPullRequestCommentForSuite(
+    suite_id,
+    options
+  );
+
+  if (!comment) {
+    log.debug("no comment for suite", suite_id);
+    return;
+  }
+
+  const integration = await findIntegration(
+    comment.deployment_integration_id,
+    options
+  );
+  const runs = await findRunsForSuite(suite_id, options);
+  const trigger = await findTrigger(comment.trigger_id, options);
+
+  await updateComment(
+    { comment, integration, runs, suite_id, trigger },
     options
   );
 };

@@ -27,7 +27,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [inProgressRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Wolverina", wolf_variant: "black" } as User,
       })
@@ -38,7 +38,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [inProgressRun, inProgressRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -49,7 +49,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [passingRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -60,7 +60,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [passingRun, passingRun, passingRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -71,7 +71,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [failingRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -82,7 +82,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [failingRun, failingRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -93,7 +93,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [failingRun, passingRun, failingRun, inProgressRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -102,7 +102,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [failingRun, failingRun, inProgressRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })
@@ -111,7 +111,7 @@ describe("buildCommentForSuite", () => {
     expect(
       buildCommentForSuite({
         runs: [passingRun, inProgressRun, passingRun, passingRun] as SuiteRun[],
-        suite: { id: "suiteId" } as Suite,
+        suite_id: "suiteId",
         trigger: { name: "Deployment" } as Trigger,
         user: { wolf_name: "Bean", wolf_variant: "husky" } as User,
       })

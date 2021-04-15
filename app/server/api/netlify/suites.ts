@@ -49,7 +49,7 @@ const createSuite = async (
         ),
         createCommentForIntegration(
           req,
-          { integration, suite: result.suite, trigger },
+          { integration, suite_id: result.suite.id, trigger },
           options
         ),
       ]);

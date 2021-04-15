@@ -8,7 +8,7 @@ import {
   createComment,
   updateComment,
 } from "../../services/gitHub/pullRequest";
-import { Integration, ModelOptions, Suite, Trigger } from "../../types";
+import { Integration, ModelOptions, Trigger } from "../../types";
 
 type CreateCommitStatusForIntegration = {
   integration: Integration | null;
@@ -18,7 +18,7 @@ type CreateCommitStatusForIntegration = {
 
 type CreateCommentForIntegration = {
   integration: Integration | null;
-  suite: Suite;
+  suite_id: string;
   trigger: Trigger;
 };
 
@@ -66,7 +66,7 @@ export const createCommitStatusForIntegration = async (
 
 export const createCommentForIntegration = async (
   req: NextApiRequest,
-  { integration, suite, trigger }: CreateCommentForIntegration,
+  { integration, suite_id, trigger }: CreateCommentForIntegration,
   options: ModelOptions
 ): Promise<void> => {
   const log = options.logger.prefix("createCommentForIntegration");
@@ -96,13 +96,13 @@ export const createCommentForIntegration = async (
   // comment already exists, update it
   if (comment) {
     return updateComment(
-      { comment, committed_at, integration, runs, suite, trigger },
+      { comment, committed_at, integration, runs, suite_id, trigger },
       options
     );
   }
   // comment does not exist, create it
   return createComment(
-    { committed_at, integration, pull_request_id, runs, suite, trigger },
+    { committed_at, integration, pull_request_id, runs, suite_id, trigger },
     options
   );
 };

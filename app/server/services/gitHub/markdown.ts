@@ -1,9 +1,9 @@
 import environment from "../../environment";
-import { Suite, SuiteRun, Trigger, User } from "../../types";
+import { SuiteRun, Trigger, User } from "../../types";
 
 type BuildCommentForSuite = {
   runs: SuiteRun[];
-  suite: Suite;
+  suite_id: string;
   trigger: Trigger;
   user: User;
 };
@@ -40,11 +40,11 @@ ${runsHtml}
 
 export const buildCommentForSuite = ({
   runs,
-  suite,
+  suite_id,
   trigger,
   user,
 }: BuildCommentForSuite): string => {
-  const suiteUrl = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
+  const suiteUrl = new URL(`/suites/${suite_id}`, environment.APP_URL).href;
   let emoji = "🐺";
 
   const inProgressRuns = runs.filter((r) => r.status === "created");
