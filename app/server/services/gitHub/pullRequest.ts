@@ -1,9 +1,8 @@
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
-import { findIntegration } from "../../models/integration";
 
+import { findIntegration } from "../../models/integration";
 import * as pullRequestCommentModel from "../../models/pull_request_comment";
-import { findRun, findRunsForSuite } from "../../models/run";
-import { findSuite } from "../../models/suite";
+import { findRunsForSuite } from "../../models/run";
 import { findTrigger } from "../../models/trigger";
 import { findUser, findUsersForTeam } from "../../models/user";
 import {

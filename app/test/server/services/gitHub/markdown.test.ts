@@ -1,5 +1,5 @@
 import { buildCommentForSuite } from "../../../../server/services/gitHub/markdown";
-import { Suite, SuiteRun, Trigger, User } from "../../../../server/types";
+import { SuiteRun, Trigger, User } from "../../../../server/types";
 
 const failingRun = {
   id: "runId",
