@@ -11,6 +11,7 @@ import EditorComponent from "./Editor";
 import { includeTypes } from "./helpers";
 
 type Props = {
+  isVisible: boolean;
   onKeyDown: (e: monacoEditor.IKeyboardEvent) => void;
 };
 
@@ -18,7 +19,10 @@ type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
 const DEBOUNCE_MS = 250;
 
-export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
+export default function HelpersEditor({
+  isVisible,
+  onKeyDown,
+}: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
   const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
@@ -79,6 +83,7 @@ export default function HelpersEditor({ onKeyDown }: Props): JSX.Element {
   return (
     <EditorComponent
       editorDidMount={editorDidMount}
+      isVisible={isVisible}
       onKeyDown={onKeyDown}
       options={{
         readOnly: !hasWriteAccess,

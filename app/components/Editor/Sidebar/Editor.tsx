@@ -21,12 +21,14 @@ type EditorDidMount = {
 
 type Props = {
   editorDidMount: (options: EditorDidMount) => void;
+  isVisible: boolean;
   onKeyDown: (e: IKeyboardEvent) => void;
   options: editor.IEditorOptions & editor.IGlobalEditorOptions;
 };
 
 export default function Editor({
   editorDidMount,
+  isVisible,
   onKeyDown,
   options,
 }: Props): JSX.Element {
@@ -104,8 +106,13 @@ export default function Editor({
     createEditor();
   }, [editorDidMount, isMonacoMounting, isEditorReady, options]);
 
+  const style = {
+    height: isVisible ? "100%" : "0%",
+    width: isVisible ? "100%" : "0%",
+  };
+
   return (
-    <Box background={background} data-test="code" fill>
+    <Box background={background} data-test="code" fill style={style}>
       <AutoSizer>
         {({ height, width }) => (
           <div ref={containerRef} style={{ height, width }} />
