@@ -32,7 +32,11 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp("created_at").defaultTo(knex.fn.now()).notNullable();
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
     // should only be one comment per PR and trigger combination
-    table.unique(["pull_request_id", "trigger_id"]);
+    table.unique([
+      "deployment_integration_id",
+      "pull_request_id",
+      "trigger_id",
+    ]);
   });
 }
 
