@@ -13,6 +13,7 @@ type CreatePullRequestComment = {
 };
 
 type FindPullRequestCommentForTrigger = {
+  deployment_integration_id;
   pull_request_id: number;
   trigger_id: string;
 };
@@ -62,7 +63,11 @@ export const findPullRequestCommentForSuite = async (
 };
 
 export const findPullRequestCommentForTrigger = async (
-  { pull_request_id, trigger_id }: FindPullRequestCommentForTrigger,
+  {
+    deployment_integration_id,
+    pull_request_id,
+    trigger_id,
+  }: FindPullRequestCommentForTrigger,
   { db, logger }: ModelOptions
 ): Promise<PullRequestComment | null> => {
   const log = logger.prefix("findPullRequestCommentForTrigger");
@@ -70,7 +75,7 @@ export const findPullRequestCommentForTrigger = async (
 
   const pullRequestComment = await db("pull_request_comments")
     .select("*")
-    .where({ pull_request_id, trigger_id })
+    .where({ deployment_integration_id, pull_request_id, trigger_id })
     .first();
 
   log.debug(

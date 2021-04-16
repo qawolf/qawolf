@@ -78,7 +78,11 @@ export const createCommentForIntegration = async (
   }
 
   const comment = await findPullRequestCommentForTrigger(
-    { pull_request_id, trigger_id: trigger.id },
+    {
+      deployment_integration_id: integration.id,
+      pull_request_id,
+      trigger_id: trigger.id,
+    },
     options
   );
 

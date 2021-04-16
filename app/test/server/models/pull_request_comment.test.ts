@@ -88,7 +88,11 @@ describe("findPullRequestCommentForTrigger", () => {
 
   it("finds a pull request comment for a trigger", async () => {
     const comment = await findPullRequestCommentForTrigger(
-      { pull_request_id: 11, trigger_id: "triggerId" },
+      {
+        deployment_integration_id: "integrationId",
+        pull_request_id: 11,
+        trigger_id: "triggerId",
+      },
       {
         db,
         logger,
@@ -104,7 +108,11 @@ describe("findPullRequestCommentForTrigger", () => {
 
   it("returns null if no pull request comment found", async () => {
     const comment = await findPullRequestCommentForTrigger(
-      { pull_request_id: 1, trigger_id: "fakeId" },
+      {
+        deployment_integration_id: "integrationId",
+        pull_request_id: 1,
+        trigger_id: "fakeId",
+      },
       options
     );
 
