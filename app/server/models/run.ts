@@ -5,6 +5,7 @@ import {
   getArtifactsOptions,
 } from "../services/aws/storage";
 import { updateCommitStatus } from "../services/gitHub/app";
+import { updateCommentForSuite } from "../services/gitHub/pullRequest";
 import { trackSegmentEvent } from "../services/segment";
 import {
   ModelOptions,
@@ -363,6 +364,7 @@ export const updateRun = async (
   if (updates.completed_at && run.suite_id) {
     await Promise.all([
       sendAlert(run.suite_id, { db, logger }),
+      updateCommentForSuite(run.suite_id, { db, logger }),
       updateCommitStatus(run.suite_id, { db, logger }),
     ]);
   }

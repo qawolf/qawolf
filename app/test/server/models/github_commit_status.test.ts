@@ -23,7 +23,7 @@ beforeAll(async () => {
 });
 
 describe("createGitHubCommitStatus", () => {
-  it("creates a GitHub check run", async () => {
+  it("creates a GitHub commit status", async () => {
     const gitHubCommitStatus = await createGitHubCommitStatus(
       {
         context: "QA Wolf - All Tests",

@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildCommentForSuite builds a comment for multiple failing tests 1`] = `
+"## ❌ QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 2 tests ran, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>❌ 2 fail</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for multiple passing tests 1`] = `
+"## ✅ QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 3 tests ran, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>✅ 3 pass</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for multiple running tests 1`] = `
+"## 🐺 QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 2 tests running, [see details here](http://localhost:3000/suites/suiteId)."
+`;
+
+exports[`buildCommentForSuite builds a comment for single failing test 1`] = `
+"## ❌ QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>❌ 1 fail</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for single passing test 1`] = `
+"## ✅ QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>✅ 1 pass</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for single running test 1`] = `
+"## 🐺 QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-black-slack.png\\" width=\\"24\\" /> Wolverina here: 1 test running, [see details here](http://localhost:3000/suites/suiteId)."
+`;
+
+exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 1`] = `
+"## 🐺 QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>❌ 2 fail</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>
+<details>
+<summary>✅ 1 pass</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 2`] = `
+"## 🐺 QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>❌ 2 fail</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/runId\\"><p>❌ Subscribe</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;
+
+exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 3`] = `
+"## 🐺 QA Wolf - Deployment
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<details>
+<summary>✅ 3 pass</summary>
+<table>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<a href=\\"http://localhost:3000/run/run3Id\\"><p>✅ Sign up</p></a>
+<img src=\\"https://media.giphy.com/media/10LKovKon8DENq/giphy.gif\\" width=\\"240\\" />
+</div>
+</td>
+</tr>
+</table>
+</details>"
+`;

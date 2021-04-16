@@ -7,10 +7,15 @@ import {
 } from "../../../../server/api/netlify/suites";
 import { encrypt } from "../../../../server/models/encrypt";
 import * as gitHubService from "../../../../server/services/gitHub/app";
+import * as prService from "../../../../server/services/gitHub/pullRequest";
+import { minutesFromNow } from "../../../../shared/utils";
 import { prepareTestDb } from "../../db";
 import {
   buildIntegration,
+  buildPullRequestComment,
+  buildSuite,
   buildTeam,
+  buildTeamUser,
   buildTest,
   buildTestTrigger,
   buildTrigger,
@@ -29,6 +34,7 @@ describe("handleNetlifySuitesRequest", () => {
   beforeAll(async () => {
     await db("users").insert(buildUser({}));
     await db("teams").insert(buildTeam({ apiKey: "qawolf_api_key" }));
+    await db("team_users").insert(buildTeamUser({}));
 
     await db("triggers").insert([
       buildTrigger({
@@ -50,6 +56,8 @@ describe("handleNetlifySuitesRequest", () => {
     jest.clearAllMocks();
 
     await db("github_commit_statuses").del();
+    await db("pull_request_comments").del();
+
     await db("runs").del();
     return db("suites").del();
   });
@@ -153,10 +161,15 @@ describe("handleNetlifySuitesRequest", () => {
     expect(commitStatuses).toEqual([]);
   });
 
-  it("creates a GitHub commit status if possible", async () => {
+  it("creates a GitHub commit status and comment if possible", async () => {
     jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
       context: "QA Wolf - trigger1",
     } as gitHubService.GitHubCommitStatus);
+    jest.spyOn(prService, "createPullRequestComment").mockResolvedValue({
+      id: 123,
+    } as prService.GitHubPullRequestComment);
+
+    const committed_at = "2021-04-01 12:28:54 -0600";
 
     await db("integrations").insert(
       buildIntegration({
@@ -173,9 +186,11 @@ describe("handleNetlifySuitesRequest", () => {
     await handleNetlifySuitesRequest(
       {
         body: {
+          committed_at,
           deployment_environment: "deploy-preview",
           deployment_url: "url",
           is_pull_request: "true",
+          pull_request_id: 11,
           sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },
@@ -221,6 +236,143 @@ describe("handleNetlifySuitesRequest", () => {
         trigger_id: "triggerId",
       },
     ]);
+
+    expect(prService.createPullRequestComment).toBeCalled();
+
+    const comments = await db("pull_request_comments");
+
+    expect(comments).toMatchObject([
+      {
+        comment_id: 123,
+        last_commit_at: new Date(committed_at),
+        pull_request_id: 11,
+        suite_id: suites[0].id,
+        trigger_id: "triggerId",
+        user_id: "userId",
+      },
+    ]);
+    expect(comments[0].body).toMatch("## 🐺 QA Wolf - trigger1");
+
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: null });
+    await db("integrations").del();
+  });
+
+  it("updates an existing GitHub comment if one exists", async () => {
+    jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
+      context: "QA Wolf - trigger1",
+    } as gitHubService.GitHubCommitStatus);
+    jest.spyOn(prService, "updatePullRequestComment").mockResolvedValue({
+      id: 123,
+    } as prService.GitHubPullRequestComment);
+
+    const committed_at = minutesFromNow(10);
+
+    await db("integrations").insert(
+      buildIntegration({
+        github_installation_id: 123,
+        github_repo_id: 11,
+        github_repo_name: "owner/repo",
+        type: "github",
+      })
+    );
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: "integrationId" });
+
+    await db("suites").insert(buildSuite({}));
+    await db("pull_request_comments").insert(buildPullRequestComment({}));
+
+    await handleNetlifySuitesRequest(
+      {
+        body: {
+          committed_at,
+          deployment_environment: "deploy-preview",
+          deployment_url: "url",
+          is_pull_request: "true",
+          pull_request_id: 11,
+          sha: "sha",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      options
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    const suites = await db("suites").orderBy("created_at", "desc");
+
+    expect(prService.updatePullRequestComment).toBeCalled();
+
+    const comments = await db("pull_request_comments");
+
+    expect(comments).toMatchObject([
+      {
+        comment_id: 123,
+        last_commit_at: new Date(committed_at),
+        pull_request_id: 11,
+        suite_id: suites[0].id,
+        trigger_id: "triggerId",
+        user_id: "userId",
+      },
+    ]);
+
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: null });
+    await db("integrations").del();
+  });
+
+  it("does not update an existing GitHub comment if request is stale", async () => {
+    jest.spyOn(gitHubService, "createCommitStatus").mockResolvedValue({
+      context: "QA Wolf - trigger1",
+    } as gitHubService.GitHubCommitStatus);
+    jest.spyOn(prService, "updatePullRequestComment").mockResolvedValue({
+      id: 123,
+    } as prService.GitHubPullRequestComment);
+
+    const committed_at = minutesFromNow(-10);
+
+    await db("integrations").insert(
+      buildIntegration({
+        github_installation_id: 123,
+        github_repo_id: 11,
+        github_repo_name: "owner/repo",
+        type: "github",
+      })
+    );
+    await db("triggers")
+      .where({ id: "triggerId" })
+      .update({ deployment_integration_id: "integrationId" });
+
+    await db("suites").insert(buildSuite({}));
+    await db("pull_request_comments").insert(buildPullRequestComment({}));
+
+    await handleNetlifySuitesRequest(
+      {
+        body: {
+          committed_at,
+          deployment_environment: "deploy-preview",
+          deployment_url: "url",
+          is_pull_request: "true",
+          pull_request_id: 11,
+          sha: "sha",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      options
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    expect(prService.updatePullRequestComment).not.toBeCalled();
+
+    const comments = await db("pull_request_comments");
+
+    expect(comments).toMatchObject([{ suite_id: "suiteId" }]);
 
     await db("triggers")
       .where({ id: "triggerId" })

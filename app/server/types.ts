@@ -162,6 +162,20 @@ export type ModelOptions = {
   logger: Logger;
 };
 
+export type PullRequestComment = {
+  created_at?: string;
+  body: string;
+  comment_id: number;
+  deployment_integration_id: string;
+  id: string;
+  last_commit_at: string;
+  pull_request_id: number;
+  suite_id: string;
+  trigger_id: string;
+  user_id: string;
+  updated_at?: string;
+};
+
 export type RunStatus = "created" | "fail" | "pass";
 
 export type Run = {

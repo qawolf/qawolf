@@ -1,66 +1,20 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { ApiAuthenticationError } from "../../errors";
-import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findIntegration } from "../../models/integration";
 import { createSuiteForTrigger } from "../../models/suite";
 import { ensureTeamCanCreateSuite, findTeamForApiKey } from "../../models/team";
 import { findTriggersForNetlifyIntegration } from "../../models/trigger";
-import { createCommitStatus } from "../../services/gitHub/app";
-import { Integration, ModelOptions, Suite, Team, Trigger } from "../../types";
-
-type CreateCommitStatusForIntegration = {
-  integration: Integration | null;
-  suite_id: string;
-  trigger: Trigger;
-};
+import { ModelOptions, Suite, Team, Trigger } from "../../types";
+import {
+  createCommentForIntegration,
+  createCommitStatusForIntegration,
+} from "./github";
 
 type CreateSuite = {
   integration_id: string;
   team_id: string;
   trigger: Trigger;
-};
-
-const createCommitStatusForIntegration = async (
-  req: NextApiRequest,
-  { integration, suite_id, trigger }: CreateCommitStatusForIntegration,
-  options: ModelOptions
-): Promise<void> => {
-  const log = options.logger.prefix("createCommitStatusForIntegration");
-  const { deployment_url, sha } = req.body;
-
-  if (!integration) {
-    log.debug("skip: no integration");
-    return;
-  }
-
-  const [owner, repo] = integration.github_repo_name.split("/");
-
-  const commitStatus = await createCommitStatus(
-    {
-      context: `QA Wolf - ${trigger.name}`,
-      installationId: integration.github_installation_id,
-      owner,
-      repo,
-      sha,
-      suiteId: suite_id,
-    },
-    options
-  );
-
-  await createGitHubCommitStatus(
-    {
-      context: commitStatus.context,
-      deployment_url,
-      github_installation_id: integration.github_installation_id,
-      owner,
-      repo,
-      sha,
-      suite_id,
-      trigger_id: trigger.id,
-    },
-    options
-  );
 };
 
 const createSuite = async (
@@ -87,11 +41,18 @@ const createSuite = async (
     );
 
     if (result) {
-      await createCommitStatusForIntegration(
-        req,
-        { integration, suite_id: result.suite.id, trigger },
-        options
-      );
+      await Promise.all([
+        createCommitStatusForIntegration(
+          req,
+          { integration, suite_id: result.suite.id, trigger },
+          options
+        ),
+        createCommentForIntegration(
+          req,
+          { integration, suite_id: result.suite.id, trigger },
+          options
+        ),
+      ]);
     }
 
     return result ? result.suite : null;

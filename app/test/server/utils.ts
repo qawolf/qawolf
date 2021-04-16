@@ -12,6 +12,7 @@ import {
   Integration,
   IntegrationType,
   Invite,
+  PullRequestComment,
   Run,
   Runner,
   RunStatus,
@@ -76,6 +77,11 @@ type BuildInvite = {
   expires_at?: string;
   i?: number;
   team_id?: string;
+};
+
+type BuildPullRequestComment = {
+  i?: number;
+  suite_id?: string;
 };
 
 type BuildRun = {
@@ -304,6 +310,25 @@ export const buildIntegration = ({
     team_name: "QA Wolf",
     type: type || "slack",
     webhook_url: "webhookUrl",
+  };
+};
+
+export const buildPullRequestComment = ({
+  i,
+  suite_id,
+}: BuildPullRequestComment): PullRequestComment => {
+  const finalI = i || 1;
+
+  return {
+    body: "# Comment",
+    comment_id: 123,
+    deployment_integration_id: "integrationId",
+    id: `pullRequestComment${finalI === 1 ? "" : i}Id`,
+    last_commit_at: new Date().toISOString(),
+    pull_request_id: 11,
+    suite_id: suite_id || "suiteId",
+    trigger_id: "triggerId",
+    user_id: "userId",
   };
 };
 
