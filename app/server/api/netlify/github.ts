@@ -92,7 +92,7 @@ export const createCommentForIntegration = async (
     return;
   }
 
-  const runs = await findRunsForSuite(suite.id, options);
+  const runs = await findRunsForSuite(suite_id, options);
   // comment already exists, update it
   if (comment) {
     return updateComment(
