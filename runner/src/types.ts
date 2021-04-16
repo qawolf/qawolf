@@ -64,6 +64,10 @@ export type Email = {
   to: string;
 };
 
+export type ParsedEmail = Email & {
+  urls: string[];
+};
+
 export interface LogEvent {
   level: string;
   message: string;

@@ -184,7 +184,7 @@ declare function getInbox(options?: { id?: string; new?: boolean; }):
       text?: string;
       to: string;
     }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
-    waitForMessage: (options?: { after?: Date; timeout?: number; }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
+    waitForMessage: (options?: { after?: Date; timeout?: number; }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; urls: string[]>; }>;
   };
 `;
 
