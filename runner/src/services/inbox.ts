@@ -1,6 +1,7 @@
 import { slug } from "cuid";
+import getUrls from "get-urls";
 
-import { Email } from "../types";
+import { Email, ParsedEmail } from "../types";
 import { pollForEmail, sendEmail } from "./api";
 
 export type GetInbox = {
@@ -16,7 +17,7 @@ type GetInboxContext = {
 type GetInboxResult = {
   email: string;
   sendMessage: (options: SendMessage) => Promise<Email>;
-  waitForMessage: (options: WaitForMessage) => Promise<Email>;
+  waitForMessage: (options: WaitForMessage) => Promise<ParsedEmail>;
 };
 
 type SendMessage = {
@@ -57,20 +58,29 @@ export const getInbox = (
     });
   };
 
-  const waitForMessage = ({
+  const waitForMessage = async ({
     after,
     timeout,
-  }: WaitForMessage = {}): Promise<Email> => {
+  }: WaitForMessage = {}): Promise<ParsedEmail> => {
     if (after && !(after instanceof Date)) {
       throw new Error("after must be a Date");
     }
 
-    return pollForEmail({
+    const message = await pollForEmail({
       apiKey,
       createdAfter: after || calledAt,
       timeoutMs: timeout || 60000,
       to: email,
     });
+
+    // text first since it will have less noisy urls
+    const urls = Array.from(getUrls([message.text, message.html].join(" ")))
+      // ignore xml
+      .filter((u) => !u.includes("w3.org"))
+      // sort for deterministic order
+      .sort();
+
+    return { ...message, urls };
   };
 
   return { email, sendMessage, waitForMessage };

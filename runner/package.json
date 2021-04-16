@@ -52,6 +52,7 @@
     "express": "^4.17.1",
     "faker": "^5.4.0",
     "fluent-ffmpeg": "^2.1.2",
+    "get-urls": "^10.0.0",
     "lodash": "^4.17.20",
     "playwright": "1.10.0",
     "qawolf": "2.3.1",
