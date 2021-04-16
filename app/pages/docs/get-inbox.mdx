@@ -94,7 +94,7 @@ Note: You must provide at least one of `html` and `text` to specify the email co
 **Returns:** `Promise<Message>`
 
 - from (string): Sender of the email. Example: `"my-team@qawolf.email"`
-- html (string): HTML body of the email. Example: `"<div\>I'm the email body</div\>"`
+- html (string): HTML body of the email. Example: `"<div>I'm the email body</div>"`
 - subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
 - text (string): Email body in plain text. Example: `"I'm the email body"`
 - to (string): Recipient of the email. Example: `"test@email.com"`
@@ -141,7 +141,7 @@ const { subject } = await waitForMessage({ after });
 **Returns:** `Promise<Message>`
 
 - from (string): Sender of the email. Example: `"Tug the QA Wolf <tug@qawolf.com>"`
-- html (string): HTML body of the email. Example: `"<div\>I'm the email body: https://myurl.com</div\>"`
+- html (string): HTML body of the email. Example: `"<a href="https://myurl.com">Click Me</a>"`
 - subject (string): Subject line of the email. Example: `"🐺 Hi there!"`
 - text (string): Email body in plain text. Example: `"I'm the email body"`
 - to (string): Recipient of the email. Example: `"my-team@qawolf.email"`
