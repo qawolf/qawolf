@@ -10,9 +10,15 @@ import { useGlyphs } from "./hooks/glyphs";
 
 type Editor = monacoEditor.editor.IStandaloneCodeEditor;
 
-type Props = { onKeyDown: (e: monacoEditor.IKeyboardEvent) => void };
+type Props = {
+  isVisible: boolean;
+  onKeyDown: (e: monacoEditor.IKeyboardEvent) => void;
+};
 
-export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
+export default function CodeEditor({
+  isVisible,
+  onKeyDown,
+}: Props): JSX.Element {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
@@ -58,6 +64,7 @@ export default function CodeEditor({ onKeyDown }: Props): JSX.Element {
   return (
     <EditorComponent
       editorDidMount={editorDidMount}
+      isVisible={isVisible}
       onKeyDown={onKeyDown}
       options={{
         readOnly: !hasWriteAccess,

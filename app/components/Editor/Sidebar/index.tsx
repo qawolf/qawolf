@@ -97,10 +97,14 @@ export default function Sidebar(): JSX.Element {
     >
       <Box background="gray10" flex={false} height="full">
         <Navigation selected={selected} setSelected={setSelected} />
-        {selected === "code" && <CodeEditor onKeyDown={handleEditorKeyDown} />}
-        {selected === "helpers" && (
-          <HelpersEditor onKeyDown={handleEditorKeyDown} />
-        )}
+        <CodeEditor
+          isVisible={selected === "code"}
+          onKeyDown={handleEditorKeyDown}
+        />
+        <HelpersEditor
+          isVisible={selected === "helpers"}
+          onKeyDown={handleEditorKeyDown}
+        />
         <RunLogs isVisible={selected === "logs"} />
         <Snippet isVisible={isChooserActive} />
         {!isChooserActive && (
