@@ -80,7 +80,7 @@ describe("createJob", () => {
   afterEach(() => db("jobs").del());
 
   it("creates a job", async () => {
-    const job = await createJob(
+    await createJob(
       { name: "pull_request_comment", suite_id: "suiteId" },
       options
     );
@@ -88,8 +88,9 @@ describe("createJob", () => {
     const dbJob = await db("jobs").select("*").first();
 
     expect(dbJob).toMatchObject({
-      ...job,
+      completed_at: null,
       name: "pull_request_comment",
+      started_at: null,
       suite_id: "suiteId",
     });
   });
@@ -162,19 +163,23 @@ describe("createJobsForSuite", () => {
   afterAll(() => db("runs").del());
 
   it("creates all jobs if suite complete", async () => {
-    const jobs = await createJobsForSuite("suiteId", options);
+    await createJobsForSuite("suiteId", options);
+
+    const jobs = await db("jobs").orderBy("name", "asc");
 
     expect(jobs).toMatchObject([
-      { name: "pull_request_comment", suite_id: "suiteId" },
       { name: "alert", suite_id: "suiteId" },
       { name: "github_commit_status", suite_id: "suiteId" },
+      { name: "pull_request_comment", suite_id: "suiteId" },
     ]);
   });
 
   it("creates only a comment job if suite not complete", async () => {
     await db("runs").where({ id: "runId" }).update({ status: "created" });
 
-    const jobs = await createJobsForSuite("suiteId", options);
+    await createJobsForSuite("suiteId", options);
+
+    const jobs = await db("jobs").orderBy("name", "asc");
 
     expect(jobs).toMatchObject([
       { name: "pull_request_comment", suite_id: "suiteId" },
