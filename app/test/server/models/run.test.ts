@@ -12,7 +12,6 @@ import {
   findTestHistory,
   updateRun,
 } from "../../../server/models/run";
-import * as alertService from "../../../server/services/alert/send";
 import * as storageService from "../../../server/services/aws/storage";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
@@ -466,13 +465,12 @@ describe("run model", () => {
   });
 
   describe("updateRun", () => {
-    afterEach(() => db("runs").update(buildRun({})).where({ id: "runId" }));
+    afterEach(async () => {
+      await db("jobs").del();
+      return db("runs").update(buildRun({})).where({ id: "runId" });
+    });
 
-    it("calls sendAlert when a suite run completes", async () => {
-      const sendAlertSpy = jest
-        .spyOn(alertService, "sendAlert")
-        .mockResolvedValue();
-
+    it("creates associated job when a suite run completes", async () => {
       await updateRun(
         {
           id: "run5Id",
@@ -481,7 +479,13 @@ describe("run model", () => {
         options
       );
 
-      expect(sendAlertSpy.mock.calls[0][0]).toEqual("suite2Id");
+      const jobs = await db("jobs").orderBy("name", "asc");
+
+      expect(jobs).toMatchObject([
+        { name: "alert", suite_id: "suite2Id" },
+        { name: "github_commit_status", suite_id: "suite2Id" },
+        { name: "pull_request_comment", suite_id: "suite2Id" },
+      ]);
     });
 
     it("retries an error", async () => {

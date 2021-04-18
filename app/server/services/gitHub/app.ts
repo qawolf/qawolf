@@ -12,7 +12,6 @@ import { findRunsForSuite } from "../../models/run";
 import {
   GitHubCommitStatus as GitHubCommitStatusModel,
   ModelOptions,
-  SuiteRun,
 } from "../../types";
 
 export type GitHubCommitStatus = RestEndpointMethodTypes["repos"]["createCommitStatus"]["response"]["data"];
@@ -39,7 +38,6 @@ type FindBranchesForCommit = {
 type ShouldUpdateCommitStatus = {
   gitHubCommitStatus: GitHubCommitStatusModel | null;
   logger: Logger;
-  runs: SuiteRun[];
 };
 
 export const createInstallationAccessToken = async (
@@ -140,17 +138,11 @@ export const findGitHubReposForInstallation = async (
 export const shouldUpdateCommitStatus = ({
   gitHubCommitStatus,
   logger,
-  runs,
 }: ShouldUpdateCommitStatus): boolean => {
   const log = logger.prefix("shouldUpdateCommitStatus");
 
   if (!gitHubCommitStatus) {
     log.debug("false: no github commit status for suite");
-    return false;
-  }
-
-  if (runs.some((r) => r.status === "created")) {
-    log.debug("false: suite not complete");
     return false;
   }
 
@@ -172,7 +164,6 @@ export const updateCommitStatus = async (
     const shouldUpdate = shouldUpdateCommitStatus({
       gitHubCommitStatus,
       logger,
-      runs,
     });
 
     if (!shouldUpdate) return;

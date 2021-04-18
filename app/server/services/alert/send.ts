@@ -1,6 +1,5 @@
-import { minutesFromNow } from "../../../shared/utils";
 import { findRunsForSuite } from "../../models/run";
-import { findSuite, updateSuite } from "../../models/suite";
+import { findSuite } from "../../models/suite";
 import { findTeam } from "../../models/team";
 import { findTriggerOrNull } from "../../models/trigger";
 import { ModelOptions, SuiteRun, Team } from "../../types";
@@ -26,20 +25,7 @@ export const sendAlert = async (
   log.debug("suite", suite_id);
 
   const suite = await findSuite(suite_id, options);
-  if (suite.alert_sent_at) {
-    log.alert("already sent alert at", suite.alert_sent_at);
-    return;
-  }
-
   const runs = await findRunsForSuite(suite.id, options);
-
-  if (runs.some((r) => r.status === "created")) {
-    log.debug("skip: suite not complete");
-    return;
-  }
-
-  await updateSuite({ alert_sent_at: minutesFromNow(), id: suite_id }, options);
-
   const team = await findTeam(suite.team_id, options);
 
   if (!shouldSendAlert({ runs, team })) {

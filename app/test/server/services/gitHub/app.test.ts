@@ -1,5 +1,5 @@
 import * as gitHubService from "../../../../server/services/gitHub/app";
-import { GitHubCommitStatus, SuiteRun } from "../../../../server/types";
+import { GitHubCommitStatus } from "../../../../server/types";
 import { prepareTestDb } from "../../db";
 import {
   buildGitHubCommitStatus,
@@ -54,17 +54,6 @@ describe("shouldUpdateCommitStatus", () => {
       shouldUpdateCommitStatus({
         gitHubCommitStatus: null,
         logger,
-        runs: [{ status: "pass" }] as SuiteRun[],
-      })
-    ).toBe(false);
-  });
-
-  it("returns false if some runs are not complete", () => {
-    expect(
-      shouldUpdateCommitStatus({
-        gitHubCommitStatus: { id: "statusId" } as GitHubCommitStatus,
-        logger,
-        runs: [{ status: "pass" }, { status: "created" }] as SuiteRun[],
       })
     ).toBe(false);
   });
@@ -74,7 +63,6 @@ describe("shouldUpdateCommitStatus", () => {
       shouldUpdateCommitStatus({
         gitHubCommitStatus: { id: "statusId" } as GitHubCommitStatus,
         logger,
-        runs: [{ status: "pass" }, { status: "fail" }] as SuiteRun[],
       })
     ).toBe(true);
   });

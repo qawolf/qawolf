@@ -1,11 +1,8 @@
 import { minutesFromNow } from "../../shared/utils";
-import { sendAlert } from "../services/alert/send";
 import {
   createStorageReadAccessUrl,
   getArtifactsOptions,
 } from "../services/aws/storage";
-import { updateCommitStatus } from "../services/gitHub/app";
-import { updateCommentForSuite } from "../services/gitHub/pullRequest";
 import { trackSegmentEvent } from "../services/segment";
 import {
   ModelOptions,
@@ -23,6 +20,7 @@ import { cuid } from "../utils";
 import { decrypt } from "./encrypt";
 import { findEnvironmentIdForRun } from "./environment";
 import { buildEnvironmentVariables } from "./environment_variable";
+import { createJobsForSuite } from "./job";
 import { findTest } from "./test";
 
 type CreateRunsForTests = {
@@ -362,11 +360,7 @@ export const updateRun = async (
   await db("runs").where({ id }).update(updates);
 
   if (updates.completed_at && run.suite_id) {
-    await Promise.all([
-      sendAlert(run.suite_id, { db, logger }),
-      updateCommentForSuite(run.suite_id, { db, logger }),
-      updateCommitStatus(run.suite_id, { db, logger }),
-    ]);
+    await createJobsForSuite(run.suite_id, { db, logger });
   }
 
   log.debug("updated", id, updates);

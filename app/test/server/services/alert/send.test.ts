@@ -1,4 +1,3 @@
-import { updateSuite } from "../../../../server/models/suite";
 import * as email from "../../../../server/services/alert/email";
 import {
   sendAlert,
@@ -38,7 +37,6 @@ beforeAll(async () => {
     buildSuite({ i: 2 }),
     buildSuite({ i: 3 }),
     buildSuite({ i: 4 }),
-    buildSuite({ alert_sent_at: minutesFromNow(), i: 5 }),
   ]);
   await db("tests").insert(buildTest({ name: "testName" }));
   return db("runs").insert([
@@ -72,12 +70,6 @@ describe("sendAlert", () => {
     await sendAlert("suite3Id", options);
     expect(email.sendEmailAlert).toBeCalledTimes(1);
     expect(slack.sendSlackAlert).not.toBeCalled();
-
-    // check it does not send it again
-    await sendAlert("suiteId", options);
-    expect(email.sendEmailAlert).toBeCalledTimes(1);
-
-    await updateSuite({ alert_sent_at: null, id: "suite3Id" }, options);
   });
 
   it("sends Slack alert per team settings", async () => {
@@ -88,14 +80,6 @@ describe("sendAlert", () => {
     expect(slack.sendSlackAlert).toBeCalled();
 
     await db("teams").update({ alert_integration_id: null });
-    await updateSuite({ alert_sent_at: null, id: "suite3Id" }, options);
-  });
-
-  it("does not send alerts if suite not complete", async () => {
-    await sendAlert("suiteId", options);
-
-    expect(email.sendEmailAlert).not.toBeCalled();
-    expect(slack.sendSlackAlert).not.toBeCalled();
   });
 
   it("does not send alert if alert only on failure enabled and runs passed", async () => {

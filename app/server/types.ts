@@ -157,6 +157,18 @@ export type Integration = {
   webhook_url?: string | null;
 };
 
+export type JobName = "alert" | "github_commit_status" | "pull_request_comment";
+
+export type Job = {
+  completed_at: string | null;
+  created_at?: string;
+  id: string;
+  name: JobName;
+  started_at: string | null;
+  suite_id: string;
+  updated_at?: string;
+};
+
 export type ModelOptions = {
   db: knex | Transaction;
   logger: Logger;
@@ -230,7 +242,6 @@ export type Subscriber = {
 };
 
 export type Suite = {
-  alert_sent_at?: string;
   created_at: string;
   creator_id: string | null;
   environment_id: string | null;
