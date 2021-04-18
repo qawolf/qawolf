@@ -40,6 +40,8 @@ export default async function (
   try {
     if (job === "runPendingJob") {
       const pending_job_count = await runPendingJob(options);
+      logger.debug("pending job count", pending_job_count);
+
       res.status(200).send({ pending_job_count });
       return;
     }

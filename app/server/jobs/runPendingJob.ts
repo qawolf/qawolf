@@ -29,7 +29,7 @@ export const runPendingJob = async (options: ModelOptions): Promise<number> => {
   await updateJob({ completed_at: minutesFromNow(), id: job.id }, options);
   const pendingJobCount = await countPendingJobs(options);
 
-  log.debug("success");
+  log.debug(`success, ${pendingJobCount} jobs pending`);
 
   return pendingJobCount;
 };
