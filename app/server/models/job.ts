@@ -19,19 +19,17 @@ export const claimPendingJob = async ({
 }: ModelOptions): Promise<Job | null> => {
   const log = logger.prefix("claimPendingJob");
 
-  const { rows } = await db.raw(
-    `
-    UPDATE jobs SET started_at = ? WHERE id IN (
-      SELECT id FROM jobs
-      WHERE started_at IS NULL
-      ORDER BY created_at asc
-      LIMIT 1
-    ) RETURNING *
-  `,
-    minutesFromNow()
-  );
-  const job = rows[0] || null;
+  const subquery = db("jobs")
+    .select("id")
+    .whereNull("started_at")
+    .orderBy("created_at", "asc")
+    .limit(1);
 
+  const jobs = await db("jobs")
+    .whereIn("id", subquery)
+    .update({ started_at: minutesFromNow() }, "*");
+
+  const job = jobs[0] || null;
   log.debug(job ? `claimed job ${job.id}` : "no pending jobs");
 
   return job;
