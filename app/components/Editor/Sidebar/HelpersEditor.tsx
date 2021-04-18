@@ -82,6 +82,7 @@ export default function HelpersEditor({
 
   return (
     <EditorComponent
+      a11yTitle="helpers code"
       editorDidMount={editorDidMount}
       isVisible={isVisible}
       onKeyDown={onKeyDown}

@@ -63,6 +63,7 @@ export default function CodeEditor({
 
   return (
     <EditorComponent
+      a11yTitle="test code"
       editorDidMount={editorDidMount}
       isVisible={isVisible}
       onKeyDown={onKeyDown}

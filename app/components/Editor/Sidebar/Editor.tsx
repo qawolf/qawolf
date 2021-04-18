@@ -20,6 +20,7 @@ type EditorDidMount = {
 };
 
 type Props = {
+  a11yTitle?: string;
   editorDidMount: (options: EditorDidMount) => void;
   isVisible: boolean;
   onKeyDown: (e: IKeyboardEvent) => void;
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export default function Editor({
+  a11yTitle,
   editorDidMount,
   isVisible,
   onKeyDown,
@@ -112,7 +114,7 @@ export default function Editor({
   };
 
   return (
-    <Box background={background} data-test="code" fill style={style}>
+    <Box aria-label={a11yTitle} background={background} fill style={style}>
       <AutoSizer>
         {({ height, width }) => (
           <div ref={containerRef} style={{ height, width }} />
