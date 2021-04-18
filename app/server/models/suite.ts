@@ -53,11 +53,6 @@ type FindSuitesForTeam = {
   team_id: string;
 };
 
-type UpdateSuite = {
-  alert_sent_at?: string;
-  id: string;
-};
-
 export const createSuite = async (
   {
     creator_id,
@@ -213,24 +208,4 @@ export const findSuitesForTeam = async (
     const trigger = triggers.find((t) => t.id === s.trigger_id) || null;
     return { ...s, trigger };
   });
-};
-
-export const updateSuite = async (
-  { alert_sent_at, id }: UpdateSuite,
-  { db, logger }: ModelOptions
-): Promise<Suite> => {
-  const log = logger.prefix("updateSuite");
-
-  const existingSuite = await findSuite(id, { db, logger });
-  if (!existingSuite) throw new Error("Suite not found");
-
-  const updates: Partial<Suite> = { updated_at: minutesFromNow() };
-
-  if (alert_sent_at !== undefined) updates.alert_sent_at = alert_sent_at;
-
-  await db("suites").where({ id }).update(updates);
-
-  log.debug("updated", id, updates);
-
-  return { ...existingSuite, ...updates };
 };

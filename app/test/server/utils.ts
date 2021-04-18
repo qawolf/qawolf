@@ -12,6 +12,7 @@ import {
   Integration,
   IntegrationType,
   Invite,
+  Job,
   PullRequestComment,
   Run,
   Runner,
@@ -79,6 +80,10 @@ type BuildInvite = {
   team_id?: string;
 };
 
+type BuildJob = {
+  i?: number;
+};
+
 type BuildPullRequestComment = {
   i?: number;
   suite_id?: string;
@@ -110,7 +115,6 @@ type BuildRunner = {
 };
 
 type BuildSuite = {
-  alert_sent_at?: string;
   created_at?: string;
   creator_id?: string;
   environment_id?: string;
@@ -313,6 +317,18 @@ export const buildIntegration = ({
   };
 };
 
+export const buildJob = ({ i }: BuildJob): Job => {
+  const finalI = i || 1;
+
+  return {
+    completed_at: null,
+    id: `job${finalI === 1 ? "" : i}Id`,
+    name: "pull_request_comment",
+    started_at: null,
+    suite_id: "suiteId",
+  };
+};
+
 export const buildPullRequestComment = ({
   i,
   suite_id,
@@ -389,7 +405,6 @@ export const buildRunner = ({
 };
 
 export const buildSuite = ({
-  alert_sent_at,
   created_at,
   creator_id,
   environment_id,
@@ -400,7 +415,6 @@ export const buildSuite = ({
   const finalI = i || 1;
 
   return {
-    alert_sent_at: alert_sent_at || null,
     created_at: created_at || minutesFromNow(),
     creator_id: creator_id || null,
     environment_id: environment_id || null,

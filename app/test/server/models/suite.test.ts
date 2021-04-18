@@ -4,9 +4,7 @@ import {
   createSuiteForTests,
   findSuite,
   findSuitesForTeam,
-  updateSuite,
 } from "../../../server/models/suite";
-import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
@@ -261,25 +259,6 @@ describe("suite model", () => {
           },
         },
       ]);
-    });
-  });
-
-  describe("updateSuite", () => {
-    beforeAll(async () => {
-      await db("suites").insert(buildSuite({}));
-    });
-
-    afterAll(() => db("suites").del());
-
-    it("updates alert_sent_at", async () => {
-      const alert_sent_at = minutesFromNow();
-
-      const suite = await updateSuite(
-        { alert_sent_at, id: "suiteId" },
-        options
-      );
-
-      expect(suite).toMatchObject({ alert_sent_at, id: "suiteId" });
     });
   });
 });
