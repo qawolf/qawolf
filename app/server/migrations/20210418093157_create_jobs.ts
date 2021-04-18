@@ -20,10 +20,22 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
   });
 
+  // await knex.raw(`ALTER TABLE jobs ADD CONSTRAINT jobs_unique_name_suite_id CHECK (
+  //   UNIQUE (name, suite_id) WHERE name = 'alert' OR name = 'github_commit_status'
+  // )`);
+
   // do not allow multiple pending jobs of the same type for a suite
-  return knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id
+  await knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id_alert
   ON jobs(name, suite_id)
-  WHERE started_at IS NULL`);
+  WHERE name = 'alert'`);
+
+  await knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id_github_commit_status
+  ON jobs(name, suite_id)
+  WHERE name = 'github_commit_status'`);
+
+  await knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id_pull_request_comment
+  ON jobs(name, suite_id)
+  WHERE name = 'pull_request_comment' AND started_at IS NULL`);
 }
 
 export async function down(knex: Knex): Promise<void> {

@@ -13,6 +13,7 @@ import {
   IntegrationType,
   Invite,
   Job,
+  JobName,
   PullRequestComment,
   Run,
   Runner,
@@ -82,6 +83,8 @@ type BuildInvite = {
 
 type BuildJob = {
   i?: number;
+  name?: JobName;
+  started_at?: string;
 };
 
 type BuildPullRequestComment = {
@@ -317,14 +320,14 @@ export const buildIntegration = ({
   };
 };
 
-export const buildJob = ({ i }: BuildJob): Job => {
+export const buildJob = ({ i, name, started_at }: BuildJob): Job => {
   const finalI = i || 1;
 
   return {
     completed_at: null,
     id: `job${finalI === 1 ? "" : i}Id`,
-    name: "pull_request_comment",
-    started_at: null,
+    name: name || "pull_request_comment",
+    started_at: started_at || null,
     suite_id: "suiteId",
   };
 };

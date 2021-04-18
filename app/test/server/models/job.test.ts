@@ -42,8 +42,31 @@ describe("createJob", () => {
     });
   });
 
-  it("does not create a duplicate job", async () => {
-    await db("jobs").insert(buildJob({}));
+  it("does not create a duplicate alert job", async () => {
+    await db("jobs").insert(buildJob({ name: "alert" }));
+
+    await createJob({ name: "alert", suite_id: "suiteId" }, options);
+
+    const dbJobs = await db("jobs");
+
+    expect(dbJobs).toHaveLength(1);
+  });
+
+  it("does not create a duplicate GitHub commit status job", async () => {
+    await db("jobs").insert(buildJob({ name: "github_commit_status" }));
+
+    await createJob(
+      { name: "github_commit_status", suite_id: "suiteId" },
+      options
+    );
+
+    const dbJobs = await db("jobs");
+
+    expect(dbJobs).toHaveLength(1);
+  });
+
+  it("does not create a duplicate pull request comment job", async () => {
+    await db("jobs").insert(buildJob({ name: "pull_request_comment" }));
 
     await createJob(
       { name: "pull_request_comment", suite_id: "suiteId" },
@@ -53,9 +76,24 @@ describe("createJob", () => {
     const dbJobs = await db("jobs");
 
     expect(dbJobs).toHaveLength(1);
-    expect(new Date(dbJobs[0].created_at).toISOString()).not.toBe(
-      new Date(dbJobs[0].updated_at).toISOString()
+  });
+
+  it("creates a duplicate pull request comment job if existing on already started", async () => {
+    await db("jobs").insert(
+      buildJob({
+        name: "pull_request_comment",
+        started_at: new Date().toISOString(),
+      })
     );
+
+    await createJob(
+      { name: "pull_request_comment", suite_id: "suiteId" },
+      options
+    );
+
+    const dbJobs = await db("jobs");
+
+    expect(dbJobs).toHaveLength(2);
   });
 });
 

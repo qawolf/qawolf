@@ -1,5 +1,5 @@
 import * as gitHubService from "../../../../server/services/gitHub/app";
-import { GitHubCommitStatus, SuiteRun } from "../../../../server/types";
+import { GitHubCommitStatus } from "../../../../server/types";
 import { prepareTestDb } from "../../db";
 import {
   buildGitHubCommitStatus,

@@ -25,8 +25,7 @@ export const createJob = async (
   await db.raw(
     `INSERT INTO jobs (completed_at, id, name, started_at, suite_id)
     VALUES (?, ?, ?, ?, ?)
-    ON CONFLICT (name, suite_id) WHERE started_at IS NULL
-    DO UPDATE SET updated_at = now()`,
+    ON CONFLICT DO NOTHING`,
     Object.values(job)
   );
   log.debug("created", job.id);

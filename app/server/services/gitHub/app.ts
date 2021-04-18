@@ -12,7 +12,6 @@ import { findRunsForSuite } from "../../models/run";
 import {
   GitHubCommitStatus as GitHubCommitStatusModel,
   ModelOptions,
-  SuiteRun,
 } from "../../types";
 
 export type GitHubCommitStatus = RestEndpointMethodTypes["repos"]["createCommitStatus"]["response"]["data"];
