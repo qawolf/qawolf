@@ -20,10 +20,6 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
   });
 
-  // await knex.raw(`ALTER TABLE jobs ADD CONSTRAINT jobs_unique_name_suite_id CHECK (
-  //   UNIQUE (name, suite_id) WHERE name = 'alert' OR name = 'github_commit_status'
-  // )`);
-
   // do not allow multiple pending jobs of the same type for a suite
   await knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id_alert
   ON jobs(name, suite_id)
@@ -33,6 +29,8 @@ export async function up(knex: Knex): Promise<void> {
   ON jobs(name, suite_id)
   WHERE name = 'github_commit_status'`);
 
+  // we update comments multiple times per suite, so can add additional jobs after
+  // initial updates are started
   await knex.raw(`CREATE UNIQUE INDEX jobs_unique_name_suite_id_pull_request_comment
   ON jobs(name, suite_id)
   WHERE name = 'pull_request_comment' AND started_at IS NULL`);
