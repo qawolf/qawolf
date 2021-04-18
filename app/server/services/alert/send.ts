@@ -25,14 +25,7 @@ export const sendAlert = async (
   log.debug("suite", suite_id);
 
   const suite = await findSuite(suite_id, options);
-
   const runs = await findRunsForSuite(suite.id, options);
-
-  if (runs.some((r) => r.status === "created")) {
-    log.debug("skip: suite not complete");
-    return;
-  }
-
   const team = await findTeam(suite.team_id, options);
 
   if (!shouldSendAlert({ runs, team })) {

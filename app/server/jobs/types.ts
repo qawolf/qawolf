@@ -6,6 +6,7 @@ export const JOB_TYPES = [
   "orchestrateRunners",
   "orchestrateTriggers",
   "restartRunners",
+  "runPendingJob",
   "syncTeams",
 ] as const;
 

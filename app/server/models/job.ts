@@ -1,3 +1,4 @@
+import { minutesFromNow } from "../../shared/utils";
 import { Job, JobName, ModelOptions } from "../types";
 import { cuid } from "../utils";
 import { findRunsForSuite } from "./run";
@@ -5,6 +6,51 @@ import { findRunsForSuite } from "./run";
 type CreateJob = {
   name: JobName;
   suite_id: string;
+};
+
+type UpdateJob = {
+  completed_at: string;
+  id: string;
+};
+
+export const claimPendingJob = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<Job | null> => {
+  const log = logger.prefix("claimPendingJob");
+
+  const { rows } = await db.raw(
+    `
+    UPDATE jobs SET started_at = ? WHERE id IN (
+      SELECT id FROM jobs
+      WHERE started_at IS NULL
+      ORDER BY created_at asc
+      LIMIT 1
+    ) RETURNING *
+  `,
+    minutesFromNow()
+  );
+  const job = rows[0] || null;
+
+  log.debug(job ? `claimed job ${job.id}` : "no pending jobs");
+
+  return job;
+};
+
+export const countPendingJobs = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<number> => {
+  const log = logger.prefix("countPendingJobs");
+
+  const rows = await db("jobs")
+    .whereNull("started_at")
+    .count("id", { as: "count" });
+
+  const count = Number(rows[0].count);
+  log.debug(`${count} pending jobs`);
+
+  return count;
 };
 
 export const createJob = async (
@@ -61,4 +107,23 @@ export const createJobsForSuite = async (
   ]);
 
   return [commentJob, ...suiteCompleteJobs];
+};
+
+export const updateJob = async (
+  { completed_at, id }: UpdateJob,
+  { db, logger }: ModelOptions
+): Promise<Job> => {
+  const log = logger.prefix("updateJob");
+  log.debug("update job", id);
+
+  const jobs = await db("jobs").where({ id }).update({ completed_at }, "*");
+  const job = jobs[0] || null;
+
+  if (!job) {
+    log.error("not found", id);
+    throw new Error("job not found");
+  }
+
+  log.debug("updated");
+  return job;
 };

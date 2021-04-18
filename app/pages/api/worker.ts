@@ -8,6 +8,7 @@ import { deployRunners } from "../../server/jobs/deployRunners";
 import { orchestrateRunners } from "../../server/jobs/orchestrateRunners";
 import { orchestrateTriggers } from "../../server/jobs/orchestrateTriggers";
 import { restartRunners } from "../../server/jobs/restartRunners";
+import { runPendingJob } from "../../server/jobs/runPendingJob";
 import { syncTeams } from "../../server/jobs/syncTeams";
 import { Job, JOB_TYPES } from "../../server/jobs/types";
 import { Logger } from "../../server/Logger";
@@ -37,6 +38,12 @@ export default async function (
   const options = { db, logger };
 
   try {
+    if (job === "runPendingJob") {
+      const pending_job_count = await runPendingJob(options);
+      res.status(200).send({ pending_job_count });
+      return;
+    }
+
     if (job === "checkPending") {
       await checkPending(options);
     } else if (job === "deleteOldEmails") {
