@@ -24,7 +24,7 @@ QA Wolf maintains a <ExternalLink href="https://app.netlify.com/plugins/netlify-
 <CreateTrigger description="on Netlify deployments" />
 
 Select the "Deployment" tab in the middle, and choose Netlify as your deploy service.
-You can also optionally rename your trigger.
+You can optionally rename your trigger.
 
 <Image
   alt="Create deploy trigger"
@@ -157,6 +157,15 @@ If you <Link href="#optional-install-git-hub-app">installed the QA Wolf GitHub a
   height={299}
   src="/docs/run-tests-on-netlify-deployment/github-checks.png"
   width={600}
+/>
+
+QA Wolf will also comment on a pull request with the most recent test suite. As your tests run, the comment is updated to report the latest results.
+
+<Image
+  alt="GitHub pull request comment"
+  height={179}
+  src="/docs/run-tests-on-netlify-deployment/pull-request-comment.png"
+  width={800}
 />
 
 <ViewRunHistory description="on Netlify deployments" />
