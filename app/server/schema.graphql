@@ -98,6 +98,15 @@ type EnvironmentVariables {
   variables: [EnvironmentVariable!]!
 }
 
+"A GitHub branch"
+type GitHubBranch {
+  "Whether the branch is the default"
+  is_default: Boolean!
+
+  "Branch name"
+  name: String!
+}
+
 "A group of tests"
 type Group {
   "Group ID"
@@ -1342,6 +1351,14 @@ type Query {
     "The environment ID"
     environment_id: ID!
   ): EnvironmentVariables!
+
+  """
+  Returns GitHub branches for a team by team ID.
+  If the team does not have a GitHub sync integration, null is returned.
+
+  Requires that you have access to the team.
+  """
+  gitHubBranches("The team ID" team_id: ID!): [GitHubBranch!]
 
   """
   Returns the runner for the run or test.

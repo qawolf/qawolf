@@ -168,6 +168,7 @@ export const copy = {
   getInTouch: "Get in touch",
   getStarted: "Get started",
   gitHub: "GitHub",
+  gitHubBranch: "GitHub branch",
   gitHubBranches: "GitHub branches",
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",

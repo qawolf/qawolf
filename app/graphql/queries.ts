@@ -49,6 +49,15 @@ export const environmentVariablesQuery = gql`
   ${environmentVariableFragment}
 `;
 
+export const gitHubBranchesQuery = gql`
+  query gitHubBranches($team_id: ID!) {
+    gitHubBranches(team_id: $team_id) {
+      is_default
+      name
+    }
+  }
+`;
+
 export const groupsQuery = gql`
   query groups($team_id: ID!) {
     groups(team_id: $team_id) {

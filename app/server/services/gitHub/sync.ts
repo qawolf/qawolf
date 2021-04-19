@@ -5,20 +5,15 @@ import { connectDb } from "../../db";
 import { Logger } from "../../Logger";
 import { findIntegration } from "../../models/integration";
 import { findTeam } from "../../models/team";
+import { findDefaultBranch } from "./branch";
 
 type GitTree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
 import { findTestsForTeam } from "../../models/test";
-import { Integration, ModelOptions, Team } from "../../types";
+import { BaseGitHubFields, Integration, ModelOptions, Team } from "../../types";
 import { createSyncInstallationAccessToken } from "./app";
 
 const mode = "100644" as const; // blob
-
-type BaseGitHubFields = {
-  octokit: Octokit;
-  owner: string;
-  repo: string;
-};
 
 type CreateCommit = BaseGitHubFields & {
   parents: string[];
@@ -51,7 +46,7 @@ const buildGitHubFields = async (
     options
   );
   const octokit = new Octokit({ auth: token });
-  const [owner, repo] = integration.github_repo_name.split("/");
+  const [owner, repo] = integration.github_repo_name?.split("/");
 
   return { octokit, owner, repo };
 };
@@ -141,20 +136,6 @@ export const findCurrentCommit = async (
   });
 
   return { sha, treeSha: commitData.tree.sha };
-};
-
-export const findDefaultBranch = async (
-  { octokit, owner, repo }: BaseGitHubFields,
-  { logger }: ModelOptions
-): Promise<string> => {
-  const log = logger.prefix("findDefaultBranch");
-
-  const { data } = await octokit.repos.get({ owner, repo });
-  const defaultBranch = data.default_branch;
-
-  log.debug("default branch", defaultBranch);
-
-  return defaultBranch;
 };
 
 export const updateRef = async ({

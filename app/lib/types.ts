@@ -21,6 +21,11 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type GitHubBranch = {
+  is_default: boolean;
+  name: string;
+};
+
 export type Group = {
   id: string;
   name: string;

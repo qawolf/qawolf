@@ -1,10 +1,16 @@
 /* eslint-disable jest/expect-expect */
-import { createGitHubIntegrationsResolver } from "../../../server/resolvers/github";
+import { updateTeam } from "../../../server/models/team";
+import {
+  createGitHubIntegrationsResolver,
+  gitHubBranchesResolver,
+} from "../../../server/resolvers/github";
 import * as gitHubService from "../../../server/services/gitHub/app";
+import * as branchService from "../../../server/services/gitHub/branch";
 import { prepareTestDb } from "../db";
 import { buildIntegration, buildTeam, buildUser, testContext } from "../utils";
 
 const db = prepareTestDb();
+const context = { ...testContext, db };
 
 beforeAll(async () => {
   await db("users").insert(buildUser({}));
@@ -26,7 +32,7 @@ describe("createGitHubIntegrationsResolver", () => {
     await createGitHubIntegrationsResolver(
       {},
       { installation_id: 123, is_sync, team_id: "teamId" },
-      { ...testContext, db }
+      context
     );
 
     const integrations = await db("integrations").select("*");
@@ -57,5 +63,50 @@ describe("createGitHubIntegrationsResolver", () => {
 
   it("handles GitHub sync app", async () => {
     await testResolver(true);
+  });
+});
+
+describe("gitHubBranchesResolver", () => {
+  beforeAll(() =>
+    db("integrations").insert(buildIntegration({ type: "github_sync" }))
+  );
+
+  afterAll(() => db("integrations").del());
+
+  it("returns null if team does not have GitHub sync integration", async () => {
+    const branches = await gitHubBranchesResolver(
+      {},
+      { team_id: "teamId" },
+      context
+    );
+
+    expect(branches).toBeNull();
+  });
+
+  it("returns list of GitHub branches otherwise", async () => {
+    const updatedTeam = await updateTeam(
+      { git_sync_integration_id: "integrationId", id: "teamId" },
+      { db, logger: testContext.logger }
+    );
+    jest.spyOn(branchService, "findBranchesForIntegration").mockResolvedValue([
+      { is_default: false, name: "feature" },
+      { is_default: true, name: "main" },
+    ]);
+
+    const branches = await gitHubBranchesResolver(
+      {},
+      { team_id: "teamId" },
+      { ...context, teams: [updatedTeam] }
+    );
+
+    expect(branches).toEqual([
+      { is_default: false, name: "feature" },
+      { is_default: true, name: "main" },
+    ]);
+
+    await updateTeam(
+      { git_sync_integration_id: null, id: "teamId" },
+      { db, logger: testContext.logger }
+    );
   });
 });

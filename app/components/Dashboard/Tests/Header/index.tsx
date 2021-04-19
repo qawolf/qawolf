@@ -6,6 +6,7 @@ import { copy } from "../../../../theme/copy";
 import Search from "../../../shared/Search";
 import Text from "../../../shared/Text";
 import Actions from "./Actions";
+import Branches from "./Branches";
 import Buttons from "./Buttons";
 import SelectTrigger from "./SelectTrigger";
 
@@ -50,11 +51,12 @@ export default function Header({
         <Box align="center" direction="row">
           <Text
             color="gray9"
-            margin={{ right: "medium" }}
+            margin={{ right: "small" }}
             size="componentHeader"
           >
             {groupName || copy.allTests}
           </Text>
+          <Branches />
         </Box>
         <Box align="center" direction="row">
           <Actions checkedTests={checkedTests} hasGroups={hasGroups} />

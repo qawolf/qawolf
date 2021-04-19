@@ -1,13 +1,17 @@
 import {
   createIntegrations,
   deleteIntegrations,
+  findIntegration,
   findIntegrationsForTeam,
 } from "../models/integration";
 import { findGitHubReposForInstallation } from "../services/gitHub/app";
+import { findBranchesForIntegration } from "../services/gitHub/branch";
 import {
   Context,
   CreateGitHubIntegrationsMutation,
+  GitHubBranch,
   Integration,
+  TeamIdQuery,
 } from "../types";
 import { ensureTeamAccess } from "./utils";
 
@@ -68,4 +72,26 @@ export const createGitHubIntegrationsResolver = async (
 
     return newIntegrations;
   });
+};
+
+export const gitHubBranchesResolver = async (
+  _: Record<string, unknown>,
+  { team_id }: TeamIdQuery,
+  { db, logger, teams }: Context
+): Promise<GitHubBranch[] | null> => {
+  const log = logger.prefix("gitHubBranchesResolver");
+  log.debug("team", team_id);
+
+  const team = ensureTeamAccess({ logger, team_id, teams });
+  if (!team.git_sync_integration_id) {
+    log.debug("skip, no git sync integration");
+    return null;
+  }
+
+  const integration = await findIntegration(team.git_sync_integration_id, {
+    db,
+    logger,
+  });
+
+  return findBranchesForIntegration(integration, { db, logger });
 };
