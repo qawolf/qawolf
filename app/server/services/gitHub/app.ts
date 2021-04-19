@@ -35,6 +35,11 @@ type FindBranchesForCommit = {
   sha: string;
 };
 
+type FindGitHubReposForInstallation = {
+  installationId: number;
+  isSync?: boolean;
+};
+
 type ShouldUpdateCommitStatus = {
   gitHubCommitStatus: GitHubCommitStatusModel | null;
   logger: Logger;
@@ -53,6 +58,28 @@ export const createInstallationAccessToken = async (
     appId: environment.GITHUB_APP_ID,
     clientId: environment.GITHUB_OAUTH_CLIENT_ID,
     clientSecret: environment.GITHUB_APP_CLIENT_SECRET,
+    installationId,
+    privateKey: JSON.parse(privateKeyVariable.value),
+  });
+
+  const { token } = await auth({ type: "installation" });
+
+  return token;
+};
+
+export const createSyncInstallationAccessToken = async (
+  installationId: number,
+  options: ModelOptions
+): Promise<string> => {
+  const privateKeyVariable = await findSystemEnvironmentVariable(
+    "GITHUB_SYNC_APP_PRIVATE_KEY",
+    options
+  );
+
+  const auth = createAppAuth({
+    appId: environment.GITHUB_SYNC_APP_ID,
+    clientId: environment.GITHUB_OAUTH_CLIENT_ID,
+    clientSecret: environment.GITHUB_SYNC_APP_CLIENT_SECRET,
     installationId,
     privateKey: JSON.parse(privateKeyVariable.value),
   });
@@ -111,13 +138,15 @@ export const findBranchesForCommit = async (
 };
 
 export const findGitHubReposForInstallation = async (
-  installationId: number,
+  { installationId, isSync }: FindGitHubReposForInstallation,
   options: ModelOptions
 ): Promise<GitHubRepos> => {
   const log = options.logger.prefix("findGitHubReposForInstallation");
 
   try {
-    const token = await createInstallationAccessToken(installationId, options);
+    const token = isSync
+      ? await createSyncInstallationAccessToken(installationId, options)
+      : await createInstallationAccessToken(installationId, options);
     const octokit = new Octokit({ auth: token });
 
     const {

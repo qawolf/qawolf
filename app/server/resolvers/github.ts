@@ -15,16 +15,19 @@ import { ensureTeamAccess } from "./utils";
 // we cannot identify which team installed the app in the webhook payload
 export const createGitHubIntegrationsResolver = async (
   _: Record<string, unknown>,
-  { installation_id, team_id }: CreateGitHubIntegrationsMutation,
+  { installation_id, is_sync, team_id }: CreateGitHubIntegrationsMutation,
   { db, logger, teams }: Context
 ): Promise<Integration[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
   return db.transaction(async (trx) => {
-    const repos = await findGitHubReposForInstallation(installation_id, {
-      db: trx,
-      logger,
-    });
+    const repos = await findGitHubReposForInstallation(
+      { installationId: installation_id, isSync: is_sync },
+      {
+        db: trx,
+        logger,
+      }
+    );
 
     const integrations = await findIntegrationsForTeam(
       { github_installation_id: installation_id, team_id },
@@ -47,7 +50,7 @@ export const createGitHubIntegrationsResolver = async (
             github_repo_name: r.full_name,
             settings_url: `https://github.com/settings/installations/${installation_id}`,
             team_id,
-            type: "github",
+            type: is_sync ? "github_sync" : "github",
           };
         }),
       { db: trx, logger }

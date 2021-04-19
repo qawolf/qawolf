@@ -140,7 +140,7 @@ export type Invite = {
   wolf_variant: string;
 };
 
-export type IntegrationType = "github" | "slack";
+export type IntegrationType = "github" | "github_sync" | "slack";
 
 export type Integration = {
   created_at?: string;
@@ -385,6 +385,7 @@ export type CreateEnvironmentVariableMutation = {
 
 export type CreateGitHubIntegrationsMutation = {
   installation_id: number;
+  is_sync?: boolean;
   team_id: string;
 };
 

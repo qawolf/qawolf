@@ -7,6 +7,7 @@ export const routes = {
   getStarted: "/get-started",
   gitHub: "/github",
   gitHubIntegration: "/github-integration",
+  gitHubSyncIntegration: "/github-sync-integration",
   guides: "/guides",
   home: "/",
   invite: "/invite",

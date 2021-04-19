@@ -589,7 +589,12 @@ type Mutation {
     installation_id: ID!
 
     """
-    The GitHub repos accessible to the app installation will belong to this team.
+    Whether the installed GitHub app will be used to sync to GitHub
+    """
+    is_sync: Boolean
+
+    """
+    The GitHub repos accessible to the app installation will belong to this team
     """
     team_id: ID!
   ): [Integration!]!
