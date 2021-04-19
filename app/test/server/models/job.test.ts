@@ -207,6 +207,9 @@ describe("updateJob", () => {
     const dbJob = await db("jobs").first();
 
     expect(new Date(dbJob.completed_at).toISOString()).toBe(completed_at);
+    expect(new Date(dbJob.updated_at).toISOString()).not.toBe(
+      new Date(dbJob.created_at).toISOString()
+    );
   });
 
   it("throws an error if job not found", async () => {

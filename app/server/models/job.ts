@@ -108,7 +108,9 @@ export const updateJob = async (
   const log = logger.prefix("updateJob");
   log.debug("update job", id);
 
-  const jobs = await db("jobs").where({ id }).update({ completed_at }, "*");
+  const jobs = await db("jobs")
+    .where({ id })
+    .update({ completed_at, updated_at: new Date().toISOString() }, "*");
   const job = jobs[0] || null;
 
   if (!job) {
