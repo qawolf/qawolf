@@ -29,6 +29,7 @@ export default function GitHubIntegration({ isSync }: Props): JSX.Element {
     { called, data, error },
   ] = useCreateGitHubIntegrations({
     installation_id: Number(installation_id || ""),
+    is_sync: !!isSync,
     team_id: teamId,
   });
 

@@ -89,6 +89,7 @@ type CreateEnvironmentVariableVariables = {
 
 type CreateGitHubIntegrationsVariables = {
   installation_id: number;
+  is_sync: boolean;
   team_id: string;
 };
 

@@ -50,9 +50,14 @@ export const createEnvironmentVariableMutation = gql`
 `;
 
 export const createGitHubIntegrationsMutation = gql`
-  mutation createGitHubIntegrations($installation_id: ID!, $team_id: ID!) {
+  mutation createGitHubIntegrations(
+    $installation_id: ID!
+    $is_sync: Boolean!
+    $team_id: ID!
+  ) {
     createGitHubIntegrations(
       installation_id: $installation_id
+      is_sync: $is_sync
       team_id: $team_id
     ) {
       ...IntegrationFragment

@@ -37,7 +37,7 @@ type FindBranchesForCommit = {
 
 type FindGitHubReposForInstallation = {
   installationId: number;
-  isSync?: boolean;
+  isSync: boolean;
 };
 
 type ShouldUpdateCommitStatus = {

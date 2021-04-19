@@ -385,7 +385,7 @@ export type CreateEnvironmentVariableMutation = {
 
 export type CreateGitHubIntegrationsMutation = {
   installation_id: number;
-  is_sync?: boolean;
+  is_sync: boolean;
   team_id: string;
 };
 

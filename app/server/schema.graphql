@@ -115,6 +115,9 @@ enum IntegrationType {
   "GitHub (https://github.com/)"
   github
 
+  "GitHub (https://github.com/) with repository contents permissions"
+  github_sync
+
   "Slack (https://slack.com/)"
   slack
 }
@@ -591,7 +594,7 @@ type Mutation {
     """
     Whether the installed GitHub app will be used to sync to GitHub
     """
-    is_sync: Boolean
+    is_sync: Boolean!
 
     """
     The GitHub repos accessible to the app installation will belong to this team

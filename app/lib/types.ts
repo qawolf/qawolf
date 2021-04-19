@@ -32,7 +32,7 @@ export type Integration = {
   id: string;
   slack_channel: string | null;
   team_name: string | null;
-  type: "github" | "slack";
+  type: "github" | "github_sync" | "slack";
 };
 
 export type Invite = {
