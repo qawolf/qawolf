@@ -270,6 +270,7 @@ export type Team = {
   created_at?: string;
   deleted_at?: string | null;
   forward_email?: string | null;
+  git_sync_integration_id?: string | null;
   id: string;
   inbox: string;
   helpers: string;
