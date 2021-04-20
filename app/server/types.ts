@@ -1,4 +1,4 @@
-import { Octokit } from "@octokit/rest";
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
@@ -56,6 +56,8 @@ export type GitHubUser = {
   login: string;
   name: string;
 };
+
+export type GitTree = RestEndpointMethodTypes["git"]["getTree"]["response"]["data"];
 
 // Slack types
 export type SlackWebhook = {
@@ -312,7 +314,7 @@ export type TeamUser = {
 
 export type Test = {
   created_at: string;
-  creator_id: string;
+  creator_id: string | null;
   code: string;
   deleted_at: string | null;
   group_id: string | null;
@@ -657,14 +659,14 @@ export type TestQuery = {
   run_id?: string;
 };
 
-export type TestSummariesQuery = {
-  test_ids: string[];
-  trigger_id: string | null;
-};
-
 export type TestResult = {
   run: RunResult | null;
   test: Test;
+};
+
+export type TestSummariesQuery = {
+  test_ids: string[];
+  trigger_id: string | null;
 };
 
 export type TestSummary = {
@@ -677,6 +679,11 @@ export type TestTriggers = {
   group_id: string | null;
   test_id: string;
   trigger_ids: string[];
+};
+
+export type TestsQuery = {
+  branch: string | null;
+  team_id: string;
 };
 
 export type TriggerIdQuery = {

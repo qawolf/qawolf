@@ -190,6 +190,7 @@ type TestsData = {
 };
 
 type TestsVariables = {
+  branch: string | null;
   team_id: string;
 };
 

@@ -1,19 +1,13 @@
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import { camelCase } from "lodash";
 
 import { connectDb } from "../../db";
 import { Logger } from "../../Logger";
 import { findIntegration } from "../../models/integration";
 import { findTeam } from "../../models/team";
-import { findDefaultBranch } from "./branch";
-
-type GitTree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
-
 import { findTestsForTeam } from "../../models/test";
-import { BaseGitHubFields, Integration, ModelOptions, Team } from "../../types";
-import { createSyncInstallationAccessToken } from "./app";
-
-const mode = "100644" as const; // blob
+import { BaseGitHubFields, GitTree, ModelOptions, Team } from "../../types";
+import { findDefaultBranch } from "./branch";
+import { buildGitHubFields } from "./helpers";
 
 type CreateCommit = BaseGitHubFields & {
   parents: string[];
@@ -37,19 +31,7 @@ type UpdateRef = BaseGitHubFields & {
   sha: string;
 };
 
-const buildGitHubFields = async (
-  integration: Integration,
-  options: ModelOptions
-): Promise<BaseGitHubFields> => {
-  const token = await createSyncInstallationAccessToken(
-    integration.github_installation_id,
-    options
-  );
-  const octokit = new Octokit({ auth: token });
-  const [owner, repo] = integration.github_repo_name?.split("/");
-
-  return { octokit, owner, repo };
-};
+const mode = "100644" as const; // blob
 
 export const buildQaWolfTree = async (
   team: Team,

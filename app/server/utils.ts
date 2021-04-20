@@ -18,6 +18,7 @@ export type RunnerUrl = {
 
 export const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export const API_KEY_PREFIX = "qawolf_";
+export const GIT_TEST_FILE_EXTENSION = ".test.js";
 
 export const randomChoice = <T>(items: T[] | string): T | string => {
   const randomIndex = Math.floor(Math.random() * items.length);

@@ -1,3 +1,5 @@
+import { camelCase } from "lodash";
+
 import { buildTestCode } from "../../shared/utils";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
@@ -10,26 +12,97 @@ import {
   updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
+import { findTestsForBranch } from "../services/gitHub/tree";
 import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  TeamIdQuery,
+  GitTree,
+  ModelOptions,
   Test,
   TestQuery,
   TestResult,
+  TestsQuery,
   TestSummariesQuery,
   TestSummary,
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
+import { GIT_TEST_FILE_EXTENSION } from "../utils";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
   ensureTestAccess,
   ensureUser,
 } from "./utils";
+
+type CreateMissingTests = {
+  gitHubTests: GitTree["tree"];
+  team_id: string;
+  tests: Test[];
+};
+
+type UpsertGitHubTests = {
+  branch: string;
+  integrationId: string;
+  team_id: string;
+  tests: Test[];
+};
+
+const buildTestName = (path: string): string => {
+  return path.split(GIT_TEST_FILE_EXTENSION)[0];
+};
+
+const createMissingTests = async (
+  { gitHubTests, team_id, tests }: CreateMissingTests,
+  options: ModelOptions
+): Promise<Test[]> => {
+  const missingTests = gitHubTests.filter((test) => {
+    return !tests.some((t) => {
+      return buildTestName(test.path) === camelCase(t.name);
+    });
+  });
+
+  return Promise.all(
+    missingTests.map((t) => {
+      const formattedName = buildTestName(t.path);
+      return createTest({ code: "", name: formattedName, team_id }, options);
+    })
+  );
+};
+
+export const upsertGitHubTests = async (
+  { branch, integrationId, team_id, tests }: UpsertGitHubTests,
+  options: ModelOptions
+): Promise<Test[]> => {
+  const log = options.logger.prefix("upsertGitHubTests");
+
+  const gitHubTests = await findTestsForBranch(
+    { branch, integrationId },
+    options
+  );
+
+  const branchTests = tests.filter((test) => {
+    return (
+      test.guide ||
+      gitHubTests.some((t) => {
+        return buildTestName(t.path) === camelCase(test.name);
+      })
+    );
+  });
+  const missingTests = await createMissingTests(
+    { gitHubTests, team_id, tests },
+    options
+  );
+
+  const finalTests = [...branchTests, ...missingTests].sort((a, b) => {
+    return a.name < b.name ? -1 : 1;
+  });
+  log.debug(`return ${finalTests.length} tests`);
+
+  return finalTests;
+};
 
 /**
  * @returns The new test object
@@ -151,14 +224,29 @@ export const testSummariesResolver = async (
  */
 export const testsResolver = async (
   _: Record<string, unknown>,
-  { team_id }: TeamIdQuery,
+  { branch, team_id }: TestsQuery,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
-  ensureTeamAccess({ logger, team_id, teams });
-  // also query github for specified branch
-  // if no corresponding test in db, create it
-  // filter out tests that are not in git
-  return findTestsForTeam(team_id, { db, logger });
+  const log = logger.prefix("testsResolver");
+  log.debug("team", team_id, "branch", branch);
+
+  const team = ensureTeamAccess({ logger, team_id, teams });
+  const tests = await findTestsForTeam(team_id, { db, logger });
+
+  if (!branch || !team.git_sync_integration_id) {
+    log.debug("no branch or git sync integation id");
+    return tests;
+  }
+
+  return upsertGitHubTests(
+    {
+      branch,
+      integrationId: team.git_sync_integration_id,
+      team_id: team.id,
+      tests,
+    },
+    { db, logger }
+  );
 };
 
 export const updateTestResolver = async (

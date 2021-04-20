@@ -10,11 +10,12 @@ import Header from "./Header";
 import List from "./List";
 
 type Props = {
+  branch: string | null;
   groups: Group[] | null;
   teamId: string;
 };
 
-export default function Tests({ groups, teamId }: Props): JSX.Element {
+export default function Tests({ branch, groups, teamId }: Props): JSX.Element {
   const { query } = useRouter();
   const group_id = (query.group_id as string) || null;
   const trigger_id = query.trigger_id as string;
@@ -24,7 +25,10 @@ export default function Tests({ groups, teamId }: Props): JSX.Element {
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
-  const { data, startPolling, stopPolling } = useTests({ team_id: teamId });
+  const { data, startPolling, stopPolling } = useTests({
+    branch,
+    team_id: teamId,
+  });
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 

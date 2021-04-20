@@ -18,7 +18,7 @@ export default function Dashboard(): JSX.Element {
   useEnsureUser();
 
   const { asPath, pathname, query } = useRouter();
-  const { teamId } = useContext(StateContext);
+  const { branch, teamId } = useContext(StateContext);
 
   const { data } = useGroups({ team_id: teamId });
   const groups = data?.groups || null;
@@ -28,7 +28,7 @@ export default function Dashboard(): JSX.Element {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  let innerHtml = <Tests groups={groups} teamId={teamId} />;
+  let innerHtml = <Tests branch={branch} groups={groups} teamId={teamId} />;
   if (pathname.includes(routes.suites) && query.suite_id) {
     innerHtml = <Suite suiteId={query.suite_id as string} teamId={teamId} />;
   } else if (pathname.includes(routes.suites)) {

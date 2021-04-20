@@ -1475,7 +1475,7 @@ type Query {
 
   Requires that you are on the team.
   """
-  tests("The team ID" team_id: ID!): [Test!]!
+  tests("The git branch" branch: String, "The team ID" team_id: ID!): [Test!]!
 
   """
   Returns all test triggers for a single team by team ID. The default trigger is

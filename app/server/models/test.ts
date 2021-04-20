@@ -12,9 +12,10 @@ type BuildTestName = {
 
 type CreateTest = {
   code: string;
-  creator_id: string;
+  creator_id?: string;
   group_id?: string | null;
   guide?: string | null;
+  name?: string | null;
   team_id: string;
 };
 
@@ -121,18 +122,19 @@ export const countTestsForTeam = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, guide, team_id }: CreateTest,
+  { code, creator_id, group_id, guide, name, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
   log.debug("team", team_id);
 
   const timestamp = minutesFromNow();
-  const uniqueName = await buildTestName({ guide, team_id }, { db, logger });
+  const uniqueName =
+    name || (await buildTestName({ guide, team_id }, { db, logger }));
 
   const test = {
     created_at: timestamp,
-    creator_id,
+    creator_id: creator_id || null,
     code,
     deleted_at: null,
     group_id: group_id || null,

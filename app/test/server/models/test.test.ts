@@ -217,6 +217,26 @@ describe("createTest", () => {
       name: "Guide: Create a Test 2",
     });
   });
+
+  it("creates a test with a specified name", async () => {
+    await createTest(
+      {
+        code: "code",
+        name: "specificName",
+        team_id: "teamId",
+      },
+      options
+    );
+
+    const tests = await db.select("*").from("tests").where({ code: "code" });
+
+    expect(tests[0]).toMatchObject({
+      code: "code",
+      creator_id: null,
+      name: "specificName",
+      team_id: "teamId",
+    });
+  });
 });
 
 describe("deleteTests", () => {
