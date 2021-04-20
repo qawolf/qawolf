@@ -6,7 +6,9 @@ import { ClientError } from "../errors";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
+import { createEnvironment } from "./environment";
 
+const DEFAULT_ENVIRONMENT_NAME = "Environment";
 const DEFAULT_NAME = "My Team";
 
 type UpdateTeam = {
@@ -70,6 +72,11 @@ export const createDefaultTeam = async ({
 
   await db("teams").insert(team);
   log.debug("created", team);
+
+  await createEnvironment(
+    { name: DEFAULT_ENVIRONMENT_NAME, team_id: team.id },
+    { db, logger }
+  );
 
   return formatTeam(team);
 };
