@@ -149,7 +149,7 @@ describe("deleteUnhealthyRunners", () => {
 
     await db("runners").insert(
       buildRunner({
-        created_at: minutesFromNow(-5),
+        created_at: minutesFromNow(-10),
         deleted_at,
       })
     );
@@ -163,10 +163,10 @@ describe("deleteUnhealthyRunners", () => {
     expect(runner).toMatchObject({ deleted_at: new Date(deleted_at) });
   });
 
-  it("deletes workers that have not reported a health check and are created 5 minutes ago", async () => {
+  it("deletes workers that have not reported a health check and are created 10 minutes ago", async () => {
     await db("runners").insert([
-      buildRunner({ created_at: minutesFromNow(-4) }),
-      buildRunner({ created_at: minutesFromNow(-5), i: 2 }),
+      buildRunner({ created_at: minutesFromNow(-9) }),
+      buildRunner({ created_at: minutesFromNow(-10), i: 2 }),
     ]);
     await deleteUnhealthyRunners(options);
 
@@ -177,9 +177,9 @@ describe("deleteUnhealthyRunners", () => {
     expect(runner3?.deleted_at).not.toBeNull();
   });
 
-  it("deletes workers that have not reported a health check for 2 minutes", async () => {
+  it("deletes workers that have not reported a health check for 5 minutes", async () => {
     await db("runners").insert(
-      buildRunner({ health_checked_at: minutesFromNow(-2) })
+      buildRunner({ health_checked_at: minutesFromNow(-5) })
     );
     await deleteUnhealthyRunners(options);
 
