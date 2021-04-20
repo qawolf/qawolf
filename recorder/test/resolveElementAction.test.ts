@@ -99,25 +99,29 @@ describe("resolveElementAction", () => {
   });
 
   it("returns undefined for actions on invisible targets", async () => {
-    // the exception is for keyboard.press
+    // (except for keyboard.press)
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector('[type="hidden"]') as HTMLElement;
 
-      return qawolf.resolveElementAction(
-        new qawolf.EventSequence([
-          {
-            isTrusted: true,
-            target,
-            time: Date.now(),
-            type: "click",
-            value: "Enter",
-          },
-        ])
-      );
+      const invisibleClick = {
+        isTrusted: true,
+        target,
+        time: Date.now(),
+        type: "click",
+      };
+
+      return [
+        qawolf.resolveElementAction(new qawolf.EventSequence([invisibleClick])),
+        qawolf.resolveElementAction(
+          new qawolf.EventSequence([
+            { ...invisibleClick, type: "change", value: "value" },
+          ])
+        ),
+      ];
     });
 
-    expect(result).toBe(undefined);
+    expect(result).toEqual([undefined, undefined]);
   });
 
   it("returns undefined for duplicate select", async () => {

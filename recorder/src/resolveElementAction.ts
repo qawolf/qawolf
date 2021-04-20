@@ -112,6 +112,8 @@ export const resolveElementAction = (
     }
   }
 
+  const isTargetVisible = isVisible(target, window.getComputedStyle(target));
+
   if (action === "click") {
     const mouseDown = events.getMouseDown();
     if (!mouseDown) {
@@ -119,12 +121,7 @@ export const resolveElementAction = (
       return;
     }
 
-    if (!isVisible(target, window.getComputedStyle(target))) {
-      if (!mouseDown.selector) {
-        debug("resolveAction: skip action on invisible target");
-        return;
-      }
-
+    if (!isTargetVisible && mouseDown && mouseDown.selector) {
       debug(
         "resolveAction: use selector from visible mousedown",
         mouseDown.selector,
@@ -132,6 +129,11 @@ export const resolveElementAction = (
       );
       return { action, selector: mouseDown.selector, time: event.time };
     }
+  }
+
+  if (!isTargetVisible) {
+    debug(`resolveAction: skip ${action} on invisible target`);
+    return;
   }
 
   if (action === "fill" && !shouldTrackFill(targetDescriptor)) {
