@@ -1,5 +1,6 @@
 import { createAppAuth } from "@octokit/auth-app";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { uniq } from "lodash";
 
 import environment from "../../environment";
 import { Logger } from "../../Logger";
@@ -134,7 +135,7 @@ export const findBranchesForCommit = async (
     repo,
   });
 
-  return Array.from(new Set(data.check_suites.map((s) => s.head_branch)));
+  return uniq(data.check_suites.map((s) => s.head_branch));
 };
 
 export const findGitHubReposForInstallation = async (

@@ -29,6 +29,7 @@ const {
   findTest,
   findTestForRun,
   findTestsForTeam,
+  findTests,
   hasIntroGuide,
   hasTest,
   updateTest,
@@ -533,6 +534,24 @@ describe("findTestsForTeam", () => {
     const tests = await findTestsForTeam("fakeId", options);
 
     expect(tests).toEqual([]);
+  });
+});
+
+describe("findTests", () => {
+  beforeAll(() =>
+    db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ deleted_at: new Date().toISOString(), i: 3 }),
+    ])
+  );
+
+  afterAll(() => db("tests").del());
+
+  it("finds tests by id", async () => {
+    const tests = await findTests(["testId", "test3Id"], options);
+
+    expect(tests).toMatchObject([{ id: "testId" }]);
   });
 });
 

@@ -228,6 +228,7 @@ type DeleteTestsData = {
 };
 
 type DeleteTestsVariables = {
+  branch: string | null;
   ids: string[];
 };
 

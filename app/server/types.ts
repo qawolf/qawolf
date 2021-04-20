@@ -466,6 +466,7 @@ export type CreateUrlMutation = {
 };
 
 export type DeleteTestsMutation = {
+  branch: string | null;
   ids: string[];
 };
 

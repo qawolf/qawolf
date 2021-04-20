@@ -153,25 +153,6 @@ export const createTest = async (
   return test;
 };
 
-export const findTestsForTeam = async (
-  team_id: string,
-  { db, logger }: ModelOptions
-): Promise<Test[]> => {
-  const log = logger.prefix("findTestsForTeam");
-
-  log.debug(team_id);
-
-  const tests = await db
-    .select("*")
-    .from("tests")
-    .where({ deleted_at: null, team_id })
-    .orderBy("name", "asc");
-
-  log.debug(`found ${tests.length} tests for team ${team_id}`);
-
-  return tests;
-};
-
 export const findEnabledTests = async (
   test_ids: string[],
   { db, logger }: ModelOptions
@@ -276,6 +257,42 @@ export const findTestForRun = async (
   }
 
   return test;
+};
+
+export const findTestsForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findTestsForTeam");
+
+  log.debug(team_id);
+
+  const tests = await db
+    .select("*")
+    .from("tests")
+    .where({ deleted_at: null, team_id })
+    .orderBy("name", "asc");
+
+  log.debug(`found ${tests.length} tests for team ${team_id}`);
+
+  return tests;
+};
+
+export const findTests = async (
+  test_ids: string[],
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findTests");
+  log.debug("tests", test_ids);
+
+  const tests = await db("tests")
+    .whereIn("id", test_ids)
+    .andWhere({ deleted_at: null })
+    .orderBy("name", "asc");
+
+  log.debug(`found ${tests.length} tests`);
+
+  return tests;
 };
 
 export const deleteTests = async (

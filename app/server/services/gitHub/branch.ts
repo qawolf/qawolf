@@ -1,4 +1,5 @@
 import { Octokit } from "@octokit/rest";
+import { uniq } from "lodash";
 
 import {
   BaseGitHubFields,
@@ -41,13 +42,12 @@ export const findBranchesForIntegration = async (
   );
   const { data } = await octokit.repos.listBranches({ owner, repo });
 
-  const branches = [defaultBranch, ...data.map((branch) => branch.name)];
-  const uniqueBranches = Array.from(new Set(branches));
-  uniqueBranches.sort();
+  const branches = uniq([defaultBranch, ...data.map((branch) => branch.name)]);
+  branches.sort();
 
-  log.debug("found branches", uniqueBranches);
+  log.debug("found branches", branches);
 
-  return uniqueBranches.map((name) => {
+  return branches.map((name) => {
     return {
       is_default: name === defaultBranch,
       name,

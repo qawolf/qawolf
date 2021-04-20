@@ -237,8 +237,8 @@ export const deleteGroupMutation = gql`
 `;
 
 export const deleteTestsMutation = gql`
-  mutation deleteTests($ids: [ID!]!) {
-    deleteTests(ids: $ids) {
+  mutation deleteTests($branch: String, $ids: [ID!]!) {
+    deleteTests(branch: $branch, ids: $ids) {
       ...TestFragment
     }
   }

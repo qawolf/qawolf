@@ -1,11 +1,13 @@
-import * as runModel from "../../../server/models/run";
-import * as testModel from "../../../server/models/test";
-import * as testResolvers from "../../../server/resolvers/test";
-import * as azure from "../../../server/services/aws/storage";
-import * as gitHubTree from "../../../server/services/gitHub/tree";
-import { RunWithGif } from "../../../server/types";
-import { minutesFromNow } from "../../../shared/utils";
-import { prepareTestDb } from "../db";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import * as runModel from "../../../../server/models/run";
+import * as testModel from "../../../../server/models/test";
+import * as testResolvers from "../../../../server/resolvers/test";
+import * as helpers from "../../../../server/resolvers/test/helpers";
+import * as azure from "../../../../server/services/aws/storage";
+import * as gitHubTree from "../../../../server/services/gitHub/tree";
+import { RunWithGif } from "../../../../server/types";
+import { minutesFromNow } from "../../../../shared/utils";
+import { prepareTestDb } from "../../db";
 import {
   buildGroup,
   buildIntegration,
@@ -17,7 +19,7 @@ import {
   buildUser,
   logger,
   testContext,
-} from "../utils";
+} from "../../utils";
 
 const {
   createTestResolver,
@@ -27,7 +29,6 @@ const {
   testsResolver,
   updateTestResolver,
   updateTestsGroupResolver,
-  upsertGitHubTests,
 } = testResolvers;
 
 const run = buildRun({ code: "run code" });
@@ -135,9 +136,11 @@ describe("createTestResolver", () => {
 
 describe("deleteTestsResolver", () => {
   it("deletes a test", async () => {
+    jest.spyOn(helpers, "deleteGitHubTests");
+
     const tests = await deleteTestsResolver(
       {},
-      { ids: ["deleteMe"] },
+      { branch: null, ids: ["deleteMe"] },
       {
         ...context,
         teams: [buildTeam({ i: 2 })],
@@ -153,7 +156,7 @@ describe("deleteTestsResolver", () => {
     ]);
 
     const test = await testModel.findTest("deleteMe", options);
-    expect(test.deleted_at).not.toBeNull();
+    expect(test.deleted_at).toBeTruthy();
 
     const testTrigger = await db
       .select("*")
@@ -161,6 +164,37 @@ describe("deleteTestsResolver", () => {
       .where("test_id", "deleteMe")
       .first();
     expect(testTrigger).toBeFalsy();
+
+    expect(helpers.deleteGitHubTests).not.toBeCalled();
+
+    await db("tests").where({ id: "deleteMe" }).update({ deleted_at: null });
+  });
+
+  it("deletes a test on a git branch", async () => {
+    const spy = jest.spyOn(helpers, "deleteGitHubTests").mockResolvedValue();
+
+    const tests = await deleteTestsResolver(
+      {},
+      { branch: "main", ids: ["deleteMe"] },
+      {
+        ...context,
+        teams: [buildTeam({ i: 2 })],
+        user: buildUser({ i: 2 }),
+      }
+    );
+
+    expect(tests).toMatchObject([{ id: "deleteMe" }]);
+
+    expect(helpers.deleteGitHubTests).toBeCalledTimes(1);
+    expect(spy.mock.calls[0][0]).toMatchObject({
+      branch: "main",
+      tests: [{ id: "deleteMe" }],
+      teams: [{ id: "team2Id" }],
+    });
+
+    const dbTest = await db("tests").where({ id: "deleteMe" }).first();
+
+    expect(dbTest.deleted_at).toBeNull();
   });
 });
 
@@ -295,12 +329,10 @@ describe("testsResolver", () => {
   });
 
   it("finds tests for a team when branch specified", async () => {
-    jest
-      .spyOn(gitHubTree, "findTestsForBranch")
-      .mockResolvedValue([
-        { path: "test.test.js" },
-        { path: "anotherTest.test.js" },
-      ]);
+    jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
+      gitHubFields: {} as any,
+      tests: [{ path: "test.test.js" }, { path: "anotherTest.test.js" }],
+    });
 
     const tests = await testsResolver(
       {},
@@ -353,39 +385,5 @@ describe("updateTestsGroupResolver", () => {
     );
 
     expect(tests).toMatchObject([{ group_id: "groupId", id: "testId" }]);
-  });
-});
-
-describe("upsertGitHubTests", () => {
-  it("filters out tests not on branch and creates missing tests", async () => {
-    jest
-      .spyOn(gitHubTree, "findTestsForBranch")
-      .mockResolvedValue([
-        { path: "test.test.js" },
-        { path: "anotherTest.test.js" },
-      ]);
-
-    const tests = await testModel.findTestsForTeam("teamId", options);
-
-    const finalTests = await upsertGitHubTests(
-      {
-        branch: "main",
-        integrationId: "integrationId",
-        team_id: "teamId",
-        tests,
-      },
-      options
-    );
-
-    expect(finalTests).toMatchObject([
-      { creator_id: null, name: "anotherTest" },
-      { name: "test" },
-    ]);
-
-    const newTest = await db("tests").where({ name: "anotherTest" });
-
-    expect(newTest).toBeTruthy();
-
-    await db("tests").where({ name: "anotherTest" }).del();
   });
 });

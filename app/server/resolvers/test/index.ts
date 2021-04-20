@@ -1,25 +1,21 @@
-import { camelCase } from "lodash";
-
-import { buildTestCode } from "../../shared/utils";
-import { findLatestRuns, findRunResult } from "../models/run";
+import { buildTestCode } from "../../../shared/utils";
+import { findLatestRuns, findRunResult } from "../../models/run";
 import {
   createTest,
   deleteTests,
   findTest,
   findTestForRun,
+  findTests,
   findTestsForTeam,
   updateTest,
   updateTestsGroup,
-} from "../models/test";
-import { deleteTestTriggersForTests } from "../models/test_trigger";
-import { findTestsForBranch } from "../services/gitHub/tree";
-import { trackSegmentEvent } from "../services/segment";
+} from "../../models/test";
+import { deleteTestTriggersForTests } from "../../models/test_trigger";
+import { trackSegmentEvent } from "../../services/segment";
 import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  GitTree,
-  ModelOptions,
   Test,
   TestQuery,
   TestResult,
@@ -28,81 +24,14 @@ import {
   TestSummary,
   UpdateTestMutation,
   UpdateTestsGroupMutation,
-} from "../types";
-import { GIT_TEST_FILE_EXTENSION } from "../utils";
+} from "../../types";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
   ensureTestAccess,
   ensureUser,
-} from "./utils";
-
-type CreateMissingTests = {
-  gitHubTests: GitTree["tree"];
-  team_id: string;
-  tests: Test[];
-};
-
-type UpsertGitHubTests = {
-  branch: string;
-  integrationId: string;
-  team_id: string;
-  tests: Test[];
-};
-
-const buildTestName = (path: string): string => {
-  return path.split(GIT_TEST_FILE_EXTENSION)[0];
-};
-
-const createMissingTests = async (
-  { gitHubTests, team_id, tests }: CreateMissingTests,
-  options: ModelOptions
-): Promise<Test[]> => {
-  const missingTests = gitHubTests.filter((test) => {
-    return !tests.some((t) => {
-      return buildTestName(test.path) === camelCase(t.name);
-    });
-  });
-
-  return Promise.all(
-    missingTests.map((t) => {
-      const formattedName = buildTestName(t.path);
-      return createTest({ code: "", name: formattedName, team_id }, options);
-    })
-  );
-};
-
-export const upsertGitHubTests = async (
-  { branch, integrationId, team_id, tests }: UpsertGitHubTests,
-  options: ModelOptions
-): Promise<Test[]> => {
-  const log = options.logger.prefix("upsertGitHubTests");
-
-  const gitHubTests = await findTestsForBranch(
-    { branch, integrationId },
-    options
-  );
-
-  const branchTests = tests.filter((test) => {
-    return (
-      test.guide ||
-      gitHubTests.some((t) => {
-        return buildTestName(t.path) === camelCase(test.name);
-      })
-    );
-  });
-  const missingTests = await createMissingTests(
-    { gitHubTests, team_id, tests },
-    options
-  );
-
-  const finalTests = [...branchTests, ...missingTests].sort((a, b) => {
-    return a.name < b.name ? -1 : 1;
-  });
-  log.debug(`return ${finalTests.length} tests`);
-
-  return finalTests;
-};
+} from "../utils";
+import { deleteGitHubTests, upsertGitHubTests } from "./helpers";
 
 /**
  * @returns The new test object
@@ -145,16 +74,35 @@ export const createTestResolver = async (
  */
 export const deleteTestsResolver = async (
   _: Record<string, unknown>,
-  { ids }: DeleteTestsMutation,
+  { branch, ids }: DeleteTestsMutation,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
+  const log = logger.prefix("deleteTestsResolver");
+  log.debug("ids", ids);
+
+  if (branch) {
+    log.debug("delete from git branch", branch);
+
+    const tests = await findTests(ids, { db, logger });
+    const testTeams = await Promise.all(
+      tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
+    );
+
+    await deleteGitHubTests(
+      { branch, tests, teams: testTeams },
+      { db, logger }
+    );
+
+    return tests;
+  }
+
+  log.debug("soft delete from database");
   await Promise.all(
     ids.map((id) => ensureTestAccess({ teams, test_id: id }, { db, logger }))
   );
 
   return db.transaction(async (trx) => {
     await deleteTestTriggersForTests(ids, { db: trx, logger });
-
     return deleteTests(ids, { db: trx, logger });
   });
 };

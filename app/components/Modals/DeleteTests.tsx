@@ -1,5 +1,5 @@
 import { Box, Button } from "grommet";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
@@ -10,6 +10,7 @@ import Modal from "../shared/Modal";
 import Buttons from "../shared/Modal/Buttons";
 import Header from "../shared/Modal/Header";
 import Text from "../shared/Text";
+import { StateContext } from "../StateContext";
 
 type Props = {
   closeModal: () => void;
@@ -17,13 +18,14 @@ type Props = {
 };
 
 export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
+  const { branch } = useContext(StateContext);
   const ref = useRef<HTMLButtonElement>(null);
 
   const [hasError, setHasError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
   const testIds = tests.map((test) => test.id);
-  const [deleteTests, { loading }] = useDeleteTests({ ids: testIds });
+  const [deleteTests, { loading }] = useDeleteTests({ branch, ids: testIds });
 
   const handleClick = (): void => {
     setHasError(false);

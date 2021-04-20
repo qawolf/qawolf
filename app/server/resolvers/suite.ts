@@ -1,3 +1,5 @@
+import { uniq } from "lodash";
+
 import { decrypt } from "../models/encrypt";
 import { findEnvironmentOrNull } from "../models/environment";
 import {
@@ -49,7 +51,7 @@ export const createSuiteResolver = async (
   );
   const teamIds = testTeams.map((t) => t.id);
 
-  if (Array.from(new Set(teamIds)).length !== 1) {
+  if (uniq(teamIds).length !== 1) {
     const message = teamIds.length
       ? "tests on different teams"
       : "no tests to run";

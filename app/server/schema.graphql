@@ -899,6 +899,11 @@ type Mutation {
   """
   deleteTests(
     """
+    Git branch to delete tests from
+    """
+    branch: String
+
+    """
     Array of test IDs to delete
     """
     ids: [ID!]!

@@ -8,6 +8,11 @@ type FindTestsForBranch = {
   integrationId: string;
 };
 
+type FindTestsForBranchResult = {
+  gitHubFields: BaseGitHubFields;
+  tests: GitTree["tree"];
+};
+
 type FindTreeForBranch = BaseGitHubFields & {
   recursive?: "true";
   tree_sha: string;
@@ -36,7 +41,7 @@ export const findTreeForBranch = async (
 export const findTestsForBranch = async (
   { branch, integrationId }: FindTestsForBranch,
   options: ModelOptions
-): Promise<GitTree["tree"]> => {
+): Promise<FindTestsForBranchResult> => {
   const log = options.logger.prefix("findTestsForBranch");
 
   const integration = await findIntegration(integrationId, options);
@@ -50,7 +55,7 @@ export const findTestsForBranch = async (
   const qawolfTree = tree.tree.find((t) => t.path === qawolfPath);
   if (!qawolfTree || !qawolfTree.sha) {
     log.debug(`qawolf path ${qawolfPath} not found (sha ${qawolfTree?.sha})`);
-    return [];
+    return { gitHubFields: fields, tests: [] };
   }
 
   const files = await findTreeForBranch(
@@ -63,5 +68,5 @@ export const findTestsForBranch = async (
 
   log.debug(`found ${tests.length} tests`);
 
-  return tests;
+  return { gitHubFields: fields, tests };
 };
