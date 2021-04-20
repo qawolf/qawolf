@@ -28,9 +28,9 @@ describe("getBrowserLaunchOptions", () => {
     ).toMatchObject({ args });
   });
 
-  it("sets executablePath for chrome", () => {
+  it("sets channel for chrome", () => {
     expect(getBrowserLaunchOptions("chrome", {})).toMatchObject({
-      executablePath: "/opt/google/chrome/chrome",
+      channel: "chrome",
     });
   });
 });
