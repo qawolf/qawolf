@@ -2,9 +2,36 @@ import { Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { ElementDescriptor } from "../src/element";
-import { resolvePress, shouldTrackFill } from "../src/resolveElementAction";
-import { Action } from "../src/types";
+import {
+  resolveEventAction,
+  resolvePress,
+  shouldTrackFill,
+} from "../src/resolveElementAction";
 import { launch, LaunchResult } from "./utils";
+
+describe("resolveEventAction", () => {
+  it("returns click for click", async () => {
+    expect(resolveEventAction("click", "A")).toEqual("click");
+  });
+
+  it("returns fill for change/input on an input", async () => {
+    expect(resolveEventAction("change", "INPUT")).toEqual("fill");
+    expect(resolveEventAction("input", "INPUT")).toEqual("fill");
+  });
+
+  it("returns press for keydown", async () => {
+    expect(resolveEventAction("keydown", "HTML")).toEqual("press");
+  });
+
+  it("returns selectOption for change/input on a select", async () => {
+    expect(resolveEventAction("change", "SELECT")).toEqual("selectOption");
+    expect(resolveEventAction("input", "SELECT")).toEqual("selectOption");
+  });
+
+  it("returns undefined for click on a select", async () => {
+    expect(resolveEventAction("click", "SELECT")).toEqual(undefined);
+  });
+});
 
 describe("resolveElementAction", () => {
   let launched: LaunchResult;
@@ -22,92 +49,53 @@ describe("resolveElementAction", () => {
 
   afterAll(() => launched.browser.close());
 
-  it("returns click with the last received mousedown selector if the target is invisible", async () => {
-    const result = await page.evaluate(() => {
-      const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = document.getElementById("hidden-div") as HTMLInputElement;
-
-      const lastReceivedAction: PossibleAction = {
-        action: "mousedown",
-        isTrusted: true,
-        selector: "#hidden-div",
-        target,
-        time: Date.now(),
-        value: undefined,
-      };
-
-      const possibleAction: PossibleAction = {
-        action: "click",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: undefined,
-      };
-
-      return qawolf.resolveElementAction({
-        lastReceivedAction,
-        possibleAction,
-      });
-    });
-
-    expect(result).toEqual({ action: "click", selector: "#hidden-div" });
-  });
-
-  it("returns fill for fill action on an input", async () => {
-    const result = await page.evaluate(() => {
-      const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = document.querySelector(".textInput") as HTMLInputElement;
-
-      const possibleAction: PossibleAction = {
-        action: "fill",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: qawolf.getInputElementValue(target),
-      };
-
-      return qawolf.resolveElementAction({ possibleAction });
-    });
-
-    expect(result).toEqual({ action: "fill" });
-  });
-
   it("returns keyboard.press on invisible targets", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-
-      const target = document.getElementById("hidden-div") as HTMLElement;
-
-      const possibleAction: PossibleAction = {
-        action: "press",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: "Escape",
-      };
-      return qawolf.resolveElementAction({ possibleAction });
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([
+          {
+            isTrusted: true,
+            target: document.getElementById("hidden-div"),
+            time: Date.now(),
+            type: "keydown",
+            value: "Escape",
+          },
+        ])
+      );
     });
 
-    expect(result).toEqual({ action: "keyboard.press" });
+    expect(result).toEqual({
+      action: "keyboard.press",
+      selector: "",
+      time: expect.any(Number),
+      value: "Escape",
+    });
   });
 
-  it("returns selectOption for fill action on a select", async () => {
+  it("returns click with the last received mousedown selector if the target is invisible", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = document.querySelector("select");
-
-      const possibleAction: PossibleAction = {
-        action: "fill",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: null,
-      };
-
-      return qawolf.resolveElementAction({ possibleAction });
+      const target = document.getElementById("hidden-div");
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([
+          { isTrusted: true, target, type: "click", time: Date.now() },
+          {
+            isTrusted: true,
+            selector: "#hidden-div",
+            target,
+            time: Date.now(),
+            type: "mousedown",
+          },
+        ])
+      );
     });
 
-    expect(result).toEqual({ action: "selectOption" });
+    expect(result).toEqual({
+      action: "click",
+      selector: "#hidden-div",
+      time: expect.any(Number),
+    });
   });
 
   it("returns undefined for actions on invisible targets", async () => {
@@ -116,15 +104,17 @@ describe("resolveElementAction", () => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = document.querySelector('[type="hidden"]') as HTMLElement;
 
-      const possibleAction: PossibleAction = {
-        action: "press",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: "Enter",
-      };
-
-      return qawolf.resolveElementAction({ possibleAction });
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([
+          {
+            isTrusted: true,
+            target,
+            time: Date.now(),
+            type: "click",
+            value: "Enter",
+          },
+        ])
+      );
     });
 
     expect(result).toBe(undefined);
@@ -133,21 +123,19 @@ describe("resolveElementAction", () => {
   it("returns undefined for duplicate select", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const target = document.querySelector("select");
 
-      const target = document.querySelector("select") as HTMLElement;
-
-      const possibleAction: PossibleAction = {
-        action: "selectOption",
+      const event = {
         isTrusted: true,
         target,
         time: Date.now(),
+        type: "change",
         value: "value",
       };
 
-      return qawolf.resolveElementAction({
-        lastReceivedAction: possibleAction,
-        possibleAction,
-      });
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([event, event])
+      );
     });
 
     expect(result).toBe(undefined);
@@ -156,71 +144,36 @@ describe("resolveElementAction", () => {
   it("returns undefined for untrusted actions", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-
-      const possibleAction: PossibleAction = {
-        action: "click",
-        isTrusted: false,
-        target: null,
-        time: Date.now(),
-        value: null,
-      };
-
-      return qawolf.resolveElementAction({ possibleAction });
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([
+          {
+            isTrusted: false,
+            target: document.querySelector("body"),
+            time: Date.now(),
+            type: "click",
+            value: null,
+          },
+        ])
+      );
     });
 
     expect(result).toBe(undefined);
   });
 
-  it.each<Action>(["fill", "press"])(
-    "returns undefined for clicks immediately after %s actions",
-    async (previousActionName) => {
-      const result = await page.evaluate(
-        ({ previousActionName }) => {
-          const qawolf: QAWolfWeb = (window as any).qawolf;
-          const target = document.querySelector("body");
-
-          const lastReceivedAction: PossibleAction = {
-            action: previousActionName,
-            isTrusted: true,
-            target,
-            time: 10002000,
-            value: null,
-          };
-
-          const possibleAction: PossibleAction = {
-            action: "click",
-            isTrusted: true,
-            target,
-            time: 10002040,
-            value: null,
-          };
-
-          return qawolf.resolveElementAction({
-            lastReceivedAction,
-            possibleAction,
-          });
-        },
-        { previousActionName }
-      );
-
-      expect(result).toBe(undefined);
-    }
-  );
-
-  it("returns undefined for clicks on selects", async () => {
+  it("returns undefined for clicks without a mousedown", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
-      const target = document.querySelector("select");
-
-      const possibleAction: PossibleAction = {
-        action: "click",
-        isTrusted: true,
-        target,
-        time: Date.now(),
-        value: null,
-      };
-
-      return qawolf.resolveElementAction({ possibleAction });
+      return qawolf.resolveElementAction(
+        new qawolf.EventSequence([
+          {
+            isTrusted: false,
+            target: document.querySelector("body"),
+            time: Date.now(),
+            type: "click",
+            value: null,
+          },
+        ])
+      );
     });
 
     expect(result).toBe(undefined);

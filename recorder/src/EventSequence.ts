@@ -3,7 +3,11 @@ import { EventDescriptor } from "./types";
 
 export class EventSequence {
   // most recent event is first
-  _events: EventDescriptor[] = [];
+  _events: EventDescriptor[];
+
+  constructor(events: EventDescriptor[] = []) {
+    this._events = events;
+  }
 
   add(event: Event, selector?: string) {
     const time = Date.now();

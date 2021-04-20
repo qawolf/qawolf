@@ -40,7 +40,7 @@ export interface ElementAction {
   action: Action;
   selector: string;
   time: number;
-  value?: string | null;
+  value?: string;
 }
 
 export interface ElementChosen {
@@ -55,7 +55,7 @@ export type EventDescriptor = {
   target: HTMLElement;
   time: number;
   type: string;
-  value: string | null;
+  value?: string;
 };
 
 export interface LogEvent {

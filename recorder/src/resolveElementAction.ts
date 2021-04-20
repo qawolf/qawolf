@@ -51,27 +51,6 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
   "Tab",
 ]);
 
-export const resolveEventAction = (
-  event: EventDescriptor
-): Action | undefined => {
-  let action: Action;
-
-  if (event.type === "change" || event.type === "input") {
-    action = event.target.tagName === "SELECT" ? "selectOption" : "fill";
-  } else if (event.type === "click") {
-    action = "click";
-  } else if (event.type === "keydown") {
-    action = "press";
-  }
-
-  if (event.target.tagName === "SELECT" && action !== "selectOption") {
-    debug(`resolveAction: skip ${action} on select`);
-    action = undefined;
-  }
-
-  return action;
-};
-
 export const resolveElementAction = (
   events: EventSequence
 ): ElementAction | undefined => {
@@ -81,7 +60,7 @@ export const resolveElementAction = (
     return;
   }
 
-  let action = resolveEventAction(event);
+  let action = resolveEventAction(event.type, event.target.tagName);
   if (!action) return;
 
   if (events.isDuplicateChangeOrInput()) {
@@ -148,6 +127,28 @@ export const resolveElementAction = (
     time: event.time,
     value: event.value,
   };
+};
+
+export const resolveEventAction = (
+  type: string,
+  targetTagName: string
+): Action | undefined => {
+  let action: Action;
+
+  if (type === "change" || type === "input") {
+    action = targetTagName === "SELECT" ? "selectOption" : "fill";
+  } else if (type === "click") {
+    action = "click";
+  } else if (type === "keydown") {
+    action = "press";
+  }
+
+  if (targetTagName === "SELECT" && action !== "selectOption") {
+    debug(`resolveAction: skip ${action} on select`);
+    action = undefined;
+  }
+
+  return action;
 };
 
 /**

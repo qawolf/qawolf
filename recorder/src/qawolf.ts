@@ -1,4 +1,5 @@
 export { ActionRecorder } from "./ActionRecorder";
+export { EventSequence } from "./EventSequence";
 export {
   generateRelativeCueSets,
   generateSortedCueSets,
