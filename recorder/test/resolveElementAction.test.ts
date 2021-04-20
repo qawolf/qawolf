@@ -3,33 +3,33 @@ import { Page } from "playwright";
 import { QAWolfWeb } from "../src";
 import { ElementDescriptor } from "../src/element";
 import {
-  resolveEventAction,
+  resolveAction,
   resolvePress,
   shouldTrackFill,
 } from "../src/resolveElementAction";
 import { launch, LaunchResult } from "./utils";
 
-describe("resolveEventAction", () => {
+describe("resolveAction", () => {
   it("returns click for click", async () => {
-    expect(resolveEventAction("click", "A")).toEqual("click");
+    expect(resolveAction("click", "A")).toEqual("click");
   });
 
   it("returns fill for change/input on an input", async () => {
-    expect(resolveEventAction("change", "INPUT")).toEqual("fill");
-    expect(resolveEventAction("input", "INPUT")).toEqual("fill");
+    expect(resolveAction("change", "INPUT")).toEqual("fill");
+    expect(resolveAction("input", "INPUT")).toEqual("fill");
   });
 
   it("returns press for keydown", async () => {
-    expect(resolveEventAction("keydown", "HTML")).toEqual("press");
+    expect(resolveAction("keydown", "HTML")).toEqual("press");
   });
 
   it("returns selectOption for change/input on a select", async () => {
-    expect(resolveEventAction("change", "SELECT")).toEqual("selectOption");
-    expect(resolveEventAction("input", "SELECT")).toEqual("selectOption");
+    expect(resolveAction("change", "SELECT")).toEqual("selectOption");
+    expect(resolveAction("input", "SELECT")).toEqual("selectOption");
   });
 
   it("returns undefined for click on a select", async () => {
-    expect(resolveEventAction("click", "SELECT")).toEqual(undefined);
+    expect(resolveAction("click", "SELECT")).toEqual(undefined);
   });
 });
 
