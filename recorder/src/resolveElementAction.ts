@@ -5,12 +5,8 @@ import {
   getTopmostEditableElement,
   isVisible,
 } from "./element";
-import { Action, PossibleAction } from "./types";
-
-type ResolvedAction = {
-  action: Action;
-  selector?: string;
-};
+import { EventSequence } from "./EventSequence";
+import { Action, ElementAction, EventDescriptor } from "./types";
 
 /**
  * The full list:
@@ -55,105 +51,103 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
   "Tab",
 ]);
 
-export const resolveAction = ({
-  lastReceivedAction,
-  possibleAction,
-}: {
-  lastReceivedAction?: PossibleAction;
-  possibleAction: PossibleAction;
-}): ResolvedAction | undefined => {
-  // Never emit actions for untrusted events
-  if (!possibleAction.isTrusted) {
+export const resolveEventAction = (
+  event: EventDescriptor
+): Action | undefined => {
+  let action: Action;
+
+  if (event.type === "change" || event.type === "input") {
+    action = event.target.tagName === "SELECT" ? "selectOption" : "fill";
+  } else if (event.type === "click") {
+    action = "click";
+  } else if (event.type === "keydown") {
+    action = "press";
+  }
+
+  if (event.target.tagName === "SELECT" && action !== "selectOption") {
+    debug(`resolveAction: skip ${action} on select`);
+    action = undefined;
+  }
+
+  return action;
+};
+
+export const resolveElementAction = (
+  events: EventSequence
+): ElementAction | undefined => {
+  const event = events.last;
+  if (!event.isTrusted) {
     debug("resolveAction: skip untrusted action");
     return;
   }
 
-  // skip system-initiated clicks triggered by a key press
-  // ex. "Enter" triggers a click on a submit input
-  if (
-    possibleAction.action === "click" &&
-    lastReceivedAction &&
-    ["fill", "keyboard.press", "press"].includes(lastReceivedAction.action) &&
-    possibleAction.time - lastReceivedAction.time < 50
-  ) {
-    debug("resolveAction: skip system-initiated click");
-    return;
-  }
+  let action = resolveEventAction(event);
+  if (!action) return;
 
-  // Fills come from both "input" and "change" events for completeness, but this
-  // means that we could end up emitting back-to-back fills with the same value.
-  // We can check here to avoid that. (For press and click, back-to-back identical
-  // events could be valid.)
-  if (
-    lastReceivedAction &&
-    ["fill", "selectOption"].includes(possibleAction.action) &&
-    possibleAction.action === lastReceivedAction.action &&
-    possibleAction.target === lastReceivedAction.target &&
-    possibleAction.value === lastReceivedAction.value
-  ) {
-    debug(`resolveAction: skip duplicate ${possibleAction.action}`);
+  if (events.isDuplicateChangeOrInput()) {
+    debug(`resolveAction: skip duplicate ${action}`);
     return;
   }
 
   // This should stay here to keep this fast. Put checks that don't rely on
   // target before this, and checks that do after this.
-  const target = getTopmostEditableElement(
-    possibleAction.target as HTMLElement
-  );
-
-  let action = possibleAction.action as Action;
+  const target = getTopmostEditableElement(event.target as HTMLElement);
 
   const targetDescriptor = getDescriptor(target);
 
   if (action === "press") {
-    action = resolvePress(possibleAction.value, targetDescriptor);
+    action = resolvePress(event.value, targetDescriptor);
 
     if (!action) {
       debug(
-        "resolveAction: skip press action for an unimportant key or target"
+        `resolveAction: skip press ${event.value} on ${targetDescriptor.tag}`
       );
       return;
     }
 
     // skip the target visibility check for keyboard.press which has no target
-    if (action === "keyboard.press") return { action };
-  }
-
-  if (!isVisible(target, window.getComputedStyle(target))) {
-    // if the last received action was a visible mousedown use it's selector
-    if (
-      action === "click" &&
-      lastReceivedAction &&
-      lastReceivedAction.action === "mousedown" &&
-      lastReceivedAction.selector
-    ) {
-      debug(
-        "resolveAction: use selector from previously visible mousedown",
-        lastReceivedAction.selector,
-        lastReceivedAction.target
-      );
-      return { action, selector: lastReceivedAction.selector };
+    if (action === "keyboard.press") {
+      return { action, selector: "", value: event.value, time: event.time };
     }
-
-    debug("resolveAction: skip action on invisible target");
-    return;
   }
 
-  if (targetDescriptor.tag === "select") {
-    // On selects, ignore everything except fill actions (input / change events)
-    if (action !== "fill") {
-      debug("resolveAction: skip non-fill action on a select element");
+  if (action === "click") {
+    const mouseDown = events.getMouseDown();
+    if (!mouseDown) {
+      debug("resolveAction: skip system-initiated click");
       return;
     }
-    action = "selectOption";
+
+    if (!isVisible(target, window.getComputedStyle(target))) {
+      if (!mouseDown.selector) {
+        debug("resolveAction: skip action on invisible target");
+        return;
+      }
+
+      debug(
+        "resolveAction: use selector from visible mousedown",
+        mouseDown.selector,
+        mouseDown.target
+      );
+      return { action, selector: mouseDown.selector, time: event.time };
+    }
   }
 
   if (action === "fill" && !shouldTrackFill(targetDescriptor)) {
-    debug("resolveAction: skip fill action for an unimportant target");
+    debug(
+      `resolveAction: skip fill on ${
+        targetDescriptor.inputType || targetDescriptor.tag
+      }`
+    );
     return;
   }
 
-  return { action };
+  return {
+    action,
+    selector: event.selector,
+    time: event.time,
+    value: event.value,
+  };
 };
 
 /**

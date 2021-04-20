@@ -2,11 +2,11 @@ import { Page } from "playwright";
 
 import { QAWolfWeb } from "../src";
 import { ElementDescriptor } from "../src/element";
-import { resolvePress, shouldTrackFill } from "../src/resolveAction";
-import { Action, PossibleAction } from "../src/types";
+import { resolvePress, shouldTrackFill } from "../src/resolveElementAction";
+import { Action } from "../src/types";
 import { launch, LaunchResult } from "./utils";
 
-describe("resolveAction", () => {
+describe("resolveElementAction", () => {
   let launched: LaunchResult;
   let page: Page;
 
@@ -16,7 +16,7 @@ describe("resolveAction", () => {
     page = launched.page;
 
     await page.goto(
-      "file://" + require.resolve("./fixtures/resolveAction.html")
+      "file://" + require.resolve("./fixtures/resolveElementAction.html")
     );
   });
 
@@ -44,7 +44,10 @@ describe("resolveAction", () => {
         value: undefined,
       };
 
-      return qawolf.resolveAction({ lastReceivedAction, possibleAction });
+      return qawolf.resolveElementAction({
+        lastReceivedAction,
+        possibleAction,
+      });
     });
 
     expect(result).toEqual({ action: "click", selector: "#hidden-div" });
@@ -63,7 +66,7 @@ describe("resolveAction", () => {
         value: qawolf.getInputElementValue(target),
       };
 
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toEqual({ action: "fill" });
@@ -82,7 +85,7 @@ describe("resolveAction", () => {
         time: Date.now(),
         value: "Escape",
       };
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toEqual({ action: "keyboard.press" });
@@ -101,7 +104,7 @@ describe("resolveAction", () => {
         value: null,
       };
 
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toEqual({ action: "selectOption" });
@@ -121,7 +124,7 @@ describe("resolveAction", () => {
         value: "Enter",
       };
 
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toBe(undefined);
@@ -141,7 +144,7 @@ describe("resolveAction", () => {
         value: "value",
       };
 
-      return qawolf.resolveAction({
+      return qawolf.resolveElementAction({
         lastReceivedAction: possibleAction,
         possibleAction,
       });
@@ -162,7 +165,7 @@ describe("resolveAction", () => {
         value: null,
       };
 
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toBe(undefined);
@@ -192,7 +195,10 @@ describe("resolveAction", () => {
             value: null,
           };
 
-          return qawolf.resolveAction({ lastReceivedAction, possibleAction });
+          return qawolf.resolveElementAction({
+            lastReceivedAction,
+            possibleAction,
+          });
         },
         { previousActionName }
       );
@@ -214,7 +220,7 @@ describe("resolveAction", () => {
         value: null,
       };
 
-      return qawolf.resolveAction({ possibleAction });
+      return qawolf.resolveElementAction({ possibleAction });
     });
 
     expect(result).toBe(undefined);
