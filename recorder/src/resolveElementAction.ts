@@ -76,7 +76,7 @@ export const resolveElementAction = (
   events: EventSequence
 ): ElementAction | undefined => {
   const event = events.last;
-  if (!event.isTrusted) {
+  if (!event.isTrusted && !allowUntrustedEvents) {
     debug("resolveAction: skip untrusted action");
     return;
   }
@@ -188,4 +188,11 @@ export const shouldTrackFill = (target: ElementDescriptor): boolean => {
 
   // Don't track value changes for anything else
   return false;
+};
+
+let allowUntrustedEvents = false;
+
+// for testing
+export const _setAllowUntrustedEvents = (value: boolean) => {
+  allowUntrustedEvents = value;
 };

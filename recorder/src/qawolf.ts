@@ -14,7 +14,10 @@ export {
   isVisible,
 } from "./element";
 export { hasCommonAncestor, isElementMatch } from "./isElementMatch";
-export { resolveElementAction } from "./resolveElementAction";
+export {
+  _setAllowUntrustedEvents,
+  resolveElementAction,
+} from "./resolveElementAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
 
 import { ActionRecorder } from "./ActionRecorder";

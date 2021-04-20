@@ -85,15 +85,16 @@ it("records fill actions when typing", async () => {
   ]);
 });
 
-// Playwright is unable to do selectOption such that it
-// isTrusted will be true, so there is currently no way for
-// this test to pass. Leaving it here in case Playwright
-// fixes this eventually.
-// eslint-disable-next-line jest/no-disabled-tests
-it.skip("records selectOption actions", async () => {
+it("records selectOption actions", async () => {
   const page = await getFreshPage();
 
-  await page.selectOption(".selectInput", "one");
+  // Playwright is unable to do selectOption such that isTrusted will be true
+  // so allow untrusted events for this test
+  await page.evaluate(() =>
+    (window as any).qawolf._setAllowUntrustedEvents(true)
+  );
+
+  await page.selectOption("select", "one");
 
   await waitForExpect(() => {
     expect(actionsOfType("selectOption").length).toBe(1);
@@ -102,7 +103,7 @@ it.skip("records selectOption actions", async () => {
   await page.close();
 
   const [action] = actionsOfType("selectOption");
-  expect(action.selector).toBe(".selectInput");
+  expect(action.selector).toBe("select");
   expect(action.value).toBe("one");
 });
 
