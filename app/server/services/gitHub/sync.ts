@@ -1,3 +1,4 @@
+import { RestEndpointMethodTypes } from "@octokit/rest";
 import { camelCase } from "lodash";
 
 import { connectDb } from "../../db";
@@ -5,9 +6,11 @@ import { Logger } from "../../Logger";
 import { findIntegration } from "../../models/integration";
 import { findTeam } from "../../models/team";
 import { findTestsForTeam } from "../../models/test";
-import { BaseGitHubFields, GitTree, ModelOptions, Team } from "../../types";
+import { BaseGitHubFields, ModelOptions, Team } from "../../types";
 import { findDefaultBranch } from "./branch";
 import { buildGitHubFields } from "./helpers";
+
+type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
 type CreateCommit = BaseGitHubFields & {
   parents: string[];
@@ -15,7 +18,7 @@ type CreateCommit = BaseGitHubFields & {
 };
 
 type CreateTree = BaseGitHubFields & {
-  tree: GitTree;
+  tree: Tree;
   treeSha: string;
 };
 
@@ -36,7 +39,7 @@ const mode = "100644" as const; // blob
 export const buildQaWolfTree = async (
   team: Team,
   options: ModelOptions
-): Promise<GitTree> => {
+): Promise<Tree> => {
   const tests = await findTestsForTeam(team.id, options);
 
   const helperFiles = [
