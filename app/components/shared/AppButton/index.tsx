@@ -44,7 +44,7 @@ function AppButton(props: Props): JSX.Element {
   } = props;
 
   const finalA11yTitle =
-    a11yTitle || typeof label === "string" ? (label as string) : "button";
+    a11yTitle || (typeof label === "string" ? (label as string) : "button");
   const finalType = useDisabledStyle(props) ? "disabled" : type;
 
   const innerHtml = (
