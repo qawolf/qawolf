@@ -6,7 +6,7 @@ import {
   isVisible,
 } from "./element";
 import { EventSequence } from "./EventSequence";
-import { Action, ElementAction, EventDescriptor } from "./types";
+import { Action, ElementAction } from "./types";
 
 /**
  * The full list:
@@ -194,6 +194,6 @@ export const shouldTrackFill = (target: ElementDescriptor): boolean => {
 let allowUntrustedEvents = false;
 
 // for testing
-export const _setAllowUntrustedEvents = (value: boolean) => {
+export const _setAllowUntrustedEvents = (value: boolean): void => {
   allowUntrustedEvents = value;
 };

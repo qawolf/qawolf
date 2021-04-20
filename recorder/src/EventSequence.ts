@@ -9,7 +9,7 @@ export class EventSequence {
     this._events = events;
   }
 
-  add(event: Event, selector?: string) {
+  add(event: Event, selector?: string): void {
     const time = Date.now();
 
     let value: string;

@@ -103,7 +103,7 @@ it("records selectOption actions", async () => {
   await page.close();
 
   const [action] = actionsOfType("selectOption");
-  expect(action.selector).toBe("select");
+  expect(["select", "text=One"]).toContain(action.selector);
   expect(action.value).toBe("one");
 });
 
