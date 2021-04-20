@@ -32,6 +32,7 @@ const BROWSER_CONTEXT_OPTIONS = [
 
 const LAUNCH_OPTIONS = [
   "args",
+  "channel",
   "devtools",
   "env",
   "executablePath",
@@ -82,7 +83,7 @@ export const getBrowserLaunchOptions = (
   };
 
   if (name === "chrome") {
-    launchOptions.executablePath = "/opt/google/chrome/chrome";
+    launchOptions.channel = "chrome";
   }
 
   return launchOptions;
