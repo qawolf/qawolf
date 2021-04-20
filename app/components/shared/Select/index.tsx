@@ -18,7 +18,7 @@ type Props = {
   flex?: BoxProps["flex"];
   hasError?: boolean;
   isDisabled?: boolean;
-  label: string;
+  label: JSX.Element | string;
   noBorderSide?: Side;
   type?: Type;
   width?: BoxProps["width"];

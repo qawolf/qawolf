@@ -4,6 +4,7 @@ import { isServer } from "./detection";
 import { RunOptions, State as StateType } from "./types";
 
 export const defaultState: StateType = {
+  branch: null,
   dashboardUri: null,
   editorSidebarWidth: 480,
   email: null,
@@ -60,6 +61,10 @@ class State extends EventEmitter {
 
   get pendingRun(): RunOptions | null {
     return this._pendingRun;
+  }
+
+  setBranch(branch: StateType["branch"]): void {
+    this._setState({ branch });
   }
 
   setDashboardUri(dashboardUri: StateType["dashboardUri"]): void {

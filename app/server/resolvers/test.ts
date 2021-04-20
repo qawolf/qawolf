@@ -155,7 +155,9 @@ export const testsResolver = async (
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
   ensureTeamAccess({ logger, team_id, teams });
-
+  // also query github for specified branch
+  // if no corresponding test in db, create it
+  // filter out tests that are not in git
   return findTestsForTeam(team_id, { db, logger });
 };
 

@@ -43,11 +43,13 @@ function AppButton(props: Props): JSX.Element {
     type,
   } = props;
 
+  const finalA11yTitle =
+    a11yTitle || typeof label === "string" ? (label as string) : "button";
   const finalType = useDisabledStyle(props) ? "disabled" : type;
 
   const innerHtml = (
     <Button
-      a11yTitle={a11yTitle || label}
+      a11yTitle={finalA11yTitle}
       className={className}
       disabled={isDisabled}
       margin={margin}
@@ -74,7 +76,7 @@ function AppButton(props: Props): JSX.Element {
             size={edgeSize.small}
           />
         )}
-        {!!label && (
+        {!!label && typeof label === "string" ? (
           <Text
             color={color || textColor[finalType]}
             margin={getTextMargin(!!IconComponent, iconPosition)}
@@ -83,6 +85,8 @@ function AppButton(props: Props): JSX.Element {
           >
             {label}
           </Text>
+        ) : (
+          label
         )}
       </Box>
     </Button>

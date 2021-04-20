@@ -330,6 +330,7 @@ type ModalState = {
 };
 
 export type State = {
+  branch: string | null;
   dashboardUri: string | null;
   editorSidebarWidth: number;
   email: string | null;
