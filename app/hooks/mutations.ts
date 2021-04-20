@@ -184,6 +184,7 @@ export type CreateTestData = {
 };
 
 type CreateTestVariables = {
+  branch?: string | null;
   group_id?: string | null;
   guide?: string | null;
   team_id: string;

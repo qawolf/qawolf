@@ -163,12 +163,14 @@ export const createSuiteMutation = gql`
 
 export const createTestMutation = gql`
   mutation createTest(
+    $branch: String
     $group_id: ID
     $guide: String
     $team_id: ID!
     $url: String!
   ) {
     createTest(
+      branch: $branch
       group_id: $group_id
       guide: $guide
       team_id: $team_id

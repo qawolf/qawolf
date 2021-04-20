@@ -4,6 +4,7 @@ import * as testModel from "../../../../server/models/test";
 import * as testResolvers from "../../../../server/resolvers/test";
 import * as helpers from "../../../../server/resolvers/test/helpers";
 import * as azure from "../../../../server/services/aws/storage";
+import * as gitHubFile from "../../../../server/services/gitHub/file";
 import * as gitHubTree from "../../../../server/services/gitHub/tree";
 import { RunWithGif } from "../../../../server/types";
 import { minutesFromNow } from "../../../../shared/utils";
@@ -86,9 +87,11 @@ beforeAll(async () => {
 });
 
 describe("createTestResolver", () => {
-  afterAll(jest.clearAllMocks);
+  afterEach(jest.clearAllMocks);
 
   it("creates a test", async () => {
+    jest.spyOn(gitHubFile, "createFileForTest");
+
     const test = await createTestResolver(
       {},
       {
@@ -110,10 +113,54 @@ describe("createTestResolver", () => {
       url: "https://google.com",
     });
 
+    expect(gitHubFile.createFileForTest).not.toBeCalled();
+
+    await db("tests").where({ id: test.id }).del();
+  });
+
+  it("creates a test for a git branch", async () => {
+    const spy = jest.spyOn(gitHubFile, "createFileForTest").mockResolvedValue();
+
+    const test = await createTestResolver(
+      {},
+      {
+        branch: "main",
+        group_id: null,
+        guide: null,
+        team_id: "teamId",
+        url: "https://google.com",
+      },
+      {
+        ...context,
+        teams: [
+          { ...context.teams[0], git_sync_integration_id: "integrationId" },
+        ],
+      }
+    );
+
+    expect(test).toMatchObject({
+      team_id: "teamId",
+      creator_id: "userId",
+      group_id: null,
+      guide: null,
+      id: expect.any(String),
+      name: "My Test",
+      url: "https://google.com",
+    });
+
+    expect(gitHubFile.createFileForTest).toBeCalledTimes(1);
+    expect(spy.mock.calls[0][0]).toMatchObject({
+      branch: "main",
+      integrationId: "integrationId",
+      test: { id: test.id },
+    });
+
     await db("tests").where({ id: test.id }).del();
   });
 
   it("creates a test for a guide", async () => {
+    jest.spyOn(gitHubFile, "createFileForTest");
+
     const test = await createTestResolver(
       {},
       {
@@ -129,6 +176,8 @@ describe("createTestResolver", () => {
       guide: "Create a Test",
       name: "Guide: Create a Test",
     });
+
+    expect(gitHubFile.createFileForTest).not.toBeCalled();
 
     await db("tests").where({ id: test.id }).del();
   });

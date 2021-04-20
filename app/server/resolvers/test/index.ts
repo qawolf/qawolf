@@ -11,6 +11,7 @@ import {
   updateTestsGroup,
 } from "../../models/test";
 import { deleteTestTriggersForTests } from "../../models/test_trigger";
+import { createFileForTest } from "../../services/gitHub/file";
 import { trackSegmentEvent } from "../../services/segment";
 import {
   Context,
@@ -38,13 +39,13 @@ import { deleteGitHubTests, upsertGitHubTests } from "./helpers";
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { group_id, guide, team_id, url }: CreateTestMutation,
+  { branch, group_id, guide, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id, teams });
   if (group_id) await ensureGroupAccess({ group_id, teams }, { db, logger });
 
   log.debug(user.id);
@@ -65,6 +66,15 @@ export const createTestResolver = async (
     },
     { db, logger }
   );
+
+  if (branch && team.git_sync_integration_id) {
+    log.debug("git branch", branch);
+
+    await createFileForTest(
+      { branch, integrationId: team.git_sync_integration_id, test },
+      { db, logger }
+    );
+  }
 
   return { ...test, url };
 };
