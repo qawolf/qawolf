@@ -69,7 +69,7 @@ export default function Form({
 
   // environment
   const [environmentId, setEnvironmentId] = useState<string>(
-    editTrigger?.environment_id || stateEnvironmentId || ""
+    editTrigger ? editTrigger.environment_id || "" : stateEnvironmentId || ""
   );
 
   // try to use a sensible default name

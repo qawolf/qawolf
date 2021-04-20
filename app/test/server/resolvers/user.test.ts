@@ -373,10 +373,7 @@ describe("signInWithGitHubResolver", () => {
       wolf_variant: invite.wolf_variant,
     });
 
-    const teamUsers = await db
-      .select("*")
-      .from("team_users")
-      .where({ user_id: user.id });
+    const teamUsers = await db("team_users").where({ user_id: user.id });
     expect(teamUsers).toEqual([]);
 
     await db("users").where({ id: user.id }).del();
