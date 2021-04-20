@@ -40,7 +40,7 @@ export interface ElementAction {
   action: Action;
   selector: string;
   time: number;
-  value?: string | null;
+  value?: string;
 }
 
 export interface ElementChosen {
@@ -49,19 +49,19 @@ export interface ElementChosen {
   text: string;
 }
 
-export interface LogEvent {
-  level: string;
-  message: string;
-}
-
-export type PossibleAction = {
-  action: Action | "mousedown";
+export type EventDescriptor = {
   isTrusted: boolean;
   selector?: string;
   target: HTMLElement;
   time: number;
-  value: string | null;
+  type: string;
+  value?: string;
 };
+
+export interface LogEvent {
+  level: string;
+  message: string;
+}
 
 export type RankedSelector = {
   penalty: number;
