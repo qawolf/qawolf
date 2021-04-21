@@ -366,6 +366,9 @@ type Team {
   "The API key for the team"
   api_key: String!
 
+  "The ID of a git integration associated with this team"
+  git_sync_integration_id: ID
+
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 

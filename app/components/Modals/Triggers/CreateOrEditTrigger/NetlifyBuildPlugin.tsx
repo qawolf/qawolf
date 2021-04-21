@@ -15,7 +15,7 @@ const variablesHref =
   "https://docs.netlify.com/configure-builds/environment-variables/#declare-variables";
 
 export default function NetlifyBuildPlugin(): JSX.Element {
-  const { apiKey } = useApiKey();
+  const apiKey = useApiKey();
 
   const docsHref = buildQaWolfDocsLink(
     "/run-tests-on-netlify-deployment#install-qa-wolf-build-plugin"

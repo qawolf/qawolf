@@ -1,22 +1,11 @@
 import { useContext } from "react";
 
-import { StateContext } from "../components/StateContext";
-import { TeamWithUsers } from "../lib/types";
+import { UserContext } from "../components/UserContext";
 import { copy } from "../theme/copy";
-import { useTeam } from "./queries";
 
-type UseApiKey = {
-  apiKey: string;
-  team: TeamWithUsers | null;
-};
+export const useApiKey = (): string => {
+  const { team } = useContext(UserContext);
+  console.log("TEAM", team);
 
-export const useApiKey = (): UseApiKey => {
-  const { teamId } = useContext(StateContext);
-
-  const { data } = useTeam({ id: teamId });
-  const team = data?.team || null;
-
-  const apiKey = team?.api_key || copy.apiKeyHere;
-
-  return { apiKey, team };
+  return team?.api_key || copy.apiKeyHere;
 };

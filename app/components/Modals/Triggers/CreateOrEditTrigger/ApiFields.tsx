@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useContext } from "react";
 
 import { useApiKey } from "../../../../hooks/apiKey";
 import { copy } from "../../../../theme/copy";
@@ -7,6 +8,7 @@ import ExternalLink, {
   buildQaWolfDocsLink,
 } from "../../../shared/ExternalLink";
 import Text from "../../../shared/Text";
+import { UserContext } from "../../../UserContext";
 import { labelTextProps } from "../helpers";
 
 type Props = { editTriggerId?: string };
@@ -20,7 +22,9 @@ const boxProps = {
 const textProps = { ...labelTextProps, margin: "0" };
 
 export default function ApiFields({ editTriggerId }: Props): JSX.Element {
-  const { apiKey, team } = useApiKey();
+  const { team } = useContext(UserContext);
+  const apiKey = useApiKey();
+
   const triggerId = editTriggerId || team?.next_trigger_id || copy.triggerId;
 
   const apiCall = `curl -H "Authorization: ${apiKey}" -H "Content-Type: application/json" https://www.qawolf.com/api/suites -d '{"env": { "MY_VARIABLE": "secret" }, "trigger_id": "${triggerId}"}'`;

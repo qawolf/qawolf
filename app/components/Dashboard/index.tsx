@@ -36,7 +36,7 @@ export default function Dashboard(): JSX.Element {
   } else if (pathname.includes(routes.getStarted)) {
     innerHtml = <GetStarted teamId={teamId} />;
   } else if (pathname.includes(routes.settings)) {
-    innerHtml = <Settings teamId={teamId} />;
+    innerHtml = <Settings />;
   }
 
   return (

@@ -118,6 +118,7 @@ export const teamFragment = gql`
     alert_integration_id
     alert_only_on_failure
     api_key
+    git_sync_integration_id
     helpers
     helpers_version
     id

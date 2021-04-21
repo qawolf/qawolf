@@ -123,6 +123,7 @@ export type Team = ShortTeam & {
   alert_integration_id: string | null;
   alert_only_on_failure: boolean;
   api_key: string;
+  git_sync_integration_id: string | null;
   helpers: string;
   helpers_version: number;
   inbox: string;
