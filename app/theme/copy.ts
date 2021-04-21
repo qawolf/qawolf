@@ -232,6 +232,7 @@ export const copy = {
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
+  noCreditCard: "No credit card required",
   noEmail: "Please enter a valid email address",
   noGroup: "No group",
   noHistory: "No history yet",
