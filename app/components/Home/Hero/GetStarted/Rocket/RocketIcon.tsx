@@ -12,8 +12,7 @@ export default function RocketIcon(): JSX.Element {
   return (
     <StyledDiv>
       <svg
-        width="380"
-        height="421"
+        height="449"
         viewBox="0 0 380 421"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

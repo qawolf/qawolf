@@ -4,9 +4,9 @@ import { flame } from "./keyframes";
 
 const StyledDiv = styled.div`
   animation: ${flame} 4.8s reverse infinite;
-  left: 66px;
+  left: 70px;
   position: absolute;
-  top: 283px;
+  top: 302px;
   z-index: 1;
 `;
 
@@ -14,8 +14,7 @@ export default function InnerFlame(): JSX.Element {
   return (
     <StyledDiv>
       <svg
-        width="126"
-        height="139"
+        height="148"
         viewBox="0 0 126 139"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
