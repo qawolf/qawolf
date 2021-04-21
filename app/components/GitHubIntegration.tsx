@@ -17,8 +17,6 @@ type Props = { isSync?: boolean };
 export default function GitHubIntegration({ isSync }: Props): JSX.Element {
   useEnsureUser();
 
-  console.log("SYNC", isSync);
-
   const { teamId } = useContext(StateContext);
 
   const { asPath, query, replace } = useRouter();
