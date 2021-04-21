@@ -41,6 +41,7 @@
     "azure-arm-containerinstance": "^5.4.0",
     "classnames": "^2.2.6",
     "cuid": "^2.1.8",
+    "date-fns-tz": "^1.1.4",
     "debounce": "^1.2.0",
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
