@@ -23,7 +23,7 @@ export type SuiteForTeam = Suite & {
 type CreateSuite = {
   creator_id?: string;
   environment_id?: string | null;
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
 };
@@ -31,14 +31,14 @@ type CreateSuite = {
 type CreateSuiteForTests = {
   creator_id?: string;
   environment_id?: string | null;
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
 };
 
 type CreateSuiteForTrigger = {
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
 };

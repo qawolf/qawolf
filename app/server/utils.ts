@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ClientError } from "./errors";
 import { Logger } from "./Logger";
+import { FormattedVariables } from "./types";
 
 type IsCorrectCode = {
   code: string;
@@ -84,6 +85,16 @@ export const isCorrectCode = async ({
       resolve(key === derivedKey.toString("hex"));
     });
   });
+};
+
+export const parseVariables = (
+  env: string | FormattedVariables
+): FormattedVariables => {
+  try {
+    return JSON.parse(env as string);
+  } catch (e) {
+    return env as FormattedVariables;
+  }
 };
 
 export const validateEmail = (email: string, logger: Logger): void => {

@@ -23,7 +23,7 @@ Select the "API" tab on the right.
 
 <Image
   alt="Create trigger"
-  height={659}
+  height={645}
   src="/docs/run-tests-with-cli/create-trigger.png"
   width={486}
 />
@@ -41,9 +41,9 @@ You'll notice the second set of gray boxes provides an example of how to use the
 
 <Image
   alt="Create trigger example"
-  height={179}
+  height={217}
   src="/docs/run-tests-with-cli/create-trigger-example.png"
-  width={440}
+  width={486}
 />
 
 Once you are done, click the "Create trigger" button to save your trigger.
@@ -58,9 +58,9 @@ In order to run your tests, you need to set the `QAWOLF_API_KEY` environment var
 
 <Image
   alt="Trigger API key"
-  height={179}
+  height={217}
   src="/docs/run-tests-with-cli/create-trigger-api-key.png"
-  width={440}
+  width={486}
 />
 
 <SubHeader>Run Tests with CLI</SubHeader>
@@ -74,9 +74,9 @@ You can run your tests with the QA Wolf CLI. Below are the available options:
 The second gray box from above provides an example:
 
 ```bash
-export QAWOLF_API_KEY=qawolf_965c32418c984e50a44b05a23821dbda # set API key
+export QAWOLF_API_KEY=qawolf_e601e973c4ea4310b6a2ec2bc21a7d37 # set API key
 
-npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq --env '{"env": { "MY_VARIABLE": "secret" } }'
+npx qawolf test --trigger ckmtfve2100026ks44l0obx7x --env '{ "MY_VARIABLE": "secret" }'
 ```
 
 <SubHeader>Run Tests with GitHub Actions</SubHeader>
@@ -94,7 +94,7 @@ jobs:
 
     steps:
       - name: Run QA Wolf tests
-        run: npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq
+        run: npx qawolf test --trigger ckmtfve2100026ks44l0obx7x
         env:
           QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
 ```
@@ -110,7 +110,7 @@ image: node
 
 qawolf:
   script:
-    - npx qawolf test --trigger ckmtre6bu0000aqs431yy33rq
+    - npx qawolf test --trigger ckmtfve2100026ks44l0obx7x
 ```
 
 Please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink> if you have questions about integrating QA Wolf into your process.
