@@ -126,7 +126,31 @@ describe("trigger model", () => {
           name: "Schedule (once an hour)",
           next_at: expect.any(Date),
           repeat_minutes: 60,
+          start_hour: null,
           team_id: "teamId",
+        },
+      ]);
+    });
+
+    it("creates a new trigger with custom start hour", async () => {
+      await createTrigger(
+        {
+          creator_id: "userId",
+          name: "Schedule (once a day)",
+          repeat_minutes: 24 * 60,
+          start_hour: 11,
+          team_id: "teamId",
+        },
+        options
+      );
+
+      const triggers = await db.select("*").from("triggers");
+
+      expect(triggers).toMatchObject([
+        {
+          name: "Schedule (once a day)",
+          repeat_minutes: 24 * 60,
+          start_hour: 11,
         },
       ]);
     });
@@ -472,6 +496,16 @@ describe("trigger model", () => {
       expect(getNextAt(24 * 60)).toBe("2020-06-24T16:00:00.000Z");
     });
 
+    it("handles custom start hour if daily", () => {
+      mockDateConstructor("2020-06-23T14:04:53.643Z");
+      expect(getNextAt(24 * 60, 11)).toBe("2020-06-24T18:00:00.000Z");
+    });
+
+    it("handles custom start hour if hourly", () => {
+      mockDateConstructor("2020-06-23T14:04:53.643Z");
+      expect(getNextAt(60, 11)).toBe("2020-06-23T15:00:00.000Z");
+    });
+
     it("throws an error if unsupported interval", () => {
       expect(() => getNextAt(160)).toThrowError("Cannot get next_at");
     });
@@ -486,6 +520,16 @@ describe("trigger model", () => {
     it("returns the current day otherwise", () => {
       mockDateConstructor("2020-06-23T01:04:53.643Z");
       expect(getNextDay()).toBe("2020-06-23T16:00:00.000Z");
+    });
+
+    it("handles custom start hour", () => {
+      mockDateConstructor("2020-06-23T20:04:53.643Z");
+      expect(getNextDay(11)).toBe("2020-06-24T18:00:00.000Z");
+    });
+
+    it("handles null start hour", () => {
+      mockDateConstructor("2020-06-23T20:04:53.643Z");
+      expect(getNextDay(null)).toBe("2020-06-24T16:00:00.000Z");
     });
   });
 
@@ -670,14 +714,12 @@ describe("trigger model", () => {
     afterAll(() => db("triggers").del());
 
     it("updates next_at timestamp of a trigger", async () => {
-      const updateTrigger = await db.transaction(async (trx) => {
-        const trigger = await trx.select("*").from("triggers").first();
-        await updateTriggerNextAt(trigger, { db, logger });
+      const trigger = await db.select("*").from("triggers").first();
+      await updateTriggerNextAt(trigger, { db, logger });
 
-        return trx.select("*").from("triggers").first();
-      });
+      const updatedTrigger = await db.select("*").from("triggers").first();
 
-      expect(updateTrigger).toMatchObject({
+      expect(updatedTrigger).toMatchObject({
         id: "triggerId",
         next_at: new Date("2050-06-24T01:00:00.000Z"),
       });

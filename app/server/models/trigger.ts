@@ -1,10 +1,12 @@
+import { zonedTimeToUtc } from "date-fns-tz";
+
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
 
-const DAILY_HOUR = 16; // 9 am PST
-const MINUTES_PER_DAY = 24 * 60;
+const TIMEZONE = "America/Los_Angeles";
+
 export const TRIGGER_COLORS = [
   "#4545E5",
   "#C54BDE",
@@ -26,6 +28,7 @@ type CreateTrigger = {
   id?: string;
   name: string;
   repeat_minutes?: number | null;
+  start_hour?: number | null;
   team_id: string;
 };
 
@@ -70,16 +73,20 @@ const formatBranches = (branches: string | null): string | null => {
   return branches.split(/[\s,]+/).join(",");
 };
 
-export const getNextDay = (): string => {
+export const getNextDay = (start_hour?: number | null): string => {
+  const formattedStartHour = start_hour || 9; // default is 9am PST
   const date = new Date();
-  // if already passed 9 am PST, schedule run for tomorrow
-  if (date.getUTCHours() >= DAILY_HOUR) {
-    date.setUTCDate(date.getUTCDate() + 1);
-  }
-  date.setUTCHours(DAILY_HOUR);
-  clearMinutes(date);
 
-  return date.toISOString();
+  date.setHours(formattedStartHour);
+  const zonedDate = zonedTimeToUtc(date, TIMEZONE);
+
+  // if already passed start hour, schedule run for tomorrow
+  if (zonedDate.getHours() >= formattedStartHour) {
+    zonedDate.setDate(date.getDate() + 1);
+  }
+  clearMinutes(zonedDate);
+
+  return zonedDate.toISOString();
 };
 
 export const getNextHour = (): string => {
@@ -91,11 +98,14 @@ export const getNextHour = (): string => {
   return date.toISOString();
 };
 
-export const getNextAt = (repeat_minutes: number | null): string | null => {
+export const getNextAt = (
+  repeat_minutes: number | null,
+  start_hour?: number | null
+): string | null => {
   if (!repeat_minutes) return null;
 
   if (repeat_minutes === 60) return getNextHour();
-  if (repeat_minutes === MINUTES_PER_DAY) return getNextDay();
+  if (repeat_minutes === 24 * 60) return getNextDay(start_hour);
 
   throw new Error(`Cannot get next_at for repeat minutes ${repeat_minutes}`);
 };
@@ -103,6 +113,7 @@ export const getNextAt = (repeat_minutes: number | null): string | null => {
 export const getUpdatedNextAt = ({
   next_at,
   repeat_minutes,
+  start_hour,
 }: Trigger): string | null => {
   if (!next_at || !repeat_minutes) return null;
 
@@ -113,7 +124,7 @@ export const getUpdatedNextAt = ({
     return nextDate.toISOString();
   }
   // if there was an issue such that jobs were delayed, reset next_at
-  return getNextAt(repeat_minutes);
+  return getNextAt(repeat_minutes, start_hour);
 };
 
 export const createTrigger = async (
@@ -127,6 +138,7 @@ export const createTrigger = async (
     id,
     name,
     repeat_minutes,
+    start_hour,
     team_id,
   }: CreateTrigger,
   { db, logger }: ModelOptions
@@ -148,8 +160,9 @@ export const createTrigger = async (
     environment_id: environment_id || null,
     id: id || cuid(),
     name,
-    next_at: getNextAt(repeat_minutes),
+    next_at: getNextAt(repeat_minutes, start_hour),
     repeat_minutes: repeat_minutes || null,
+    start_hour: start_hour || null,
     team_id,
   };
 
