@@ -342,7 +342,9 @@ export type Trigger = {
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
+  start_at?: string;
   team_id: string;
+  timezone_id?: string;
   updated_at?: string;
 };
 

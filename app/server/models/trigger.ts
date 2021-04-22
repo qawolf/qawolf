@@ -1,10 +1,11 @@
+import { DateTime } from "luxon";
+import { Frequency, RRule } from "rrule";
+
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
 
-const DAILY_HOUR = 16; // 9 am PST
-const MINUTES_PER_DAY = 24 * 60;
 export const TRIGGER_COLORS = [
   "#4545E5",
   "#C54BDE",
@@ -16,7 +17,14 @@ export const TRIGGER_COLORS = [
   "#667080",
 ];
 
-type CreateTrigger = {
+type GetNextAt = {
+  repeat_minutes?: number | null;
+  start_at?: string;
+  // see https://github.com/vvo/tzdb/blob/a22590b6597865200d99716d467a82872fb66b81/time-zones-names.json
+  timezone_id?: string;
+};
+
+type CreateTrigger = GetNextAt & {
   creator_id: string;
   deployment_branches?: string | null;
   deployment_environment?: string | null;
@@ -25,7 +33,8 @@ type CreateTrigger = {
   environment_id?: string;
   id?: string;
   name: string;
-  repeat_minutes?: number | null;
+  start_at?: Date;
+  timezone_id?: string;
   team_id: string;
 };
 
@@ -34,7 +43,7 @@ type FindTriggersForNetlifyIntegration = {
   team_id: string;
 };
 
-type UpdateTrigger = {
+type UpdateTrigger = GetNextAt & {
   deployment_branches?: string | null;
   deployment_environment?: string | null;
   deployment_integration_id?: string | null;
@@ -42,7 +51,6 @@ type UpdateTrigger = {
   environment_id?: string | null;
   id: string;
   name?: string;
-  repeat_minutes?: number | null;
 };
 
 export const buildTriggerColor = (
@@ -58,62 +66,10 @@ export const buildTriggerColor = (
   return colors[triggers.length % colors.length];
 };
 
-const clearMinutes = (date: Date): void => {
-  date.setUTCMinutes(0);
-  date.setUTCSeconds(0);
-  date.setUTCMilliseconds(0);
-};
-
 const formatBranches = (branches: string | null): string | null => {
   if (!branches) return null;
 
   return branches.split(/[\s,]+/).join(",");
-};
-
-export const getNextDay = (): string => {
-  const date = new Date();
-  // if already passed 9 am PST, schedule run for tomorrow
-  if (date.getUTCHours() >= DAILY_HOUR) {
-    date.setUTCDate(date.getUTCDate() + 1);
-  }
-  date.setUTCHours(DAILY_HOUR);
-  clearMinutes(date);
-
-  return date.toISOString();
-};
-
-export const getNextHour = (): string => {
-  const date = new Date();
-
-  date.setUTCHours(date.getUTCHours() + 1);
-  clearMinutes(date);
-
-  return date.toISOString();
-};
-
-export const getNextAt = (repeat_minutes: number | null): string | null => {
-  if (!repeat_minutes) return null;
-
-  if (repeat_minutes === 60) return getNextHour();
-  if (repeat_minutes === MINUTES_PER_DAY) return getNextDay();
-
-  throw new Error(`Cannot get next_at for repeat minutes ${repeat_minutes}`);
-};
-
-export const getUpdatedNextAt = ({
-  next_at,
-  repeat_minutes,
-}: Trigger): string | null => {
-  if (!next_at || !repeat_minutes) return null;
-
-  const nextDate = new Date(next_at);
-  nextDate.setMinutes(nextDate.getMinutes() + repeat_minutes);
-
-  if (nextDate >= new Date()) {
-    return nextDate.toISOString();
-  }
-  // if there was an issue such that jobs were delayed, reset next_at
-  return getNextAt(repeat_minutes);
 };
 
 export const createTrigger = async (
@@ -127,7 +83,9 @@ export const createTrigger = async (
     id,
     name,
     repeat_minutes,
+    start_at,
     team_id,
+    timezone_id,
   }: CreateTrigger,
   { db, logger }: ModelOptions
 ): Promise<Trigger> => {
@@ -148,7 +106,7 @@ export const createTrigger = async (
     environment_id: environment_id || null,
     id: id || cuid(),
     name,
-    next_at: getNextAt(repeat_minutes),
+    next_at: getNextAt({ repeat_minutes, start_at, timezone_id }),
     repeat_minutes: repeat_minutes || null,
     team_id,
   };
@@ -166,6 +124,23 @@ export const createTrigger = async (
   log.debug("created", trigger.id);
 
   return trigger;
+};
+
+export const deleteTrigger = async (
+  id: string,
+  { db, logger }: ModelOptions
+): Promise<Trigger> => {
+  const log = logger.prefix("deleteTrigger");
+  log.debug("trigger", id);
+
+  const trigger = await findTrigger(id, { db, logger });
+
+  const deleted_at = minutesFromNow();
+  await db("triggers").where({ id }).update({ deleted_at });
+
+  log.debug("deleted trigger", id);
+
+  return { ...trigger, deleted_at };
 };
 
 export const findTrigger = async (
@@ -250,23 +225,6 @@ export const findTriggersForNetlifyIntegration = async (
   return triggers;
 };
 
-export const deleteTrigger = async (
-  id: string,
-  { db, logger }: ModelOptions
-): Promise<Trigger> => {
-  const log = logger.prefix("deleteTrigger");
-  log.debug("trigger", id);
-
-  const trigger = await findTrigger(id, { db, logger });
-
-  const deleted_at = minutesFromNow();
-  await db("triggers").where({ id }).update({ deleted_at });
-
-  log.debug("deleted trigger", id);
-
-  return { ...trigger, deleted_at };
-};
-
 export const findTriggersForTeam = async (
   team_id: string,
   { db, logger }: ModelOptions
@@ -306,6 +264,59 @@ export const findPendingTriggers = async ({
   return triggers;
 };
 
+function setPartsToUTCDate(date: Date) {
+  return new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    )
+  );
+}
+
+export const getNextAt = ({
+  repeat_minutes,
+  start_at,
+  timezone_id,
+}: GetNextAt): string | null => {
+  if (!repeat_minutes) return null;
+
+  let freq: Frequency = RRule.MINUTELY;
+  let interval = repeat_minutes;
+  if (repeat_minutes === 60) {
+    freq = RRule.HOURLY;
+    interval = 1;
+  } else if (repeat_minutes === 24 * 60) {
+    freq = RRule.DAILY;
+    interval = 1;
+  }
+
+  // default to 9am
+  const dtstart = start_at
+    ? new Date(start_at)
+    : new Date(Date.UTC(2021, 1, 1, 9, 0, 0));
+
+  // default to pacific timezone
+  const tzid = timezone_id || "America/Los_Angeles";
+
+  const rule = new RRule({ dtstart, freq, interval, tzid });
+
+  // In rrule, "UTC" dates are interpreted as dates in your local timezone
+  // So we need to turn the current date into a UTC date
+  // https://github.com/jakubroztocil/rrule#important-use-utc-dates
+  const nextAt = rule.after(setPartsToUTCDate(new Date()));
+
+  // Then we have to convert their date back to our local date
+  return DateTime.fromJSDate(nextAt)
+    .toUTC()
+    .setZone("local", { keepLocalTime: true })
+    .toJSDate()
+    .toISOString();
+};
+
 export const updateTrigger = async (
   {
     deployment_branches,
@@ -316,6 +327,8 @@ export const updateTrigger = async (
     id,
     name,
     repeat_minutes,
+    start_at,
+    timezone_id,
   }: UpdateTrigger,
   { db, logger }: ModelOptions
 ): Promise<Trigger> => {
@@ -346,9 +359,23 @@ export const updateTrigger = async (
     }
     if (name !== undefined) updates.name = name;
 
-    if (repeat_minutes !== undefined) {
-      updates.repeat_minutes = repeat_minutes;
-      updates.next_at = getNextAt(repeat_minutes);
+    if (repeat_minutes !== undefined) updates.repeat_minutes = repeat_minutes;
+    if (start_at !== undefined) updates.start_at = start_at;
+    if (timezone_id !== undefined) updates.timezone_id = timezone_id;
+
+    if (
+      repeat_minutes !== undefined ||
+      start_at !== undefined ||
+      timezone_id !== undefined
+    ) {
+      updates.next_at = getNextAt({
+        repeat_minutes:
+          repeat_minutes !== undefined
+            ? repeat_minutes
+            : existingTrigger.repeat_minutes,
+        start_at: start_at || existingTrigger.start_at,
+        timezone_id: timezone_id || existingTrigger.timezone_id,
+      });
     }
 
     try {
@@ -365,22 +392,4 @@ export const updateTrigger = async (
 
     return { ...existingTrigger, ...updates };
   });
-};
-
-// TODO make this part of updateTrigger
-export const updateTriggerNextAt = async (
-  trigger: Trigger,
-  { db, logger }: ModelOptions
-): Promise<void> => {
-  const log = logger.prefix("updateTriggerNextAt");
-
-  const next_at = getUpdatedNextAt(trigger);
-
-  await db("triggers")
-    .update({ next_at, updated_at: minutesFromNow() })
-    .where({ id: trigger.id });
-
-  log.debug(
-    `updated trigger ${trigger.id} repeat_minutes ${trigger.repeat_minutes} next_at ${next_at}`
-  );
 };

@@ -1,6 +1,6 @@
 import { createSuiteForTrigger } from "../models/suite";
 import { ensureTeamCanCreateSuite, findTeam } from "../models/team";
-import { findPendingTriggers, updateTriggerNextAt } from "../models/trigger";
+import { findPendingTriggers, updateTrigger } from "../models/trigger";
 import { ModelOptions } from "../types";
 
 export const orchestrateTriggers = async ({
@@ -22,7 +22,13 @@ export const orchestrateTriggers = async ({
           { db: trx, logger }
         );
 
-        await updateTriggerNextAt(trigger, { db: trx, logger });
+        // providing repeat_minutes will push forward next_at
+        if (trigger.repeat_minutes) {
+          await updateTrigger(
+            { id: trigger.id, repeat_minutes: trigger.repeat_minutes },
+            { db: trx, logger }
+          );
+        }
       });
     } catch (error) {
       log.error("error", error.message);

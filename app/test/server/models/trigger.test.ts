@@ -1,3 +1,5 @@
+import { reset as resetMockDate, set as setMockDate } from "mockdate";
+
 import * as triggerModel from "../../../server/models/trigger";
 import { Trigger } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
@@ -22,20 +24,8 @@ const {
   findTriggersForTeam,
   findPendingTriggers,
   getNextAt,
-  getNextDay,
-  getNextHour,
-  getUpdatedNextAt,
   updateTrigger,
-  updateTriggerNextAt,
 } = triggerModel;
-
-const mockDateConstructor = (dateString: string): void => {
-  const mockDate = new Date(dateString);
-  jest.spyOn(global, "Date").mockImplementation(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return mockDate as any;
-  });
-};
 
 const db = prepareTestDb();
 const options = { db, logger };
@@ -458,78 +448,70 @@ describe("trigger model", () => {
   });
 
   describe("getNextAt", () => {
+    afterAll(() => resetMockDate());
+
     it("returns null if no repeat_minutes", () => {
-      expect(getNextAt(null)).toBeNull();
+      expect(getNextAt({ repeat_minutes: null })).toBeNull();
     });
 
-    it("returns next hour if applicable", () => {
-      mockDateConstructor("2020-06-23T14:04:53.643Z");
-      expect(getNextAt(60)).toBe("2020-06-23T15:00:00.000Z");
-    });
-
-    it("returns next day if applicable", () => {
-      mockDateConstructor("2020-06-23T16:04:53.643Z");
-      expect(getNextAt(24 * 60)).toBe("2020-06-24T16:00:00.000Z");
-    });
-
-    it("throws an error if unsupported interval", () => {
-      expect(() => getNextAt(160)).toThrowError("Cannot get next_at");
-    });
-  });
-
-  describe("getNextDay", () => {
-    it("returns the next day if daily run time has passed", () => {
-      mockDateConstructor("2020-06-23T20:04:53.643Z");
-      expect(getNextDay()).toBe("2020-06-24T16:00:00.000Z");
-    });
-
-    it("returns the current day otherwise", () => {
-      mockDateConstructor("2020-06-23T01:04:53.643Z");
-      expect(getNextDay()).toBe("2020-06-23T16:00:00.000Z");
-    });
-  });
-
-  describe("getNextHour", () => {
-    it("returns the next hour mark", () => {
-      mockDateConstructor("2020-06-23T20:04:53.643Z");
-      expect(getNextHour()).toBe("2020-06-23T21:00:00.000Z");
-    });
-
-    it("handles changing days", () => {
-      mockDateConstructor("2020-06-23T23:04:53.643Z");
-      expect(getNextHour()).toBe("2020-06-24T00:00:00.000Z");
-    });
-  });
-
-  describe("getUpdatedNextAt", () => {
-    it("returns null if no next_at or repeat_minutes", () => {
-      expect(getUpdatedNextAt({ next_at: null } as Trigger)).toBeNull();
-      expect(
-        getUpdatedNextAt({
-          next_at: minutesFromNow(),
-          repeat_minutes: null,
-        } as Trigger)
-      ).toBeNull();
-    });
-
-    it("increments next_at by repeat_minutes", () => {
-      expect(
-        getUpdatedNextAt({
-          next_at: "2050-06-24T01:00:00.000Z",
-          repeat_minutes: 60,
-        } as Trigger)
-      ).toBe("2050-06-24T02:00:00.000Z");
-    });
-
-    it("resets next_at if applicable", () => {
-      const next_at = getUpdatedNextAt({
-        next_at: "2019-06-24T01:00:00.000Z",
-        repeat_minutes: 60,
-      } as Trigger);
-
-      expect(new Date(next_at as string).getFullYear()).toBe(
-        new Date().getFullYear()
+    it("supports daily", () => {
+      // defaults to 9am pacific
+      setMockDate(new Date("2021-04-22T15:59:00.000Z"));
+      // 8:59am should return 9am
+      expect(getNextAt({ repeat_minutes: 60 * 24 })).toBe(
+        "2021-04-22T16:00:00.000Z"
       );
+
+      // 9am should return tomorrow 9am
+      setMockDate(new Date("2021-04-22T16:00:00.000Z"));
+      expect(getNextAt({ repeat_minutes: 60 * 24 })).toBe(
+        "2021-04-23T16:00:00.000Z"
+      );
+    });
+
+    it("supports daylight savings", () => {
+      setMockDate(new Date("2021-03-12T17:00:00.000Z"));
+      expect(getNextAt({ repeat_minutes: 60 * 24 })).toBe(
+        "2021-03-13T17:00:00.000Z"
+      );
+
+      setMockDate(new Date("2021-03-13T17:00:00.000Z"));
+      expect(getNextAt({ repeat_minutes: 60 * 24 })).toBe(
+        "2021-03-14T16:00:00.000Z"
+      );
+    });
+
+    it("supports minutely", () => {
+      setMockDate(new Date("2021-03-15T13:00:00.000Z"));
+      expect(getNextAt({ repeat_minutes: 90 })).toBe(
+        "2021-03-15T14:30:00.000Z"
+      );
+    });
+
+    it("supports hourly", () => {
+      setMockDate(new Date("2021-03-15T13:00:00.000Z"));
+      expect(getNextAt({ repeat_minutes: 60 })).toBe(
+        "2021-03-15T14:00:00.000Z"
+      );
+    });
+
+    it("supports other start times", () => {
+      // Now is 5pm Pacific
+      setMockDate(new Date("2021-03-15T00:00:00.000Z"));
+      expect(
+        // Daily at 8pm Pacific
+        getNextAt({
+          repeat_minutes: 60 * 24,
+          start_at: new Date(Date.UTC(2021, 1, 1, 20)).toISOString(),
+        })
+      ).toBe("2021-03-15T03:00:00.000Z");
+    });
+
+    it("supports other timezones", () => {
+      setMockDate(new Date("2021-03-15T13:00:00.000Z"));
+      expect(
+        getNextAt({ repeat_minutes: 60 * 24, timezone_id: "America/New_York" })
+      ).toBe("2021-03-16T13:00:00.000Z");
     });
   });
 
@@ -655,32 +637,6 @@ describe("trigger model", () => {
       await expect(
         updateTrigger({ id: "fakeId", name: "name" }, options)
       ).rejects.toThrowError("not found");
-    });
-  });
-
-  describe("updateTriggerNextAt", () => {
-    beforeAll(() => {
-      return db("triggers").insert(
-        buildTrigger({
-          next_at: new Date("2050-06-24T00:00:00.000Z").toISOString(),
-        })
-      );
-    });
-
-    afterAll(() => db("triggers").del());
-
-    it("updates next_at timestamp of a trigger", async () => {
-      const updateTrigger = await db.transaction(async (trx) => {
-        const trigger = await trx.select("*").from("triggers").first();
-        await updateTriggerNextAt(trigger, { db, logger });
-
-        return trx.select("*").from("triggers").first();
-      });
-
-      expect(updateTrigger).toMatchObject({
-        id: "triggerId",
-        next_at: new Date("2050-06-24T01:00:00.000Z"),
-      });
     });
   });
 });
