@@ -74,14 +74,13 @@ const formatBranches = (branches: string | null): string | null => {
 };
 
 export const getNextDay = (start_hour?: number | null): string => {
-  const formattedStartHour = start_hour || 9; // default is 9am PST
   const date = new Date();
 
-  date.setHours(formattedStartHour);
+  date.setHours(start_hour || 9); // default to 9am PST
   const zonedDate = zonedTimeToUtc(date, TIMEZONE);
 
-  // if already passed start hour, schedule run for tomorrow
-  if (zonedDate.getUTCHours() >= new Date().getHours()) {
+  // if already passed start time, schedule run for tomorrow
+  if (new Date() >= zonedDate) {
     zonedDate.setDate(date.getDate() + 1);
   }
   clearMinutes(zonedDate);
