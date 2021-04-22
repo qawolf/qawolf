@@ -9,11 +9,6 @@ import Text from "../../../../shared/Text";
 
 type Props = { run: SuiteRun };
 
-const boxProps = {
-  align: "center" as const,
-  direction: "row" as const,
-};
-
 const iconProps = {
   color: colors.gray7,
   size: edgeSize.small,
@@ -35,11 +30,9 @@ export default function Details({ run }: Props): JSX.Element {
   }
 
   return (
-    <Box {...boxProps}>
-      <Box {...boxProps} margin={{ left: "small" }}>
-        <Timer {...iconProps} />
-        <Text {...textProps}>{duration}</Text>
-      </Box>
+    <Box align="center" direction="row" flex={false} pad={{ left: "small" }}>
+      <Timer {...iconProps} />
+      <Text {...textProps}>{"2m 45s" || duration}</Text>
     </Box>
   );
 }

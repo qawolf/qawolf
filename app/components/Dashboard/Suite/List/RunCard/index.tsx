@@ -36,18 +36,19 @@ export default function RunCard({
         onChange={onCheck}
       />
       <Link href={`${routes.run}/${run.id}`}>
-        <a style={{ marginRight: edgeSize.small, width: "100%" }}>
+        <a style={{ marginLeft: edgeSize.small, width: "100%" }}>
           <Box
             align="center"
             direction="row"
             justify="between"
+            margin={{ right: "small" }}
             pad={{ vertical: "small" }}
           >
             <Box align="center" direction="row">
               <TestGif
                 gifUrl={run.gif_url}
                 isRunning={run.status === "created"}
-                margin={{ horizontal: "small" }}
+                margin={{ right: "small" }}
                 testName={run.test_name}
               />
               <StatusIcon status={run.status} />
