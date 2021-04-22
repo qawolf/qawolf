@@ -22,6 +22,7 @@ export default function Meta({
     metaHtml.push(
       <meta
         content={description || defaultDescription}
+        key={`${platform}:description`}
         name={`${platform}:description`}
       />
     );
