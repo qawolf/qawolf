@@ -81,7 +81,7 @@ export const getNextDay = (start_hour?: number | null): string => {
   const zonedDate = zonedTimeToUtc(date, TIMEZONE);
 
   // if already passed start hour, schedule run for tomorrow
-  if (zonedDate.getHours() >= formattedStartHour) {
+  if (zonedDate.getHours() >= new Date().getHours()) {
     zonedDate.setDate(date.getDate() + 1);
   }
   clearMinutes(zonedDate);
