@@ -8,8 +8,7 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-const description =
-  "QA Wolf is a tool that helps you create and run browser tests. Set up end-to-end tests in minutes without leaving the browser.";
+import Meta from "../components/shared/Meta";
 
 // https://docsearch.algolia.com/docs/dropdown
 const docSearchJSVersion = "2.6.3";
@@ -57,8 +56,7 @@ class MyDocument extends Document {
             rel="stylesheet"
             href={`https://cdn.jsdelivr.net/npm/docsearch.js@${docSearchJSVersion}/dist/cdn/docsearch.min.css`}
           />
-          <meta name="description" content={description} />
-          <meta name="twitter:description" content={description} />
+          <Meta />
           {/* Segment */}
           {!!segmentAppId && (
             <script
