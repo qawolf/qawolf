@@ -11,7 +11,7 @@ export type Props = CheckBoxProps & {
 
 function CheckBox({ className, ...props }: Props): JSX.Element {
   return (
-    <Box className={className} round={borderSize.small}>
+    <Box className={className} flex={false} round={borderSize.small}>
       <GrommetCheckBox {...props} />
     </Box>
   );
