@@ -38,6 +38,13 @@ export const formatTeam = (team: Team): Team => {
   return { ...team, api_key: decrypt(team.api_key) };
 };
 
+export const parseEmail = (email: string): string => {
+  const tagIndex = email.indexOf("<");
+  if (tagIndex < 0) return email;
+
+  return email.slice(tagIndex + 1).replace(">", "");
+};
+
 export const createDefaultTeam = async ({
   db,
   logger,
@@ -140,15 +147,15 @@ export const findTeamForEmail = async (
 
   log.debug("email", email);
 
-  let inbox = email;
-  if (email.includes("+")) {
-    const [prefix, suffix] = email.split("+");
+  let inbox = parseEmail(email);
+  if (inbox.includes("+")) {
+    const [prefix, suffix] = inbox.split("+");
     inbox = prefix + "@" + suffix.split("@")[1];
   }
 
   const team = await db("teams").where({ inbox }).first();
 
-  log.debug(team ? `found ${team.id}` : "not found");
+  log.debug(team ? `found ${team.id}: ${inbox}` : `not found: ${inbox}`);
 
   return team || null;
 };

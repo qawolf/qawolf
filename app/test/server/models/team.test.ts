@@ -7,6 +7,7 @@ import {
   findTeamForEmail,
   findTeamsForUser,
   findTeamsToSync,
+  parseEmail,
   updateTeam,
   validateApiKeyForTeam,
 } from "../../../server/models/team";
@@ -141,19 +142,28 @@ describe("findTeamForEmail", () => {
 
   it("returns team for email", async () => {
     const team = await findTeamForEmail("pumpkin@dev.qawolf.email", options);
-
     expect(team).toMatchObject({ id: "teamId" });
 
     const team2 = await findTeamForEmail(
       "pumpkin+abc@dev.qawolf.email",
       options
     );
-
     expect(team2).toMatchObject({ id: "teamId" });
 
     const team3 = await findTeamForEmail("pumpkin+1@dev.qawolf.email", options);
-
     expect(team3).toMatchObject({ id: "teamId" });
+
+    const team4 = await findTeamForEmail(
+      "Pumpkin QA Wolf <pumpkin+1@dev.qawolf.email>",
+      options
+    );
+    expect(team4).toMatchObject({ id: "teamId" });
+
+    const team5 = await findTeamForEmail(
+      "Wolf yo. <pumpkin+random@dev.qawolf.email>",
+      options
+    );
+    expect(team5).toMatchObject({ id: "teamId" });
   });
 
   it("returns null if team not found", async () => {
@@ -224,6 +234,20 @@ describe("findTeamsToSync", () => {
     const teams = await findTeamsToSync(2, options);
 
     expect(teams).toMatchObject([{ id: "teamId" }, { id: "team2Id" }]);
+  });
+});
+
+describe("parseEmail", () => {
+  it("returns email if name not provided", () => {
+    expect(parseEmail("test+inbox@qawolf.email")).toBe(
+      "test+inbox@qawolf.email"
+    );
+  });
+
+  it("strips out name otherwise", () => {
+    expect(parseEmail("Test Name <test+inbox@qawolf.email>")).toBe(
+      "test+inbox@qawolf.email"
+    );
   });
 });
 
