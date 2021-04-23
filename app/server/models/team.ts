@@ -39,12 +39,13 @@ export const formatTeam = (team: Team): Team => {
 };
 
 export const parseEmail = (email: string): string => {
-  const tagIndex = email.indexOf("<");
+  // strip out name field if needed, example: QA Wolf <test@qawolf.email>
+  const bracketIndex = email.indexOf("<");
   const parsedEmail =
-    tagIndex < 0 ? email : email.slice(tagIndex + 1).replace(">", "");
+    bracketIndex < 0 ? email : email.slice(bracketIndex + 1).replace(">", "");
 
   if (!parsedEmail.includes("+")) return parsedEmail;
-
+  // remove slug if needed, example: test+admin@qawolf.com
   const [prefix, suffix] = parsedEmail.split("+");
   return prefix + "@" + suffix.split("@")[1];
 };
