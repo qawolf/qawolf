@@ -32,7 +32,7 @@ export default function Details({ run }: Props): JSX.Element {
   return (
     <Box align="center" direction="row" flex={false} pad={{ left: "small" }}>
       <Timer {...iconProps} />
-      <Text {...textProps}>{"2m 45s" || duration}</Text>
+      <Text {...textProps}>{duration}</Text>
     </Box>
   );
 }
