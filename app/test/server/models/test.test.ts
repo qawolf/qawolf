@@ -162,6 +162,7 @@ describe("createTest", () => {
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
+      path: null,
       team_id: "teamId",
       version: 0,
     });
@@ -173,6 +174,7 @@ describe("createTest", () => {
         code: "code",
         creator_id: "userId",
         group_id: "groupId",
+        path: "myTest.test.js",
         team_id: "teamId",
       },
       options
@@ -182,6 +184,7 @@ describe("createTest", () => {
 
     expect(tests[0]).toMatchObject({
       group_id: "groupId",
+      path: "myTest.test.js",
     });
   });
 

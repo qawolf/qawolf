@@ -337,7 +337,7 @@ describe("run model", () => {
 
   describe("findSuiteRunForRunner", () => {
     beforeAll(async () => {
-      await db("teams").update({ helpers: "helpers" });
+      await db("suites").update({ helpers: "helpers" });
 
       await db("environments").insert(buildEnvironment({ team_id: "team3Id" }));
 
@@ -350,7 +350,7 @@ describe("run model", () => {
     });
 
     afterAll(async () => {
-      await db("teams").update({ helpers: "" });
+      await db("suites").update({ helpers: "" });
 
       await db("environment_variables").del();
       return db("environments").del();
