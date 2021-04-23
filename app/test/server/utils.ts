@@ -128,6 +128,7 @@ type BuildSuite = {
 
 type BuildTeam = {
   apiKey?: string;
+  helpers?: string;
   i?: number;
   inbox?: string;
   is_enabled?: boolean;
@@ -422,6 +423,7 @@ export const buildSuite = ({
     creator_id: creator_id || null,
     environment_id: environment_id || null,
     environment_variables: null,
+    helpers: "",
     id: `suite${finalI === 1 ? "" : i}Id`,
     team_id: team_id || "teamId",
     trigger_id: trigger_id || "triggerId",
@@ -430,6 +432,7 @@ export const buildSuite = ({
 
 export const buildTeam = ({
   apiKey,
+  helpers,
   i,
   inbox,
   is_enabled,
@@ -444,7 +447,7 @@ export const buildTeam = ({
   return {
     alert_integration_id: null,
     api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
-    helpers: "",
+    helpers: helpers || "",
     helpers_version: 0,
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
@@ -495,7 +498,6 @@ export const buildTest = ({
   const timestamp = minutesFromNow();
 
   return {
-    team_id: team_id || "teamId",
     created_at: timestamp,
     creator_id: creator_id || "userId",
     code: code || 'const x = "hello"',
@@ -505,10 +507,12 @@ export const buildTest = ({
     id: id || `test${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
     name: name || `test${finalI === 1 ? "" : i}`,
+    path: null,
     runner_locations: runner_locations
       ? JSON.stringify(runner_locations)
       : null,
     runner_requested_at: runner_requested_at || null,
+    team_id: team_id || "teamId",
     updated_at: timestamp,
     version: version || 11,
   };

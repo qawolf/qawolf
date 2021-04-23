@@ -15,6 +15,7 @@ type CreateTest = {
   creator_id: string;
   group_id?: string | null;
   guide?: string | null;
+  path?: string | null;
   team_id: string;
 };
 
@@ -121,7 +122,7 @@ export const countTestsForTeam = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, guide, team_id }: CreateTest,
+  { code, creator_id, group_id, guide, path, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
@@ -140,6 +141,7 @@ export const createTest = async (
     id: cuid(),
     is_enabled: true,
     name: uniqueName,
+    path: path || null,
     team_id,
     updated_at: timestamp,
     version: 0,

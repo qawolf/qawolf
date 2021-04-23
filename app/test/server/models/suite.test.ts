@@ -1,5 +1,6 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
+  buildHelpersForSuite,
   createSuite,
   createSuiteForTests,
   findSuite,
@@ -28,7 +29,10 @@ const options = { db, logger };
 
 beforeAll(async () => {
   await db("users").insert(buildUser({}));
-  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+  await db("teams").insert([
+    buildTeam({ helpers: "// helpers" }),
+    buildTeam({ i: 2 }),
+  ]);
 
   await db("environments").insert(buildEnvironment({}));
   await db("triggers").insert([trigger, buildTrigger({ i: 2 })]);
@@ -37,6 +41,17 @@ beforeAll(async () => {
 });
 
 describe("suite model", () => {
+  describe("buildHelpersForSuite", () => {
+    it("returns helpers for a team", async () => {
+      const helpers = await buildHelpersForSuite(
+        { team_id: "teamId" },
+        options
+      );
+
+      expect(helpers).toBe("// helpers");
+    });
+  });
+
   describe("createSuite", () => {
     afterEach(() => db("suites").del());
 
@@ -56,6 +71,7 @@ describe("suite model", () => {
           creator_id: null,
           environment_id: null,
           environment_variables: null,
+          helpers: "// helpers",
           team_id: trigger.team_id,
           trigger_id: trigger.id,
           id: expect.any(String),
@@ -81,6 +97,7 @@ describe("suite model", () => {
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),
+          helpers: "// helpers",
           id: expect.any(String),
           team_id: trigger.team_id,
           trigger_id: trigger.id,
