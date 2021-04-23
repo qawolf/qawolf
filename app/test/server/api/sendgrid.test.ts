@@ -7,7 +7,12 @@ import * as sendGridService from "../../../server/services/sendgrid";
 import { prepareTestDb } from "../db";
 import { buildTeam, logger } from "../utils";
 
-const { buildSendDate, handleSendGridRequest, verifyRequest } = sendGridApi;
+const {
+  buildSendDate,
+  handleSendGridRequest,
+  parseEmail,
+  verifyRequest,
+} = sendGridApi;
 
 const send = jest.fn();
 const status = jest.fn().mockReturnValue({ send });
@@ -94,7 +99,6 @@ describe("handleSendGridRequest", () => {
     await handleSendGridRequest({ url } as NextApiRequest, res, { db, logger });
 
     const dbEmails = await db("emails");
-
     expect(dbEmails).toMatchObject([
       {
         created_at: new Date("Thu, 18 Feb 2021 10:18:51 -0700"),
@@ -134,6 +138,20 @@ describe("handleSendGridRequest", () => {
     });
 
     await db("teams").update({ forward_email: null });
+  });
+});
+
+describe("parseEmail", () => {
+  it("returns parsed email if name not provided", () => {
+    expect(parseEmail("test+inbox@qawolf.email")).toBe(
+      "test+inbox@qawolf.email"
+    );
+  });
+
+  it("strips out name otherwise", () => {
+    expect(parseEmail("Test Name <test+inbox@qawolf.email>")).toBe(
+      "test+inbox@qawolf.email"
+    );
   });
 });
 
