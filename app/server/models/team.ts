@@ -40,9 +40,13 @@ export const formatTeam = (team: Team): Team => {
 
 export const parseEmail = (email: string): string => {
   const tagIndex = email.indexOf("<");
-  if (tagIndex < 0) return email;
+  const parsedEmail =
+    tagIndex < 0 ? email : email.slice(tagIndex + 1).replace(">", "");
 
-  return email.slice(tagIndex + 1).replace(">", "");
+  if (!parsedEmail.includes("+")) return parsedEmail;
+
+  const [prefix, suffix] = parsedEmail.split("+");
+  return prefix + "@" + suffix.split("@")[1];
 };
 
 export const createDefaultTeam = async ({
@@ -144,17 +148,11 @@ export const findTeamForEmail = async (
   { db, logger }: ModelOptions
 ): Promise<Team | null> => {
   const log = logger.prefix("findTeamForEmail");
-
   log.debug("email", email);
 
-  let inbox = parseEmail(email);
-  if (inbox.includes("+")) {
-    const [prefix, suffix] = inbox.split("+");
-    inbox = prefix + "@" + suffix.split("@")[1];
-  }
+  const inbox = parseEmail(email);
 
   const team = await db("teams").where({ inbox }).first();
-
   log.debug(team ? `found ${team.id}: ${inbox}` : `not found: ${inbox}`);
 
   return team || null;

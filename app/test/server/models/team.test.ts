@@ -238,15 +238,17 @@ describe("findTeamsToSync", () => {
 });
 
 describe("parseEmail", () => {
-  it("returns email if name not provided", () => {
-    expect(parseEmail("test+inbox@qawolf.email")).toBe(
-      "test+inbox@qawolf.email"
-    );
+  it("returns parsed email if name not provided", () => {
+    expect(parseEmail("test+inbox@qawolf.email")).toBe("test@qawolf.email");
+    expect(parseEmail("test@qawolf.email")).toBe("test@qawolf.email");
   });
 
   it("strips out name otherwise", () => {
     expect(parseEmail("Test Name <test+inbox@qawolf.email>")).toBe(
-      "test+inbox@qawolf.email"
+      "test@qawolf.email"
+    );
+    expect(parseEmail("QA Wolf. <test@qawolf.email>")).toBe(
+      "test@qawolf.email"
     );
   });
 });
