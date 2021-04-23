@@ -141,18 +141,15 @@ describe("findTeamForEmail", () => {
 
   it("returns team for email", async () => {
     const team = await findTeamForEmail("pumpkin@dev.qawolf.email", options);
-
     expect(team).toMatchObject({ id: "teamId" });
 
     const team2 = await findTeamForEmail(
       "pumpkin+abc@dev.qawolf.email",
       options
     );
-
     expect(team2).toMatchObject({ id: "teamId" });
 
     const team3 = await findTeamForEmail("pumpkin+1@dev.qawolf.email", options);
-
     expect(team3).toMatchObject({ id: "teamId" });
   });
 
