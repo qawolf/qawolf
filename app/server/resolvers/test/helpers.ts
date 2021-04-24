@@ -38,15 +38,12 @@ const createMissingTests = async (
   options: ModelOptions
 ): Promise<Test[]> => {
   const missingTests = gitHubTests.filter((test) => {
-    return !tests.some((t) => {
-      return buildTestName(test.path) === camelCase(t.name);
-    });
+    return !tests.find((t) => test.path === t.path);
   });
 
   return Promise.all(
     missingTests.map((t) => {
-      const formattedName = buildTestName(t.path);
-      return createTest({ code: "", name: formattedName, team_id }, options);
+      return createTest({ code: "", path: t.path, team_id }, options);
     })
   );
 };
