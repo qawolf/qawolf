@@ -1,4 +1,4 @@
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
@@ -22,11 +22,6 @@ export type Context = {
 };
 
 // GitHub types
-export type BaseGitHubFields = {
-  octokit: Octokit;
-  owner: string;
-  repo: string;
-};
 
 export type GitHubBranch = {
   is_default: boolean;

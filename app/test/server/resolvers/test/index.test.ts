@@ -379,9 +379,8 @@ describe("testsResolver", () => {
 
   it("finds tests for a team when branch specified", async () => {
     jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
-      gitHubFields: {} as any,
       tests: [{ path: "test.test.js" }, { path: "anotherTest.test.js" }],
-    });
+    } as any);
 
     const tests = await testsResolver(
       {},

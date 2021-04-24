@@ -1,7 +1,7 @@
 import { camelCase } from "lodash";
 
-import { BaseGitHubFields, ModelOptions, Test } from "../../types";
-import { createOctokitForIntegration } from "./app";
+import { ModelOptions, Test } from "../../types";
+import { createOctokitForIntegration, OctokitRepo } from "./app";
 
 type CreateFileForTest = {
   branch: string;
@@ -9,7 +9,7 @@ type CreateFileForTest = {
   test: Test;
 };
 
-type DeleteFile = BaseGitHubFields & {
+type DeleteFile = OctokitRepo & {
   branch: string;
   path: string;
   sha: string;

@@ -1,18 +1,17 @@
-import { BaseGitHubFields, GitTree, ModelOptions } from "../../types";
+import { GitTree, ModelOptions } from "../../types";
 import { GIT_TEST_FILE_EXTENSION } from "../../utils";
-import { createOctokitForIntegration } from "./app";
+import { createOctokitForIntegration, OctokitRepo } from "./app";
 
 type FindTestsForBranch = {
   branch: string;
   integrationId: string;
 };
 
-type FindTestsForBranchResult = {
-  gitHubFields: BaseGitHubFields;
+type FindTestsForBranchResult = OctokitRepo & {
   tests: GitTree["tree"];
 };
 
-type FindTreeForBranch = BaseGitHubFields & {
+type FindTreeForBranch = OctokitRepo & {
   recursive?: "true";
   tree_sha: string;
 };
@@ -43,21 +42,21 @@ export const findTestsForBranch = async (
 ): Promise<FindTestsForBranchResult> => {
   const log = options.logger.prefix("findTestsForBranch");
 
-  const fields = await createOctokitForIntegration(integrationId, options);
+  const octokitRepo = await createOctokitForIntegration(integrationId, options);
 
   const tree = await findTreeForBranch(
-    { ...fields, tree_sha: branch },
+    { ...octokitRepo, tree_sha: branch },
     options
   );
 
   const qawolfTree = tree.tree.find((t) => t.path === qawolfPath);
   if (!qawolfTree || !qawolfTree.sha) {
     log.debug(`qawolf path ${qawolfPath} not found (sha ${qawolfTree?.sha})`);
-    return { gitHubFields: fields, tests: [] };
+    return { ...octokitRepo, tests: [] };
   }
 
   const files = await findTreeForBranch(
-    { ...fields, recursive: "true", tree_sha: qawolfTree.sha },
+    { ...octokitRepo, recursive: "true", tree_sha: qawolfTree.sha },
     options
   );
   const tests = files.tree.filter(({ path }) => {
@@ -66,5 +65,5 @@ export const findTestsForBranch = async (
 
   log.debug(`found ${tests.length} tests`);
 
-  return { gitHubFields: fields, tests };
+  return { ...octokitRepo, tests };
 };

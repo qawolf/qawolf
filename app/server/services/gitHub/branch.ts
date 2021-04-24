@@ -1,16 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import { uniq } from "lodash";
 
-import {
-  BaseGitHubFields,
-  GitHubBranch,
-  Integration,
-  ModelOptions,
-} from "../../types";
-import { createOctokitForInstallation } from "./app";
+import { GitHubBranch, Integration, ModelOptions } from "../../types";
+import { createOctokitForInstallation, OctokitRepo } from "./app";
 
 export const findDefaultBranch = async (
-  { octokit, owner, repo }: BaseGitHubFields,
+  { octokit, owner, repo }: OctokitRepo,
   { logger }: ModelOptions
 ): Promise<string> => {
   const log = logger.prefix("findDefaultBranch");

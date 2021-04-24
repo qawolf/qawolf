@@ -5,18 +5,18 @@ import { camelCase } from "lodash";
 // import { Logger } from "../../Logger";
 import { findTeam } from "../../models/team";
 import { findTestsForTeam } from "../../models/test";
-import { BaseGitHubFields, ModelOptions, Team } from "../../types";
-import { createOctokitForIntegration } from "./app";
+import { ModelOptions, Team } from "../../types";
+import { createOctokitForIntegration, OctokitRepo } from "./app";
 import { findDefaultBranch } from "./branch";
 
 type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
-type CreateCommit = BaseGitHubFields & {
+type CreateCommit = OctokitRepo & {
   parents: string[];
   treeSha: string;
 };
 
-type CreateTree = BaseGitHubFields & {
+type CreateTree = OctokitRepo & {
   tree: Tree;
   treeSha: string;
 };
@@ -26,9 +26,9 @@ type CurrentCommit = {
   treeSha: string;
 };
 
-type FindCurrentCommit = BaseGitHubFields & { branch: string };
+type FindCurrentCommit = OctokitRepo & { branch: string };
 
-type UpdateRef = BaseGitHubFields & {
+type UpdateRef = OctokitRepo & {
   branch: string;
   sha: string;
 };

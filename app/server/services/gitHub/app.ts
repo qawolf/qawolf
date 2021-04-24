@@ -16,6 +16,12 @@ type OctokitResult = {
   token: string;
 };
 
+export type OctokitRepo = {
+  octokit: Octokit;
+  owner: string;
+  repo: string;
+};
+
 export const createInstallationAccessToken = async (
   { installationId, isSync }: InstallationOptions,
   options: ModelOptions
@@ -60,7 +66,7 @@ export const createOctokitForInstallation = async (
 export const createOctokitForIntegration = async (
   integrationId: string,
   options: ModelOptions
-): Promise<OctokitResult & { owner: string; repo: string }> => {
+): Promise<OctokitRepo> => {
   const integration = await findIntegration(integrationId, options);
 
   const result = await createOctokitForInstallation(

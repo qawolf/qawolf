@@ -75,12 +75,11 @@ describe("buildTestName", () => {
 describe("deleteGitHubTests", () => {
   it("deletes tests from GitHub", async () => {
     jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
-      gitHubFields: {} as any,
       tests: [
         { path: "group/myTest.test.js", sha: "sha" },
         { path: "anotherTest.test.js", sha: "sha2" },
       ],
-    });
+    } as any);
     const spy = jest.spyOn(gitHubFile, "deleteFile").mockResolvedValue();
 
     const team = await db("teams").where({ id: "teamId" }).first();
@@ -118,9 +117,8 @@ describe("deleteGitHubTests", () => {
 describe("upsertGitHubTests", () => {
   it("filters out tests not on branch and creates missing tests", async () => {
     jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
-      gitHubFields: {} as any,
       tests: [{ path: "group/test.test.js" }, { path: "anotherTest.test.js" }],
-    });
+    } as any);
 
     const tests = await testModel.findTestsForTeam("teamId", options);
 
