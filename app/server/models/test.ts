@@ -156,6 +156,26 @@ export const createTest = async (
   return test;
 };
 
+export const deleteTests = async (
+  ids: string[],
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("deleteTests");
+
+  log.debug(ids);
+
+  const tests = await db.transaction(async (trx) => {
+    const tests = await trx.select("*").from("tests").whereIn("id", ids);
+    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
+    await trx("tests").update(updates).whereIn("id", ids);
+    return tests.map((test: Test) => ({ ...test, ...updates }));
+  });
+
+  log.debug("deleted", ids);
+
+  return tests;
+};
+
 export const findEnabledTests = async (
   test_ids: string[],
   { db, logger }: ModelOptions
@@ -262,26 +282,6 @@ export const findTestForRun = async (
   return test;
 };
 
-export const findTestsForTeam = async (
-  team_id: string,
-  { db, logger }: ModelOptions
-): Promise<Test[]> => {
-  const log = logger.prefix("findTestsForTeam");
-
-  log.debug(team_id);
-
-  const tests = await db
-    .select("*")
-    .from("tests")
-    .where({ deleted_at: null, team_id })
-    .orderBy("name", "asc")
-    .orderBy("path", "asc");
-
-  log.debug(`found ${tests.length} tests for team ${team_id}`);
-
-  return tests;
-};
-
 export const findTests = async (
   test_ids: string[],
   { db, logger }: ModelOptions
@@ -299,22 +299,22 @@ export const findTests = async (
   return tests;
 };
 
-export const deleteTests = async (
-  ids: string[],
+export const findTestsForTeam = async (
+  team_id: string,
   { db, logger }: ModelOptions
 ): Promise<Test[]> => {
-  const log = logger.prefix("deleteTests");
+  const log = logger.prefix("findTestsForTeam");
 
-  log.debug(ids);
+  log.debug(team_id);
 
-  const tests = await db.transaction(async (trx) => {
-    const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
-    await trx("tests").update(updates).whereIn("id", ids);
-    return tests.map((test: Test) => ({ ...test, ...updates }));
-  });
+  const tests = await db
+    .select("*")
+    .from("tests")
+    .where({ deleted_at: null, team_id })
+    .orderBy("name", "asc")
+    .orderBy("path", "asc");
 
-  log.debug("deleted", ids);
+  log.debug(`found ${tests.length} tests for team ${team_id}`);
 
   return tests;
 };

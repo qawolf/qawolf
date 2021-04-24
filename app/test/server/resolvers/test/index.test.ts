@@ -2,7 +2,7 @@
 import * as runModel from "../../../../server/models/run";
 import * as testModel from "../../../../server/models/test";
 import * as testResolvers from "../../../../server/resolvers/test";
-import * as helpers from "../../../../server/resolvers/test/helpers";
+import * as gitHubTests from "../../../../server/resolvers/test/gitHubTests";
 import * as azure from "../../../../server/services/aws/storage";
 import * as gitHubFile from "../../../../server/services/gitHub/file";
 import * as gitHubTree from "../../../../server/services/gitHub/tree";
@@ -185,7 +185,7 @@ describe("createTestResolver", () => {
 
 describe("deleteTestsResolver", () => {
   it("deletes a test", async () => {
-    jest.spyOn(helpers, "deleteGitHubTests");
+    jest.spyOn(gitHubTests, "deleteGitHubTests");
 
     const tests = await deleteTestsResolver(
       {},
@@ -214,13 +214,15 @@ describe("deleteTestsResolver", () => {
       .first();
     expect(testTrigger).toBeFalsy();
 
-    expect(helpers.deleteGitHubTests).not.toBeCalled();
+    expect(gitHubTests.deleteGitHubTests).not.toBeCalled();
 
     await db("tests").where({ id: "deleteMe" }).update({ deleted_at: null });
   });
 
   it("deletes a test on a git branch", async () => {
-    const spy = jest.spyOn(helpers, "deleteGitHubTests").mockResolvedValue();
+    const spy = jest
+      .spyOn(gitHubTests, "deleteGitHubTests")
+      .mockResolvedValue();
 
     const tests = await deleteTestsResolver(
       {},
@@ -234,7 +236,7 @@ describe("deleteTestsResolver", () => {
 
     expect(tests).toMatchObject([{ id: "deleteMe" }]);
 
-    expect(helpers.deleteGitHubTests).toBeCalledTimes(1);
+    expect(gitHubTests.deleteGitHubTests).toBeCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatchObject({
       branch: "main",
       tests: [{ id: "deleteMe" }],
@@ -394,11 +396,11 @@ describe("testsResolver", () => {
     );
 
     expect(tests).toMatchObject([
-      { creator_id: null, name: "anotherTest" },
-      { name: "test" },
+      { creator_id: null, name: null, path: "anotherTest.test.js" },
+      { name: null, path: "test.test.js" },
     ]);
 
-    await db("tests").where({ name: "anotherTest" }).del();
+    await db("tests").where({ path: "anotherTest.test.js" }).del();
   });
 });
 

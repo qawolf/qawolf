@@ -682,6 +682,8 @@ describe("updateTest", () => {
       name: null,
       path: "myTest.test.js",
     });
+
+    await updateTest({ id: "testId", name: "test", path: null }, options);
   });
 
   it("throws an error if updating to non-unique name", async () => {

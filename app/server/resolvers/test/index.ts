@@ -92,13 +92,13 @@ export const deleteTestsResolver = async (
   const log = logger.prefix("deleteTestsResolver");
   log.debug("ids", ids);
 
+  const tests = await findTests(ids, { db, logger });
+  const testTeams = await Promise.all(
+    tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
+  );
+
   if (branch) {
     log.debug("delete from git branch", branch);
-
-    const tests = await findTests(ids, { db, logger });
-    const testTeams = await Promise.all(
-      tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
-    );
 
     await deleteGitHubTests(
       { branch, tests, teams: testTeams },
@@ -109,9 +109,6 @@ export const deleteTestsResolver = async (
   }
 
   log.debug("soft delete from database");
-  await Promise.all(
-    ids.map((id) => ensureTestAccess({ teams, test_id: id }, { db, logger }))
-  );
 
   return db.transaction(async (trx) => {
     await deleteTestTriggersForTests(ids, { db: trx, logger });
