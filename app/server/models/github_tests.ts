@@ -1,10 +1,10 @@
 import { uniq } from "lodash";
 
-import { ClientError } from "../../errors";
-import { createTest } from "../../models/test";
-import { deleteFile } from "../../services/gitHub/file";
-import { findTestsForBranch } from "../../services/gitHub/tree";
-import { GitTree, ModelOptions, Team, Test } from "../../types";
+import { ClientError } from "../errors";
+import { deleteFile } from "../services/gitHub/file";
+import { findTestsForBranch } from "../services/gitHub/tree";
+import { GitTree, ModelOptions, Team, Test } from "../types";
+import { createTest } from "./test";
 
 type CreateMissingTests = {
   gitHubTests: GitTree["tree"];

@@ -1,5 +1,6 @@
-import { buildTestCode } from "../../../shared/utils";
-import { findLatestRuns, findRunResult } from "../../models/run";
+import { buildTestCode } from "../../shared/utils";
+import { deleteGitHubTests, upsertGitHubTests } from "../models/github_tests";
+import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTest,
   deleteTests,
@@ -9,10 +10,10 @@ import {
   findTestsForTeam,
   updateTest,
   updateTestsGroup,
-} from "../../models/test";
-import { deleteTestTriggersForTests } from "../../models/test_trigger";
-import { createFileForTest } from "../../services/gitHub/file";
-import { trackSegmentEvent } from "../../services/segment";
+} from "../models/test";
+import { deleteTestTriggersForTests } from "../models/test_trigger";
+import { createFileForTest } from "../services/gitHub/file";
+import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
   CreateTestMutation,
@@ -25,15 +26,14 @@ import {
   TestSummary,
   UpdateTestMutation,
   UpdateTestsGroupMutation,
-} from "../../types";
-import { cuid } from "../../utils";
+} from "../types";
+import { cuid } from "../utils";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
   ensureTestAccess,
   ensureUser,
-} from "../utils";
-import { deleteGitHubTests, upsertGitHubTests } from "./gitHubTests";
+} from "./utils";
 
 /**
  * @returns The new test object

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as testModel from "../../../../server/models/test";
 import {
   deleteGitHubTests,
   upsertGitHubTests,
-} from "../../../../server/resolvers/test/gitHubTests";
-import * as gitHubFile from "../../../../server/services/gitHub/file";
-import * as gitHubTree from "../../../../server/services/gitHub/tree";
-import { prepareTestDb } from "../../db";
+} from "../../../server/models/github_tests";
+import * as testModel from "../../../server/models/test";
+import * as gitHubFile from "../../../server/services/gitHub/file";
+import * as gitHubTree from "../../../server/services/gitHub/tree";
+import { prepareTestDb } from "../db";
 import {
   buildGroup,
   buildIntegration,
@@ -17,7 +17,7 @@ import {
   buildTrigger,
   buildUser,
   logger,
-} from "../../utils";
+} from "../utils";
 
 const run = buildRun({ code: "run code" });
 

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as runModel from "../../../../server/models/run";
-import * as testModel from "../../../../server/models/test";
-import * as testResolvers from "../../../../server/resolvers/test";
-import * as gitHubTests from "../../../../server/resolvers/test/gitHubTests";
-import * as azure from "../../../../server/services/aws/storage";
-import * as gitHubFile from "../../../../server/services/gitHub/file";
-import * as gitHubTree from "../../../../server/services/gitHub/tree";
-import { RunWithGif } from "../../../../server/types";
-import { minutesFromNow } from "../../../../shared/utils";
-import { prepareTestDb } from "../../db";
+import * as gitHubTests from "../../../server/models/github_tests";
+import * as runModel from "../../../server/models/run";
+import * as testModel from "../../../server/models/test";
+import * as testResolvers from "../../../server/resolvers/test";
+import * as azure from "../../../server/services/aws/storage";
+import * as gitHubFile from "../../../server/services/gitHub/file";
+import * as gitHubTree from "../../../server/services/gitHub/tree";
+import { RunWithGif } from "../../../server/types";
+import { minutesFromNow } from "../../../shared/utils";
+import { prepareTestDb } from "../db";
 import {
   buildGroup,
   buildIntegration,
@@ -20,7 +20,7 @@ import {
   buildUser,
   logger,
   testContext,
-} from "../../utils";
+} from "../utils";
 
 const {
   createTestResolver,
