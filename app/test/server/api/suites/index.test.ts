@@ -2,6 +2,7 @@
 import { NextApiRequest } from "next";
 
 import { handleSuitesRequest } from "../../../../server/api/suites";
+import { decrypt } from "../../../../server/models/encrypt";
 import { prepareTestDb } from "../../db";
 import {
   buildEnvironment,
@@ -127,7 +128,7 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("No tests for trigger");
   });
 
-  it("creates a suite and returns url", async () => {
+  it("creates a suite and returns url if env variables passed as JSON", async () => {
     await handleSuitesRequest(
       {
         body: { env: { secret: "shh" }, trigger_id: "triggerId" },
@@ -143,7 +144,34 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith({ id: suite.id, url: expect.any(String) });
 
     expect(send.mock.calls[0][0].url).toMatch(`/suites/${suite.id}`);
-    expect(suite.environment_variables).toBeTruthy();
+    expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
+      secret: "shh",
+    });
+
+    await db("runs").del();
+    await db("suites").del();
+  });
+
+  it("creates a suite and returns url if env variables passed as string", async () => {
+    await handleSuitesRequest(
+      {
+        body: {
+          env: JSON.stringify({ secret: "shh" }),
+          trigger_id: "triggerId",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    const suite = await db.select("*").from("suites").first();
+
+    expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
+      secret: "shh",
+    });
 
     await db("runs").del();
     await db("suites").del();

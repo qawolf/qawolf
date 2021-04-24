@@ -140,6 +140,7 @@ export const testFragment = gql`
     id
     is_enabled
     name
+    path
     team_id
     updated_at
     url

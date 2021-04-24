@@ -31,7 +31,7 @@ export default function ApiFields({ editTriggerId }: Props): JSX.Element {
   const apiDocsHref = buildQaWolfDocsLink("/run-tests-with-api");
 
   const cliCall = `QAWOLF_API_KEY: ${apiKey}`;
-  const cliCall2 = `npx qawolf test --trigger ${triggerId} --env '{"env": { "MY_VARIABLE": "secret" } }'`;
+  const cliCall2 = `npx qawolf test --trigger ${triggerId} --env '{ "MY_VARIABLE": "secret" }'`;
   const cliDocsHref = buildQaWolfDocsLink("/run-tests-with-cli");
 
   return (

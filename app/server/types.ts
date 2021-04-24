@@ -260,6 +260,7 @@ export type Suite = {
   creator_id: string | null;
   environment_id: string | null;
   environment_variables: string | null;
+  helpers: string;
   id: string;
   team_id: string;
   trigger_id: string;
@@ -321,7 +322,8 @@ export type Test = {
   guide?: string | null;
   id: string;
   is_enabled: boolean;
-  name: string;
+  name: string | null;
+  path: string | null;
   runner_locations?: string | null;
   runner_requested_at?: string | null;
   team_id: string;
@@ -357,7 +359,9 @@ export type Trigger = {
   name: string;
   next_at: string | null;
   repeat_minutes: number | null;
+  start_at?: string;
   team_id: string;
+  timezone_id?: string;
   updated_at?: string;
 };
 

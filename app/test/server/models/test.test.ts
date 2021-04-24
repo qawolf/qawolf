@@ -163,6 +163,7 @@ describe("createTest", () => {
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
+      path: null,
       team_id: "teamId",
       version: 0,
     });
@@ -174,6 +175,7 @@ describe("createTest", () => {
         code: "code",
         creator_id: "userId",
         group_id: "groupId",
+        path: "myTest.test.js",
         team_id: "teamId",
       },
       options
@@ -183,6 +185,7 @@ describe("createTest", () => {
 
     expect(tests[0]).toMatchObject({
       group_id: "groupId",
+      path: "myTest.test.js",
     });
   });
 
@@ -219,11 +222,11 @@ describe("createTest", () => {
     });
   });
 
-  it("creates a test with a specified name", async () => {
+  it("creates a test with a specified path", async () => {
     await createTest(
       {
         code: "code",
-        name: "specificName",
+        path: "myTest.test.js",
         team_id: "teamId",
       },
       options
@@ -234,7 +237,8 @@ describe("createTest", () => {
     expect(tests[0]).toMatchObject({
       code: "code",
       creator_id: null,
-      name: "specificName",
+      name: null,
+      path: "myTest.test.js",
       team_id: "teamId",
     });
   });
@@ -660,6 +664,23 @@ describe("updateTest", () => {
       runner_requested_at: null,
       name: "test",
       version: 13,
+    });
+  });
+
+  it("updates test name and path", async () => {
+    const test = await updateTest(
+      {
+        id: "testId",
+        name: null,
+        path: "myTest.test.js",
+      },
+      options
+    );
+
+    expect(test).toMatchObject({
+      id: "testId",
+      name: null,
+      path: "myTest.test.js",
     });
   });
 

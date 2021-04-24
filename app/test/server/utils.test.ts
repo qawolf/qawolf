@@ -4,6 +4,7 @@ import {
   buildDigest,
   buildLoginCode,
   isCorrectCode,
+  parseVariables,
   validateEmail,
 } from "../../server/utils";
 import { logger } from "./utils";
@@ -51,6 +52,18 @@ describe("isCorrectCode", () => {
     });
 
     expect(isCorrect).toBe(false);
+  });
+});
+
+describe("parseVariables", () => {
+  const variables = { MY_VAR: "wolf", MY_OTHER_VAR: "howl" };
+
+  it("returns variables if already valid JSON", () => {
+    expect(parseVariables(variables)).toEqual(variables);
+  });
+
+  it("parses string if needed", () => {
+    expect(parseVariables(JSON.stringify(variables))).toEqual(variables);
   });
 });
 

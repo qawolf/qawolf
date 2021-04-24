@@ -11,6 +11,7 @@ import {
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
 import { createRunsForTests } from "./run";
+import { findTeam } from "./team";
 import { findEnabledTestsForTrigger } from "./test";
 import { findTrigger } from "./trigger";
 
@@ -20,10 +21,14 @@ export type SuiteForTeam = Suite & {
   repeat_minutes: number | null;
 };
 
+type BuildHelpersForSuite = {
+  team_id: string;
+};
+
 type CreateSuite = {
   creator_id?: string;
   environment_id?: string | null;
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
 };
@@ -31,14 +36,14 @@ type CreateSuite = {
 type CreateSuiteForTests = {
   creator_id?: string;
   environment_id?: string | null;
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
 };
 
 type CreateSuiteForTrigger = {
-  environment_variables?: FormattedVariables;
+  environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
 };
@@ -51,6 +56,18 @@ type CreatedSuite = {
 type FindSuitesForTeam = {
   limit: number;
   team_id: string;
+};
+
+export const buildHelpersForSuite = async (
+  { team_id }: BuildHelpersForSuite,
+  { db, logger }: ModelOptions
+): Promise<string> => {
+  const log = logger.prefix("buildHelpersForSuite");
+  log.debug("team", team_id);
+
+  const team = await findTeam(team_id, { db, logger });
+
+  return team.helpers;
 };
 
 export const createSuite = async (
@@ -71,12 +88,14 @@ export const createSuite = async (
   const formattedVariables = environment_variables
     ? encrypt(JSON.stringify(environment_variables))
     : null;
+  const helpers = await buildHelpersForSuite({ team_id }, { db, logger });
 
   const suite = {
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_id: environment_id || null,
     environment_variables: formattedVariables,
+    helpers,
     id: cuid(),
     team_id,
     trigger_id,

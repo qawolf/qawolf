@@ -229,6 +229,7 @@ export const testsQuery = gql`
       group_id
       id
       name
+      path
     }
   }
 `;

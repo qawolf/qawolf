@@ -148,6 +148,7 @@ export const height = {
 
 export const offset = {
   demoVideo: "-80px",
+  hero: "-52px", // 80 - 28 for credit card note
 };
 
 export const overflowStyle = {

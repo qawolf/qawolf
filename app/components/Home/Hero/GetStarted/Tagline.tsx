@@ -40,12 +40,20 @@ export default function Tagline({ basis }: Props): JSX.Element {
   return (
     <StyledBox basis={basis}>
       <StyledTagline color="white" size="xxlarge" weight="bold">
-        {copy.shipConfidently}
+        {copy.headline}
       </StyledTagline>
       <StyledDetail color="primaryTextLight" size="medium" weight="normal">
-        {copy.discoverBugs}
+        {copy.tagline}
       </StyledDetail>
       <Button href={routes.signUp} label={copy.startTesting} size="large" />
+      <Text
+        color="primaryTextLight"
+        margin={{ top: "xxsmall" }}
+        size="xsmall"
+        weight="normal"
+      >
+        {copy.noCreditCard}
+      </Text>
     </StyledBox>
   );
 }

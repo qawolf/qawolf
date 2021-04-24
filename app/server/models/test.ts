@@ -15,7 +15,7 @@ type CreateTest = {
   creator_id?: string;
   group_id?: string | null;
   guide?: string | null;
-  name?: string | null;
+  path?: string | null;
   team_id: string;
 };
 
@@ -33,7 +33,8 @@ type UpdateTest = {
   code?: string;
   id: string;
   is_enabled?: boolean;
-  name?: string;
+  name?: string | null;
+  path?: string | null;
   runner_requested_at?: null;
   version?: number;
 };
@@ -122,15 +123,16 @@ export const countTestsForTeam = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, guide, name, team_id }: CreateTest,
+  { code, creator_id, group_id, guide, path, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
   log.debug("team", team_id);
 
   const timestamp = minutesFromNow();
-  const uniqueName =
-    name || (await buildTestName({ guide, team_id }, { db, logger }));
+  const name = path
+    ? null
+    : await buildTestName({ guide, team_id }, { db, logger });
 
   const test = {
     created_at: timestamp,
@@ -141,7 +143,8 @@ export const createTest = async (
     guide: guide || null,
     id: cuid(),
     is_enabled: true,
-    name: uniqueName,
+    name,
+    path: path || null,
     team_id,
     updated_at: timestamp,
     version: 0,
@@ -344,7 +347,15 @@ export const hasTest = async (
 };
 
 export const updateTest = async (
-  { code, id, is_enabled, name, runner_requested_at, version }: UpdateTest,
+  {
+    code,
+    id,
+    is_enabled,
+    name,
+    path,
+    runner_requested_at,
+    version,
+  }: UpdateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("updateTest");
@@ -369,11 +380,16 @@ export const updateTest = async (
     const updates: Partial<Test> = {
       code: code || existingTest.code,
       is_enabled: isNil(is_enabled) ? existingTest.is_enabled : is_enabled,
-      name: name || existingTest.name,
       updated_at: minutesFromNow(),
       version: version || existingTest.version,
     };
 
+    if (name !== undefined) {
+      updates.name = name;
+    }
+    if (path !== undefined) {
+      updates.path = path;
+    }
     if (runner_requested_at === null) {
       updates.runner_requested_at = runner_requested_at;
     }

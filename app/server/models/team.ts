@@ -6,7 +6,9 @@ import { ClientError } from "../errors";
 import { ModelOptions, Team, TeamPlan } from "../types";
 import { buildApiKey, cuid } from "../utils";
 import { decrypt, encrypt } from "./encrypt";
+import { createEnvironment } from "./environment";
 
+const DEFAULT_ENVIRONMENT_NAME = "Environment";
 const DEFAULT_NAME = "My Team";
 
 type UpdateTeam = {
@@ -72,6 +74,11 @@ export const createDefaultTeam = async ({
   await db("teams").insert(team);
   log.debug("created", team);
 
+  await createEnvironment(
+    { name: DEFAULT_ENVIRONMENT_NAME, team_id: team.id },
+    { db, logger }
+  );
+
   return formatTeam(team);
 };
 
@@ -131,18 +138,17 @@ export const findTeamForEmail = async (
   { db, logger }: ModelOptions
 ): Promise<Team | null> => {
   const log = logger.prefix("findTeamForEmail");
-
   log.debug("email", email);
 
   let inbox = email;
-  if (email.includes("+")) {
-    const [prefix, suffix] = email.split("+");
+  if (inbox.includes("+")) {
+    // remove slug, example: test+admin@qawolf.com
+    const [prefix, suffix] = inbox.split("+");
     inbox = prefix + "@" + suffix.split("@")[1];
   }
 
   const team = await db("teams").where({ inbox }).first();
-
-  log.debug(team ? `found ${team.id}` : "not found");
+  log.debug(team ? `found ${team.id}: ${inbox}` : `not found: ${inbox}`);
 
   return team || null;
 };

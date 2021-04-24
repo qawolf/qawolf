@@ -432,7 +432,10 @@ type Test {
   is_enabled: Boolean!
 
   "A name for the test, for display in UI"
-  name: String!
+  name: String
+
+  "A path for the test file in git"
+  path: String
 
   "The ID of a team associated with this test"
   team_id: ID!

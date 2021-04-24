@@ -1,4 +1,5 @@
 export { ActionRecorder } from "./ActionRecorder";
+export { EventSequence } from "./EventSequence";
 export {
   generateRelativeCueSets,
   generateSortedCueSets,
@@ -14,7 +15,10 @@ export {
   isVisible,
 } from "./element";
 export { hasCommonAncestor, isElementMatch } from "./isElementMatch";
-export { resolveAction } from "./resolveAction";
+export {
+  _setAllowUntrustedEvents,
+  resolveElementAction,
+} from "./resolveElementAction";
 export { buildElementText, buildSelectorForCues } from "./selectorEngine";
 
 import { ActionRecorder } from "./ActionRecorder";

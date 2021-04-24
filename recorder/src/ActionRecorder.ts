@@ -1,20 +1,17 @@
 import { debug } from "./debug";
-import { getInputElementValue, isVisible } from "./element";
+import { isVisible } from "./element";
+import { EventSequence } from "./EventSequence";
 import { getSelector } from "./generateSelectors";
-import { resolveAction } from "./resolveAction";
-import {
-  Action,
-  Callback,
-  ElementAction,
-  PossibleAction,
-  RankedSelector,
-} from "./types";
+import { resolveElementAction } from "./resolveElementAction";
+import { Callback, ElementAction, RankedSelector } from "./types";
 
 type ActionCallback = Callback<ElementAction>;
 
+type EventListener = Callback<MouseEvent | KeyboardEvent | Event>;
+
 export class ActionRecorder {
+  _events = new EventSequence();
   _isStarted = false;
-  _lastReceivedAction: PossibleAction;
   _onDispose: Callback[] = [];
   _selectorCache = new Map<HTMLElement, RankedSelector>();
 
@@ -32,16 +29,20 @@ export class ActionRecorder {
   }
 
   listen(
-    eventName: "click" | "mousedown" | "input" | "change" | "keydown",
-    handler: (ev: MouseEvent | KeyboardEvent | Event) => any
+    eventType: "click" | "mousedown" | "input" | "change" | "keydown",
+    handler?: EventListener
   ): void {
-    document.addEventListener(eventName, handler, {
+    const listener: EventListener = handler
+      ? handler
+      : (e) => this.recordEvent(e);
+
+    document.addEventListener(eventType, listener, {
       capture: true,
       passive: true,
     });
 
     this._onDispose.push(() =>
-      document.removeEventListener(eventName, handler, {
+      document.removeEventListener(eventType, listener, {
         // `capture` value must match for proper removal
         // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener#Matching_event_listeners_for_removal
         capture: true,
@@ -49,12 +50,8 @@ export class ActionRecorder {
     );
   }
 
-  recordAction(
-    action: Action,
-    event: MouseEvent | KeyboardEvent | Event,
-    value?: string
-  ): void {
-    debug(`ActionRecorder: ${action} action detected`, event);
+  recordEvent(event: MouseEvent | KeyboardEvent | Event): void {
+    debug(`ActionRecorder: ${event.type} action detected`, event);
 
     const actionCallback: ActionCallback = (window as any).qawElementAction;
     if (!actionCallback) {
@@ -62,46 +59,21 @@ export class ActionRecorder {
       return;
     }
 
-    const time = Date.now();
+    this._events.add(event);
 
-    // This is mainly to make resolveAction easier to test.
-    // We then don't need to mock complicated browser Event object.
-    const possibleAction: PossibleAction = {
-      action,
-      isTrusted: event.isTrusted,
-      target: event.target as HTMLElement,
-      time,
-      value,
-    };
-
-    const resolvedAction = resolveAction({
-      lastReceivedAction: this._lastReceivedAction,
-      possibleAction,
-    });
-
-    this._lastReceivedAction = possibleAction;
+    const elementAction = resolveElementAction(this._events);
 
     // If no action was returned, this isn't an event we care about
     // so we can skip building a selector and emitting it.
-    if (!resolvedAction) return;
+    if (!elementAction) return;
 
-    let selector = "";
-
-    if (resolvedAction.action !== "keyboard.press") {
-      selector =
-        resolvedAction.selector ||
-        getSelector(event.target as HTMLElement, 1000, this._selectorCache);
-    }
-
-    const elementAction: ElementAction = {
-      action: resolvedAction.action,
-      selector,
-      time,
-    };
-
-    if (value !== undefined) {
-      // value should be coerced to an empty string
-      elementAction.value = typeof value === "string" ? value : "";
+    // Build the selector
+    if (elementAction.action !== "keyboard.press" && !elementAction.selector) {
+      elementAction.selector = getSelector(
+        event.target as HTMLElement,
+        1000,
+        this._selectorCache
+      );
     }
 
     debug(
@@ -123,48 +95,29 @@ export class ActionRecorder {
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if ((event as MouseEvent).button !== 0) return;
 
-      this.recordAction("click", event);
+      this.recordEvent(event);
     });
 
     // generate a selector for a visible mousedown
     // in case the click's target becomes invisible
     // we can fallback to this selector
     this.listen("mousedown", (event) => {
-      debug("ActionRecorder: mousedown action detected", event);
+      debug("ActionRecorder: mousedown detected", event);
 
       const target = event.target as HTMLElement;
       if (!event.isTrusted || !isVisible(target)) return;
 
-      const selector = getSelector(target, 1000, this._selectorCache);
-      if (!selector) return;
-
-      this._lastReceivedAction = {
-        action: "mousedown",
-        isTrusted: event.isTrusted,
-        selector,
-        target,
-        time: Date.now(),
-        value: undefined,
-      };
+      this._events.add(event, getSelector(target, 1000, this._selectorCache));
     });
 
     //////// INPUT EVENTS ////////
 
-    this.listen("input", (event) => {
-      const target = event.target as HTMLInputElement;
-      this.recordAction("fill", event, getInputElementValue(target));
-    });
-
-    this.listen("change", (event) => {
-      const target = event.target as HTMLInputElement;
-      this.recordAction("fill", event, getInputElementValue(target));
-    });
+    this.listen("input");
+    this.listen("change");
 
     //////// KEYBOARD EVENTS ////////
 
-    this.listen("keydown", (event) => {
-      this.recordAction("press", event, (event as KeyboardEvent).key);
-    });
+    this.listen("keydown");
 
     debug("ActionRecorder: started");
   }

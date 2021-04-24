@@ -216,8 +216,8 @@ export const resetRunner = async (
 };
 
 /**
- * @summary Delete workers that have been created for 5 minutes but not reported a health check
- *   and workers that have not reported a health check for 2 minutes.
+ * @summary Delete workers that have been created for 10 minutes but not reported a health check
+ *   and workers that have not reported a health check for 5 minutes.
  **/
 export const deleteUnhealthyRunners = async ({
   db,
@@ -231,14 +231,14 @@ export const deleteUnhealthyRunners = async ({
       this.where({ health_checked_at: null, deleted_at: null }).andWhere(
         "created_at",
         "<=",
-        minutesFromNow(-5)
+        minutesFromNow(-10)
       );
     })
     .orWhere(function () {
       this.where({ deleted_at: null }).andWhere(
         "health_checked_at",
         "<=",
-        minutesFromNow(-2)
+        minutesFromNow(-5)
       );
     });
 

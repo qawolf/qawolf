@@ -4,17 +4,16 @@ import { flame } from "./keyframes";
 
 const StyledDiv = styled.div`
   animation: ${flame} 3.2s linear infinite;
-  left: 18px;
+  left: 19px;
   position: absolute;
-  top: 266px;
+  top: 284px;
 `;
 
 export default function Flame(): JSX.Element {
   return (
     <StyledDiv>
       <svg
-        width="200"
-        height="202"
+        height="215"
         viewBox="0 0 200 202"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

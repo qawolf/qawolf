@@ -111,8 +111,6 @@ export const copy = {
   deployService: "Deploy service",
   deployment: "Deployment",
   deploymentsDetail: "Which deployments do you want to test?",
-  discoverBugs:
-    "Set up browser tests in minutes to discover bugs before your users do.",
   docs: "Docs",
   done: "Done",
   duration: "Duration",
@@ -182,6 +180,7 @@ export const copy = {
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
+  headline: "Simple and fast alternative to Selenium",
   helpers: "Helpers",
   history: "History",
   hourly: "Hourly",
@@ -234,6 +233,7 @@ export const copy = {
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
+  noCreditCard: "No credit card required",
   noEmail: "Please enter a valid email address",
   noGroup: "No group",
   noHistory: "No history yet",
@@ -302,6 +302,7 @@ export const copy = {
   selector: "Selector",
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 6`,
+  tagline: "Create tests online with your team and run them in 100% parallel",
   toggleCreateCode: "Toggle code creation",
   toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
@@ -324,7 +325,6 @@ export const copy = {
   share: "Share run",
   shareFail: "Error copying",
   shareSuccess: "Copied link!",
-  shipConfidently: "Ship confidently",
   ship: "Ship",
   shipFeatures: "Ship features, not bugs",
   shipFeaturesDetail: "It costs 5x as much to fix a bug after it is released.",

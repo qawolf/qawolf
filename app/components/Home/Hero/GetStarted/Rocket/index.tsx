@@ -5,7 +5,7 @@ import Flame from "./Flame";
 import InnerFlame from "./InnerFlame";
 import RocketIcon from "./RocketIcon";
 
-const flameOffset = "47px";
+const flameOffset = "50px";
 
 const StyledDiv = styled.div`
   display: none;

@@ -25,6 +25,14 @@ type ForwardEmail = {
   team: Team;
 };
 
+export const parseEmail = (email: string): string => {
+  const tagIndex = email.indexOf("<");
+  if (tagIndex < 0) return email;
+
+  // strip out the name, example: "QA Wolf <test@qawolf.email>" -> "test@qawolf.email"
+  return email.slice(tagIndex + 1).replace(">", "");
+};
+
 export const buildEmailFields = async (
   req: NextApiRequest
 ): Promise<EmailRequestFields> => {
@@ -33,8 +41,8 @@ export const buildEmailFields = async (
 
     form.parse(req, (err, fields): void => {
       if (err) return reject(err);
-      const { from, headers, html, subject, text, to } = fields;
-
+      const { from, headers, html, subject, text, to: toField } = fields;
+      const to = parseEmail(toField as string);
       resolve({ from, headers, html, subject, text, to } as EmailRequestFields);
     });
   });

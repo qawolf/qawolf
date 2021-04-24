@@ -17,14 +17,14 @@ const StyledBox = styled(Box)`
     align-items: center;
     flex-direction: row;
     height: 100%;
-    margin: ${offset.demoVideo} ${edgeSize.xxxlarge} 0;
+    margin: ${offset.hero} ${edgeSize.xxxlarge} 0;
     padding: 0;
     width: calc(100% - 2 * ${edgeSize.xxxlarge});
   }
 
   // 1080 + 64 * 2 = 1208px
   @media screen and (min-width: 1208px) {
-    margin: ${offset.demoVideo} auto 0;
+    margin: ${offset.hero} auto 0;
     width: ${width.content};
   }
 `;

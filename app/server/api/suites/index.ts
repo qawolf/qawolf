@@ -10,6 +10,7 @@ import {
 } from "../../models/team";
 import { findTrigger } from "../../models/trigger";
 import { ModelOptions, Trigger } from "../../types";
+import { parseVariables } from "../../utils";
 
 // errors example: https://stripe.com/docs/api/errors
 const ensureTriggerAccess = async (
@@ -81,10 +82,11 @@ export const handleSuitesRequest = async (
 
   try {
     log.debug("body", req.body);
-
     const { id, team_id } = await ensureTriggerAccess(req, options);
 
-    const environment_variables = req.body.env;
+    const environment_variables = req.body.env
+      ? parseVariables(req.body.env)
+      : null;
 
     const result = await createSuiteForTrigger(
       { environment_variables, team_id, trigger_id: id },

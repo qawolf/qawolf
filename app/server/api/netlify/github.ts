@@ -72,8 +72,9 @@ export const createCommentForIntegration = async (
   const log = options.logger.prefix("createCommentForIntegration");
   const { committed_at, pull_request_id } = req.body;
 
-  if (!committed_at || !integration) {
-    log.debug(`skip: no ${!committed_at ? "committed at" : "integration"}`);
+  if (!committed_at || !integration || !pull_request_id) {
+    const payload = { committed_at, integration, pull_request_id };
+    log.debug(`skip: missing field, ${JSON.stringify(payload)}`);
     return;
   }
 

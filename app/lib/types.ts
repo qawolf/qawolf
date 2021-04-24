@@ -143,6 +143,7 @@ export type ShortTest = {
   group_id: string | null;
   id: string;
   name: string;
+  path: string | null;
 };
 
 export type Test = ShortTest & {

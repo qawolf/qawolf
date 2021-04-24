@@ -26,7 +26,10 @@ const options = { db, logger };
 beforeAll(() => db("users").insert(buildUser({})));
 
 describe("createDefaultTeam", () => {
-  afterAll(() => db("teams").del());
+  afterAll(async () => {
+    await db("environments").del();
+    return db("teams").del();
+  });
 
   it("creates a free team", async () => {
     await createDefaultTeam(options);
@@ -52,8 +55,16 @@ describe("createDefaultTeam", () => {
         stripe_subscription_id: null,
       },
     ]);
-
     expect(decrypt(teams[0].api_key)).toMatch("qawolf_");
+
+    const environments = await db("environments");
+
+    expect(environments).toMatchObject([
+      {
+        name: "Environment",
+        team_id: teams[0].id,
+      },
+    ]);
   });
 });
 
@@ -130,18 +141,15 @@ describe("findTeamForEmail", () => {
 
   it("returns team for email", async () => {
     const team = await findTeamForEmail("pumpkin@dev.qawolf.email", options);
-
     expect(team).toMatchObject({ id: "teamId" });
 
     const team2 = await findTeamForEmail(
       "pumpkin+abc@dev.qawolf.email",
       options
     );
-
     expect(team2).toMatchObject({ id: "teamId" });
 
     const team3 = await findTeamForEmail("pumpkin+1@dev.qawolf.email", options);
-
     expect(team3).toMatchObject({ id: "teamId" });
   });
 
