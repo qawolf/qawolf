@@ -3,7 +3,7 @@ import {
   createSuitesForDeployment,
   shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
-import * as gitHubService from "../../../../server/services/gitHub/app";
+import * as gitHubService from "../../../../server/services/gitHub/commitStatus";
 import { prepareTestDb } from "../../db";
 import {
   buildIntegration,

@@ -7,7 +7,7 @@ import {
   Integration,
   ModelOptions,
 } from "../../types";
-import { createSyncInstallationAccessToken } from "./app";
+import { createSyncInstallationAccessToken } from "./commitStatus";
 
 export const findDefaultBranch = async (
   { octokit, owner, repo }: BaseGitHubFields,

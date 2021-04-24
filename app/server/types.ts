@@ -3,7 +3,7 @@ import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
 
-// Azure types
+// AWS types
 export type SaveArtifacts = {
   gifUrl: string | null;
   jsonUrl: string | null;

@@ -4,8 +4,8 @@ import {
   createGitHubIntegrationsResolver,
   gitHubBranchesResolver,
 } from "../../../server/resolvers/github";
-import * as gitHubService from "../../../server/services/gitHub/app";
 import * as branchService from "../../../server/services/gitHub/branch";
+import * as gitHubService from "../../../server/services/gitHub/commitStatus";
 import { prepareTestDb } from "../db";
 import { buildIntegration, buildTeam, buildUser, testContext } from "../utils";
 

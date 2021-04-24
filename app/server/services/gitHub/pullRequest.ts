@@ -14,7 +14,7 @@ import {
   User,
 } from "../../types";
 import { randomChoice } from "../../utils";
-import { createInstallationAccessToken } from "./app";
+import { createInstallationAccessToken } from "./commitStatus";
 import { buildCommentForSuite } from "./markdown";
 
 export type GitHubPullRequestComment = RestEndpointMethodTypes["issues"]["createComment"]["response"]["data"];

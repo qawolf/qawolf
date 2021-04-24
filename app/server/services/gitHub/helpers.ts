@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/rest";
 
 import { BaseGitHubFields, Integration, ModelOptions } from "../../types";
-import { createSyncInstallationAccessToken } from "./app";
+import { createSyncInstallationAccessToken } from "./commitStatus";
 
 export const buildGitHubFields = async (
   integration: Integration,

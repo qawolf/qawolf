@@ -1,4 +1,4 @@
-import * as gitHubService from "../../../../server/services/gitHub/app";
+import * as gitHubService from "../../../../server/services/gitHub/commitStatus";
 import { GitHubCommitStatus } from "../../../../server/types";
 import { prepareTestDb } from "../../db";
 import {

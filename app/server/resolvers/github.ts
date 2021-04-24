@@ -4,8 +4,8 @@ import {
   findIntegration,
   findIntegrationsForTeam,
 } from "../models/integration";
-import { findGitHubReposForInstallation } from "../services/gitHub/app";
 import { findBranchesForIntegration } from "../services/gitHub/branch";
+import { findGitHubReposForInstallation } from "../services/gitHub/commitStatus";
 import {
   Context,
   CreateGitHubIntegrationsMutation,

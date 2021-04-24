@@ -3,7 +3,7 @@ import { NextApiRequest } from "next";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findPullRequestCommentForTrigger } from "../../models/pull_request_comment";
 import { findRunsForSuite } from "../../models/run";
-import { createCommitStatus } from "../../services/gitHub/app";
+import { createCommitStatus } from "../../services/gitHub/commitStatus";
 import {
   createComment,
   updateComment,
