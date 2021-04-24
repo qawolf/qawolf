@@ -4,13 +4,13 @@ import { updateIntercomUser } from "../hooks/intercom";
 import { useCurrentUser, useTeam } from "../hooks/queries";
 import { identifySegmentUser, useSegmentPage } from "../hooks/segment";
 import { state } from "../lib/state";
-import { Team, User, Wolf } from "../lib/types";
+import { TeamWithUsers, User, Wolf } from "../lib/types";
 import { StateContext } from "./StateContext";
 
 export type UserContextValue = {
   isLoggedIn: boolean;
   isUserLoading: boolean;
-  team: Team | null;
+  team: TeamWithUsers | null;
   user: User | null;
   wolf: Wolf | null;
 };
