@@ -274,7 +274,8 @@ export const findTestsForTeam = async (
     .select("*")
     .from("tests")
     .where({ deleted_at: null, team_id })
-    .orderBy("name", "asc");
+    .orderBy("name", "asc")
+    .orderBy("path", "asc");
 
   log.debug(`found ${tests.length} tests for team ${team_id}`);
 

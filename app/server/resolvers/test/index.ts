@@ -32,7 +32,7 @@ import {
   ensureTestAccess,
   ensureUser,
 } from "../utils";
-import { deleteGitHubTests, upsertGitHubTests } from "./helpers";
+import { deleteGitHubTests, upsertGitHubTests } from "./gitHubTests";
 
 /**
  * @returns The new test object

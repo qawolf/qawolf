@@ -4,7 +4,7 @@ import {
   buildTestName,
   deleteGitHubTests,
   upsertGitHubTests,
-} from "../../../../server/resolvers/test/helpers";
+} from "../../../../server/resolvers/test/gitHubTests";
 import * as gitHubFile from "../../../../server/services/gitHub/file";
 import * as gitHubTree from "../../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../../db";
@@ -135,8 +135,8 @@ describe("upsertGitHubTests", () => {
     );
 
     expect(finalTests).toMatchObject([
-      { creator_id: null, name: "anotherTest" },
-      { name: "test" },
+      { creator_id: null, name: null, path: "anotherTest.test.js" },
+      { name: null, path: "group/test.test.js" },
     ]);
 
     const newTest = await db("tests").where({ name: "anotherTest" });

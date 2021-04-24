@@ -108,7 +108,7 @@ export const upsertGitHubTests = async (
   );
 
   const combinedTests = [...branchTests, ...missingTests].sort((a, b) => {
-    return a.name < b.name ? -1 : 1;
+    return a.path < b.path ? -1 : 1;
   });
   log.debug(`return ${combinedTests.length} tests`);
 
