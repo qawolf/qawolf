@@ -98,6 +98,10 @@ export const parseVariables = (
   }
 };
 
+export const slug = (): string => {
+  return buildCuid.slug();
+};
+
 export const validateEmail = (email: string, logger: Logger): void => {
   const isValid = EmailValidator.validate(email);
   if (isValid) return;

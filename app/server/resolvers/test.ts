@@ -27,7 +27,7 @@ import {
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
-import { cuid } from "../utils";
+import { slug } from "../utils";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
@@ -66,7 +66,7 @@ export const createTestResolver = async (
         creator_id: user.id,
         group_id,
         guide,
-        path: syncToGit ? `${cuid()}.test.js` : null,
+        path: syncToGit ? `${slug()}.test.js` : null,
         team_id: team_id,
       },
       { db: trx, logger }
