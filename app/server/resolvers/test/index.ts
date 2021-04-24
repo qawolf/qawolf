@@ -58,7 +58,7 @@ export const createTestResolver = async (
   });
 
   return db.transaction(async (trx) => {
-    const syncToGit = !(branch && team.git_sync_integration_id);
+    const syncToGit = !!(branch && team.git_sync_integration_id);
 
     const test = await createTest(
       {

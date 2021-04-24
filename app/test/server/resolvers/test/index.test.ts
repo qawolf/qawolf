@@ -144,9 +144,10 @@ describe("createTestResolver", () => {
       group_id: null,
       guide: null,
       id: expect.any(String),
-      name: "My Test",
+      name: null,
       url: "https://google.com",
     });
+    expect(test.path).toMatch(".test.js");
 
     expect(gitHubFile.createFileForTest).toBeCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatchObject({
