@@ -1,7 +1,6 @@
 import {
   createIntegrations,
   deleteIntegrations,
-  findIntegration,
   findIntegrationsForTeam,
 } from "../models/integration";
 import { findBranchesForIntegration } from "../services/gitHub/branch";
@@ -88,10 +87,8 @@ export const gitHubBranchesResolver = async (
     return null;
   }
 
-  const integration = await findIntegration(team.git_sync_integration_id, {
+  return findBranchesForIntegration(team.git_sync_integration_id, {
     db,
     logger,
   });
-
-  return findBranchesForIntegration(integration, { db, logger });
 };

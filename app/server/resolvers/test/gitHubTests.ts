@@ -62,7 +62,7 @@ export const deleteGitHubTests = async (
   }
 
   const integrationId = integrationIds[0];
-  const { gitHubFields, tests: gitHubTests } = await findTestsForBranch(
+  const { tests: gitHubTests, ...octokitRepo } = await findTestsForBranch(
     { branch, integrationId },
     options
   );
@@ -76,7 +76,7 @@ export const deleteGitHubTests = async (
   await Promise.all(
     testsToDelete.map((test) => {
       return deleteFile(
-        { ...gitHubFields, branch, path: `qawolf/${test.path}`, sha: test.sha },
+        { ...octokitRepo, branch, path: `qawolf/${test.path}`, sha: test.sha },
         options
       );
     })

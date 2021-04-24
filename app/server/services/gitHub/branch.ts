@@ -1,8 +1,7 @@
-import { Octokit } from "@octokit/rest";
 import { uniq } from "lodash";
 
-import { GitHubBranch, Integration, ModelOptions } from "../../types";
-import { createOctokitForInstallation, OctokitRepo } from "./app";
+import { GitHubBranch, ModelOptions } from "../../types";
+import { createOctokitForIntegration, OctokitRepo } from "./app";
 
 export const findDefaultBranch = async (
   { octokit, owner, repo }: OctokitRepo,
@@ -19,24 +18,16 @@ export const findDefaultBranch = async (
 };
 
 export const findBranchesForIntegration = async (
-  integration: Integration,
+  integrationId: string,
   options: ModelOptions
 ): Promise<GitHubBranch[]> => {
   const log = options.logger.prefix("findBranchesForIntegration");
 
-  const token = await createOctokitForInstallation(
-    { installationId: integration.github_installation_id, isSync: true },
-    options
-  );
-  const octokit = new Octokit({ auth: token });
+  const octokitRepo = await createOctokitForIntegration(integrationId, options);
 
-  const [owner, repo] = integration.github_repo_name?.split("/");
+  const defaultBranch = await findDefaultBranch(octokitRepo, options);
 
-  const defaultBranch = await findDefaultBranch(
-    { octokit, owner, repo },
-    options
-  );
-  const { data } = await octokit.repos.listBranches({ owner, repo });
+  const { data } = await octokitRepo.octokit.repos.listBranches(octokitRepo);
 
   const branches = uniq([defaultBranch, ...data.map((branch) => branch.name)]);
   branches.sort();
