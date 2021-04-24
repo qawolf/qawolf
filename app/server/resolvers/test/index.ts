@@ -56,27 +56,29 @@ export const createTestResolver = async (
     user,
   });
 
-  const test = await createTest(
-    {
-      code: buildTestCode(url),
-      creator_id: user.id,
-      group_id,
-      guide,
-      team_id: team_id,
-    },
-    { db, logger }
-  );
-
-  if (branch && team.git_sync_integration_id) {
-    log.debug("git branch", branch);
-
-    await createFileForTest(
-      { branch, integrationId: team.git_sync_integration_id, test },
-      { db, logger }
+  return db.transaction(async (trx) => {
+    const test = await createTest(
+      {
+        code: buildTestCode(url),
+        creator_id: user.id,
+        group_id,
+        guide,
+        team_id: team_id,
+      },
+      { db: trx, logger }
     );
-  }
 
-  return { ...test, url };
+    if (branch && team.git_sync_integration_id) {
+      log.debug("git branch", branch);
+
+      await createFileForTest(
+        { branch, integrationId: team.git_sync_integration_id, test },
+        { db: trx, logger }
+      );
+    }
+
+    return { ...test, url };
+  });
 };
 
 /**
