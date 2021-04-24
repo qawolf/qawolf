@@ -84,7 +84,7 @@ export const upsertGitHubTests = async (
   );
 
   const branchTests = tests.filter((test) => {
-    return test.guide || gitHubTests.some((t) => t.path === test.name);
+    return test.guide || gitHubTests.some((t) => t.path === test.path);
   });
   const missingTests = await createMissingTests(
     { gitHubTests, team_id, tests },

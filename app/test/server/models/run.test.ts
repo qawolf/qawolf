@@ -283,12 +283,18 @@ describe("run model", () => {
   describe("findRunsForSuite", () => {
     beforeAll(async () => {
       return db("tests")
-        .update({ deleted_at: minutesFromNow() })
+        .update({
+          deleted_at: minutesFromNow(),
+          name: null,
+          path: "myTest.test.js",
+        })
         .where({ id: "test3Id" });
     });
 
     afterAll(async () => {
-      return db("tests").update({ deleted_at: null }).where({ id: "test3Id" });
+      return db("tests")
+        .update({ deleted_at: null, name: "test2", path: null })
+        .where({ id: "test3Id" });
     });
 
     it("finds runs for a suite", async () => {
@@ -309,7 +315,7 @@ describe("run model", () => {
           is_test_deleted: true,
           suite_id: "suite2Id",
           test_id: "test3Id",
-          test_name: "testName2",
+          test_name: "myTest.test.js",
         },
       ]);
     });

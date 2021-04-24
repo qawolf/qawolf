@@ -28,6 +28,8 @@ export default function TestName({ disabled, test }: Props): JSX.Element {
     });
   };
 
+  const testName = test.name || test.path;
+
   return (
     <>
       <EditableText
@@ -36,7 +38,7 @@ export default function TestName({ disabled, test }: Props): JSX.Element {
         onSave={handleSave}
         placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
-        value={test.name}
+        value={testName}
       />
       <Divider
         height={edgeSize.large}

@@ -142,7 +142,7 @@ export type TeamWithUsers = Team & {
 export type ShortTest = {
   group_id: string | null;
   id: string;
-  name: string;
+  name: string | null;
   path: string | null;
 };
 

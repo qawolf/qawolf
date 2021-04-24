@@ -203,6 +203,7 @@ export const findRunsForSuite = async (
     .select("runs.*" as "*")
     .select("tests.deleted_at AS test_deleted_at")
     .select("tests.name AS test_name")
+    .select("tests.path AS test_path")
     .from("runs")
     .innerJoin("tests", "runs.test_id", "tests.id")
     .where({ "runs.suite_id": suite_id })
@@ -218,6 +219,7 @@ export const findRunsForSuite = async (
       ...run,
       gif_url,
       is_test_deleted: !!run.test_deleted_at,
+      test_name: run.test_name || run.test_path,
     };
   });
 };

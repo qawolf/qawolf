@@ -2406,10 +2406,6 @@ applies to images.
 using Audits.issueAdded event.
      */
     export type checkContrastParameters = {
-      /**
-       * Whether to report WCAG AAA level issues. Default is false.
-       */
-      reportAAA?: boolean;
     }
     export type checkContrastReturnValue = {
     }
@@ -8165,12 +8161,6 @@ https://tools.ietf.org/html/draft-west-cookie-priority-00
      */
     export type CookiePriority = "Low"|"Medium"|"High";
     /**
-     * Represents the source scheme of the origin that originally set the cookie.
-A value of "Unset" allows protocol clients to emulate legacy cookie scope for the scheme.
-This is a temporary ability and it will be removed in the future.
-     */
-    export type CookieSourceScheme = "Unset"|"NonSecure"|"Secure";
-    /**
      * Timing information for the request.
      */
     export interface ResourceTiming {
@@ -8703,16 +8693,6 @@ module) (0-based).
        * True if cookie is SameParty.
        */
       sameParty: boolean;
-      /**
-       * Cookie source scheme type.
-       */
-      sourceScheme: CookieSourceScheme;
-      /**
-       * Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
-An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
-This is a temporary ability and it will be removed in the future.
-       */
-      sourcePort: number;
     }
     /**
      * Types of reasons why a cookie may not be stored from a response.
@@ -8769,7 +8749,7 @@ errors.
       value: string;
       /**
        * The request-URI to associate with the setting of the cookie. This value can affect the
-default domain, path, source port, and source scheme values of the created cookie.
+default domain and path values of the created cookie.
        */
       url?: string;
       /**
@@ -8800,20 +8780,6 @@ default domain, path, source port, and source scheme values of the created cooki
        * Cookie Priority.
        */
       priority?: CookiePriority;
-      /**
-       * True if cookie is SameParty.
-       */
-      sameParty?: boolean;
-      /**
-       * Cookie source scheme type.
-       */
-      sourceScheme?: CookieSourceScheme;
-      /**
-       * Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
-An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
-This is a temporary ability and it will be removed in the future.
-       */
-      sourcePort?: number;
     }
     /**
      * Authorization challenge for HTTP status code 401 or 407.
@@ -9938,7 +9904,7 @@ attribute, user, password.
       value: string;
       /**
        * The request-URI to associate with the setting of the cookie. This value can affect the
-default domain, path, source port, and source scheme values of the created cookie.
+default domain and path values of the created cookie.
        */
       url?: string;
       /**
@@ -9969,20 +9935,6 @@ default domain, path, source port, and source scheme values of the created cooki
        * Cookie Priority type.
        */
       priority?: CookiePriority;
-      /**
-       * True if cookie is SameParty.
-       */
-      sameParty?: boolean;
-      /**
-       * Cookie source scheme type.
-       */
-      sourceScheme?: CookieSourceScheme;
-      /**
-       * Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
-An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
-This is a temporary ability and it will be removed in the future.
-       */
-      sourcePort?: number;
     }
     export type setCookieReturnValue = {
       /**
@@ -10818,24 +10770,6 @@ Backend then generates 'inspectNodeRequested' event upon element selection.
      */
     export type CrossOriginIsolatedContextType = "Isolated"|"NotIsolated"|"NotIsolatedFeatureDisabled";
     export type GatedAPIFeatures = "SharedArrayBuffers"|"SharedArrayBuffersTransferAllowed"|"PerformanceMeasureMemory"|"PerformanceProfile";
-    /**
-     * All Permissions Policy features. This enum should match the one defined
-in renderer/core/feature_policy/feature_policy_features.json5.
-     */
-    export type PermissionsPolicyFeature = "accelerometer"|"ambient-light-sensor"|"autoplay"|"camera"|"ch-dpr"|"ch-device-memory"|"ch-downlink"|"ch-ect"|"ch-lang"|"ch-rtt"|"ch-ua"|"ch-ua-arch"|"ch-ua-platform"|"ch-ua-model"|"ch-ua-mobile"|"ch-ua-full-version"|"ch-ua-platform-version"|"ch-viewport-width"|"ch-width"|"clipboard-read"|"clipboard-write"|"conversion-measurement"|"cross-origin-isolated"|"display-capture"|"document-domain"|"encrypted-media"|"execution-while-out-of-viewport"|"execution-while-not-rendered"|"focus-without-user-activation"|"fullscreen"|"frobulate"|"gamepad"|"geolocation"|"gyroscope"|"hid"|"idle-detection"|"interest-cohort"|"magnetometer"|"microphone"|"midi"|"otp-credentials"|"payment"|"picture-in-picture"|"publickey-credentials-get"|"screen-wake-lock"|"serial"|"storage-access-api"|"sync-xhr"|"trust-token-redemption"|"usb"|"vertical-scroll"|"web-share"|"xr-spatial-tracking";
-    /**
-     * Reason for a permissions policy feature to be disabled.
-     */
-    export type PermissionsPolicyBlockReason = "Header"|"IframeAttribute";
-    export interface PermissionsPolicyBlockLocator {
-      frameId: FrameId;
-      blockReason: PermissionsPolicyBlockReason;
-    }
-    export interface PermissionsPolicyFeatureState {
-      feature: PermissionsPolicyFeature;
-      allowed: boolean;
-      locator?: PermissionsPolicyBlockLocator;
-    }
     /**
      * Information about the Frame on the page.
      */
@@ -12076,15 +12010,6 @@ Argument will be ignored if reloading dataURL origin.
       enabled: boolean;
     }
     export type setBypassCSPReturnValue = {
-    }
-    /**
-     * Get Permissions Policy state on given frame.
-     */
-    export type getPermissionsPolicyStateParameters = {
-      frameId: FrameId;
-    }
-    export type getPermissionsPolicyStateReturnValue = {
-      states: PermissionsPolicyFeatureState[];
     }
     /**
      * Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
@@ -17908,7 +17833,6 @@ unsubscribes current runtime agent from Runtime.bindingCalled notifications.
     "Page.searchInResource": Page.searchInResourceParameters;
     "Page.setAdBlockingEnabled": Page.setAdBlockingEnabledParameters;
     "Page.setBypassCSP": Page.setBypassCSPParameters;
-    "Page.getPermissionsPolicyState": Page.getPermissionsPolicyStateParameters;
     "Page.setDeviceMetricsOverride": Page.setDeviceMetricsOverrideParameters;
     "Page.setDeviceOrientationOverride": Page.setDeviceOrientationOverrideParameters;
     "Page.setFontFamilies": Page.setFontFamiliesParameters;
@@ -18417,7 +18341,6 @@ unsubscribes current runtime agent from Runtime.bindingCalled notifications.
     "Page.searchInResource": Page.searchInResourceReturnValue;
     "Page.setAdBlockingEnabled": Page.setAdBlockingEnabledReturnValue;
     "Page.setBypassCSP": Page.setBypassCSPReturnValue;
-    "Page.getPermissionsPolicyState": Page.getPermissionsPolicyStateReturnValue;
     "Page.setDeviceMetricsOverride": Page.setDeviceMetricsOverrideReturnValue;
     "Page.setDeviceOrientationOverride": Page.setDeviceOrientationOverrideReturnValue;
     "Page.setFontFamilies": Page.setFontFamiliesReturnValue;
@@ -21191,12 +21114,12 @@ export interface Page {
    */
   setInputFiles(selector: string, files: string|Array<string>|{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -21206,12 +21129,12 @@ export interface Page {
     buffer: Buffer;
   }|Array<{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -21884,9 +21807,7 @@ export interface Frame {
    * The only difference between
    * [frame.evaluate(pageFunction[, arg])](https://playwright.dev/docs/api/class-frame#frameevaluatepagefunction-arg) and
    * [frame.evaluateHandle(pageFunction[, arg])](https://playwright.dev/docs/api/class-frame#frameevaluatehandlepagefunction-arg)
-   * is that
-   * [frame.evaluateHandle(pageFunction[, arg])](https://playwright.dev/docs/api/class-frame#frameevaluatehandlepagefunction-arg)
-   * returns [JSHandle].
+   * is that [method: Frame.evaluateHandle`] returns [JSHandle].
    * 
    * If the function, passed to the
    * [frame.evaluateHandle(pageFunction[, arg])](https://playwright.dev/docs/api/class-frame#frameevaluatehandlepagefunction-arg),
@@ -22809,12 +22730,12 @@ export interface Frame {
    */
   setInputFiles(selector: string, files: string|Array<string>|{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -22824,12 +22745,12 @@ export interface Frame {
     buffer: Buffer;
   }|Array<{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -23191,11 +23112,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23222,11 +23143,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23253,11 +23174,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23284,11 +23205,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23315,11 +23236,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23532,7 +23453,7 @@ export interface BrowserContext {
   newPage(): Promise<Page>;
 
   /**
-   * Returns all open pages in the context.
+   * Returns all open pages in the context. 
    */
   pages(): Array<Page>;
 
@@ -23728,11 +23649,11 @@ export interface BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -23773,7 +23694,7 @@ export interface Worker {
    * [worker.evaluate(pageFunction[, arg])](https://playwright.dev/docs/api/class-worker#workerevaluatepagefunction-arg)
    * returns a non-[Serializable] value, then
    * [worker.evaluate(pageFunction[, arg])](https://playwright.dev/docs/api/class-worker#workerevaluatepagefunction-arg)
-   * returns `undefined`. Playwright also supports transferring some additional values that are not serializable by `JSON`:
+   * returns `undefined`. Playwright also supports transferring some  additional values that are not serializable by `JSON`:
    * `-0`, `NaN`, `Infinity`, `-Infinity`.
    * @param pageFunction Function to be evaluated in the worker context.
    * @param arg Optional argument to pass to `pageFunction`.
@@ -24636,12 +24557,12 @@ export interface ElementHandle<T=Node> extends JSHandle<T> {
    */
   setInputFiles(files: string|Array<string>|{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -24651,12 +24572,12 @@ export interface ElementHandle<T=Node> extends JSHandle<T> {
     buffer: Buffer;
   }|Array<{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -24970,11 +24891,6 @@ export interface BrowserType<Browser> {
     bypassCSP?: boolean;
 
     /**
-     * Browser distribution channel.
-     */
-    channel?: "chrome"|"chrome-beta"|"chrome-dev"|"chrome-canary"|"msedge"|"msedge-beta"|"msedge-dev"|"msedge-canary";
-
-    /**
      * Enable Chromium sandboxing. Defaults to `true`.
      */
     chromiumSandbox?: boolean;
@@ -24982,7 +24898,7 @@ export interface BrowserType<Browser> {
     /**
      * Emulates `'prefers-colors-scheme'` media feature, supported values are `'light'`, `'dark'`, `'no-preference'`. See
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#pageemulatemediaoptions) for more details.
-     * Defaults to `'light'`.
+     * Defaults to '`light`'.
      */
     colorScheme?: "light"|"dark"|"no-preference";
 
@@ -25662,9 +25578,6 @@ type AccessibilityNode = {
 export const selectors: Selectors;
 export const devices: Devices & DeviceDescriptor[];
 
-//@ts-ignore this will be any if electron is not installed
-type ElectronType = typeof import('electron');
-
 /**
  * Electron application representation. You can use
  * [electron.launch([options])](https://playwright.dev/docs/api/class-electron#electronlaunchoptions) to obtain the
@@ -25718,8 +25631,8 @@ export interface ElectronApplication {
    * @param pageFunction Function to be evaluated in the worker context.
    * @param arg Optional argument to pass to `pageFunction`.
    */
-  evaluate<R, Arg>(pageFunction: PageFunctionOn<ElectronType, Arg, R>, arg: Arg): Promise<R>;
-  evaluate<R>(pageFunction: PageFunctionOn<ElectronType, void, R>, arg?: any): Promise<R>;
+  evaluate<R, Arg>(pageFunction: PageFunctionOn<any, Arg, R>, arg: Arg): Promise<R>;
+  evaluate<R>(pageFunction: PageFunctionOn<any, void, R>, arg?: any): Promise<R>;
 
   /**
    * Returns the return value of `pageFunction` as a [JSHandle].
@@ -25740,8 +25653,8 @@ export interface ElectronApplication {
    * @param pageFunction Function to be evaluated in the worker context.
    * @param arg 
    */
-  evaluateHandle<R, Arg>(pageFunction: PageFunctionOn<ElectronType, Arg, R>, arg: Arg): Promise<SmartHandle<R>>;
-  evaluateHandle<R>(pageFunction: PageFunctionOn<ElectronType, void, R>, arg?: any): Promise<SmartHandle<R>>;
+  evaluateHandle<R, Arg>(pageFunction: PageFunctionOn<any, Arg, R>, arg: Arg): Promise<SmartHandle<R>>;
+  evaluateHandle<R>(pageFunction: PageFunctionOn<any, void, R>, arg?: any): Promise<SmartHandle<R>>;
   /**
    * This event is issued when the application closes.
    */
@@ -25934,17 +25847,17 @@ export {};
  * Playwright has **experimental** support for Android automation. You can access android namespace via:
  * 
  * ```js
- * const { _android: android } = require('playwright');
+ * const { _android } = require('playwright');
  * ```
  * 
  * An example of the Android automation script would be:
  * 
  * ```js
- * const { _android: android } = require('playwright');
+ * const { _android } = require('playwright');
  * 
  * (async () => {
  *   // Connect to the device.
- *   const [device] = await android.devices();
+ *   const [device] = await playwright._android.devices();
  *   console.log(`Model: ${device.model()}`);
  *   console.log(`Serial: ${device.serial()}`);
  *   // Take screenshot of the whole device.
@@ -25965,7 +25878,7 @@ export {};
  * 
  *     // Work with WebView's page as usual.
  *     const page = await webview.page();
- *     await page.waitForNavigation({ url: /.*microsoft\/playwright.*\/ });
+ *     await page.page.waitForNavigation({ url: /.*microsoft\/playwright.*\/ });
  *     console.log(await page.title());
  *   }
  * 
@@ -26146,7 +26059,7 @@ export interface AndroidDevice {
     /**
      * Emulates `'prefers-colors-scheme'` media feature, supported values are `'light'`, `'dark'`, `'no-preference'`. See
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#pageemulatemediaoptions) for more details.
-     * Defaults to `'light'`.
+     * Defaults to '`light`'.
      */
     colorScheme?: "light"|"dark"|"no-preference";
 
@@ -26875,7 +26788,7 @@ export interface Browser extends EventEmitter {
     /**
      * Emulates `'prefers-colors-scheme'` media feature, supported values are `'light'`, `'dark'`, `'no-preference'`. See
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#pageemulatemediaoptions) for more details.
-     * Defaults to `'light'`.
+     * Defaults to '`light`'.
      */
     colorScheme?: "light"|"dark"|"no-preference";
 
@@ -27247,11 +27160,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27290,11 +27203,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27333,11 +27246,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27376,11 +27289,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27419,11 +27332,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27478,11 +27391,11 @@ export interface ChromiumBrowserContext extends BrowserContext {
    * done and its response has started loading in the popup.
    * 
    * ```js
-   * const [newPage] = await Promise.all([
+   * const [page] = await Promise.all([
    *   context.waitForEvent('page'),
    *   page.click('a[target=_blank]'),
    * ]);
-   * console.log(await newPage.evaluate('location.href'));
+   * console.log(await page.evaluate('location.href'));
    * ```
    * 
    * > NOTE: Use
@@ -27672,9 +27585,9 @@ export interface ConsoleMessage {
  *   page.on('dialog', async dialog => {
  *     console.log(dialog.message());
  *     await dialog.dismiss();
+ *     await browser.close();
  *   });
- *   await page.evaluate(() => alert('1'));
- *   await browser.close();
+ *   page.evaluate(() => alert('1'));
  * })();
  * ```
  * 
@@ -27742,23 +27655,22 @@ export interface Download {
   createReadStream(): Promise<null|Readable>;
 
   /**
-   * Deletes the downloaded file. Will wait for the download to finish if necessary.
+   * Deletes the downloaded file.
    */
   delete(): Promise<void>;
 
   /**
-   * Returns download error if any. Will wait for the download to finish if necessary.
+   * Returns download error if any.
    */
   failure(): Promise<null|string>;
 
   /**
-   * Returns path to the downloaded file in case of successful download. The method will wait for the download to finish if
-   * necessary.
+   * Returns path to the downloaded file in case of successful download.
    */
   path(): Promise<null|string>;
 
   /**
-   * Saves the download to a user-specified path. It is safe to call this method while the download is still in progress.
+   * Saves the download to a user-specified path.
    * @param path Path where the download should be saved.
    */
   saveAs(path: string): Promise<void>;
@@ -27888,12 +27800,12 @@ export interface FileChooser {
    */
   setFiles(files: string|Array<string>|{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -27903,12 +27815,12 @@ export interface FileChooser {
     buffer: Buffer;
   }|Array<{
     /**
-     * File name
+     * [File] name
      */
     name: string;
 
     /**
-     * File type
+     * [File] type
      */
     mimeType: string;
 
@@ -28976,7 +28888,7 @@ export interface BrowserContextOptions {
   /**
    * Emulates `'prefers-colors-scheme'` media feature, supported values are `'light'`, `'dark'`, `'no-preference'`. See
    * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#pageemulatemediaoptions) for more details.
-   * Defaults to `'light'`.
+   * Defaults to '`light`'.
    */
   colorScheme?: "light"|"dark"|"no-preference";
 
@@ -29262,11 +29174,6 @@ export interface LaunchOptions {
    * [here](http://peter.sh/experiments/chromium-command-line-switches/).
    */
   args?: Array<string>;
-
-  /**
-   * Browser distribution channel.
-   */
-  channel?: "chrome"|"chrome-beta"|"chrome-dev"|"chrome-canary"|"msedge"|"msedge-beta"|"msedge-dev"|"msedge-canary";
 
   /**
    * Enable Chromium sandboxing. Defaults to `false`.

@@ -47,7 +47,7 @@ export default function Options({ hasGroups, test }: Props): JSX.Element {
     <Box ref={ref}>
       <Button
         IconComponent={More}
-        a11yTitle={`${test.name} options`}
+        a11yTitle={`${test.name || test.path} options`}
         onClick={handleClick}
         type="ghost"
       />
