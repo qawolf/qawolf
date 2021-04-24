@@ -59,7 +59,7 @@ export const deleteGitHubTests = async (
   );
 
   const testsToDelete = gitHubTests.filter((test) => {
-    return tests.some((t) => t.name === test.path);
+    return tests.some((t) => t.path === test.path);
   });
 
   await Promise.all(

@@ -45,7 +45,7 @@ beforeAll(async () => {
   ]);
 
   await db("tests").insert([
-    buildTest({ name: "My Test" }),
+    buildTest({ path: "group/myTest.test.js" }),
     buildTest({ i: 2, name: "Other Test" }),
     buildTest({
       creator_id: "user2Id",
