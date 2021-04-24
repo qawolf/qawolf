@@ -1,8 +1,7 @@
 import { camelCase } from "lodash";
 
-import { findIntegration } from "../../models/integration";
 import { BaseGitHubFields, ModelOptions, Test } from "../../types";
-import { buildGitHubFields } from "./helpers";
+import { createOctokitForIntegration } from "./app";
 
 type CreateFileForTest = {
   branch: string;
@@ -23,9 +22,8 @@ export const createFileForTest = async (
   const log = options.logger.prefix("createFileForTest");
   log.debug("test", test.id, "branch", branch);
 
-  const integration = await findIntegration(integrationId, options);
-  const { octokit, owner, repo } = await buildGitHubFields(
-    integration,
+  const { octokit, owner, repo } = await createOctokitForIntegration(
+    integrationId,
     options
   );
 

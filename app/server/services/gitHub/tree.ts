@@ -1,7 +1,6 @@
-import { findIntegration } from "../../models/integration";
 import { BaseGitHubFields, GitTree, ModelOptions } from "../../types";
 import { GIT_TEST_FILE_EXTENSION } from "../../utils";
-import { buildGitHubFields } from "./helpers";
+import { createOctokitForIntegration } from "./app";
 
 type FindTestsForBranch = {
   branch: string;
@@ -44,8 +43,7 @@ export const findTestsForBranch = async (
 ): Promise<FindTestsForBranchResult> => {
   const log = options.logger.prefix("findTestsForBranch");
 
-  const integration = await findIntegration(integrationId, options);
-  const fields = await buildGitHubFields(integration, options);
+  const fields = await createOctokitForIntegration(integrationId, options);
 
   const tree = await findTreeForBranch(
     { ...fields, tree_sha: branch },

@@ -1,14 +1,13 @@
 import { RestEndpointMethodTypes } from "@octokit/rest";
 import { camelCase } from "lodash";
 
-import { connectDb } from "../../db";
-import { Logger } from "../../Logger";
-import { findIntegration } from "../../models/integration";
+// import { connectDb } from "../../db";
+// import { Logger } from "../../Logger";
 import { findTeam } from "../../models/team";
 import { findTestsForTeam } from "../../models/test";
 import { BaseGitHubFields, ModelOptions, Team } from "../../types";
+import { createOctokitForIntegration } from "./app";
 import { findDefaultBranch } from "./branch";
-import { buildGitHubFields } from "./helpers";
 
 type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
@@ -146,12 +145,11 @@ export const createInitialCommit = async (
   log.debug("team", team_id);
 
   const team = await findTeam(team_id, options);
-  const integration = await findIntegration(
+
+  const fields = await createOctokitForIntegration(
     team.git_sync_integration_id,
     options
   );
-
-  const fields = await buildGitHubFields(integration, options);
 
   const branch = await findDefaultBranch(fields, options);
   const tree = await buildQaWolfTree(team, options);

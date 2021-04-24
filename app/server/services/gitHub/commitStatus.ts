@@ -1,10 +1,8 @@
-import { createAppAuth } from "@octokit/auth-app";
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 import { uniq } from "lodash";
 
 import environment from "../../environment";
 import { Logger } from "../../Logger";
-import { findSystemEnvironmentVariable } from "../../models/environment_variable";
 import {
   findGitHubCommitStatusForSuite,
   updateGitHubCommitStatus,
@@ -14,6 +12,7 @@ import {
   GitHubCommitStatus as GitHubCommitStatusModel,
   ModelOptions,
 } from "../../types";
+import { createOctokitForInstallation } from "./app";
 
 export type GitHubCommitStatus = RestEndpointMethodTypes["repos"]["createCommitStatus"]["response"]["data"];
 
@@ -46,50 +45,6 @@ type ShouldUpdateCommitStatus = {
   logger: Logger;
 };
 
-export const createInstallationAccessToken = async (
-  installationId: number,
-  options: ModelOptions
-): Promise<string> => {
-  const privateKeyVariable = await findSystemEnvironmentVariable(
-    "GITHUB_APP_PRIVATE_KEY",
-    options
-  );
-
-  const auth = createAppAuth({
-    appId: environment.GITHUB_APP_ID,
-    clientId: environment.GITHUB_OAUTH_CLIENT_ID,
-    clientSecret: environment.GITHUB_APP_CLIENT_SECRET,
-    installationId,
-    privateKey: JSON.parse(privateKeyVariable.value),
-  });
-
-  const { token } = await auth({ type: "installation" });
-
-  return token;
-};
-
-export const createSyncInstallationAccessToken = async (
-  installationId: number,
-  options: ModelOptions
-): Promise<string> => {
-  const privateKeyVariable = await findSystemEnvironmentVariable(
-    "GITHUB_SYNC_APP_PRIVATE_KEY",
-    options
-  );
-
-  const auth = createAppAuth({
-    appId: environment.GITHUB_SYNC_APP_ID,
-    clientId: environment.GITHUB_OAUTH_CLIENT_ID,
-    clientSecret: environment.GITHUB_SYNC_APP_CLIENT_SECRET,
-    installationId,
-    privateKey: JSON.parse(privateKeyVariable.value),
-  });
-
-  const { token } = await auth({ type: "installation" });
-
-  return token;
-};
-
 export const createCommitStatus = async (
   {
     context,
@@ -102,8 +57,10 @@ export const createCommitStatus = async (
   }: CreateCommitStatus,
   options: ModelOptions
 ): Promise<GitHubCommitStatus> => {
-  const token = await createInstallationAccessToken(installationId, options);
-  const octokit = new Octokit({ auth: token });
+  const { octokit } = await createOctokitForInstallation(
+    { installationId },
+    options
+  );
 
   let description = "Running";
   if (state === "failure") description = "Fail";
@@ -126,8 +83,10 @@ export const findBranchesForCommit = async (
   { installationId, owner, repo, sha }: FindBranchesForCommit,
   options: ModelOptions
 ): Promise<string[]> => {
-  const token = await createInstallationAccessToken(installationId, options);
-  const octokit = new Octokit({ auth: token });
+  const { octokit } = await createOctokitForInstallation(
+    { installationId },
+    options
+  );
 
   const { data } = await octokit.checks.listSuitesForRef({
     owner,
@@ -145,10 +104,10 @@ export const findGitHubReposForInstallation = async (
   const log = options.logger.prefix("findGitHubReposForInstallation");
 
   try {
-    const token = isSync
-      ? await createSyncInstallationAccessToken(installationId, options)
-      : await createInstallationAccessToken(installationId, options);
-    const octokit = new Octokit({ auth: token });
+    const { octokit } = await createOctokitForInstallation(
+      { installationId, isSync },
+      options
+    );
 
     const {
       data: { repositories },

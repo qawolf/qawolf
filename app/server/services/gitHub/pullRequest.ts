@@ -1,4 +1,4 @@
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 
 import { findIntegration } from "../../models/integration";
 import * as pullRequestCommentModel from "../../models/pull_request_comment";
@@ -14,7 +14,7 @@ import {
   User,
 } from "../../types";
 import { randomChoice } from "../../utils";
-import { createInstallationAccessToken } from "./commitStatus";
+import { createOctokitForInstallation } from "./app";
 import { buildCommentForSuite } from "./markdown";
 
 export type GitHubPullRequestComment = RestEndpointMethodTypes["issues"]["createComment"]["response"]["data"];
@@ -57,8 +57,10 @@ export const createPullRequestComment = async (
   { installationId, pullRequestId, ...fields }: CreatePullRequestComment,
   options: ModelOptions
 ): Promise<GitHubPullRequestComment> => {
-  const token = await createInstallationAccessToken(installationId, options);
-  const octokit = new Octokit({ auth: token });
+  const { octokit } = await createOctokitForInstallation(
+    { installationId },
+    options
+  );
 
   const { data } = await octokit.issues.createComment({
     ...fields,
@@ -72,8 +74,10 @@ export const updatePullRequestComment = async (
   { commentId, installationId, ...fields }: UpdatePullRequestComment,
   options: ModelOptions
 ): Promise<GitHubPullRequestComment> => {
-  const token = await createInstallationAccessToken(installationId, options);
-  const octokit = new Octokit({ auth: token });
+  const { octokit } = await createOctokitForInstallation(
+    { installationId },
+    options
+  );
 
   const { data } = await octokit.issues.updateComment({
     ...fields,

@@ -7,7 +7,7 @@ import {
   Integration,
   ModelOptions,
 } from "../../types";
-import { createSyncInstallationAccessToken } from "./commitStatus";
+import { createOctokitForInstallation } from "./app";
 
 export const findDefaultBranch = async (
   { octokit, owner, repo }: BaseGitHubFields,
@@ -29,11 +29,12 @@ export const findBranchesForIntegration = async (
 ): Promise<GitHubBranch[]> => {
   const log = options.logger.prefix("findBranchesForIntegration");
 
-  const token = await createSyncInstallationAccessToken(
-    integration.github_installation_id,
+  const token = await createOctokitForInstallation(
+    { installationId: integration.github_installation_id, isSync: true },
     options
   );
   const octokit = new Octokit({ auth: token });
+
   const [owner, repo] = integration.github_repo_name?.split("/");
 
   const defaultBranch = await findDefaultBranch(
