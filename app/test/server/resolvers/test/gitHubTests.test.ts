@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as testModel from "../../../../server/models/test";
 import {
-  buildTestName,
   deleteGitHubTests,
   upsertGitHubTests,
 } from "../../../../server/resolvers/test/gitHubTests";
@@ -62,14 +61,6 @@ beforeAll(async () => {
   });
 
   return db("runs").insert(run);
-});
-
-describe("buildTestName", () => {
-  it("builds a test name from path", () => {
-    expect(buildTestName("myTest.test.js")).toBe("myTest");
-    expect(buildTestName("group/myTest.test.js")).toBe("myTest");
-    expect(buildTestName("group/subgroup/myTest.test.js")).toBe("myTest");
-  });
 });
 
 describe("deleteGitHubTests", () => {

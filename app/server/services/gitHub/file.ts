@@ -1,5 +1,3 @@
-import { camelCase } from "lodash";
-
 import { ModelOptions, Test } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
 
@@ -27,7 +25,7 @@ export const createFileForTest = async (
     options
   );
 
-  const path = `qawolf/${camelCase(test.name)}.test.js`;
+  const path = `qawolf/${test.path}`;
 
   await octokit.repos.createOrUpdateFileContents({
     branch,

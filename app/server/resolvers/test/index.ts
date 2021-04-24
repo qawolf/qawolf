@@ -26,6 +26,7 @@ import {
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../../types";
+import { cuid } from "../../utils";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
@@ -57,18 +58,21 @@ export const createTestResolver = async (
   });
 
   return db.transaction(async (trx) => {
+    const syncToGit = !(branch && team.git_sync_integration_id);
+
     const test = await createTest(
       {
         code: buildTestCode(url),
         creator_id: user.id,
         group_id,
         guide,
+        path: syncToGit ? `${cuid()}.test.js` : null,
         team_id: team_id,
       },
       { db: trx, logger }
     );
 
-    if (branch && team.git_sync_integration_id) {
+    if (syncToGit) {
       log.debug("git branch", branch);
 
       await createFileForTest(

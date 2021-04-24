@@ -1,11 +1,10 @@
-import { camelCase, last, uniq } from "lodash";
+import { uniq } from "lodash";
 
 import { ClientError } from "../../errors";
 import { createTest } from "../../models/test";
 import { deleteFile } from "../../services/gitHub/file";
 import { findTestsForBranch } from "../../services/gitHub/tree";
 import { GitTree, ModelOptions, Team, Test } from "../../types";
-import { GIT_TEST_FILE_EXTENSION } from "../../utils";
 
 type CreateMissingTests = {
   gitHubTests: GitTree["tree"];
@@ -24,13 +23,6 @@ type UpsertGitHubTests = {
   integrationId: string;
   team_id: string;
   tests: Test[];
-};
-
-export const buildTestName = (path: string): string => {
-  const file = path.split(GIT_TEST_FILE_EXTENSION)[0];
-  const fileWithoutFolder = last(file.split("/"));
-
-  return fileWithoutFolder;
 };
 
 const createMissingTests = async (
@@ -55,7 +47,6 @@ export const deleteGitHubTests = async (
   const log = options.logger.prefix("deleteGitHubTests");
 
   const integrationIds = uniq(teams.map((t) => t.git_sync_integration_id));
-  console.log("IDS", integrationIds);
   if (integrationIds.length !== 1) {
     log.error("multiple integration ids", integrationIds);
     throw new ClientError("tests belong to multiple teams");
@@ -68,9 +59,7 @@ export const deleteGitHubTests = async (
   );
 
   const testsToDelete = gitHubTests.filter((test) => {
-    return tests.some((t) => {
-      return buildTestName(test.path) === camelCase(t.name);
-    });
+    return tests.some((t) => t.name === test.path);
   });
 
   await Promise.all(
@@ -95,12 +84,7 @@ export const upsertGitHubTests = async (
   );
 
   const branchTests = tests.filter((test) => {
-    return (
-      test.guide ||
-      gitHubTests.some((t) => {
-        return buildTestName(t.path) === camelCase(test.name);
-      })
-    );
+    return test.guide || gitHubTests.some((t) => t.path === test.name);
   });
   const missingTests = await createMissingTests(
     { gitHubTests, team_id, tests },
