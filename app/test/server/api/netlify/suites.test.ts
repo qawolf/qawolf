@@ -6,7 +6,7 @@ import {
   shouldCreateSuites,
 } from "../../../../server/api/netlify/suites";
 import { encrypt } from "../../../../server/models/encrypt";
-import * as gitHubService from "../../../../server/services/gitHub/app";
+import * as gitHubService from "../../../../server/services/gitHub/commitStatus";
 import * as prService from "../../../../server/services/gitHub/pullRequest";
 import { minutesFromNow } from "../../../../shared/utils";
 import { prepareTestDb } from "../../db";

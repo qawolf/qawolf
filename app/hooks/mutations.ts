@@ -89,6 +89,7 @@ type CreateEnvironmentVariableVariables = {
 
 type CreateGitHubIntegrationsVariables = {
   installation_id: number;
+  is_sync: boolean;
   team_id: string;
 };
 
@@ -183,6 +184,7 @@ export type CreateTestData = {
 };
 
 type CreateTestVariables = {
+  branch?: string | null;
   group_id?: string | null;
   guide?: string | null;
   team_id: string;
@@ -227,6 +229,7 @@ type DeleteTestsData = {
 };
 
 type DeleteTestsVariables = {
+  branch: string | null;
   ids: string[];
 };
 

@@ -1,191 +1,82 @@
 import { createAppAuth } from "@octokit/auth-app";
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { Octokit } from "@octokit/rest";
 
 import environment from "../../environment";
-import { Logger } from "../../Logger";
 import { findSystemEnvironmentVariable } from "../../models/environment_variable";
-import {
-  findGitHubCommitStatusForSuite,
-  updateGitHubCommitStatus,
-} from "../../models/github_commit_status";
-import { findRunsForSuite } from "../../models/run";
-import {
-  GitHubCommitStatus as GitHubCommitStatusModel,
-  ModelOptions,
-} from "../../types";
+import { findIntegration } from "../../models/integration";
+import { ModelOptions } from "../../types";
 
-export type GitHubCommitStatus = RestEndpointMethodTypes["repos"]["createCommitStatus"]["response"]["data"];
-
-export type GitHubRepos = RestEndpointMethodTypes["apps"]["listReposAccessibleToInstallation"]["response"]["data"]["repositories"];
-
-type CreateCommitStatus = {
-  context: string;
+type InstallationOptions = {
   installationId: number;
-  owner: string;
-  repo: string;
-  sha: string;
-  state?: "failure" | "pending" | "success";
-  suiteId: string;
+  isSync?: boolean;
 };
 
-type FindBranchesForCommit = {
-  installationId: number;
-  owner: string;
-  repo: string;
-  sha: string;
+type OctokitResult = {
+  octokit: Octokit;
+  token: string;
 };
 
-type ShouldUpdateCommitStatus = {
-  gitHubCommitStatus: GitHubCommitStatusModel | null;
-  logger: Logger;
+export type OctokitRepo = {
+  octokit: Octokit;
+  owner: string;
+  repo: string;
 };
 
 export const createInstallationAccessToken = async (
-  installationId: number,
+  { installationId, isSync }: InstallationOptions,
   options: ModelOptions
 ): Promise<string> => {
   const privateKeyVariable = await findSystemEnvironmentVariable(
-    "GITHUB_APP_PRIVATE_KEY",
+    isSync ? "GITHUB_SYNC_APP_PRIVATE_KEY" : "GITHUB_APP_PRIVATE_KEY",
+    options
+  );
+  const clientSecretVariable = await findSystemEnvironmentVariable(
+    isSync ? "GITHUB_SYNC_APP_CLIENT_SECRET" : "GITHUB_APP_CLIENT_SECRET",
     options
   );
 
+  const appId = isSync
+    ? environment.GITHUB_SYNC_APP_ID
+    : environment.GITHUB_APP_ID;
+
   const auth = createAppAuth({
-    appId: environment.GITHUB_APP_ID,
+    appId,
     clientId: environment.GITHUB_OAUTH_CLIENT_ID,
-    clientSecret: environment.GITHUB_APP_CLIENT_SECRET,
+    clientSecret: clientSecretVariable.value,
     installationId,
     privateKey: JSON.parse(privateKeyVariable.value),
   });
 
   const { token } = await auth({ type: "installation" });
-
   return token;
 };
 
-export const createCommitStatus = async (
-  {
-    context,
-    installationId,
-    owner,
-    repo,
-    sha,
-    state,
-    suiteId,
-  }: CreateCommitStatus,
+export const createOctokitForInstallation = async (
+  { installationId, isSync }: InstallationOptions,
   options: ModelOptions
-): Promise<GitHubCommitStatus> => {
-  const token = await createInstallationAccessToken(installationId, options);
+): Promise<OctokitResult> => {
+  const token = await createInstallationAccessToken(
+    { installationId, isSync },
+    options
+  );
   const octokit = new Octokit({ auth: token });
-
-  let description = "Running";
-  if (state === "failure") description = "Fail";
-  if (state === "success") description = "Pass";
-
-  const { data } = await octokit.repos.createCommitStatus({
-    context,
-    description,
-    owner,
-    repo,
-    sha,
-    state: state || "pending",
-    target_url: new URL(`/suites/${suiteId}`, environment.APP_URL).href,
-  });
-
-  return data;
+  return { octokit, token };
 };
 
-export const findBranchesForCommit = async (
-  { installationId, owner, repo, sha }: FindBranchesForCommit,
+export const createOctokitForIntegration = async (
+  integrationId: string,
   options: ModelOptions
-): Promise<string[]> => {
-  const token = await createInstallationAccessToken(installationId, options);
-  const octokit = new Octokit({ auth: token });
+): Promise<OctokitRepo> => {
+  const integration = await findIntegration(integrationId, options);
 
-  const { data } = await octokit.checks.listSuitesForRef({
-    owner,
-    ref: sha,
-    repo,
-  });
+  const result = await createOctokitForInstallation(
+    {
+      installationId: integration.github_installation_id,
+      isSync: integration.type === "github_sync",
+    },
+    options
+  );
 
-  return Array.from(new Set(data.check_suites.map((s) => s.head_branch)));
-};
-
-export const findGitHubReposForInstallation = async (
-  installationId: number,
-  options: ModelOptions
-): Promise<GitHubRepos> => {
-  const log = options.logger.prefix("findGitHubReposForInstallation");
-
-  try {
-    const token = await createInstallationAccessToken(installationId, options);
-    const octokit = new Octokit({ auth: token });
-
-    const {
-      data: { repositories },
-    } = await octokit.apps.listReposAccessibleToInstallation();
-
-    log.debug(
-      `found ${repositories.length} repos for installation ${installationId}`
-    );
-
-    return repositories;
-  } catch (error) {
-    log.alert("error", error);
-    throw new Error("Could not complete GitHub app installation");
-  }
-};
-
-export const shouldUpdateCommitStatus = ({
-  gitHubCommitStatus,
-  logger,
-}: ShouldUpdateCommitStatus): boolean => {
-  const log = logger.prefix("shouldUpdateCommitStatus");
-
-  if (!gitHubCommitStatus) {
-    log.debug("false: no github commit status for suite");
-    return false;
-  }
-
-  log.debug("true");
-  return true;
-};
-
-export const updateCommitStatus = async (
-  suite_id: string,
-  { logger, db }: ModelOptions
-): Promise<void> => {
-  await db.transaction(async (trx) => {
-    const gitHubCommitStatus = await findGitHubCommitStatusForSuite(suite_id, {
-      db: trx,
-      logger,
-    });
-    const runs = await findRunsForSuite(suite_id, { db: trx, logger });
-
-    const shouldUpdate = shouldUpdateCommitStatus({
-      gitHubCommitStatus,
-      logger,
-    });
-
-    if (!shouldUpdate) return;
-
-    const state = runs.some((r) => r.status === "fail") ? "failure" : "success";
-
-    await createCommitStatus(
-      {
-        context: gitHubCommitStatus.context,
-        installationId: gitHubCommitStatus.github_installation_id,
-        owner: gitHubCommitStatus.owner,
-        repo: gitHubCommitStatus.repo,
-        sha: gitHubCommitStatus.sha,
-        state,
-        suiteId: suite_id,
-      },
-      { db: trx, logger }
-    );
-
-    await updateGitHubCommitStatus(
-      { completed_at: new Date().toISOString(), id: gitHubCommitStatus.id },
-      { db: trx, logger }
-    );
-  });
+  const [owner, repo] = integration.github_repo_name?.split("/");
+  return { ...result, owner, repo };
 };

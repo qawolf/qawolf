@@ -7,7 +7,7 @@ import { findTriggersForGitHubIntegration } from "../../models/trigger";
 import {
   createCommitStatus,
   findBranchesForCommit,
-} from "../../services/gitHub/app";
+} from "../../services/gitHub/commitStatus";
 import { ModelOptions, Trigger } from "../../types";
 
 type BuildDeploymentUrlForTeam = {

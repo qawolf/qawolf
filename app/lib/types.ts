@@ -21,6 +21,11 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type GitHubBranch = {
+  is_default: boolean;
+  name: string;
+};
+
 export type Group = {
   id: string;
   name: string;
@@ -32,7 +37,7 @@ export type Integration = {
   id: string;
   slack_channel: string | null;
   team_name: string | null;
-  type: "github" | "slack";
+  type: "github" | "github_sync" | "slack";
 };
 
 export type Invite = {
@@ -118,6 +123,7 @@ export type Team = ShortTeam & {
   alert_integration_id: string | null;
   alert_only_on_failure: boolean;
   api_key: string;
+  git_sync_integration_id: string | null;
   helpers: string;
   helpers_version: number;
   inbox: string;
@@ -136,7 +142,8 @@ export type TeamWithUsers = Team & {
 export type ShortTest = {
   group_id: string | null;
   id: string;
-  name: string;
+  name: string | null;
+  path: string | null;
 };
 
 export type Test = ShortTest & {
@@ -325,6 +332,7 @@ type ModalState = {
 };
 
 export type State = {
+  branch: string | null;
   dashboardUri: string | null;
   editorSidebarWidth: number;
   email: string | null;

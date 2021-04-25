@@ -37,9 +37,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <ApolloProvider client={client}>
           <Grommet theme={theme}>
             <MDXProvider components={components}>
-              <Toast />
-              <Modals />
               <UserProvider>
+                <Modals />
+                <Toast />
                 <Component {...pageProps} />
               </UserProvider>
             </MDXProvider>

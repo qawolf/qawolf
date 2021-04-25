@@ -1,8 +1,9 @@
+import { RestEndpointMethodTypes } from "@octokit/rest";
 import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
 
-// Azure types
+// AWS types
 export type SaveArtifacts = {
   gifUrl: string | null;
   jsonUrl: string | null;
@@ -21,6 +22,12 @@ export type Context = {
 };
 
 // GitHub types
+
+export type GitHubBranch = {
+  is_default: boolean;
+  name: string;
+};
+
 export type GitHubEmail = {
   email: string;
   primary: boolean;
@@ -44,6 +51,8 @@ export type GitHubUser = {
   login: string;
   name: string;
 };
+
+export type GitTree = RestEndpointMethodTypes["git"]["getTree"]["response"]["data"];
 
 // Slack types
 export type SlackWebhook = {
@@ -140,7 +149,7 @@ export type Invite = {
   wolf_variant: string;
 };
 
-export type IntegrationType = "github" | "slack";
+export type IntegrationType = "github" | "github_sync" | "slack";
 
 export type Integration = {
   created_at?: string;
@@ -271,6 +280,7 @@ export type Team = {
   created_at?: string;
   deleted_at?: string | null;
   forward_email?: string | null;
+  git_sync_integration_id?: string | null;
   id: string;
   inbox: string;
   helpers: string;
@@ -300,14 +310,14 @@ export type TeamUser = {
 
 export type Test = {
   created_at: string;
-  creator_id: string;
+  creator_id: string | null;
   code: string;
   deleted_at: string | null;
   group_id: string | null;
   guide?: string | null;
   id: string;
   is_enabled: boolean;
-  name: string;
+  name: string | null;
   path: string | null;
   runner_locations?: string | null;
   runner_requested_at?: string | null;
@@ -389,6 +399,7 @@ export type CreateEnvironmentVariableMutation = {
 
 export type CreateGitHubIntegrationsMutation = {
   installation_id: number;
+  is_sync: boolean;
   team_id: string;
 };
 
@@ -431,6 +442,7 @@ export type CreateSuiteMutation = {
 };
 
 export type CreateTestMutation = {
+  branch?: string | null;
   group_id: string | null;
   guide: string | null;
   team_id: string;
@@ -454,6 +466,7 @@ export type CreateUrlMutation = {
 };
 
 export type DeleteTestsMutation = {
+  branch: string | null;
   ids: string[];
 };
 
@@ -647,14 +660,14 @@ export type TestQuery = {
   run_id?: string;
 };
 
-export type TestSummariesQuery = {
-  test_ids: string[];
-  trigger_id: string | null;
-};
-
 export type TestResult = {
   run: RunResult | null;
   test: Test;
+};
+
+export type TestSummariesQuery = {
+  test_ids: string[];
+  trigger_id: string | null;
 };
 
 export type TestSummary = {
@@ -667,6 +680,11 @@ export type TestTriggers = {
   group_id: string | null;
   test_id: string;
   trigger_ids: string[];
+};
+
+export type TestsQuery = {
+  branch: string | null;
+  team_id: string;
 };
 
 export type TriggerIdQuery = {

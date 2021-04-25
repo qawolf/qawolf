@@ -1,29 +1,33 @@
 import { buildTestCode } from "../../shared/utils";
+import { deleteGitHubTests, upsertGitHubTests } from "../models/github_tests";
 import { findLatestRuns, findRunResult } from "../models/run";
 import {
   createTest,
   deleteTests,
   findTest,
   findTestForRun,
+  findTests,
   findTestsForTeam,
   updateTest,
   updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
+import { createFileForTest } from "../services/gitHub/file";
 import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
   CreateTestMutation,
   DeleteTestsMutation,
-  TeamIdQuery,
   Test,
   TestQuery,
   TestResult,
+  TestsQuery,
   TestSummariesQuery,
   TestSummary,
   UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
+import { slug } from "../utils";
 import {
   ensureGroupAccess,
   ensureTeamAccess,
@@ -36,13 +40,13 @@ import {
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { group_id, guide, team_id, url }: CreateTestMutation,
+  { branch, group_id, guide, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id, teams });
   if (group_id) await ensureGroupAccess({ group_id, teams }, { db, logger });
 
   log.debug(user.id);
@@ -53,18 +57,32 @@ export const createTestResolver = async (
     user,
   });
 
-  const test = await createTest(
-    {
-      code: buildTestCode(url),
-      creator_id: user.id,
-      group_id,
-      guide,
-      team_id: team_id,
-    },
-    { db, logger }
-  );
+  return db.transaction(async (trx) => {
+    const syncToGit = !!(branch && team.git_sync_integration_id);
 
-  return { ...test, url };
+    const test = await createTest(
+      {
+        code: buildTestCode(url),
+        creator_id: user.id,
+        group_id,
+        guide,
+        path: syncToGit ? `${slug()}.test.js` : null,
+        team_id: team_id,
+      },
+      { db: trx, logger }
+    );
+
+    if (syncToGit) {
+      log.debug("git branch", branch);
+
+      await createFileForTest(
+        { branch, integrationId: team.git_sync_integration_id, test },
+        { db: trx, logger }
+      );
+    }
+
+    return { ...test, url };
+  });
 };
 
 /**
@@ -72,16 +90,32 @@ export const createTestResolver = async (
  */
 export const deleteTestsResolver = async (
   _: Record<string, unknown>,
-  { ids }: DeleteTestsMutation,
+  { branch, ids }: DeleteTestsMutation,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
-  await Promise.all(
-    ids.map((id) => ensureTestAccess({ teams, test_id: id }, { db, logger }))
+  const log = logger.prefix("deleteTestsResolver");
+  log.debug("ids", ids);
+
+  const tests = await findTests(ids, { db, logger });
+  const testTeams = await Promise.all(
+    tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
   );
+
+  if (branch) {
+    log.debug("delete from git branch", branch);
+
+    await deleteGitHubTests(
+      { branch, tests, teams: testTeams },
+      { db, logger }
+    );
+
+    return tests;
+  }
+
+  log.debug("soft delete from database");
 
   return db.transaction(async (trx) => {
     await deleteTestTriggersForTests(ids, { db: trx, logger });
-
     return deleteTests(ids, { db: trx, logger });
   });
 };
@@ -151,12 +185,29 @@ export const testSummariesResolver = async (
  */
 export const testsResolver = async (
   _: Record<string, unknown>,
-  { team_id }: TeamIdQuery,
+  { branch, team_id }: TestsQuery,
   { db, logger, teams }: Context
 ): Promise<Test[]> => {
-  ensureTeamAccess({ logger, team_id, teams });
+  const log = logger.prefix("testsResolver");
+  log.debug("team", team_id, "branch", branch);
 
-  return findTestsForTeam(team_id, { db, logger });
+  const team = ensureTeamAccess({ logger, team_id, teams });
+  const tests = await findTestsForTeam(team_id, { db, logger });
+
+  if (!branch || !team.git_sync_integration_id) {
+    log.debug("no branch or git sync integation id");
+    return tests;
+  }
+
+  return upsertGitHubTests(
+    {
+      branch,
+      integrationId: team.git_sync_integration_id,
+      team_id: team.id,
+      tests,
+    },
+    { db, logger }
+  );
 };
 
 export const updateTestResolver = async (

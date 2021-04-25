@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import * as gitHubTests from "../../../server/models/github_tests";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
 import * as testResolvers from "../../../server/resolvers/test";
 import * as azure from "../../../server/services/aws/storage";
+import * as gitHubFile from "../../../server/services/gitHub/file";
+import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { RunWithGif } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
   buildGroup,
+  buildIntegration,
   buildRun,
   buildTeam,
   buildTeamUser,
@@ -34,58 +39,59 @@ const context = { ...testContext, db };
 const options = { db, logger };
 
 beforeAll(async () => {
-  return db.transaction(async (trx) => {
-    await trx("users").insert([buildUser({}), buildUser({ i: 2 })]);
-    await trx("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
-    await trx("team_users").insert([
-      buildTeamUser({}),
-      buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
-    ]);
+  await db("users").insert([buildUser({}), buildUser({ i: 2 })]);
+  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
+  await db("team_users").insert([
+    buildTeamUser({}),
+    buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
+  ]);
 
-    await trx("groups").insert(buildGroup({}));
+  await db("groups").insert(buildGroup({}));
+  await db("integrations").insert(buildIntegration({ type: "github_sync" }));
 
-    await trx("triggers").insert([
-      buildTrigger({}),
-      buildTrigger({ i: 2, team_id: "team2Id" }),
-      buildTrigger({ i: 3 }),
-    ]);
+  await db("triggers").insert([
+    buildTrigger({}),
+    buildTrigger({ i: 2, team_id: "team2Id" }),
+    buildTrigger({ i: 3 }),
+  ]);
 
-    await trx("tests").insert([
-      buildTest({ creator_id: "userId" }),
-      buildTest({
-        creator_id: "user2Id",
-        id: "deleteMe",
-        i: 2,
-        team_id: "team2Id",
-      }),
-      buildTest({
-        creator_id: "user2Id",
-        i: 3,
-        team_id: "team2Id",
-      }),
-    ]);
+  await db("tests").insert([
+    buildTest({ creator_id: "userId" }),
+    buildTest({
+      creator_id: "user2Id",
+      id: "deleteMe",
+      i: 2,
+      team_id: "team2Id",
+    }),
+    buildTest({
+      creator_id: "user2Id",
+      i: 3,
+      team_id: "team2Id",
+    }),
+  ]);
 
-    await trx("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "testId",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "deleteMe",
-        trigger_id: "triggerId",
-      },
-    ]);
+  await db("test_triggers").insert([
+    {
+      id: "testTriggerId",
+      test_id: "testId",
+      trigger_id: "triggerId",
+    },
+    {
+      id: "testTrigger2Id",
+      test_id: "deleteMe",
+      trigger_id: "triggerId",
+    },
+  ]);
 
-    return trx("runs").insert(run);
-  });
+  return db("runs").insert(run);
 });
 
 describe("createTestResolver", () => {
-  afterAll(jest.clearAllMocks);
+  afterEach(jest.clearAllMocks);
 
   it("creates a test", async () => {
+    jest.spyOn(gitHubFile, "createFileForTest");
+
     const test = await createTestResolver(
       {},
       {
@@ -107,10 +113,55 @@ describe("createTestResolver", () => {
       url: "https://google.com",
     });
 
+    expect(gitHubFile.createFileForTest).not.toBeCalled();
+
+    await db("tests").where({ id: test.id }).del();
+  });
+
+  it("creates a test for a git branch", async () => {
+    const spy = jest.spyOn(gitHubFile, "createFileForTest").mockResolvedValue();
+
+    const test = await createTestResolver(
+      {},
+      {
+        branch: "main",
+        group_id: null,
+        guide: null,
+        team_id: "teamId",
+        url: "https://google.com",
+      },
+      {
+        ...context,
+        teams: [
+          { ...context.teams[0], git_sync_integration_id: "integrationId" },
+        ],
+      }
+    );
+
+    expect(test).toMatchObject({
+      team_id: "teamId",
+      creator_id: "userId",
+      group_id: null,
+      guide: null,
+      id: expect.any(String),
+      name: null,
+      url: "https://google.com",
+    });
+    expect(test.path).toMatch(".test.js");
+
+    expect(gitHubFile.createFileForTest).toBeCalledTimes(1);
+    expect(spy.mock.calls[0][0]).toMatchObject({
+      branch: "main",
+      integrationId: "integrationId",
+      test: { id: test.id },
+    });
+
     await db("tests").where({ id: test.id }).del();
   });
 
   it("creates a test for a guide", async () => {
+    jest.spyOn(gitHubFile, "createFileForTest");
+
     const test = await createTestResolver(
       {},
       {
@@ -127,15 +178,19 @@ describe("createTestResolver", () => {
       name: "Guide: Create a Test",
     });
 
+    expect(gitHubFile.createFileForTest).not.toBeCalled();
+
     await db("tests").where({ id: test.id }).del();
   });
 });
 
 describe("deleteTestsResolver", () => {
   it("deletes a test", async () => {
+    jest.spyOn(gitHubTests, "deleteGitHubTests");
+
     const tests = await deleteTestsResolver(
       {},
-      { ids: ["deleteMe"] },
+      { branch: null, ids: ["deleteMe"] },
       {
         ...context,
         teams: [buildTeam({ i: 2 })],
@@ -151,7 +206,7 @@ describe("deleteTestsResolver", () => {
     ]);
 
     const test = await testModel.findTest("deleteMe", options);
-    expect(test.deleted_at).not.toBeNull();
+    expect(test.deleted_at).toBeTruthy();
 
     const testTrigger = await db
       .select("*")
@@ -159,6 +214,39 @@ describe("deleteTestsResolver", () => {
       .where("test_id", "deleteMe")
       .first();
     expect(testTrigger).toBeFalsy();
+
+    expect(gitHubTests.deleteGitHubTests).not.toBeCalled();
+
+    await db("tests").where({ id: "deleteMe" }).update({ deleted_at: null });
+  });
+
+  it("deletes a test on a git branch", async () => {
+    const spy = jest
+      .spyOn(gitHubTests, "deleteGitHubTests")
+      .mockResolvedValue();
+
+    const tests = await deleteTestsResolver(
+      {},
+      { branch: "main", ids: ["deleteMe"] },
+      {
+        ...context,
+        teams: [buildTeam({ i: 2 })],
+        user: buildUser({ i: 2 }),
+      }
+    );
+
+    expect(tests).toMatchObject([{ id: "deleteMe" }]);
+
+    expect(gitHubTests.deleteGitHubTests).toBeCalledTimes(1);
+    expect(spy.mock.calls[0][0]).toMatchObject({
+      branch: "main",
+      tests: [{ id: "deleteMe" }],
+      teams: [{ id: "team2Id" }],
+    });
+
+    const dbTest = await db("tests").where({ id: "deleteMe" }).first();
+
+    expect(dbTest.deleted_at).toBeNull();
   });
 });
 
@@ -282,10 +370,38 @@ describe("testSummariesResolver", () => {
 });
 
 describe("testsResolver", () => {
-  it("finds tests for a team", async () => {
-    const tests = await testsResolver({}, { team_id: "teamId" }, context);
+  it("finds tests for a team when branch not specified", async () => {
+    const tests = await testsResolver(
+      {},
+      { branch: null, team_id: "teamId" },
+      context
+    );
 
     expect(tests).toMatchObject([{ creator_id: "userId", id: "testId" }]);
+  });
+
+  it("finds tests for a team when branch specified", async () => {
+    jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
+      tests: [{ path: "test.test.js" }, { path: "anotherTest.test.js" }],
+    } as any);
+
+    const tests = await testsResolver(
+      {},
+      { branch: "main", team_id: "teamId" },
+      {
+        ...context,
+        teams: [
+          { ...context.teams[0], git_sync_integration_id: "integrationId" },
+        ],
+      }
+    );
+
+    expect(tests).toMatchObject([
+      { creator_id: null, name: null, path: "anotherTest.test.js" },
+      { name: null, path: "test.test.js" },
+    ]);
+
+    await db("tests").where({ path: "anotherTest.test.js" }).del();
   });
 });
 

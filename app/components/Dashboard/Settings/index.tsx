@@ -1,10 +1,12 @@
 import { Box } from "grommet";
+import { useContext } from "react";
 
-import { useIntegrations, useTeam } from "../../../hooks/queries";
+import { useIntegrations } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { border, edgeSize } from "../../../theme/theme";
 import Spinner from "../../shared/Spinner";
 import Text from "../../shared/Text";
+import { UserContext } from "../../UserContext";
 import Alerts from "./Alerts";
 import Members from "./Members";
 import Plan from "./Plan";
@@ -12,13 +14,10 @@ import Team from "./Team";
 
 const maxWidth = "640px";
 
-type Props = { teamId: string };
+export default function Settings(): JSX.Element {
+  const { team } = useContext(UserContext);
 
-export default function Settings({ teamId }: Props): JSX.Element {
-  const { data } = useTeam({ id: teamId });
-  const team = data?.team || null;
-
-  const { data: integrationsData } = useIntegrations({ team_id: teamId });
+  const { data: integrationsData } = useIntegrations({ team_id: team?.id });
   const slackIntegrations = (integrationsData?.integrations || []).filter(
     (i) => i.type === "slack"
   );

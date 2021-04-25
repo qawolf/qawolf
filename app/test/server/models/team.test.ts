@@ -227,7 +227,10 @@ describe("findTeamsToSync", () => {
 describe("updateTeam", () => {
   beforeAll(async () => {
     await db("teams").insert(buildTeam({}));
-    return db("integrations").insert(buildIntegration({}));
+    return db("integrations").insert([
+      buildIntegration({}),
+      buildIntegration({ i: 2, type: "github_sync" }),
+    ]);
   });
 
   afterAll(async () => {
@@ -279,6 +282,28 @@ describe("updateTeam", () => {
       api_key: expect.any(String),
       updated_at: (updatedTeam2.updated_at as Date).toISOString(),
     });
+  });
+
+  it("updates a team git sync integration", async () => {
+    const team = await updateTeam(
+      { git_sync_integration_id: "integration2Id", id: "teamId" },
+      options
+    );
+
+    const updatedTeam = await db.select("*").from("teams").first();
+
+    expect(team.git_sync_integration_id).toBe("integration2Id");
+    expect(updatedTeam.git_sync_integration_id).toBe("integration2Id");
+
+    const team2 = await updateTeam(
+      { git_sync_integration_id: null, id: "teamId" },
+      options
+    );
+
+    const updatedTeam2 = await db.select("*").from("teams").first();
+
+    expect(team2.git_sync_integration_id).toBeNull();
+    expect(updatedTeam2.git_sync_integration_id).toBeNull();
   });
 
   it("updates a team helpers", async () => {

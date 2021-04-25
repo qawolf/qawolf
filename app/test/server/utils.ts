@@ -155,6 +155,7 @@ type BuildTest = {
   id?: string;
   is_enabled?: boolean;
   name?: string;
+  path?: string;
   runner_locations?: string[];
   runner_requested_at?: string;
   team_id?: string;
@@ -490,6 +491,7 @@ export const buildTest = ({
   id,
   is_enabled,
   name,
+  path,
   runner_locations,
   runner_requested_at,
   version,
@@ -506,8 +508,8 @@ export const buildTest = ({
     guide: guide || null,
     id: id || `test${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
-    name: name || `test${finalI === 1 ? "" : i}`,
-    path: null,
+    name: path ? null : name || `test${finalI === 1 ? "" : i}`,
+    path: path || null,
     runner_locations: runner_locations
       ? JSON.stringify(runner_locations)
       : null,

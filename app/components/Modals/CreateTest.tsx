@@ -18,7 +18,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   const { push, query } = useRouter();
   const groupId = query.group_id as string;
 
-  const { teamId } = useContext(StateContext);
+  const { branch, teamId } = useContext(StateContext);
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +55,12 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
     }
 
     createTest({
-      variables: { group_id: groupId || null, team_id: teamId, url: parsedUrl },
+      variables: {
+        branch,
+        group_id: groupId || null,
+        team_id: teamId,
+        url: parsedUrl,
+      },
     }).catch(() => {
       setError(copy.somethingWrong);
       setIsLoading(false);

@@ -15,6 +15,24 @@ const generateSystemEnvVariables = async (): Promise<void> => {
     {
       id: cuid(),
       is_system: true,
+      name: "GITHUB_APP_CLIENT_SECRET",
+      value: process.env.GITHUB_APP_CLIENT_SECRET,
+    },
+    {
+      id: cuid(),
+      is_system: true,
+      name: "GITHUB_SYNC_APP_PRIVATE_KEY",
+      value: JSON.stringify(readFile("./qawolf-dev-sync.pem")),
+    },
+    {
+      id: cuid(),
+      is_system: true,
+      name: "GITHUB_SYNC_APP_CLIENT_SECRET",
+      value: process.env.GITHUB_SYNC_APP_CLIENT_SECRET,
+    },
+    {
+      id: cuid(),
+      is_system: true,
       name: "RUNNER_LOCATIONS",
       value: JSON.stringify({
         eastus2: {

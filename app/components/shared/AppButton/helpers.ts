@@ -27,7 +27,7 @@ export type Props = {
   isLarge?: boolean;
   isSelected?: boolean;
   justify?: BoxProps["justify"];
-  label?: string;
+  label?: JSX.Element | string;
   margin?: ButtonProps["margin"];
   noBorderSide?: Side;
   onClick?: () => void;

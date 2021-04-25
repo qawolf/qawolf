@@ -6,6 +6,7 @@ import {
   currentUserQuery,
   environmentsQuery,
   environmentVariablesQuery,
+  gitHubBranchesQuery,
   groupsQuery,
   integrationsQuery,
   onboardingQuery,
@@ -30,6 +31,7 @@ import { state } from "../lib/state";
 import {
   Environment,
   EnvironmentVariable,
+  GitHubBranch,
   Group,
   Integration,
   Onboarding,
@@ -70,6 +72,14 @@ type EnvironmentVariablesData = {
 
 type EnvironmentVariablesVariables = {
   environment_id: string;
+};
+
+type GitHubBranchesData = {
+  gitHubBranches: GitHubBranch[] | null;
+};
+
+type GitHubBranchesVariables = {
+  team_id: string;
 };
 
 type GroupsData = {
@@ -180,6 +190,7 @@ type TestsData = {
 };
 
 type TestsVariables = {
+  branch: string | null;
   team_id: string;
 };
 
@@ -256,6 +267,20 @@ export const useEnvironmentVariables = (
       nextFetchPolicy,
       onError,
       skip: !variables.environment_id,
+      variables,
+    }
+  );
+};
+
+export const useGitHubBranches = (
+  variables: GitHubBranchesVariables
+): QueryResult<GitHubBranchesData, GitHubBranchesVariables> => {
+  return useQuery<GitHubBranchesData, GitHubBranchesVariables>(
+    gitHubBranchesQuery,
+    {
+      fetchPolicy,
+      onError,
+      skip: !variables.team_id,
       variables,
     }
   );

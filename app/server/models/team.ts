@@ -14,6 +14,7 @@ const DEFAULT_NAME = "My Team";
 type UpdateTeam = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
+  git_sync_integration_id?: string | null;
   helpers?: string;
   helpers_version?: number;
   id: string;
@@ -186,6 +187,7 @@ export const updateTeam = async (
   {
     alert_integration_id,
     alert_only_on_failure,
+    git_sync_integration_id,
     helpers,
     helpers_version,
     id,
@@ -214,6 +216,9 @@ export const updateTeam = async (
   }
   if (!isNil(alert_only_on_failure)) {
     updates.alert_only_on_failure = alert_only_on_failure;
+  }
+  if (git_sync_integration_id !== undefined) {
+    updates.git_sync_integration_id = git_sync_integration_id;
   }
 
   if (!isNil(helpers)) updates.helpers = helpers;

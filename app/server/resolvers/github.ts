@@ -3,11 +3,14 @@ import {
   deleteIntegrations,
   findIntegrationsForTeam,
 } from "../models/integration";
-import { findGitHubReposForInstallation } from "../services/gitHub/app";
+import { findBranchesForIntegration } from "../services/gitHub/branch";
+import { findGitHubReposForInstallation } from "../services/gitHub/commitStatus";
 import {
   Context,
   CreateGitHubIntegrationsMutation,
+  GitHubBranch,
   Integration,
+  TeamIdQuery,
 } from "../types";
 import { ensureTeamAccess } from "./utils";
 
@@ -15,16 +18,19 @@ import { ensureTeamAccess } from "./utils";
 // we cannot identify which team installed the app in the webhook payload
 export const createGitHubIntegrationsResolver = async (
   _: Record<string, unknown>,
-  { installation_id, team_id }: CreateGitHubIntegrationsMutation,
+  { installation_id, is_sync, team_id }: CreateGitHubIntegrationsMutation,
   { db, logger, teams }: Context
 ): Promise<Integration[]> => {
   ensureTeamAccess({ logger, team_id, teams });
 
   return db.transaction(async (trx) => {
-    const repos = await findGitHubReposForInstallation(installation_id, {
-      db: trx,
-      logger,
-    });
+    const repos = await findGitHubReposForInstallation(
+      { installationId: installation_id, isSync: is_sync },
+      {
+        db: trx,
+        logger,
+      }
+    );
 
     const integrations = await findIntegrationsForTeam(
       { github_installation_id: installation_id, team_id },
@@ -47,7 +53,7 @@ export const createGitHubIntegrationsResolver = async (
             github_repo_name: r.full_name,
             settings_url: `https://github.com/settings/installations/${installation_id}`,
             team_id,
-            type: "github",
+            type: is_sync ? "github_sync" : "github",
           };
         }),
       { db: trx, logger }
@@ -64,5 +70,25 @@ export const createGitHubIntegrationsResolver = async (
     );
 
     return newIntegrations;
+  });
+};
+
+export const gitHubBranchesResolver = async (
+  _: Record<string, unknown>,
+  { team_id }: TeamIdQuery,
+  { db, logger, teams }: Context
+): Promise<GitHubBranch[] | null> => {
+  const log = logger.prefix("gitHubBranchesResolver");
+  log.debug("team", team_id);
+
+  const team = ensureTeamAccess({ logger, team_id, teams });
+  if (!team.git_sync_integration_id) {
+    log.debug("skip, no git sync integration");
+    return null;
+  }
+
+  return findBranchesForIntegration(team.git_sync_integration_id, {
+    db,
+    logger,
   });
 };

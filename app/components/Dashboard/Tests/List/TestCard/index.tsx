@@ -35,6 +35,7 @@ export default function TestCard({
   triggers,
 }: Props): JSX.Element {
   const runs = summary?.last_runs || null;
+  const testName = test.name || test.path;
 
   return (
     <Box
@@ -47,7 +48,7 @@ export default function TestCard({
       <Box align="center" direction="row" fill="horizontal">
         <Box flex={false} margin={{ right: "small" }}>
           <CheckBox
-            a11yTitle={test.name}
+            a11yTitle={testName}
             checked={isChecked}
             onChange={onCheck}
           />
@@ -65,9 +66,9 @@ export default function TestCard({
                   gifUrl={summary?.gif_url}
                   isLoading={isSummaryLoading}
                   isRunning={!!runs?.length && !runs[0].gif_url}
-                  testName={test.name}
+                  testName={testName}
                 />
-                <TestName groupName={groupName} testName={test.name} />
+                <TestName groupName={groupName} testName={testName} />
               </Box>
             </a>
           </Link>

@@ -1,7 +1,7 @@
 import { minutesFromNow } from "../../shared/utils";
 import { claimPendingJob, countPendingJobs, updateJob } from "../models/job";
 import { sendAlert } from "../services/alert/send";
-import { updateCommitStatus } from "../services/gitHub/app";
+import { updateCommitStatus } from "../services/gitHub/commitStatus";
 import { updateCommentForSuite } from "../services/gitHub/pullRequest";
 import { ModelOptions } from "../types";
 

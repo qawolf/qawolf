@@ -12,7 +12,10 @@ import {
   environmentVariablesResolver,
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
-import { createGitHubIntegrationsResolver } from "./resolvers/github";
+import {
+  createGitHubIntegrationsResolver,
+  gitHubBranchesResolver,
+} from "./resolvers/github";
 import {
   createGroupResolver,
   deleteGroupResolver,
@@ -132,6 +135,7 @@ export const resolvers = {
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
+    gitHubBranches: gitHubBranchesResolver,
     groups: groupsResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,

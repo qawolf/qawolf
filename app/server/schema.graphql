@@ -98,6 +98,15 @@ type EnvironmentVariables {
   variables: [EnvironmentVariable!]!
 }
 
+"A GitHub branch"
+type GitHubBranch {
+  "Whether the branch is the default"
+  is_default: Boolean!
+
+  "Branch name"
+  name: String!
+}
+
 "A group of tests"
 type Group {
   "Group ID"
@@ -114,6 +123,9 @@ type Group {
 enum IntegrationType {
   "GitHub (https://github.com/)"
   github
+
+  "GitHub (https://github.com/) with repository contents permissions"
+  github_sync
 
   "Slack (https://slack.com/)"
   slack
@@ -354,6 +366,9 @@ type Team {
   "The API key for the team"
   api_key: String!
 
+  "The ID of a git integration associated with this team"
+  git_sync_integration_id: ID
+
   "Team helper code, for sharing functionality between tests"
   helpers: String!
 
@@ -417,7 +432,10 @@ type Test {
   is_enabled: Boolean!
 
   "A name for the test, for display in UI"
-  name: String!
+  name: String
+
+  "A path for the test file in git"
+  path: String
 
   "The ID of a team associated with this test"
   team_id: ID!
@@ -589,7 +607,12 @@ type Mutation {
     installation_id: ID!
 
     """
-    The GitHub repos accessible to the app installation will belong to this team.
+    Whether the installed GitHub app will be used to sync to GitHub
+    """
+    is_sync: Boolean!
+
+    """
+    The GitHub repos accessible to the app installation will belong to this team
     """
     team_id: ID!
   ): [Integration!]!
@@ -771,6 +794,11 @@ type Mutation {
   """
   createTest(
     """
+    Optional git branch
+    """
+    branch: String
+
+    """
     Optional group ID
     """
     group_id: ID
@@ -881,6 +909,11 @@ type Mutation {
   Requires that you have access to the team that owns each test.
   """
   deleteTests(
+    """
+    Git branch to delete tests from
+    """
+    branch: String
+
     """
     Array of test IDs to delete
     """
@@ -1336,6 +1369,14 @@ type Query {
   ): EnvironmentVariables!
 
   """
+  Returns GitHub branches for a team by team ID.
+  If the team does not have a GitHub sync integration, null is returned.
+
+  Requires that you have access to the team.
+  """
+  gitHubBranches("The team ID" team_id: ID!): [GitHubBranch!]
+
+  """
   Returns the runner for the run or test.
   """
   runner(
@@ -1450,7 +1491,7 @@ type Query {
 
   Requires that you are on the team.
   """
-  tests("The team ID" team_id: ID!): [Test!]!
+  tests("The git branch" branch: String, "The team ID" team_id: ID!): [Test!]!
 
   """
   Returns all test triggers for a single team by team ID. The default trigger is

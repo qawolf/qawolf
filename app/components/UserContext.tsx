@@ -1,15 +1,16 @@
 import { createContext, FC, useContext, useEffect } from "react";
 
 import { updateIntercomUser } from "../hooks/intercom";
-import { useCurrentUser } from "../hooks/queries";
+import { useCurrentUser, useTeam } from "../hooks/queries";
 import { identifySegmentUser, useSegmentPage } from "../hooks/segment";
 import { state } from "../lib/state";
-import { User, Wolf } from "../lib/types";
+import { TeamWithUsers, User, Wolf } from "../lib/types";
 import { StateContext } from "./StateContext";
 
 export type UserContextValue = {
   isLoggedIn: boolean;
   isUserLoading: boolean;
+  team: TeamWithUsers | null;
   user: User | null;
   wolf: Wolf | null;
 };
@@ -17,15 +18,19 @@ export type UserContextValue = {
 export const UserContext = createContext<UserContextValue>({
   isLoggedIn: false,
   isUserLoading: true,
+  team: null,
   user: null,
   wolf: null,
 });
 
 export const UserProvider: FC = ({ children }) => {
   const { teamId } = useContext(StateContext);
-  const { data, loading } = useCurrentUser();
 
-  const user = data?.currentUser || null;
+  const { data: teamData } = useTeam({ id: teamId });
+  const { data: userData, loading } = useCurrentUser();
+
+  const team = teamData?.team || null;
+  const user = userData?.currentUser || null;
 
   const isLoggedIn = !!(loading || user);
 
@@ -58,9 +63,21 @@ export const UserProvider: FC = ({ children }) => {
     updateIntercomUser(user);
   }, [user]);
 
+  useEffect(() => {
+    if (team && !team.git_sync_integration_id) {
+      state.setBranch(null); // ensure no branch selected
+    }
+  }, [team]);
+
   useSegmentPage();
 
-  const value = { isLoggedIn, isUserLoading: !user && loading, user, wolf };
+  const value = {
+    isLoggedIn,
+    isUserLoading: !user && loading,
+    team,
+    user,
+    wolf,
+  };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

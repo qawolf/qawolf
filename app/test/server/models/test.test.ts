@@ -29,6 +29,7 @@ const {
   findTest,
   findTestForRun,
   findTestsForTeam,
+  findTests,
   hasIntroGuide,
   hasTest,
   updateTest,
@@ -218,6 +219,27 @@ describe("createTest", () => {
 
     expect(test2).toMatchObject({
       name: "Guide: Create a Test 2",
+    });
+  });
+
+  it("creates a test with a specified path", async () => {
+    await createTest(
+      {
+        code: "code",
+        path: "myTest.test.js",
+        team_id: "teamId",
+      },
+      options
+    );
+
+    const tests = await db.select("*").from("tests").where({ code: "code" });
+
+    expect(tests[0]).toMatchObject({
+      code: "code",
+      creator_id: null,
+      name: null,
+      path: "myTest.test.js",
+      team_id: "teamId",
     });
   });
 });
@@ -519,6 +541,24 @@ describe("findTestsForTeam", () => {
   });
 });
 
+describe("findTests", () => {
+  beforeAll(() =>
+    db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ deleted_at: new Date().toISOString(), i: 3 }),
+    ])
+  );
+
+  afterAll(() => db("tests").del());
+
+  it("finds tests by id", async () => {
+    const tests = await findTests(["testId", "test3Id"], options);
+
+    expect(tests).toMatchObject([{ id: "testId" }]);
+  });
+});
+
 describe("hasIntroGuide", () => {
   beforeAll(() =>
     db("tests").insert([
@@ -625,6 +665,25 @@ describe("updateTest", () => {
       name: "test",
       version: 13,
     });
+  });
+
+  it("updates test name and path", async () => {
+    const test = await updateTest(
+      {
+        id: "testId",
+        name: null,
+        path: "myTest.test.js",
+      },
+      options
+    );
+
+    expect(test).toMatchObject({
+      id: "testId",
+      name: null,
+      path: "myTest.test.js",
+    });
+
+    await updateTest({ id: "testId", name: "test", path: null }, options);
   });
 
   it("throws an error if updating to non-unique name", async () => {

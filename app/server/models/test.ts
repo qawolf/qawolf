@@ -12,7 +12,7 @@ type BuildTestName = {
 
 type CreateTest = {
   code: string;
-  creator_id: string;
+  creator_id?: string;
   group_id?: string | null;
   guide?: string | null;
   path?: string | null;
@@ -33,7 +33,8 @@ type UpdateTest = {
   code?: string;
   id: string;
   is_enabled?: boolean;
-  name?: string;
+  name?: string | null;
+  path?: string | null;
   runner_requested_at?: null;
   version?: number;
 };
@@ -129,18 +130,20 @@ export const createTest = async (
   log.debug("team", team_id);
 
   const timestamp = minutesFromNow();
-  const uniqueName = await buildTestName({ guide, team_id }, { db, logger });
+  const name = path
+    ? null
+    : await buildTestName({ guide, team_id }, { db, logger });
 
   const test = {
     created_at: timestamp,
-    creator_id,
+    creator_id: creator_id || null,
     code,
     deleted_at: null,
     group_id: group_id || null,
     guide: guide || null,
     id: cuid(),
     is_enabled: true,
-    name: uniqueName,
+    name,
     path: path || null,
     team_id,
     updated_at: timestamp,
@@ -153,21 +156,22 @@ export const createTest = async (
   return test;
 };
 
-export const findTestsForTeam = async (
-  team_id: string,
+export const deleteTests = async (
+  ids: string[],
   { db, logger }: ModelOptions
 ): Promise<Test[]> => {
-  const log = logger.prefix("findTestsForTeam");
+  const log = logger.prefix("deleteTests");
 
-  log.debug(team_id);
+  log.debug(ids);
 
-  const tests = await db
-    .select("*")
-    .from("tests")
-    .where({ deleted_at: null, team_id })
-    .orderBy("name", "asc");
+  const tests = await db.transaction(async (trx) => {
+    const tests = await trx.select("*").from("tests").whereIn("id", ids);
+    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
+    await trx("tests").update(updates).whereIn("id", ids);
+    return tests.map((test: Test) => ({ ...test, ...updates }));
+  });
 
-  log.debug(`found ${tests.length} tests for team ${team_id}`);
+  log.debug("deleted", ids);
 
   return tests;
 };
@@ -278,22 +282,39 @@ export const findTestForRun = async (
   return test;
 };
 
-export const deleteTests = async (
-  ids: string[],
+export const findTests = async (
+  test_ids: string[],
   { db, logger }: ModelOptions
 ): Promise<Test[]> => {
-  const log = logger.prefix("deleteTests");
+  const log = logger.prefix("findTests");
+  log.debug("tests", test_ids);
 
-  log.debug(ids);
+  const tests = await db("tests")
+    .whereIn("id", test_ids)
+    .andWhere({ deleted_at: null })
+    .orderBy("name", "asc");
 
-  const tests = await db.transaction(async (trx) => {
-    const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
-    await trx("tests").update(updates).whereIn("id", ids);
-    return tests.map((test: Test) => ({ ...test, ...updates }));
-  });
+  log.debug(`found ${tests.length} tests`);
 
-  log.debug("deleted", ids);
+  return tests;
+};
+
+export const findTestsForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findTestsForTeam");
+
+  log.debug(team_id);
+
+  const tests = await db
+    .select("*")
+    .from("tests")
+    .where({ deleted_at: null, team_id })
+    .orderBy("name", "asc")
+    .orderBy("path", "asc");
+
+  log.debug(`found ${tests.length} tests for team ${team_id}`);
 
   return tests;
 };
@@ -327,7 +348,15 @@ export const hasTest = async (
 };
 
 export const updateTest = async (
-  { code, id, is_enabled, name, runner_requested_at, version }: UpdateTest,
+  {
+    code,
+    id,
+    is_enabled,
+    name,
+    path,
+    runner_requested_at,
+    version,
+  }: UpdateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("updateTest");
@@ -352,11 +381,16 @@ export const updateTest = async (
     const updates: Partial<Test> = {
       code: code || existingTest.code,
       is_enabled: isNil(is_enabled) ? existingTest.is_enabled : is_enabled,
-      name: name || existingTest.name,
       updated_at: minutesFromNow(),
       version: version || existingTest.version,
     };
 
+    if (name !== undefined) {
+      updates.name = name;
+    }
+    if (path !== undefined) {
+      updates.path = path;
+    }
     if (runner_requested_at === null) {
       updates.runner_requested_at = runner_requested_at;
     }
