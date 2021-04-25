@@ -81,7 +81,7 @@ describe("deleteGitHubTests", () => {
     expect(gitHubFile.deleteFile).toBeCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatchObject({
       branch: "main",
-      path: "qawolf/group/myTest.test.js",
+      path: "group/myTest.test.js",
       sha: "sha",
     });
   });

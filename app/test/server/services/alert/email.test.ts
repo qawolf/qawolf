@@ -76,6 +76,7 @@ describe("sendEmailAlert", () => {
           test_deleted_at: null,
           test_id: "testId",
           test_name: "testName",
+          test_path: null,
           gif_url: expect.any(String),
         },
       ],
