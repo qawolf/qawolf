@@ -1,11 +1,11 @@
 import { Box } from "grommet";
 import Link from "next/link";
 
-import { timestampToText } from "../../../../lib/helpers";
 import { routes } from "../../../../lib/routes";
 import { SuiteSummary } from "../../../../lib/types";
 import { border, edgeSize } from "../../../../theme/theme";
 import StatusIcon from "../../../shared/StatusIcon";
+import SuiteDetails from "../../../shared/SuiteDetails";
 import Text from "../../../shared/Text";
 import TriggerIcon from "../../../shared/TriggerIcon";
 import { formatSuiteName, getStatusForSuite } from "../../helpers";
@@ -15,7 +15,6 @@ type Props = { suite: SuiteSummary };
 
 export default function SuiteCard({ suite }: Props): JSX.Element {
   const status = getStatusForSuite(suite);
-  const timestamp = timestampToText(suite.created_at);
 
   const label = formatSuiteName(suite);
 
@@ -38,9 +37,7 @@ export default function SuiteCard({ suite }: Props): JSX.Element {
                   {label}
                 </Text>
               </Box>
-              <Text color="gray7" margin={{ top: "xxxsmall" }} size="component">
-                {timestamp}
-              </Text>
+              <SuiteDetails margin={{ top: "xxsmall" }} suite={suite} />
             </Box>
           </Box>
           <StatusCounts statusCounts={suite.status_counts} />

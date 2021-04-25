@@ -1,12 +1,12 @@
 import { Box } from "grommet";
 
 import { useCreateSuite } from "../../../../hooks/mutations";
-import { timestampToText } from "../../../../lib/helpers";
 import { Suite, SuiteRun } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared/AppButton";
 import Play from "../../../shared/icons/Play";
 import Search from "../../../shared/Search";
+import SuiteDetails from "../../../shared/SuiteDetails";
 import Text from "../../../shared/Text";
 import TriggerIcon from "../../../shared/TriggerIcon";
 import { formatSuiteName } from "../../helpers";
@@ -53,14 +53,12 @@ export default function Header({
           <TriggerIcon trigger={suite.trigger} />
           <Text
             color="gray9"
-            margin={{ right: "xxsmall" }}
-            size="componentBold"
+            margin={{ right: "small" }}
+            size="componentHeader"
           >
             {formatSuiteName(suite)}
           </Text>
-          <Text color="gray7" size="component">
-            {timestampToText(suite.created_at)}
-          </Text>
+          <SuiteDetails suite={suite} />
         </Box>
         <Button
           IconComponent={Play}
