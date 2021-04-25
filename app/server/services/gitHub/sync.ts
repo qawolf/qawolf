@@ -4,7 +4,7 @@ import { camelCase } from "lodash";
 // import { connectDb } from "../../db";
 // import { Logger } from "../../Logger";
 import { findTeam } from "../../models/team";
-import { findTestsForTeam } from "../../models/test";
+import { findTestsForTeam, updateTest } from "../../models/test";
 import { ModelOptions, Team } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
 import { findDefaultBranch } from "./branch";
@@ -49,15 +49,24 @@ export const buildQaWolfTree = async (
     },
   ];
 
-  const testFiles = tests
-    .filter((test) => !test.guide)
-    .map((test) => {
-      return {
-        content: test.code,
-        mode,
-        path: `qawolf/${camelCase(test.name)}.test.js`,
-      };
-    });
+  const filteredTests = tests.filter((test) => !test.guide);
+
+  const testFiles = filteredTests.map((test) => {
+    return {
+      content: test.code,
+      mode,
+      path: `qawolf/${camelCase(test.name)}.test.js`,
+    };
+  });
+
+  await Promise.all(
+    filteredTests.map((test) => {
+      return updateTest(
+        { id: test.id, name: null, path: `${camelCase(test.name)}.test.js` },
+        options
+      );
+    })
+  );
 
   return [...testFiles, ...helperFiles];
 };
@@ -151,23 +160,30 @@ export const createInitialCommit = async (
     options
   );
 
-  const branch = await findDefaultBranch(fields, options);
-  const tree = await buildQaWolfTree(team, options);
-  const currentCommit = await findCurrentCommit({ ...fields, branch }, options);
+  await options.db.transaction(async (trx) => {
+    const trxOptions = { db: trx, logger: options.logger };
 
-  const treeSha = await createTree(
-    {
-      ...fields,
-      tree,
-      treeSha: currentCommit.treeSha,
-    },
-    options
-  );
-  const commitSha = await createCommit(
-    { ...fields, parents: [currentCommit.sha], treeSha },
-    options
-  );
-  await updateRef({ ...fields, branch, sha: commitSha });
+    const branch = await findDefaultBranch(fields, trxOptions);
+    const tree = await buildQaWolfTree(team, trxOptions);
+    const currentCommit = await findCurrentCommit(
+      { ...fields, branch },
+      trxOptions
+    );
+
+    const treeSha = await createTree(
+      {
+        ...fields,
+        tree,
+        treeSha: currentCommit.treeSha,
+      },
+      trxOptions
+    );
+    const commitSha = await createCommit(
+      { ...fields, parents: [currentCommit.sha], treeSha },
+      trxOptions
+    );
+    await updateRef({ ...fields, branch, sha: commitSha });
+  });
 
   log.debug("success");
 };
