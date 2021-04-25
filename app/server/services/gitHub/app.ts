@@ -30,19 +30,19 @@ export const createInstallationAccessToken = async (
     isSync ? "GITHUB_SYNC_APP_PRIVATE_KEY" : "GITHUB_APP_PRIVATE_KEY",
     options
   );
+  const clientSecretVariable = await findSystemEnvironmentVariable(
+    isSync ? "GITHUB_SYNC_APP_CLIENT_SECRET" : "GITHUB_APP_CLIENT_SECRET",
+    options
+  );
 
   const appId = isSync
     ? environment.GITHUB_SYNC_APP_ID
     : environment.GITHUB_APP_ID;
 
-  const clientSecret = isSync
-    ? environment.GITHUB_SYNC_APP_CLIENT_SECRET
-    : environment.GITHUB_APP_CLIENT_SECRET;
-
   const auth = createAppAuth({
     appId,
     clientId: environment.GITHUB_OAUTH_CLIENT_ID,
-    clientSecret,
+    clientSecret: clientSecretVariable.value,
     installationId,
     privateKey: JSON.parse(privateKeyVariable.value),
   });
