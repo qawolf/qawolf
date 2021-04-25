@@ -79,6 +79,7 @@ export type Runner = {
 };
 
 export type ShortSuite = {
+  branch: string | null;
   created_at: string;
   environment_id: string | null;
   environment_name: string | null;

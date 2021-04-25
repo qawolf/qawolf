@@ -96,6 +96,7 @@ export const suiteRunFragment = gql`
 
 export const suiteFragment = gql`
   fragment SuiteFragment on Suite {
+    branch
     created_at
     environment_id
     environment_name

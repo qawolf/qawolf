@@ -26,6 +26,7 @@ type BuildHelpersForSuite = {
 };
 
 type CreateSuite = {
+  branch?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
@@ -34,6 +35,7 @@ type CreateSuite = {
 };
 
 type CreateSuiteForTests = {
+  branch?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
@@ -72,6 +74,7 @@ export const buildHelpersForSuite = async (
 
 export const createSuite = async (
   {
+    branch,
     creator_id,
     environment_id,
     environment_variables,
@@ -91,6 +94,7 @@ export const createSuite = async (
   const helpers = await buildHelpersForSuite({ team_id }, { db, logger });
 
   const suite = {
+    branch: branch || null,
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_id: environment_id || null,
@@ -136,6 +140,7 @@ export const createSuiteForTrigger = async (
 
 export const createSuiteForTests = async (
   {
+    branch,
     creator_id,
     environment_id,
     environment_variables,
@@ -159,6 +164,7 @@ export const createSuiteForTests = async (
 
   const suite = await createSuite(
     {
+      branch,
       creator_id,
       environment_id,
       environment_variables,

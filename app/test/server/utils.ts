@@ -420,6 +420,7 @@ export const buildSuite = ({
   const finalI = i || 1;
 
   return {
+    branch: null,
     created_at: created_at || minutesFromNow(),
     creator_id: creator_id || null,
     environment_id: environment_id || null,

@@ -38,6 +38,7 @@ export default function Header({
 
     createSuite({
       variables: {
+        branch: suite.branch,
         environment_id: suite.environment_id,
         environment_variables: suite.environment_variables,
         test_ids,

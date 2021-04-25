@@ -68,6 +68,7 @@ describe("suite model", () => {
       const suites = await db.select("*").from("suites");
       expect(suites).toMatchObject([
         {
+          branch: null,
           creator_id: null,
           environment_id: null,
           environment_variables: null,
@@ -79,9 +80,10 @@ describe("suite model", () => {
       ]);
     });
 
-    it("creates a new suite with specified creator and environment", async () => {
+    it("creates a new suite with specified branch, creator, and environment", async () => {
       await createSuite(
         {
+          branch: "feature",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables,
@@ -94,6 +96,7 @@ describe("suite model", () => {
       const suites = await db.select("*").from("suites");
       expect(suites).toMatchObject([
         {
+          branch: "feature",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),

@@ -32,7 +32,12 @@ const SUITES_LIMIT = 25;
  */
 export const createSuiteResolver = async (
   _: Record<string, unknown>,
-  { environment_id, environment_variables, test_ids }: CreateSuiteMutation,
+  {
+    branch,
+    environment_id,
+    environment_variables,
+    test_ids,
+  }: CreateSuiteMutation,
   { db, logger, teams, user: contextUser }: Context
 ): Promise<string> => {
   const log = logger.prefix("createSuiteResolver");
@@ -60,7 +65,8 @@ export const createSuiteResolver = async (
     throw new Error(message);
   }
 
-  ensureTeamCanCreateSuite(testTeams[0], logger);
+  const team = testTeams[0];
+  ensureTeamCanCreateSuite(team, logger);
 
   const suite = await db.transaction(async (trx) => {
     const tests = await findEnabledTests(test_ids, { db: trx, logger });
@@ -71,10 +77,11 @@ export const createSuiteResolver = async (
 
     const { suite } = await createSuiteForTests(
       {
+        branch,
         creator_id: user.id,
         environment_id,
         environment_variables: formattedVariables,
-        team_id: testTeams[0].id,
+        team_id: team.id,
         tests,
       },
       { db: trx, logger }
@@ -82,8 +89,6 @@ export const createSuiteResolver = async (
 
     return suite;
   });
-
-  log.debug("created", suite.id);
 
   return suite.id;
 };
