@@ -65,7 +65,7 @@ export const deleteGitHubTests = async (
   await Promise.all(
     testsToDelete.map((test) => {
       return deleteFile(
-        { ...octokitRepo, branch, path: `qawolf/${test.path}`, sha: test.sha },
+        { ...octokitRepo, branch, path: test.path, sha: test.sha },
         options
       );
     })
