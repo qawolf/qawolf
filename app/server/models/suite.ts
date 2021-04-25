@@ -21,8 +21,15 @@ export type SuiteForTeam = Suite & {
   repeat_minutes: number | null;
 };
 
-type BuildHelpersForSuite = {
+type BuildTestsForSuite = {
+  branch?: string | null;
   team_id: string;
+  tests: Test[];
+};
+
+type BuildTestsForSuiteResult = {
+  helpers: string;
+  tests: Test[];
 };
 
 type CreateSuite = {
@@ -30,6 +37,7 @@ type CreateSuite = {
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
+  helpers: string;
   team_id: string;
   trigger_id: string;
 };
@@ -60,16 +68,24 @@ type FindSuitesForTeam = {
   team_id: string;
 };
 
-export const buildHelpersForSuite = async (
-  { team_id }: BuildHelpersForSuite,
-  { db, logger }: ModelOptions
-): Promise<string> => {
-  const log = logger.prefix("buildHelpersForSuite");
+export const buildTestsForSuite = async (
+  { branch, team_id, tests }: BuildTestsForSuite,
+  options: ModelOptions
+): Promise<BuildTestsForSuiteResult> => {
+  const log = options.logger.prefix("buildTestsForSuite");
   log.debug("team", team_id);
 
-  const team = await findTeam(team_id, { db, logger });
+  const team = await findTeam(team_id, options);
 
-  return team.helpers;
+  if (!branch || !team.git_sync_integration_id) {
+    log.debug(
+      `skip, branch ${branch}, integration ${team.git_sync_integration_id}`
+    );
+    return { helpers: team.helpers, tests };
+  }
+
+  // TODO: load helpers and test code from git
+  return { helpers: team.helpers, tests };
 };
 
 export const createSuite = async (
@@ -78,6 +94,7 @@ export const createSuite = async (
     creator_id,
     environment_id,
     environment_variables,
+    helpers,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -91,7 +108,6 @@ export const createSuite = async (
   const formattedVariables = environment_variables
     ? encrypt(JSON.stringify(environment_variables))
     : null;
-  const helpers = await buildHelpersForSuite({ team_id }, { db, logger });
 
   const suite = {
     branch: branch || null,
@@ -161,6 +177,10 @@ export const createSuiteForTests = async (
     const trigger = await findTrigger(trigger_id, { db, logger });
     environment_id = trigger.environment_id;
   }
+  const { helpers, tests: testsForSuite } = await buildTestsForSuite(
+    { branch, team_id, tests },
+    { db, logger }
+  );
 
   const suite = await createSuite(
     {
@@ -168,6 +188,7 @@ export const createSuiteForTests = async (
       creator_id,
       environment_id,
       environment_variables,
+      helpers,
       team_id,
       trigger_id,
     },
@@ -177,7 +198,7 @@ export const createSuiteForTests = async (
   const runs = await createRunsForTests(
     {
       suite_id: suite.id,
-      tests,
+      tests: testsForSuite,
     },
     { db, logger }
   );

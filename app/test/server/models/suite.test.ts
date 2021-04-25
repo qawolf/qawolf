@@ -1,6 +1,6 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
-  buildHelpersForSuite,
+  buildTestsForSuite,
   createSuite,
   createSuiteForTests,
   findSuite,
@@ -41,14 +41,15 @@ beforeAll(async () => {
 });
 
 describe("suite model", () => {
-  describe("buildHelpersForSuite", () => {
-    it("returns helpers for a team", async () => {
-      const helpers = await buildHelpersForSuite(
-        { team_id: "teamId" },
+  describe("buildTestsForSuite", () => {
+    it("returns helpers and tests as is if no branch", async () => {
+      const { helpers, tests } = await buildTestsForSuite(
+        { team_id: "teamId", tests: [test, test2] },
         options
       );
 
       expect(helpers).toBe("// helpers");
+      expect(tests).toEqual([test, test2]);
     });
   });
 
@@ -58,6 +59,7 @@ describe("suite model", () => {
     it("creates a new suite", async () => {
       await createSuite(
         {
+          helpers: "// helpers",
           environment_id: null,
           team_id: trigger.team_id,
           trigger_id: trigger.id,
@@ -87,6 +89,7 @@ describe("suite model", () => {
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables,
+          helpers: "// helpers",
           team_id: trigger.team_id,
           trigger_id: trigger.id,
         },
