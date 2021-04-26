@@ -1,13 +1,14 @@
 import { uniq } from "lodash";
 
 import { ClientError } from "../errors";
+import { createOctokitForIntegration } from "../services/gitHub/app";
 import { deleteFile } from "../services/gitHub/file";
 import { findTestsForBranch } from "../services/gitHub/tree";
-import { GitTree, ModelOptions, Team, Test } from "../types";
+import { GitHubFile, ModelOptions, Team, Test } from "../types";
 import { createTest } from "./test";
 
 type CreateMissingTests = {
-  gitHubTests: GitTree["tree"];
+  gitHubTests: GitHubFile[];
   team_id: string;
   tests: Test[];
 };
@@ -53,7 +54,10 @@ export const deleteGitHubTests = async (
   }
 
   const integrationId = integrationIds[0];
-  const { tests: gitHubTests, ...octokitRepo } = await findTestsForBranch(
+
+  const { octokit } = await createOctokitForIntegration(integrationId, options);
+
+  const { files: gitHubTests, ...ownerRepo } = await findTestsForBranch(
     { branch, integrationId },
     options
   );
@@ -65,7 +69,7 @@ export const deleteGitHubTests = async (
   await Promise.all(
     testsToDelete.map((test) => {
       return deleteFile(
-        { ...octokitRepo, branch, path: test.path, sha: test.sha },
+        { ...ownerRepo, branch, octokit, path: test.path, sha: test.sha },
         options
       );
     })
@@ -78,7 +82,7 @@ export const upsertGitHubTests = async (
 ): Promise<Test[]> => {
   const log = options.logger.prefix("upsertGitHubTests");
 
-  const { tests: gitHubTests } = await findTestsForBranch(
+  const { files: gitHubTests } = await findTestsForBranch(
     { branch, integrationId },
     options
   );
