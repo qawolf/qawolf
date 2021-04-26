@@ -1,4 +1,5 @@
 import { createAppAuth } from "@octokit/auth-app";
+import { graphql } from "@octokit/graphql";
 import { Octokit } from "@octokit/rest";
 
 import environment from "../../environment";
@@ -16,16 +17,23 @@ type OctokitResult = {
   token: string;
 };
 
+type OctokitGraphqlRepo = {
+  graphql: typeof graphql;
+  owner: string;
+  repo: string;
+};
+
 export type OctokitRepo = {
   octokit: Octokit;
   owner: string;
   repo: string;
 };
 
-export const createInstallationAccessToken = async (
+export const createOctokitAuth = async (
   { installationId, isSync }: InstallationOptions,
   options: ModelOptions
-): Promise<string> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
   const privateKeyVariable = await findSystemEnvironmentVariable(
     isSync ? "GITHUB_SYNC_APP_PRIVATE_KEY" : "GITHUB_APP_PRIVATE_KEY",
     options
@@ -47,18 +55,15 @@ export const createInstallationAccessToken = async (
     privateKey: JSON.parse(privateKeyVariable.value),
   });
 
-  const { token } = await auth({ type: "installation" });
-  return token;
+  return auth;
 };
 
 export const createOctokitForInstallation = async (
   { installationId, isSync }: InstallationOptions,
   options: ModelOptions
 ): Promise<OctokitResult> => {
-  const token = await createInstallationAccessToken(
-    { installationId, isSync },
-    options
-  );
+  const auth = await createOctokitAuth({ installationId, isSync }, options);
+  const { token } = await auth({ type: "installation" });
   const octokit = new Octokit({ auth: token });
   return { octokit, token };
 };
@@ -79,4 +84,24 @@ export const createOctokitForIntegration = async (
 
   const [owner, repo] = integration.github_repo_name?.split("/");
   return { ...result, owner, repo };
+};
+
+export const createOctokitGraphqlForIntegration = async (
+  integrationId: string,
+  options: ModelOptions
+): Promise<OctokitGraphqlRepo> => {
+  const integration = await findIntegration(integrationId, options);
+
+  const auth = await createOctokitAuth(
+    {
+      installationId: integration.github_installation_id,
+      isSync: integration.type === "github_sync",
+    },
+    options
+  );
+
+  const graphqlWithAuth = graphql.defaults({ request: { hook: auth.hook } });
+
+  const [owner, repo] = integration.github_repo_name?.split("/");
+  return { graphql: graphqlWithAuth, owner, repo };
 };

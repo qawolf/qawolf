@@ -4,6 +4,7 @@ import {
   upsertGitHubTests,
 } from "../../../server/models/github_tests";
 import * as testModel from "../../../server/models/test";
+import * as gitHubApp from "../../../server/services/gitHub/app";
 import * as gitHubFile from "../../../server/services/gitHub/file";
 import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../db";
@@ -65,13 +66,17 @@ beforeAll(async () => {
 
 describe("deleteGitHubTests", () => {
   it("deletes tests from GitHub", async () => {
-    jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
-      tests: [
+    jest.spyOn(gitHubTree, "findFilesForBranch").mockResolvedValue({
+      files: [
         { path: "group/myTest.test.js", sha: "sha" },
         { path: "anotherTest.test.js", sha: "sha2" },
       ],
     } as any);
     const spy = jest.spyOn(gitHubFile, "deleteFile").mockResolvedValue();
+
+    jest
+      .spyOn(gitHubApp, "createOctokitForIntegration")
+      .mockResolvedValue({ octokit: null } as any);
 
     const team = await db("teams").where({ id: "teamId" }).first();
     const tests = await db("tests").whereIn("id", ["testId", "test2Id"]);
@@ -108,7 +113,7 @@ describe("deleteGitHubTests", () => {
 describe("upsertGitHubTests", () => {
   it("filters out tests not on branch and creates missing tests", async () => {
     jest.spyOn(gitHubTree, "findTestsForBranch").mockResolvedValue({
-      tests: [{ path: "group/test.test.js" }, { path: "anotherTest.test.js" }],
+      files: [{ path: "group/test.test.js" }, { path: "anotherTest.test.js" }],
     } as any);
 
     const tests = await testModel.findTestsForTeam("teamId", options);
