@@ -1,69 +1,142 @@
-import { GitTree, ModelOptions } from "../../types";
-import { GIT_TEST_FILE_EXTENSION } from "../../utils";
-import { createOctokitForIntegration, OctokitRepo } from "./app";
+import { GitHubFile, ModelOptions } from "../../types";
+import { createOctokitGraphqlForIntegration } from "./app";
 
-type FindTestsForBranch = {
+type FindFiles = {
   branch: string;
   integrationId: string;
 };
 
-type FindTestsForBranchResult = OctokitRepo & {
-  tests: GitTree["tree"];
+type FindFilesResult = {
+  files: GitHubFile[];
+  owner: string;
+  repo: string;
 };
 
-type FindTreeForBranch = OctokitRepo & {
-  recursive?: "true";
-  tree_sha: string;
+type GitEntry = {
+  object?: {
+    entries?: GitEntry[];
+    oid?: string;
+    text?: string;
+  };
+  path?: string;
 };
 
-const qawolfPath = "qawolf";
+type RepoFilesData = {
+  rateLimit: {
+    remaining: number;
+  };
+  repository: GitEntry;
+};
 
-export const findTreeForBranch = async (
-  { octokit, owner, recursive, repo, tree_sha }: FindTreeForBranch,
-  options: ModelOptions
-): Promise<GitTree | null> => {
-  const log = options.logger.prefix("findTreeForBranch");
-  log.debug("tree sha", tree_sha);
+export const GIT_TEST_FILE_EXTENSION = ".test.js";
 
-  const { data } = await octokit.git.getTree({
-    owner,
-    recursive,
-    repo,
-    tree_sha,
+function flattenFiles(entries: GitEntry[]): GitHubFile[] {
+  const files: GitHubFile[] = [];
+
+  entries.forEach((entry) => {
+    if (entry.object?.text !== undefined) {
+      files.push({
+        path: entry.path,
+        sha: entry.object.oid,
+        text: entry.object.text,
+      });
+    } else if (entry.object?.entries) {
+      files.push(...flattenFiles(entry.object.entries));
+    }
   });
-  log.debug("sha", data.sha);
 
-  return data;
+  return files;
+}
+
+export const findFilesForBranch = async (
+  { branch, integrationId }: FindFiles,
+  options: ModelOptions
+): Promise<FindFilesResult> => {
+  const log = options.logger.prefix("findFilesForBranch");
+  log.debug("branch", branch);
+
+  const { graphql, owner, repo } = await createOctokitGraphqlForIntegration(
+    integrationId,
+    options
+  );
+
+  const { rateLimit, repository } = await graphql<RepoFilesData>({
+    query: `query repoFiles($owner: String!, $name: String!) {
+      rateLimit {
+        cost
+        remaining
+        limit
+        used
+      }
+
+      repository(owner: $owner, name: $name) {
+        object(expression: "${branch}:qawolf/") {
+          ... on Tree {
+            entries {
+              path
+              object {
+                ... on Blob {
+                  oid
+                  text
+                }
+                ... on Tree {
+                  entries {
+                    path
+                    object {
+                      ... on Blob {
+                        oid
+                        text
+                      }
+                      ... on Tree {
+                        entries {
+                          path
+                          object {
+                            ... on Blob {
+                              oid
+                              text
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`,
+    name: repo,
+    owner,
+  });
+
+  if (rateLimit.remaining < 100) {
+    log.alert(
+      `near github api limit integration ${integrationId} ${rateLimit.remaining}`
+    );
+  }
+
+  const files = flattenFiles(repository.object.entries);
+
+  log.debug(`found ${files.length} files`);
+
+  return { files, owner, repo };
 };
 
 export const findTestsForBranch = async (
-  { branch, integrationId }: FindTestsForBranch,
+  parameters: FindFiles,
   options: ModelOptions
-): Promise<FindTestsForBranchResult> => {
+): Promise<FindFilesResult> => {
   const log = options.logger.prefix("findTestsForBranch");
 
-  const octokitRepo = await createOctokitForIntegration(integrationId, options);
+  const { files, ...result } = await findFilesForBranch(parameters, options);
 
-  const tree = await findTreeForBranch(
-    { ...octokitRepo, tree_sha: branch },
-    options
+  const tests = files.filter(({ path }) =>
+    path.includes(GIT_TEST_FILE_EXTENSION)
   );
-
-  const qawolfTree = tree.tree.find((t) => t.path === qawolfPath);
-  if (!qawolfTree || !qawolfTree.sha) {
-    log.debug(`qawolf path ${qawolfPath} not found (sha ${qawolfTree?.sha})`);
-    return { ...octokitRepo, tests: [] };
-  }
-
-  const files = await findTreeForBranch(
-    { ...octokitRepo, recursive: "true", tree_sha: qawolfTree.sha },
-    options
-  );
-  const tests = files.tree.filter(({ path }) => {
-    return path.includes(GIT_TEST_FILE_EXTENSION);
-  });
 
   log.debug(`found ${tests.length} tests`);
 
-  return { ...octokitRepo, tests };
+  return { files: tests, ...result };
 };

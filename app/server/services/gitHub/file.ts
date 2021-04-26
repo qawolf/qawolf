@@ -44,13 +44,13 @@ export const deleteFile = async (
   { logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("deleteFile");
-  log.debug("path", path);
+  log.debug(`${owner}/${repo} branch ${branch} path ${path} sha ${sha}`);
 
   await octokit.repos.deleteFile({
     branch,
     message: `delete ${path}`,
     owner,
-    path: `qawolf/${path}`,
+    path,
     repo,
     sha,
   });

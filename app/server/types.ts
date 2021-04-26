@@ -1,4 +1,3 @@
-import { RestEndpointMethodTypes } from "@octokit/rest";
 import knex, { Transaction } from "knex";
 
 import { Logger } from "./Logger";
@@ -44,6 +43,12 @@ export type GitHubFields = {
   subscribed_at?: string;
 };
 
+export type GitHubFile = {
+  path: string;
+  sha: string;
+  text: string;
+};
+
 export type GitHubUser = {
   avatar_url: string;
   email: string;
@@ -51,8 +56,6 @@ export type GitHubUser = {
   login: string;
   name: string;
 };
-
-export type GitTree = RestEndpointMethodTypes["git"]["getTree"]["response"]["data"];
 
 // Slack types
 export type SlackWebhook = {
