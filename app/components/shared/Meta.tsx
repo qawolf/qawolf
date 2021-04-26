@@ -15,7 +15,11 @@ export default function Meta({
   title,
 }: Props): JSX.Element {
   const metaHtml: JSX.Element[] = [
-    <meta name="description" content={description || defaultDescription} />,
+    <meta
+      key="description"
+      name="description"
+      content={description || defaultDescription}
+    />,
   ];
 
   ["og", "twitter"].forEach((platform) => {
