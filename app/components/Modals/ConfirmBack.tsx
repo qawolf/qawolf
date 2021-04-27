@@ -16,7 +16,7 @@ export default function ConfirmBack({ closeModal }: Props): JSX.Element {
   const { push } = useRouter();
   const { dashboardUri } = useContext(StateContext);
 
-  const handlePrimaryClick = (): void => {
+  const handleSecondaryClick = (): void => {
     closeModal();
     push(dashboardUri || routes.tests);
   };
@@ -33,10 +33,10 @@ export default function ConfirmBack({ closeModal }: Props): JSX.Element {
           {copy.backConfirm}
         </Text>
         <Buttons
-          onPrimaryClick={handlePrimaryClick}
-          onSecondaryClick={closeModal}
-          primaryLabel={copy.goBack}
-          secondaryLabel={copy.cancel}
+          onPrimaryClick={closeModal}
+          onSecondaryClick={handleSecondaryClick}
+          primaryLabel={copy.cancel}
+          secondaryLabel={copy.goBack}
         />
       </Box>
     </Modal>
