@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { useRunner } from "../../../hooks/queries";
 import { RunnerClient } from "../../../lib/runner";
+import { StateContext } from "../../StateContext";
 
 export type ConnectRunnerHook = {
   apiKey: string | null;
@@ -22,6 +23,7 @@ export const useConnectRunner = ({
   runner: runnerClient,
 }: UseConnectRunner): ConnectRunnerHook => {
   const { query } = useRouter();
+  const { branch } = useContext(StateContext);
 
   const useLocalRunner = query.local === "1";
 
@@ -30,6 +32,7 @@ export const useConnectRunner = ({
       ? { run_id: query.run_id as string }
       : {
           request_test_runner: requestTestRunner,
+          test_branch: branch,
           test_id: query.test_id as string,
         },
     { skip: useLocalRunner }

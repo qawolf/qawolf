@@ -1400,6 +1400,11 @@ type Query {
     run_id: ID
 
     """
+    The optional test branch to request a runner for.
+    """
+    test_branch: String
+
+    """
     The current test ID.
     """
     test_id: ID

@@ -121,6 +121,7 @@ type RunnerData = {
 type RunnerVariables = {
   request_test_runner?: boolean;
   run_id?: string | null;
+  test_branch?: string;
   test_id?: string;
 };
 
