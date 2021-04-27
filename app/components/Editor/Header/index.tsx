@@ -8,7 +8,6 @@ import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Divider from "../../shared/Divider";
-import GitBranch from "../../shared/GitBranch";
 import Edit from "../../shared/icons/Edit";
 import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
@@ -18,6 +17,7 @@ import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
 import { Mode } from "../hooks/mode";
 import BackButton from "./BackButton";
+import Branch from "./Branch";
 import RunSummary from "./RunSummary";
 import TestButtons from "./TestButtons";
 import TestHistory from "./TestHistory";
@@ -34,7 +34,9 @@ export default function Header({ mode }: Props): JSX.Element {
   const { branch: stateBranch } = useContext(StateContext);
   const { run, suite, team, test } = useContext(TestContext);
 
-  const branch = team.git_sync_integration_id ? stateBranch : null;
+  const branch = team.git_sync_integration_id
+    ? suite?.branch || stateBranch
+    : null;
   const testIds = [test_id] as string[];
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
@@ -64,7 +66,7 @@ export default function Header({ mode }: Props): JSX.Element {
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
         <Box align="center" direction="row">
-          <GitBranch branch={branch} margin={{ right: "small" }} />
+          <Branch branch={branch} mode={mode} />
           <TestHistory testId={test?.id || null} />
           <Divider
             height={edgeSize.large}
