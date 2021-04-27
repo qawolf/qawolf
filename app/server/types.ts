@@ -229,6 +229,7 @@ export type Runner = {
   restarted_at?: string | null;
   run_id?: string | null;
   session_expires_at?: string | null;
+  test_branch?: string | null;
   test_id?: string | null;
   updated_at?: string;
 };

@@ -196,6 +196,7 @@ export const resetRunner = async (
       ready_at: null,
       run_id: null,
       session_expires_at: null,
+      test_branch: null,
       test_id: null,
     };
 

@@ -460,7 +460,11 @@ describe("resetRunner", () => {
   });
 
   it("unassigns the test", async () => {
-    await db("runners").update({ run_id: null, test_id: "testId" });
+    await db("runners").update({
+      run_id: null,
+      test_branch: "main",
+      test_id: "testId",
+    });
     await resetRunner({ id: "runnerId", type: "expire" }, options);
 
     const runner = await db("runners").where({ id: "runnerId" }).first();
@@ -468,6 +472,7 @@ describe("resetRunner", () => {
       api_key: null,
       ready_at: null,
       run_id: null,
+      test_branch: null,
       test_id: null,
     });
   });
