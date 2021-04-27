@@ -119,8 +119,8 @@ type RunnerData = {
 };
 
 type RunnerVariables = {
+  request_test_runner?: boolean;
   run_id?: string | null;
-  should_request_runner?: boolean;
   test_id?: string;
 };
 

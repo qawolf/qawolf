@@ -27,8 +27,8 @@ type AuthenticateRunner = RunnerUrl & {
 };
 
 type RunnerQuery = {
+  request_test_runner?: boolean;
   run_id?: string;
-  should_request_runner?: boolean;
   test_id?: string;
 };
 
@@ -51,7 +51,7 @@ export const authenticateRunner = async (
 
 export const runnerResolver = async (
   _: Record<string, unknown>,
-  { run_id, should_request_runner, test_id }: RunnerQuery,
+  { request_test_runner, run_id, test_id }: RunnerQuery,
   { db, ip, logger, user: contextUser, teams }: Context
 ): Promise<RunnerResult | null> => {
   const log = logger.prefix("runnerResolver");
@@ -61,7 +61,6 @@ export const runnerResolver = async (
   log.debug(user.id);
 
   const run = run_id ? await findRun(run_id, { db, logger }) : null;
-
   const testId = run?.test_id || test_id;
   if (!testId) throw new Error(`test not found ${testId}`);
 
@@ -70,12 +69,12 @@ export const runnerResolver = async (
     await ensureTestAccess({ teams, test }, { db: trx, logger });
 
     let runner = await findRunner(
-      { run_id: run_id, test_id: testId },
+      run_id && !request_test_runner ? { run_id } : { test_id: testId },
       { db: trx, logger }
     );
 
     // extend the session
-    if (runner && should_request_runner) {
+    if (runner && request_test_runner) {
       await updateRunner(
         { id: runner.id, session_expires_at: minutesFromNow(10) },
         { db: trx, logger }
@@ -83,7 +82,7 @@ export const runnerResolver = async (
     }
 
     // if there is no runner, request one for the test
-    if (!runner && should_request_runner) {
+    if (!runner && request_test_runner) {
       runner = await requestRunnerForTest({ ip, test }, { db: trx, logger });
     }
 
