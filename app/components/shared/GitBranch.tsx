@@ -6,7 +6,7 @@ import Text from "./Text";
 
 type Props = {
   branch: string | null;
-  margin: BoxProps["margin"];
+  margin?: BoxProps["margin"];
 };
 
 export default function GitBranch({ branch, margin }: Props): JSX.Element {
