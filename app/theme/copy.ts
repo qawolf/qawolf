@@ -67,11 +67,13 @@ export const copy = {
   codeLove: "Code you’ll 💖",
   codeLoveDetail:
     "Your test code uses the best selector and best-in-class open source tools.",
+  commit: "Commit",
   communitySupport: "Community support",
   completeCount: (count: number): string => `${count} of 4 complete`,
   confirm: "Confirm",
   confirmDelete: (entity: string): string =>
     `Are you sure you want to delete the following ${entity}?`,
+  connectGitHubRepo: "Connect GitHub repository",
   connectToFailures: "Connect to failing tests",
   contactUs: "Contact us",
   continue: "Continue",
@@ -89,7 +91,6 @@ export const copy = {
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
   createTrigger: "Create trigger",
-  connectGitHubRepo: "Connect GitHub repository",
   curious: "Curious yet?",
   currentBill: "Current bill:",
   custom: "Custom",
