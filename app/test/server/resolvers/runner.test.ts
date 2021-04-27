@@ -145,6 +145,7 @@ describe("updateRunnerResolver", () => {
     await db("tests").insert(
       buildTest({
         runner_requested_at: minutesFromNow(),
+        runner_requested_branch: "feat-a",
         runner_locations: ["eastus2"],
       })
     );
@@ -186,11 +187,15 @@ describe("updateRunnerResolver", () => {
     it("assigns a test", async () => {
       expect(runner).toMatchObject({
         session_expires_at: expect.any(Date),
+        test_branch: "feat-a",
         test_id: "testId",
       });
 
       const test = await findTest("testId", options);
-      expect(test).toMatchObject({ runner_requested_at: null });
+      expect(test).toMatchObject({
+        runner_requested_at: null,
+        runner_requested_branch: null,
+      });
     });
 
     it("authenticates the runner", () => {
@@ -257,7 +262,12 @@ describe("updateRunnerResolver", () => {
 
       // check it does not assign to an expired runner
       await db("runners")
-        .update({ ready_at: now, session_expires_at: now, test_id: null })
+        .update({
+          ready_at: now,
+          session_expires_at: now,
+          test_branch: null,
+          test_id: null,
+        })
         .where({ id: "runnerId" });
 
       const result = await updateRunnerResolver(

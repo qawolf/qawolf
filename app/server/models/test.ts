@@ -42,6 +42,7 @@ type UpdateTest = {
 type UpdateTestToPending = {
   id: string;
   runner_locations: string[];
+  runner_requested_branch?: string;
 };
 
 type UpdateTestsGroup = {
@@ -219,12 +220,16 @@ export const findEnabledTestsForTrigger = async (
 export const findPendingTest = async (
   location: string | null,
   { db, logger }: ModelOptions
-): Promise<Pick<Test, "id" | "runner_requested_at"> | null> => {
+): Promise<Pick<
+  Test,
+  "id" | "runner_requested_at" | "runner_requested_branch"
+> | null> => {
   const log = logger.prefix("findPendingTest");
 
   let query = db("tests")
     .select("id")
     .select("runner_requested_at")
+    .select("runner_requested_branch")
     .whereNotNull("runner_requested_at")
     .where({ deleted_at: null });
 
@@ -234,9 +239,12 @@ export const findPendingTest = async (
 
   const result = await query.orderBy("runner_requested_at", "asc").first();
 
-  if (result) log.debug("found", result, "for location", location);
+  if (result) {
+    log.debug("found", result, "for location", location);
+    return result;
+  }
 
-  return result || null;
+  return null;
 };
 
 export const findTest = async (
@@ -393,6 +401,7 @@ export const updateTest = async (
     }
     if (runner_requested_at === null) {
       updates.runner_requested_at = runner_requested_at;
+      updates.runner_requested_branch = null;
     }
 
     try {
@@ -424,12 +433,16 @@ export const updateTestToPending = async (
   // do not update if there is a runner assigned
   // this could happen during a concurrent assignment
   const sql = `UPDATE tests
-  SET runner_locations = ?, runner_requested_at = now()
+  SET runner_locations = ?, runner_requested_at = now(), runner_requested_branch = ?
   WHERE id = ? 
     AND runner_requested_at IS NULL 
     AND id NOT IN (SELECT test_id FROM runners)`;
 
-  const result = await db.raw(sql, [runner_locations, options.id]);
+  const result = await db.raw(sql, [
+    runner_locations,
+    options.runner_requested_branch || null,
+    options.id,
+  ]);
 
   const didUpdate = result.rowCount > 0;
   log.debug(options, didUpdate ? "updated" : "skipped");
