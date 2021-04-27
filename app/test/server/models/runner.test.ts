@@ -49,6 +49,7 @@ describe("assignRunner", () => {
         ready_at: minutesFromNow(),
         run_id: null,
         session_expires_at: null,
+        test_branch: null,
         test_id: null,
       })
       .where({ id: "runnerId" })
@@ -67,18 +68,32 @@ describe("assignRunner", () => {
 
   it("assigns a test to the runner", async () => {
     await updateTestToPending(
-      { id: "testId", runner_locations: ["westus2"] },
+      {
+        id: "testId",
+        runner_locations: ["westus2"],
+        runner_requested_branch: "main",
+      },
       options
     );
-    await assignRunner({ runner, test_id: "testId" }, options);
+    await assignRunner(
+      { runner, test_branch: "main", test_id: "testId" },
+      options
+    );
 
     const result = await findRunner({ id: "runnerId" }, options);
-    expect(result).toMatchObject({ id: "runnerId", test_id: "testId" });
+    expect(result).toMatchObject({
+      id: "runnerId",
+      test_branch: "main",
+      test_id: "testId",
+    });
     expect(result.session_expires_at).toBeTruthy();
 
     // check it clears test.runner_request_at when it is assigned
     const test = await findTest("testId", options);
-    expect(test).toMatchObject({ runner_requested_at: null });
+    expect(test).toMatchObject({
+      runner_requested_at: null,
+      runner_requested_branch: null,
+    });
   });
 });
 
@@ -388,7 +403,10 @@ describe("requestRunnerForTest", () => {
     );
     expect(result).toEqual(runner);
 
-    expect(assignRunner).toBeCalledWith({ runner, test_id: "testId" }, options);
+    expect(assignRunner).toBeCalledWith(
+      { runner, test_branch: null, test_id: "testId" },
+      options
+    );
   });
 
   it("updates the test to pending if a runner if not available", async () => {
@@ -409,6 +427,7 @@ describe("requestRunnerForTest", () => {
       {
         id: "testId",
         runner_locations: ["eastus2", "westus2", "centralindia"],
+        runner_requested_branch: null,
       },
       options
     );

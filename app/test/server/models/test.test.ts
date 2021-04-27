@@ -385,6 +385,7 @@ describe("pending tests", () => {
         i: 4,
         runner_locations: ["eastus2"],
         runner_requested_at: minutesFromNow(),
+        runner_requested_branch: "feat-a",
       }),
       buildTest({
         i: 5,
@@ -419,6 +420,7 @@ describe("pending tests", () => {
       expect(pending).toMatchObject({
         id: "test4Id",
         runner_requested_at: expect.any(Date),
+        runner_requested_branch: "feat-a",
       });
     });
   });
@@ -445,6 +447,7 @@ describe("pending tests", () => {
         {
           id: "test2Id",
           runner_locations: ["westus2", "eastus2", "centralindia"],
+          runner_requested_branch: "main",
         },
         options
       );
@@ -456,6 +459,7 @@ describe("pending tests", () => {
         // check it only uses the first two locations
         runner_locations: ["westus2", "eastus2"],
         runner_requested_at: expect.any(Date),
+        runner_requested_branch: "main",
       });
     });
   });
@@ -617,6 +621,7 @@ describe("updateTest", () => {
         name: "diffname",
         runner_locations: ["eastus2"],
         runner_requested_at: minutesFromNow(),
+        runner_requested_branch: "main",
         version: 2,
       }),
       buildTest({ i: 2 }),
@@ -662,6 +667,7 @@ describe("updateTest", () => {
       is_enabled: true,
       runner_locations: ["eastus2"],
       runner_requested_at: null,
+      runner_requested_branch: null,
       name: "test",
       version: 13,
     });

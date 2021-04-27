@@ -158,6 +158,7 @@ type BuildTest = {
   path?: string;
   runner_locations?: string[];
   runner_requested_at?: string;
+  runner_requested_branch?: string;
   team_id?: string;
   version?: number;
 };
@@ -495,6 +496,7 @@ export const buildTest = ({
   path,
   runner_locations,
   runner_requested_at,
+  runner_requested_branch,
   version,
 }: BuildTest): Test => {
   const finalI = i || 1;
@@ -515,6 +517,7 @@ export const buildTest = ({
       ? JSON.stringify(runner_locations)
       : null,
     runner_requested_at: runner_requested_at || null,
+    runner_requested_branch: runner_requested_branch || null,
     team_id: team_id || "teamId",
     updated_at: timestamp,
     version: version || 11,

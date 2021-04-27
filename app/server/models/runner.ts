@@ -9,6 +9,7 @@ import { findPendingTest, updateTest, updateTestToPending } from "./test";
 type AssignRunner = {
   runner: Runner;
   run_id?: string;
+  test_branch?: string;
   test_id?: string;
 };
 
@@ -23,6 +24,7 @@ type FindRunner = {
   is_ready?: boolean;
   locations?: string[];
   run_id?: string;
+  test_branch?: string;
   test_id?: string;
 };
 
@@ -263,9 +265,18 @@ export const deleteUnhealthyRunners = async ({
 export const findPendingTestOrRunId = async (
   location: string,
   options: ModelOptions
-): Promise<{ run_id?: string; test_id?: string } | null> => {
+): Promise<null | {
+  run_id?: string;
+  test_branch?: string;
+  test_id?: string;
+}> => {
   const pendingTest = await findPendingTest(location, options);
-  if (pendingTest) return { test_id: pendingTest.id };
+  if (pendingTest) {
+    return {
+      test_branch: pendingTest.runner_requested_branch || null,
+      test_id: pendingTest.id,
+    };
+  }
 
   // lock run location (for now)
   if (location !== "eastus2") return null;
@@ -294,7 +305,15 @@ const findClosestRunner = ({
 };
 
 export const findRunner = async (
-  { id, include_deleted, is_ready, locations, run_id, test_id }: FindRunner,
+  {
+    id,
+    include_deleted,
+    is_ready,
+    locations,
+    run_id,
+    test_branch,
+    test_id,
+  }: FindRunner,
   { db }: ModelOptions
 ): Promise<Runner | null> => {
   if (run_id && test_id) throw new Error("cannot provide run_id and test_id");
@@ -304,6 +323,8 @@ export const findRunner = async (
   if (!include_deleted) filter.deleted_at = null;
   if (id) filter.id = id;
   if (run_id !== undefined) filter.run_id = run_id;
+
+  if (test_branch !== undefined) filter.test_branch = test_branch;
   if (test_id !== undefined) filter.test_id = test_id;
 
   let query = db("runners").select("*").from("runners").where(filter);
@@ -359,7 +380,7 @@ export const requestRunnerForTest = async (
 
   if (runner) {
     const assignedRunner = await assignRunner(
-      { runner, test_id: test.id },
+      { runner, test_branch: test.runner_requested_branch, test_id: test.id },
       options
     );
     if (assignedRunner) return assignedRunner;
@@ -367,7 +388,11 @@ export const requestRunnerForTest = async (
 
   if (!test.runner_requested_at) {
     await updateTestToPending(
-      { id: test.id, runner_locations: locations },
+      {
+        id: test.id,
+        runner_locations: locations,
+        runner_requested_branch: test.runner_requested_branch,
+      },
       options
     );
   }

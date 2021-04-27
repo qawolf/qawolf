@@ -325,6 +325,7 @@ export type Test = {
   path: string | null;
   runner_locations?: string | null;
   runner_requested_at?: string | null;
+  runner_requested_branch?: string;
   team_id: string;
   updated_at: string;
   url?: string;

@@ -29,6 +29,7 @@ type AuthenticateRunner = RunnerUrl & {
 type RunnerQuery = {
   request_test_runner?: boolean;
   run_id?: string;
+  test_branch?: string;
   test_id?: string;
 };
 
@@ -51,7 +52,7 @@ export const authenticateRunner = async (
 
 export const runnerResolver = async (
   _: Record<string, unknown>,
-  { request_test_runner, run_id, test_id }: RunnerQuery,
+  { request_test_runner, run_id, test_branch, test_id }: RunnerQuery,
   { db, ip, logger, user: contextUser, teams }: Context
 ): Promise<RunnerResult | null> => {
   const log = logger.prefix("runnerResolver");
@@ -69,7 +70,9 @@ export const runnerResolver = async (
     await ensureTestAccess({ teams, test }, { db: trx, logger });
 
     let runner = await findRunner(
-      run_id && !request_test_runner ? { run_id } : { test_id: testId },
+      run_id && !request_test_runner
+        ? { run_id }
+        : { test_branch, test_id: testId },
       { db: trx, logger }
     );
 
@@ -167,18 +170,16 @@ export const updateRunnerResolver = async (
 
   let runId = runner.run_id;
 
-  // assign the runner if its session has not been
+  // assign the runner if it is not assigned
   if (!runner.session_expires_at) {
     const pending = await findPendingTestOrRunId(runner.location, {
       db,
       logger,
     });
 
-    if (pending?.test_id) {
-      await assignRunner({ runner, test_id: pending.test_id }, { db, logger });
-    } else if (pending?.run_id) {
+    if (pending) {
       const updatedRunner = await assignRunner(
-        { run_id: pending.run_id, runner },
+        { ...pending, runner },
         { db, logger }
       );
       if (updatedRunner?.run_id) runId = updatedRunner?.run_id;
