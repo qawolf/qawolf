@@ -94,10 +94,16 @@ export const runCountQuery = gql`
 `;
 
 export const runnerQuery = gql`
-  query runner($request_test_runner: Boolean, $run_id: ID, $test_id: ID) {
+  query runner(
+    $request_test_runner: Boolean
+    $run_id: ID
+    $test_branch: String
+    $test_id: ID
+  ) {
     runner(
       request_test_runner: $request_test_runner
       run_id: $run_id
+      test_branch: $test_branch
       test_id: $test_id
     ) {
       ...RunnerFragment
