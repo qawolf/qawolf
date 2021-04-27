@@ -16,9 +16,9 @@ type RunTestOptions = {
 };
 
 export type RunTest = {
+  requestTestRunner: boolean;
   runTest: (options: RunTestOptions) => void;
   stopTest: () => void;
-  shouldRequestRunner: boolean;
 };
 
 type UseRunTest = {
@@ -32,15 +32,17 @@ export const useRunTest = ({
   resetProgress,
   runner,
 }: UseRunTest): RunTest => {
-  const [shouldRequestRunner, setShouldRequestRunner] = useState(
+  const [requestTestRunner, setRequestTestRunner] = useState(
     !!state.pendingRun
   );
   const [ranAt, setRanAt] = useState<Date | null>(null);
 
   useEffect(() => {
+    // request a test runner when there is a pending run
+    // or "Run Test" was pressed recently
     const interval = runAndSetInterval(() => {
       const value = !!state.pendingRun || ranAt >= new Date(minutesFromNow(-1));
-      setShouldRequestRunner(value);
+      setRequestTestRunner(value);
     }, 10 * 1000);
 
     return () => clearInterval(interval);
@@ -80,5 +82,5 @@ export const useRunTest = ({
     runner.stop();
   };
 
-  return { runTest, shouldRequestRunner, stopTest };
+  return { requestTestRunner, runTest, stopTest };
 };

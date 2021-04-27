@@ -26,7 +26,7 @@ export default function Placeholder({
 }: Props): JSX.Element {
   const { isTestLoading } = useContext(TestContext);
   const { isUserLoading, wolf } = useContext(UserContext);
-  const { isRunnerConnected, shouldRequestRunner } = useContext(RunnerContext);
+  const { isRunnerConnected, requestTestRunner } = useContext(RunnerContext);
 
   // default to loading
   let message = copy.loading;
@@ -45,7 +45,7 @@ export default function Placeholder({
     mode === "test" &&
     !isRunnerConnected &&
     !isTestLoading &&
-    !shouldRequestRunner
+    !requestTestRunner
   ) {
     iconHtml = <WolfButton color={wolf?.variant} />;
     message = copy.placeholderRunTest;

@@ -1390,17 +1390,17 @@ type Query {
   """
   runner(
     """
-    Run ID
+    Request a runner for editing the test
+    """
+    request_test_runner: Boolean
+
+    """
+    The current run ID.
     """
     run_id: ID
 
     """
-    Request a runner for the test
-    """
-    should_request_runner: Boolean
-
-    """
-    Test ID
+    The current test ID.
     """
     test_id: ID
   ): Runner

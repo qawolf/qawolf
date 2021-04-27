@@ -93,22 +93,22 @@ describe("runnerResolver", () => {
     expect(runnerModel.updateRunner).not.toBeCalled();
   });
 
-  it("extends the current runner's session when should_request_runner is specified", async () => {
+  it("extends the current runner's session when request_test_runner is specified", async () => {
     const initialExpiresAt = (
-      await findRunner({ run_id: "runId" }, { db, logger })
+      await findRunner({ test_id: "testId" }, { db, logger })
     ).session_expires_at;
 
     const runner = await runnerResolver(
       null,
-      { run_id: "runId", should_request_runner: true },
+      { request_test_runner: true, test_id: "testId" },
       context
     );
     expect(runner).toEqual({
       api_key: null,
-      ws_url: "wss://westus2.qawolf.com/runner/runnerId/.qawolf",
+      ws_url: "wss://westus2.qawolf.com/runner/runner2Id/.qawolf",
     });
 
-    const dbRunner = await findRunner({ run_id: "runId" }, options);
+    const dbRunner = await findRunner({ test_id: "testId" }, options);
     expect(dbRunner.session_expires_at).not.toBe(initialExpiresAt);
   });
 
@@ -127,7 +127,7 @@ describe("runnerResolver", () => {
 
     await runnerResolver(
       null,
-      { should_request_runner: true, test_id: "test2Id" },
+      { request_test_runner: true, test_id: "test2Id" },
       context
     );
 

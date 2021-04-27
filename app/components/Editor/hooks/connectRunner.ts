@@ -12,30 +12,27 @@ export type ConnectRunnerHook = {
 
 type UseConnectRunner = {
   isRunnerConnected: boolean;
+  requestTestRunner: boolean;
   runner: RunnerClient | null;
-  shouldRequestRunner: boolean;
 };
 
 export const useConnectRunner = ({
   isRunnerConnected,
+  requestTestRunner,
   runner: runnerClient,
-  shouldRequestRunner,
 }: UseConnectRunner): ConnectRunnerHook => {
   const { query } = useRouter();
 
   const useLocalRunner = query.local === "1";
-  const run_id = query.run_id as string;
-  const test_id = query.test_id as string;
 
   const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
-    {
-      run_id,
-      should_request_runner: shouldRequestRunner,
-      test_id,
-    },
-    {
-      skip: useLocalRunner,
-    }
+    query.run_id
+      ? { run_id: query.run_id as string }
+      : {
+          request_test_runner: requestTestRunner,
+          test_id: query.test_id as string,
+        },
+    { skip: useLocalRunner }
   );
 
   // manually poll instead of passing pollInterval
