@@ -15,6 +15,8 @@ export const copy = {
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
+  addToGroup: "Add to group",
+  addToGroupDetail: "Tests can only belong to one group at a time",
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
@@ -43,9 +45,9 @@ export const copy = {
   apiDetail: "Trigger tests by calling the",
   apiDetail2: "QA Wolf API",
   apiKeyHere: "API KEY HERE",
-  addToGroup: "Add to group",
-  addToGroupDetail: "Tests can only belong to one group at a time",
   back: "Back",
+  backConfirm:
+    "You have not committed your changes. If you go back now, your changes will be lost.",
   backToDashboard: "Back to dashboard",
   blog: "Blog",
   branches: "Branches",
@@ -105,7 +107,7 @@ export const copy = {
   deleteTests: (count: number): string =>
     `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
   deleteTestsDetail:
-    "Are you sure? Deleting tests is permanent and cannot be undone",
+    "Are you sure? Deleting tests is permanent and cannot be undone.",
   deleteTrigger: "Delete trigger",
   delightUsers: "Delight users",
   delightUsersDetail:
@@ -176,12 +178,13 @@ export const copy = {
   group: "Group",
   groupDelete: "Delete group",
   groupDeleteConfirm:
-    "Are you sure? This will permanently delete this group, but not the tests inside it",
+    "Are you sure? This will permanently delete this group, but not the tests inside it.",
   groupNew: "Create group",
   groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
+  goBack: "Go back",
   headline: "Ship confidently",
   helpers: "Helpers",
   history: "History",
@@ -376,6 +379,7 @@ export const copy = {
   triggerNamePlaceholder: "Name your trigger",
   tryForFree: "Try for free",
   uncommittedChanges: "Uncommitted changes",
+  uncommittedChangesAlert: "You have uncommitted changes",
   unlimitedTeamMembers: "Unlimited team members",
   upgrade: "Upgrade",
   urlPlaceholder: "https://myawesomesite.com",
