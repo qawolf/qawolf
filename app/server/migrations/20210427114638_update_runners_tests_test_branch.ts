@@ -3,6 +3,8 @@ import * as Knex from "knex";
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.alterTable("runners", (table) => {
     table.string("test_branch");
+    table.dropUnique(["test_id"]);
+    table.unique(["test_branch", "test_id"]);
   });
 
   await knex.raw(
@@ -28,7 +30,9 @@ export async function down(knex: Knex): Promise<void> {
   );
 
   await knex.schema.alterTable("runners", (table) => {
+    table.dropUnique(["test_branch", "test_id"]);
     table.dropColumn("test_branch");
+    table.unique(["test_id"]);
   });
 
   await knex.raw(

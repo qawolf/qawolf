@@ -54,7 +54,10 @@ export type UpdateRunner = {
   session_expires_at?: string;
 };
 
-const ASSIGN_CONSTRAINTS = ["runners_run_id_unique", "runners_test_id_unique"];
+const ASSIGN_CONSTRAINTS = [
+  "runners_run_id_unique",
+  "runners_test_branch_test_id_unique",
+];
 
 export const assignRunner = async (
   { runner, ...assignTo }: AssignRunner,

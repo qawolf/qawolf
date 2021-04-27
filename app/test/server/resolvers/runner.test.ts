@@ -127,13 +127,16 @@ describe("runnerResolver", () => {
 
     await runnerResolver(
       null,
-      { request_test_runner: true, test_id: "test2Id" },
+      { request_test_runner: true, test_branch: "main", test_id: "test2Id" },
       context
     );
 
     expect(spy.mock.calls[0][0]).toMatchObject({
       ip: context.ip,
-      test: expect.objectContaining({ id: "test2Id" }),
+      test: expect.objectContaining({
+        id: "test2Id",
+        runner_requested_branch: "main",
+      }),
     });
   });
 });
