@@ -37,7 +37,7 @@ export default function Branches(): JSX.Element {
     >
       <RiGitBranchLine color={colors.gray9} size={edgeSize.small} />
       <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-        {selectedBranch?.name || copy.gitHubBranch}
+        {selectedBranch?.name || copy.gitHubBranchSelect}
       </Text>
     </Box>
   );
