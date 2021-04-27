@@ -295,6 +295,9 @@ type StatusCounts {
 
 "All the test runs for one run of a test trigger"
 type Suite {
+  "Associated git branch"
+  branch: String
+
   "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
 
@@ -765,12 +768,18 @@ type Mutation {
 
   """
   Creates a new test suite for one or more tests, optionally specifying
-  an environment ID and variables. Returns the ID of the created suite.
+  a git branch, environment ID, and variables. Returns the ID of the
+  created suite.
 
   Requires that you have access to the team that owns the tests, and that
   the team's plan limit for test runs has not been reached.
   """
   createSuite(
+    """
+    Git branch
+    """
+    branch: String
+
     """
     Environment ID
     """

@@ -21,6 +21,7 @@ const teams = [buildTeam({})];
 const timestamp = minutesFromNow();
 const suites = [
   {
+    branch: null,
     created_at: timestamp,
     creator_github_login: "spirit",
     creator_id: null,
@@ -33,6 +34,7 @@ const suites = [
     trigger_id: "triggerId",
   },
   {
+    branch: null,
     created_at: timestamp,
     creator_github_login: null,
     creator_id: null,
@@ -73,6 +75,7 @@ describe("createSuiteResolver", () => {
     const suiteId = await createSuiteResolver(
       {},
       {
+        branch: null,
         environment_id: null,
         environment_variables: "",
         test_ids: ["testId", "test2Id"],
@@ -80,15 +83,13 @@ describe("createSuiteResolver", () => {
       context
     );
 
-    const suite = await db
-      .select("*")
-      .from("suites")
-      .where({ id: suiteId })
-      .first();
+    const suite = await db("suites").where({ id: suiteId }).first();
     expect(suite).toMatchObject({
+      branch: null,
       creator_id: user.id,
       environment_id: null,
       environment_variables: null,
+      helpers: "",
       team_id: teams[0].id,
       trigger_id: null,
     });
@@ -100,10 +101,40 @@ describe("createSuiteResolver", () => {
     ]);
   });
 
+  it("creates a suite for tests on specified branch", async () => {
+    jest.spyOn(suiteModel, "buildTestsForSuite").mockResolvedValue({
+      helpers: "branch helpers",
+      tests: [{ ...buildTest({}), code: "branch code" }],
+    });
+
+    const suiteId = await createSuiteResolver(
+      {},
+      {
+        branch: "feature",
+        environment_id: null,
+        environment_variables: "",
+        test_ids: ["testId", "test2Id"],
+      },
+      context
+    );
+
+    const suite = await db("suites").where({ id: suiteId }).first();
+    expect(suite).toMatchObject({
+      branch: "feature",
+      helpers: "branch helpers",
+    });
+
+    const runs = await db("runs").select("*").where({ suite_id: suite.id });
+    expect(runs).toMatchObject([
+      { code: "branch code", suite_id: suite.id, test_id: "testId" },
+    ]);
+  });
+
   it("creates a suite for a trigger with selected tests", async () => {
     const suiteId = await createSuiteResolver(
       {},
       {
+        branch: null,
         environment_id: "environmentId",
         environment_variables: JSON.stringify({ hello: "world" }),
         test_ids: ["testId"],
@@ -111,12 +142,9 @@ describe("createSuiteResolver", () => {
       context
     );
 
-    const suite = await db
-      .select("*")
-      .from("suites")
-      .where({ id: suiteId })
-      .first();
+    const suite = await db("suites").where({ id: suiteId }).first();
     expect(suite).toMatchObject({
+      branch: null,
       creator_id: user.id,
       environment_id: "environmentId",
       team_id: teams[0].id,
@@ -136,6 +164,7 @@ describe("createSuiteResolver", () => {
       createSuiteResolver(
         {},
         {
+          branch: null,
           environment_id: null,
           environment_variables: null,
           test_ids: ["testId"],
@@ -149,7 +178,12 @@ describe("createSuiteResolver", () => {
     await expect(
       createSuiteResolver(
         {},
-        { environment_id: null, environment_variables: null, test_ids: [] },
+        {
+          branch: null,
+          environment_id: null,
+          environment_variables: null,
+          test_ids: [],
+        },
         context
       )
     ).rejects.toThrowError("tests to run");
@@ -165,6 +199,7 @@ describe("createSuiteResolver", () => {
       createSuiteResolver(
         {},
         {
+          branch: null,
           environment_id: null,
           environment_variables: null,
           test_ids: ["testId", "test10Id"],

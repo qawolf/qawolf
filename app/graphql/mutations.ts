@@ -149,11 +149,13 @@ export const createSubscriberMutation = gql`
 
 export const createSuiteMutation = gql`
   mutation createSuite(
+    $branch: String
     $environment_id: ID
     $environment_variables: String
     $test_ids: [ID!]!
   ) {
     createSuite(
+      branch: $branch
       environment_id: $environment_id
       environment_variables: $environment_variables
       test_ids: $test_ids

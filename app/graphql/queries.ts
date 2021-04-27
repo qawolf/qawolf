@@ -135,6 +135,7 @@ export const suiteQuery = gql`
 export const suitesQuery = gql`
   query suites($team_id: ID!) {
     suites(team_id: $team_id) {
+      branch
       created_at
       environment_id
       environment_name

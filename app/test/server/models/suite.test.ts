@@ -1,14 +1,18 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
-  buildHelpersForSuite,
+  buildHelpersForFiles,
+  buildTestsForFiles,
+  buildTestsForSuite,
   createSuite,
   createSuiteForTests,
   findSuite,
   findSuitesForTeam,
 } from "../../../server/models/suite";
+import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
+  buildIntegration,
   buildSuite,
   buildTeam,
   buildTest,
@@ -34,6 +38,7 @@ beforeAll(async () => {
     buildTeam({ i: 2 }),
   ]);
 
+  await db("integrations").insert(buildIntegration({}));
   await db("environments").insert(buildEnvironment({}));
   await db("triggers").insert([trigger, buildTrigger({ i: 2 })]);
 
@@ -41,14 +46,137 @@ beforeAll(async () => {
 });
 
 describe("suite model", () => {
-  describe("buildHelpersForSuite", () => {
-    it("returns helpers for a team", async () => {
-      const helpers = await buildHelpersForSuite(
-        { team_id: "teamId" },
+  describe("buildHelpersForFiles", () => {
+    it("builds helpers from files", () => {
+      expect(
+        buildHelpersForFiles(
+          [
+            {
+              path: "qawolf/helpers/index.js",
+              sha: "helpersSha",
+              text: "helpers",
+            },
+            {
+              path: "qawolf/myTest.test.js",
+              sha: "sha",
+              text: "// code",
+            },
+          ],
+          options
+        )
+      ).toBe("helpers");
+    });
+
+    it("throws an error if no helpers file", () => {
+      expect(() => {
+        return buildHelpersForFiles(
+          [
+            {
+              path: "qawolf/myTest.test.js",
+              sha: "sha",
+              text: "// code",
+            },
+          ],
+          options
+        );
+      }).toThrowError("not found");
+    });
+  });
+
+  describe("buildTestsForFiles", () => {
+    it("replaces test code with file text", () => {
+      const test = buildTest({ path: "qawolf/myTest2.test.js" });
+
+      expect(
+        buildTestsForFiles(
+          {
+            files: [
+              {
+                path: "qawolf/myTest.test.js",
+                sha: "sha",
+                text: "// code",
+              },
+              {
+                path: "qawolf/myTest2.test.js",
+                sha: "sha2",
+                text: "// more code",
+              },
+            ],
+            tests: [test],
+          },
+          options
+        )
+      ).toEqual([{ ...test, code: "// more code" }]);
+    });
+
+    it("throws an error if no file for test", () => {
+      expect(() => {
+        return buildTestsForFiles(
+          {
+            files: [
+              {
+                path: "qawolf/myTest.test.js",
+                sha: "sha",
+                text: "// code",
+              },
+            ],
+            tests: [buildTest({ path: "qawolf/myTest2.test.js" })],
+          },
+          options
+        );
+      }).toThrowError("no file for test");
+    });
+  });
+
+  describe("buildTestsForSuite", () => {
+    it("returns helpers and tests as is if no branch", async () => {
+      jest.spyOn(gitHubTree, "findFilesForBranch");
+
+      const { helpers, tests } = await buildTestsForSuite(
+        { team_id: "teamId", tests: [test, test2] },
         options
       );
 
       expect(helpers).toBe("// helpers");
+      expect(tests).toEqual([test, test2]);
+
+      expect(gitHubTree.findFilesForBranch).not.toBeCalled();
+    });
+
+    it("reads helpers and tests from git if branch", async () => {
+      await db("teams").update({ git_sync_integration_id: "integrationId" });
+      jest.spyOn(gitHubTree, "findFilesForBranch").mockResolvedValue({
+        files: [
+          {
+            path: "qawolf/myTest.test.js",
+            sha: "sha",
+            text: "// code from git",
+          },
+          {
+            path: "qawolf/helpers/index.js",
+            sha: "sha2",
+            text: "// helpers from git",
+          },
+        ],
+        owner: "qawolf",
+        repo: "test",
+      });
+
+      const { helpers, tests } = await buildTestsForSuite(
+        {
+          branch: "branch",
+          team_id: "teamId",
+          tests: [{ ...test, path: "qawolf/myTest.test.js" }],
+        },
+        options
+      );
+
+      expect(helpers).toBe("// helpers from git");
+      expect(tests).toEqual([
+        { ...test, code: "// code from git", path: "qawolf/myTest.test.js" },
+      ]);
+
+      await db("teams").update({ git_sync_integration_id: null });
     });
   });
 
@@ -58,6 +186,7 @@ describe("suite model", () => {
     it("creates a new suite", async () => {
       await createSuite(
         {
+          helpers: "// helpers",
           environment_id: null,
           team_id: trigger.team_id,
           trigger_id: trigger.id,
@@ -68,6 +197,7 @@ describe("suite model", () => {
       const suites = await db.select("*").from("suites");
       expect(suites).toMatchObject([
         {
+          branch: null,
           creator_id: null,
           environment_id: null,
           environment_variables: null,
@@ -79,12 +209,14 @@ describe("suite model", () => {
       ]);
     });
 
-    it("creates a new suite with specified creator and environment", async () => {
+    it("creates a new suite with specified branch, creator, and environment", async () => {
       await createSuite(
         {
+          branch: "feature",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables,
+          helpers: "// helpers",
           team_id: trigger.team_id,
           trigger_id: trigger.id,
         },
@@ -94,6 +226,7 @@ describe("suite model", () => {
       const suites = await db.select("*").from("suites");
       expect(suites).toMatchObject([
         {
+          branch: "feature",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),

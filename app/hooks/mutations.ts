@@ -174,6 +174,7 @@ type CreateSuiteData = {
 };
 
 type CreateSuiteVariables = {
+  branch: string | null;
   environment_id: string | null;
   environment_variables?: string | null;
   test_ids: string[];

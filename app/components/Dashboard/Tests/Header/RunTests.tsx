@@ -40,7 +40,7 @@ const StyledBox = styled(Box)`
 `;
 
 export default function RunTests({ tests }: Props): JSX.Element {
-  const { environmentId, teamId } = useContext(StateContext);
+  const { branch, environmentId, teamId } = useContext(StateContext);
   const ref = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function RunTests({ tests }: Props): JSX.Element {
     if (!test_ids.length) return;
 
     createSuite({
-      variables: { environment_id: environmentId, test_ids },
+      variables: { branch, environment_id: environmentId, test_ids },
     });
   };
 

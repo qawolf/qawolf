@@ -29,6 +29,7 @@ type RepoFilesData = {
 };
 
 export const GIT_TEST_FILE_EXTENSION = ".test.js";
+export const HELPERS_PATH = "qawolf/helpers/index.js";
 
 function flattenFiles(entries: GitEntry[]): GitHubFile[] {
   const files: GitHubFile[] = [];

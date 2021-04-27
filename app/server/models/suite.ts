@@ -1,7 +1,9 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
+import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
   FormattedVariables,
+  GitHubFile,
   ModelOptions,
   Run,
   Suite,
@@ -21,19 +23,34 @@ export type SuiteForTeam = Suite & {
   repeat_minutes: number | null;
 };
 
-type BuildHelpersForSuite = {
+type BuildTestsForFiles = {
+  files: GitHubFile[];
+  tests: Test[];
+};
+
+type BuildTestsForSuite = {
+  branch?: string | null;
   team_id: string;
+  tests: Test[];
+};
+
+type BuildTestsForSuiteResult = {
+  helpers: string;
+  tests: Test[];
 };
 
 type CreateSuite = {
+  branch?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
+  helpers: string;
   team_id: string;
   trigger_id: string;
 };
 
 type CreateSuiteForTests = {
+  branch?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
@@ -58,23 +75,73 @@ type FindSuitesForTeam = {
   team_id: string;
 };
 
-export const buildHelpersForSuite = async (
-  { team_id }: BuildHelpersForSuite,
-  { db, logger }: ModelOptions
-): Promise<string> => {
-  const log = logger.prefix("buildHelpersForSuite");
+export const buildHelpersForFiles = (
+  files: GitHubFile[],
+  { logger }: ModelOptions
+): string => {
+  const log = logger.prefix("buildHelpersForFiles");
+
+  const helpersFile = files.find((f) => f.path === HELPERS_PATH);
+  if (!helpersFile) {
+    log.alert("no helpers");
+    throw new ClientError(`${HELPERS_PATH} not found`);
+  }
+
+  return helpersFile.text;
+};
+
+export const buildTestsForFiles = (
+  { files, tests }: BuildTestsForFiles,
+  { logger }: ModelOptions
+): Test[] => {
+  const log = logger.prefix("buildTestsForFiles");
+
+  return tests.map((t) => {
+    const file = files.find((f) => f.path === t.path);
+
+    if (!file) {
+      log.alert("file not found for test", t.id);
+      throw new ClientError(`no file for test ${t.path}`);
+    }
+
+    return { ...t, code: file.text };
+  });
+};
+
+export const buildTestsForSuite = async (
+  { branch, team_id, tests }: BuildTestsForSuite,
+  options: ModelOptions
+): Promise<BuildTestsForSuiteResult> => {
+  const log = options.logger.prefix("buildTestsForSuite");
   log.debug("team", team_id);
 
-  const team = await findTeam(team_id, { db, logger });
+  const team = await findTeam(team_id, options);
 
-  return team.helpers;
+  if (!branch || !team.git_sync_integration_id) {
+    log.debug(
+      `skip, branch ${branch}, integration ${team.git_sync_integration_id}`
+    );
+    return { helpers: team.helpers, tests };
+  }
+
+  const { files } = await findFilesForBranch(
+    { branch, integrationId: team.git_sync_integration_id },
+    options
+  );
+
+  return {
+    helpers: buildHelpersForFiles(files, options),
+    tests: buildTestsForFiles({ files, tests }, options),
+  };
 };
 
 export const createSuite = async (
   {
+    branch,
     creator_id,
     environment_id,
     environment_variables,
+    helpers,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -88,9 +155,9 @@ export const createSuite = async (
   const formattedVariables = environment_variables
     ? encrypt(JSON.stringify(environment_variables))
     : null;
-  const helpers = await buildHelpersForSuite({ team_id }, { db, logger });
 
   const suite = {
+    branch: branch || null,
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_id: environment_id || null,
@@ -136,6 +203,7 @@ export const createSuiteForTrigger = async (
 
 export const createSuiteForTests = async (
   {
+    branch,
     creator_id,
     environment_id,
     environment_variables,
@@ -156,12 +224,18 @@ export const createSuiteForTests = async (
     const trigger = await findTrigger(trigger_id, { db, logger });
     environment_id = trigger.environment_id;
   }
+  const { helpers, tests: testsForSuite } = await buildTestsForSuite(
+    { branch, team_id, tests },
+    { db, logger }
+  );
 
   const suite = await createSuite(
     {
+      branch,
       creator_id,
       environment_id,
       environment_variables,
+      helpers,
       team_id,
       trigger_id,
     },
@@ -171,7 +245,7 @@ export const createSuiteForTests = async (
   const runs = await createRunsForTests(
     {
       suite_id: suite.id,
-      tests,
+      tests: testsForSuite,
     },
     { db, logger }
   );

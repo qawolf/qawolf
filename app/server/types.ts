@@ -254,6 +254,7 @@ export type Subscriber = {
 };
 
 export type Suite = {
+  branch: string | null;
   created_at: string;
   creator_id: string | null;
   environment_id: string | null;
@@ -439,6 +440,7 @@ export type CreateSubscriberMutation = {
 };
 
 export type CreateSuiteMutation = {
+  branch: string | null;
   environment_id: string | null;
   environment_variables: string | null;
   test_ids: string[];
