@@ -180,7 +180,7 @@ export const copy = {
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
-  headline: "Simple and fast alternative to Selenium",
+  headline: "Ship confidently",
   helpers: "Helpers",
   history: "History",
   hourly: "Hourly",
@@ -233,7 +233,6 @@ export const copy = {
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
-  noCreditCard: "No credit card required",
   noEmail: "Please enter a valid email address",
   noGroup: "No group",
   noHistory: "No history yet",

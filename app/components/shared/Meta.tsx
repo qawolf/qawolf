@@ -1,10 +1,12 @@
+import { copy } from "../../theme/copy";
+
 type Props = {
   description?: string;
   imageUrl?: string;
   title?: string;
 };
 
-const defaultDescription = "The simple and fast alternative to Selenium";
+const defaultDescription = copy.tagline;
 const defaultImageUrl =
   "https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png";
 const defaultTitle = "QA Wolf";

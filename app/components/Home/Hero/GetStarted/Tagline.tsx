@@ -46,14 +46,6 @@ export default function Tagline({ basis }: Props): JSX.Element {
         {copy.tagline}
       </StyledDetail>
       <Button href={routes.signUp} label={copy.startTesting} size="large" />
-      <Text
-        color="primaryTextLight"
-        margin={{ top: "xxsmall" }}
-        size="xsmall"
-        weight="normal"
-      >
-        {copy.noCreditCard}
-      </Text>
     </StyledBox>
   );
 }
