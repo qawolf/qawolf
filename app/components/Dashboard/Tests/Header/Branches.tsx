@@ -11,7 +11,7 @@ import Option from "../../../shared/Select/Option";
 import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 
-const width = "240px";
+const width = "200px";
 
 export default function Branches(): JSX.Element {
   const { branch, teamId } = useContext(StateContext);
@@ -37,7 +37,7 @@ export default function Branches(): JSX.Element {
     >
       <RiGitBranchLine color={colors.gray9} size={edgeSize.small} />
       <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
-        {selectedBranch?.name || copy.gitHubBranch}
+        {selectedBranch?.name || copy.gitHubBranchSelect}
       </Text>
     </Box>
   );
@@ -56,7 +56,7 @@ export default function Branches(): JSX.Element {
   });
 
   return (
-    <Box align="center" direction="row">
+    <Box align="center" direction="row" margin={{ right: "xxsmall" }}>
       <Select label={labelHtml} width={width}>
         {optionsHtml}
       </Select>

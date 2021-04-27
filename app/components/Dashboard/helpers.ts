@@ -21,7 +21,7 @@ type FilterTests = {
   group_id: string | null;
   search: string;
   testTriggers?: TestTriggers[];
-  tests?: ShortTest[];
+  tests?: ShortTest[] | null;
   trigger_id?: string | null;
 };
 
@@ -74,7 +74,8 @@ export const filterTests = ({
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
-      return t.name.toLowerCase().includes(search.toLowerCase());
+      const testName = t.name || t.path;
+      return testName.toLowerCase().includes(search.toLowerCase());
     });
   }
 

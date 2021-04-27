@@ -273,14 +273,15 @@ export const useEnvironmentVariables = (
 };
 
 export const useGitHubBranches = (
-  variables: GitHubBranchesVariables
+  variables: GitHubBranchesVariables,
+  { skip }: { skip?: boolean } = {}
 ): QueryResult<GitHubBranchesData, GitHubBranchesVariables> => {
   return useQuery<GitHubBranchesData, GitHubBranchesVariables>(
     gitHubBranchesQuery,
     {
       fetchPolicy,
       onError,
-      skip: !variables.team_id,
+      skip: skip || !variables.team_id,
       variables,
     }
   );

@@ -1,3 +1,4 @@
+import { ClientError } from "../../errors";
 import { GitHubFile, ModelOptions } from "../../types";
 import { createOctokitGraphqlForIntegration } from "./app";
 
@@ -116,6 +117,11 @@ export const findFilesForBranch = async (
     log.alert(
       `near github api limit integration ${integrationId} ${rateLimit.remaining}`
     );
+  }
+
+  if (!repository.object) {
+    log.error("branch not found", branch);
+    throw new ClientError(`branch not found: ${branch}`);
   }
 
   const files = flattenFiles(repository.object.entries);
