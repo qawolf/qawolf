@@ -10,7 +10,7 @@ import { StateContext } from "../../StateContext";
 export default function BackButton(): JSX.Element {
   const { dashboardUri } = useContext(StateContext);
   // TODO: update to real value
-  const hasChanges = true;
+  const hasChanges = false;
 
   const href = hasChanges ? undefined : dashboardUri || routes.tests;
 
