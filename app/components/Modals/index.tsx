@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
+import ConfirmBack from "./ConfirmBack";
 import CreateTest from "./CreateTest";
 import DeleteGroup from "./DeleteGroup";
 import DeleteTests from "./DeleteTests";
@@ -27,6 +28,10 @@ export default function Modals(): JSX.Element {
   const isTests = pathname.includes(routes.tests);
 
   const isDashboard = isGetStarted || isSettings || isSuites || isTests;
+
+  if (isTest && name === "confirmBack") {
+    return <ConfirmBack closeModal={closeModal} />;
+  }
 
   if ((isGetStarted || isTests) && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;

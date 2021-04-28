@@ -4,21 +4,22 @@ import { useContext } from "react";
 
 import { useTestTriggers } from "../../../hooks/queries";
 import { timeToText } from "../../../lib/helpers";
-import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
 import Divider from "../../shared/Divider";
 import Edit from "../../shared/icons/Edit";
-import Lightning from "../../shared/icons/Lightning";
 import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
+import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
 import { Mode } from "../hooks/mode";
 import BackButton from "./BackButton";
+import Branch from "./Branch";
 import RunSummary from "./RunSummary";
+import TestButtons from "./TestButtons";
 import TestHistory from "./TestHistory";
 import TestName from "./TestName";
 
@@ -30,18 +31,18 @@ export default function Header({ mode }: Props): JSX.Element {
   } = useRouter();
 
   const { progress } = useContext(RunnerContext);
-  const { run, suite, test } = useContext(TestContext);
+  const { branch: stateBranch } = useContext(StateContext);
+  const { run, suite, team, test } = useContext(TestContext);
 
+  const branch = team.git_sync_integration_id
+    ? suite?.branch || stateBranch
+    : null;
   const testIds = [test_id] as string[];
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
   const hasTriggers = testTriggersData?.testTriggers[0]
     ? !!testTriggersData?.testTriggers[0].trigger_ids.length
     : false;
-
-  const handleTriggerClick = (): void => {
-    state.setModal({ name: "triggers", testIds });
-  };
 
   return (
     <>
@@ -65,6 +66,7 @@ export default function Header({ mode }: Props): JSX.Element {
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
         <Box align="center" direction="row">
+          <Branch branch={branch} mode={mode} />
           <TestHistory testId={test?.id || null} />
           <Divider
             height={edgeSize.large}
@@ -72,11 +74,10 @@ export default function Header({ mode }: Props): JSX.Element {
             width={borderSize.xsmall}
           />
           {mode === "test" && (
-            <Button
-              IconComponent={Lightning}
-              label={hasTriggers ? copy.editTriggers : copy.addTrigger}
-              onClick={handleTriggerClick}
-              type="primary"
+            <TestButtons
+              branch={branch}
+              hasTriggers={hasTriggers}
+              testIds={testIds}
             />
           )}
           {run?.test_id && (

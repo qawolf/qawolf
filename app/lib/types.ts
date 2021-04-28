@@ -215,6 +215,7 @@ export type CreateCode = {
 };
 
 export type Modal =
+  | "confirmBack"
   | "createTest"
   | "editTestsGroup"
   | "environments"
