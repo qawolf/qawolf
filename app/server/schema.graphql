@@ -372,12 +372,6 @@ type Team {
   "The ID of a git integration associated with this team"
   git_sync_integration_id: ID
 
-  "Team helper code, for sharing functionality between tests"
-  helpers: String!
-
-  "Team helper code version, incremented as the helper code changes"
-  helpers_version: Int!
-
   "Team ID"
   id: ID!
 
@@ -1154,20 +1148,6 @@ type Mutation {
     Whether the team members receive alerts only when tests fail
     """
     alert_only_on_failure: Boolean
-
-    """
-    Updated helpers for the team
-    """
-    helpers: String
-
-    """
-    Updated helpers version number. If omitted or `null`,
-    the version will not be updated. If this is provided and is
-    not higher than the current version, the update will fail.
-    This is done to prevent out-of-order updates from being
-    accepted.
-    """
-    helpers_version: Int
 
     """
     Team ID
