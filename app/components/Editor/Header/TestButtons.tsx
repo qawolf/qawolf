@@ -16,6 +16,9 @@ export default function TestButtons({
   hasTriggers,
   testIds,
 }: Props): JSX.Element {
+  // TODO: update to real value
+  const hasChanges = true;
+
   const handleTriggerClick = (): void => {
     state.setModal({ name: "triggers", testIds });
   };
@@ -31,6 +34,7 @@ export default function TestButtons({
       {!!branch && (
         <Button
           IconComponent={RiGitCommitLine}
+          isDisabled={!hasChanges}
           label={copy.commit}
           margin={{ left: "small" }}
           type="primary"
