@@ -2,7 +2,6 @@ import {
   buildTestCode,
   editorResolver,
   findHelpersForEditor,
-  findRunForEditor,
   findTestForEditor,
 } from "../../../server/resolvers/editor";
 import * as treeService from "../../../server/services/gitHub/tree";
@@ -154,44 +153,22 @@ describe("findHelpersForEditor", () => {
   });
 });
 
-describe("findRunForEditor", () => {
-  it("returns null if no run id", async () => {
-    const run = await findRunForEditor(
-      { run_id: null, teams: [team] },
-      options
-    );
-
-    expect(run).toBeNull();
-  });
-
-  it("returns run if run id", async () => {
-    const run = await findRunForEditor(
-      { run_id: "runId", teams: [team] },
-      options
-    );
-
-    expect(run).toMatchObject({ id: "runId" });
-  });
-});
-
 describe("findTestForEditor", () => {
   it("returns test for test id", async () => {
-    const { team: testTeam, test } = await findTestForEditor(
+    const test = await findTestForEditor(
       { teams: [team], test_id: "testId" },
       options
     );
 
-    expect(testTeam).toMatchObject({ id: "teamId" });
     expect(test).toMatchObject({ id: "testId" });
   });
 
   it("returns test for run id", async () => {
-    const { team: testTeam, test } = await findTestForEditor(
+    const test = await findTestForEditor(
       { run_id: "runId", teams: [team] },
       options
     );
 
-    expect(testTeam).toMatchObject({ id: "teamId" });
     expect(test).toMatchObject({ id: "testId" });
   });
 });

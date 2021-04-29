@@ -29,18 +29,10 @@ type FindHelpersForEditor = {
   team: Team;
 };
 
-type FindRunForEditor = {
+type FindTestForEditor = {
   run_id?: string | null;
   teams: Team[];
-};
-
-type FindTestForEditor = FindRunForEditor & {
   test_id?: string | null;
-};
-
-type FindTestForEditorResult = {
-  team: Team;
-  test: Test;
 };
 
 export const buildTestCode = (
@@ -79,30 +71,16 @@ export const findHelpersForEditor = async (
   return team.helpers;
 };
 
-export const findRunForEditor = async (
-  { run_id, teams }: FindRunForEditor,
-  options: ModelOptions
-): Promise<RunResult | null> => {
-  if (!run_id) return null;
-
-  const run = await findRunResult(run_id, options);
-  await ensureTestAccess({ teams, test_id: run.test_id }, options);
-
-  return run;
-};
-
 export const findTestForEditor = async (
   { run_id, teams, test_id }: FindTestForEditor,
   options: ModelOptions
-): Promise<FindTestForEditorResult> => {
+): Promise<Test> => {
   const test = test_id
     ? await findTest(test_id, options)
     : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await findTestForRun(run_id!, options);
 
-  const team = await ensureTestAccess({ teams, test }, options);
-
-  return { team, test };
+  return test;
 };
 
 export const editorResolver = async (
@@ -118,11 +96,16 @@ export const editorResolver = async (
     throw new ClientError("Must provide test_id or run_id");
   }
 
-  const run = await findRunForEditor({ run_id, teams }, { db, logger });
-  const { team, test } = await findTestForEditor(
+  const run = run_id ? await findRunResult(run_id, { db, logger }) : null;
+  const test = await findTestForEditor(
     { run_id, teams, test_id },
     { db, logger }
   );
+
+  const team = await ensureTestAccess({ teams, test }, { db, logger });
+  if (run) {
+    await ensureTestAccess({ teams, test_id: run.test_id }, { db, logger });
+  }
 
   let files: GitHubFile[] | null = null;
 
