@@ -12,7 +12,6 @@ type RunTestOptions = {
   helpers?: string;
   selection: Selection | null;
   test_id: string;
-  version: number;
 };
 
 export type RunTest = {
@@ -53,7 +52,6 @@ export const useRunTest = ({
     helpers,
     selection,
     test_id,
-    version,
   }: RunTestOptions) => {
     resetProgress(code);
     setRanAt(new Date());
@@ -64,7 +62,6 @@ export const useRunTest = ({
       helpers: helpers || "",
       restart: !selection || selection.startLine === 1,
       test_id,
-      version,
     };
 
     if (selection) {

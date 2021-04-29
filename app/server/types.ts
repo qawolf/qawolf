@@ -329,20 +329,12 @@ export type Test = {
   team_id: string;
   updated_at: string;
   url?: string;
-  version: number;
 };
 
 export type TestTrigger = {
   id: string;
   test_id: string;
   trigger_id: string;
-};
-
-export type TestUpdate = {
-  code: string;
-  generated?: boolean;
-  id: string;
-  version: number;
 };
 
 export type Trigger = {
@@ -483,7 +475,6 @@ export type RunnerRun = {
   helpers: string;
   id: string;
   test_id: string;
-  version: number;
 };
 
 export type RunTestStatus = {
@@ -585,7 +576,6 @@ export type UpdateTestMutation = {
   id: string;
   is_enabled?: boolean;
   name?: string;
-  version?: number;
 };
 
 export type UpdateTestsGroupMutation = {
@@ -614,7 +604,7 @@ export type CurrentUser = User & {
 
 export type Editor = {
   helpers: string;
-  run: RunResult | null;
+  run?: RunResult | null;
   test: Test;
 };
 

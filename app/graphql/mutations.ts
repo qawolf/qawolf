@@ -391,15 +391,8 @@ export const updateTestMutation = gql`
     $id: ID!
     $is_enabled: Boolean
     $name: String
-    $version: Int
   ) {
-    updateTest(
-      code: $code
-      id: $id
-      is_enabled: $is_enabled
-      name: $name
-      version: $version
-    ) {
+    updateTest(code: $code, id: $id, is_enabled: $is_enabled, name: $name) {
       ...TestFragment
     }
   }

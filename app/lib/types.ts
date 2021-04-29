@@ -153,7 +153,6 @@ export type Test = ShortTest & {
   team_id: string;
   updated_at: string;
   url?: string;
-  version: number;
 };
 
 export type TestHistoryRun = {
@@ -281,7 +280,6 @@ export type CodeUpdate = {
   code: string;
   generated?: boolean;
   test_id: string;
-  version: number;
 };
 
 export interface ElementChooserValue {
@@ -307,7 +305,6 @@ export type RunOptions = {
   run_id?: string;
   start_line?: number;
   test_id?: string;
-  version: number;
 };
 
 export type RunProgress = {

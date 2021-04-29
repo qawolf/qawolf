@@ -332,7 +332,6 @@ type UpdateTestVariables = {
   code?: string;
   is_enabled?: boolean;
   name?: string;
-  version?: number;
 };
 
 type UpdateTestTriggersData = {
@@ -599,7 +598,7 @@ export const useCreateTest = (
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
     onCompleted: (data: CreateTestData) => {
-      const { code, id, url, version } = data.createTest;
+      const { code, id, url } = data.createTest;
 
       state.setPendingRun({
         code,
@@ -609,7 +608,6 @@ export const useCreateTest = (
         env: {},
         restart: true,
         test_id: id,
-        version,
       });
 
       if (callback) callback(data);

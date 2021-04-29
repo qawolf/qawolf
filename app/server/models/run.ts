@@ -257,11 +257,9 @@ export const findSuiteRunForRunner = async (
       .select("suites.team_id AS team_id")
       .select("teams.api_key AS api_key")
       .select("teams.inbox AS inbox")
-      .select("tests.version AS test_version")
       .from("runs")
       .innerJoin("suites", "runs.suite_id", "suites.id")
       .innerJoin("teams", "suites.team_id", "teams.id")
-      .innerJoin("tests", "runs.test_id", "tests.id")
       .andWhere({ "runs.id": run_id })
       .first();
 

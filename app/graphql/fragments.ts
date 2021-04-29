@@ -144,7 +144,6 @@ export const testFragment = gql`
     team_id
     updated_at
     url
-    version
   }
 `;
 

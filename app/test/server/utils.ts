@@ -161,7 +161,6 @@ type BuildTest = {
   runner_requested_at?: string;
   runner_requested_branch?: string;
   team_id?: string;
-  version?: number;
 };
 
 type BuildTrigger = {
@@ -498,7 +497,6 @@ export const buildTest = ({
   runner_locations,
   runner_requested_at,
   runner_requested_branch,
-  version,
 }: BuildTest): Test => {
   const finalI = i || 1;
   const timestamp = minutesFromNow();
@@ -521,7 +519,6 @@ export const buildTest = ({
     runner_requested_branch: runner_requested_branch || null,
     team_id: team_id || "teamId",
     updated_at: timestamp,
-    version: version || 11,
   };
 };
 

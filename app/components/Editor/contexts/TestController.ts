@@ -14,7 +14,6 @@ export class TestController extends EventEmitter {
   _run: Run | null = null;
   _runner: RunnerClient | null = null;
   _id = "";
-  _version = -1;
 
   _emitGeneratedLines(newCode: string): void {
     const lines = this._code.split("\n").length;
@@ -23,17 +22,11 @@ export class TestController extends EventEmitter {
     if (diff > 0) this.emit("generatedlines", diff);
   }
 
-  _onRunnerUpdate = ({
-    code,
-    generated,
-    test_id,
-    version,
-  }: CodeUpdate): void => {
-    if (this._run || test_id !== this._id || version <= this._version) return;
+  _onRunnerUpdate = ({ code, generated, test_id }: CodeUpdate): void => {
+    if (this._run || test_id !== this._id) return;
 
     if (generated) this._emitGeneratedLines(code);
     this._code = code;
-    this._version = version;
     this._saveTest();
     this.emit("codeupdated", code);
   };
@@ -41,7 +34,7 @@ export class TestController extends EventEmitter {
   _saveTest(): void {
     client.mutate({
       mutation: updateTestMutation,
-      variables: { code: this._code, id: this._id, version: this._version },
+      variables: { code: this._code, id: this._id },
     });
   }
 
@@ -67,11 +60,6 @@ export class TestController extends EventEmitter {
   }
 
   setTest(test: Test | null, run: Run | null): void {
-    // ignore out-of-date test updates
-    if (!run && test?.id === this._id && test.version <= this._version) {
-      return;
-    }
-
     this._run = run;
 
     const newCode = run ? run.code : test?.code || "";
@@ -79,7 +67,6 @@ export class TestController extends EventEmitter {
 
     this._code = newCode;
     this._id = test?.id || "";
-    this._version = test?.version || -1;
 
     if (codeChanged) this.emit("codeupdated", this._code);
   }
@@ -88,17 +75,11 @@ export class TestController extends EventEmitter {
     if (this._run || code === this._code) return;
 
     this._code = code;
-    this._version += 1;
     this._runner?.updateTest({
       code: this._code,
       test_id: this._id,
-      version: this._version,
     });
     this._saveTest();
     this.emit("codeupdated", code);
-  }
-
-  get version(): number {
-    return this._version;
   }
 }
