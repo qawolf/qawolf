@@ -31,6 +31,18 @@ enum DeploymentProvider {
   vercel
 }
 
+"Test, run, and helpers for the editor"
+type Editor {
+  "The helpers"
+  helpers: String!
+
+  "The test run"
+  run: Run
+
+  "The test"
+  test: Test!
+}
+
 "An email sent to a test email address"
 type Email {
   "Email sender"
@@ -448,15 +460,6 @@ type Test {
 
   "Test version, incremented as the test code changes"
   version: Int!
-}
-
-"Results for a test run"
-type TestResult {
-  "The test run"
-  run: Run
-
-  "The test"
-  test: Test!
 }
 
 "Summary of most recent runs of a test"
@@ -1336,6 +1339,23 @@ type Query {
   currentUser: User
 
   """
+  Returns test and helpers code for a test. Must provide one of
+  run ID or test ID.
+
+  Requires that you have access to the team that owns the test.
+  """
+  editor(
+    "The git branch"
+    branch: String
+
+    "The run id"
+    run_id: ID
+
+    "The test id"
+    test_id: ID
+  ): Editor!
+
+  """
   Returns the latest email that matches the criteria.
 
   You must be on the team that owns the test email address.
@@ -1372,23 +1392,6 @@ type Query {
   Requires that you have access to the team.
   """
   gitHubBranches("The team ID" team_id: ID!): [GitHubBranch!]
-
-  """
-  Returns helpers for a test by the test's team ID. Must provide one of
-  run ID or test ID.
-
-  Requires that you have access to the team that owns the test.
-  """
-  helpers(
-    "The git branch"
-    branch: String
-
-    "The run id"
-    run_id: ID
-
-    "The test id"
-    test_id: ID
-  ): String!
 
   """
   Returns the runner for the run or test.
@@ -1470,20 +1473,6 @@ type Query {
   Requires that you are on the team.
   """
   team("The team ID" id: ID!): Team!
-
-  """
-  Returns a test result by test ID or run ID. If 'run_id' is provided,
-  then 'TestResult.run' will be set. Otherwise it will be null.
-
-  Requires that one of the teams you are on owns the test.
-  """
-  test(
-    "The test ID"
-    id: ID
-
-    "The test run ID"
-    run_id: ID
-  ): TestResult!
 
   """
   Returns a test summary for each test ID. If 'trigger_id' is provided,

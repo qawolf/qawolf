@@ -612,6 +612,18 @@ export type CurrentUser = User & {
   teams: Team[];
 };
 
+export type Editor = {
+  helpers: string;
+  run: RunResult | null;
+  test: Test;
+};
+
+export type EditorQuery = {
+  branch?: string | null;
+  run_id?: string | null;
+  test_id?: string | null;
+};
+
 export type EmailQuery = {
   created_after: string;
   to: string;
@@ -619,12 +631,6 @@ export type EmailQuery = {
 
 export type EnvironmentIdQuery = {
   environment_id: string;
-};
-
-export type HelpersQuery = {
-  branch?: string | null;
-  run_id?: string | null;
-  test_id?: string | null;
 };
 
 export type IdQuery = {
@@ -664,17 +670,6 @@ export type TeamIdQuery = {
 
 export type TestIdsQuery = {
   test_ids: string[];
-};
-
-export type TestQuery = {
-  branch?: string | null;
-  id?: string | null;
-  run_id?: string | null;
-};
-
-export type TestResult = {
-  run: RunResult | null;
-  test: Test;
 };
 
 export type TestSummariesQuery = {

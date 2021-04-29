@@ -1,11 +1,9 @@
 import { buildTestCode } from "../../shared/utils";
 import { deleteGitHubTests, upsertGitHubTests } from "../models/github_tests";
-import { findLatestRuns, findRunResult } from "../models/run";
+import { findLatestRuns } from "../models/run";
 import {
   createTest,
   deleteTests,
-  findTest,
-  findTestForRun,
   findTests,
   findTestsForTeam,
   updateTest,
@@ -19,8 +17,6 @@ import {
   CreateTestMutation,
   DeleteTestsMutation,
   Test,
-  TestQuery,
-  TestResult,
   TestsQuery,
   TestSummariesQuery,
   TestSummary,
@@ -118,37 +114,6 @@ export const deleteTestsResolver = async (
     await deleteTestTriggersForTests(ids, { db: trx, logger });
     return deleteTests(ids, { db: trx, logger });
   });
-};
-
-export const testResolver = async (
-  _: Record<string, unknown>,
-  { id, run_id }: TestQuery,
-  { db, logger, teams }: Context
-): Promise<TestResult> => {
-  const log = logger.prefix("testResolver");
-
-  log.debug({ id, run_id });
-
-  if (!id && !run_id) {
-    throw new Error("Must provide id or run_id");
-  }
-
-  const test = id
-    ? await findTest(id, { db, logger })
-    : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      await findTestForRun(run_id!, { db, logger });
-
-  await ensureTestAccess({ teams, test }, { db, logger });
-
-  const runResult = run_id ? await findRunResult(run_id, { db, logger }) : null;
-  if (runResult) {
-    await ensureTestAccess(
-      { teams, test_id: runResult.test_id },
-      { db, logger }
-    );
-  }
-
-  return { run: runResult, test };
 };
 
 export const testSummariesResolver = async (
