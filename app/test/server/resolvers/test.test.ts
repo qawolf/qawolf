@@ -3,7 +3,6 @@ import * as gitHubTests from "../../../server/models/github_tests";
 import * as runModel from "../../../server/models/run";
 import * as testModel from "../../../server/models/test";
 import * as testResolvers from "../../../server/resolvers/test";
-import * as azure from "../../../server/services/aws/storage";
 import * as gitHubFile from "../../../server/services/gitHub/file";
 import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { RunWithGif } from "../../../server/types";
@@ -25,7 +24,6 @@ import {
 const {
   createTestResolver,
   deleteTestsResolver,
-  testResolver,
   testSummariesResolver,
   testsResolver,
   updateTestResolver,
@@ -247,72 +245,6 @@ describe("deleteTestsResolver", () => {
     const dbTest = await db("tests").where({ id: "deleteMe" }).first();
 
     expect(dbTest.deleted_at).toBeNull();
-  });
-});
-
-describe("testResolver", () => {
-  it("finds a test by id", async () => {
-    const result = await testResolver({}, { id: "testId" }, context);
-    expect(result).toMatchObject({
-      run: null,
-      test: {
-        team_id: "teamId",
-        creator_id: "userId",
-        code: 'const x = "hello"',
-        id: "testId",
-      },
-    });
-  });
-
-  it("finds a test by run id", async () => {
-    jest.spyOn(azure, "createStorageReadAccessUrl").mockReturnValue("url");
-
-    await db("runs")
-      .where({ id: "runId" })
-      .update({ completed_at: minutesFromNow() });
-
-    const result = await testResolver({}, { run_id: "runId" }, context);
-
-    expect(result).toMatchObject({
-      run: {
-        environment_id: null,
-        id: "runId",
-        logs_url: "url",
-        video_url: "url",
-      },
-      test: {
-        team_id: "teamId",
-        creator_id: "userId",
-        code: 'const x = "hello"',
-        id: "testId",
-      },
-    });
-  });
-
-  it("throws an error if user does not have access", async () => {
-    await expect(
-      testResolver(
-        {},
-        { id: "testId" },
-        { api_key: null, db, ip: null, logger, teams: null, user: null }
-      )
-    ).rejects.toThrowError("no teams");
-  });
-
-  it("throws an error if user passes both test id and run id and does not have run access", async () => {
-    await db("runs").insert(buildRun({ i: 2, test_id: "test3Id" }));
-
-    await expect(
-      testResolver({}, { id: "testId", run_id: "run2Id" }, context)
-    ).rejects.toThrowError("cannot access test");
-
-    await db("runs").where({ id: "run2Id" }).del();
-  });
-
-  it("throws an error if no test or run id provided", async () => {
-    await expect(testResolver({}, {}, context)).rejects.toThrowError(
-      "Must provide id or run_id"
-    );
   });
 });
 

@@ -1,4 +1,5 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
+import { editorResolver } from "./resolvers/editor";
 import { emailResolver, sendEmailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
@@ -22,7 +23,6 @@ import {
   groupsResolver,
   updateGroupResolver,
 } from "./resolvers/group";
-import { helpersResolver } from "./resolvers/helpers";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -57,7 +57,6 @@ import { teamResolver, updateTeamResolver } from "./resolvers/team";
 import {
   createTestResolver,
   deleteTestsResolver,
-  testResolver,
   testsResolver,
   testSummariesResolver,
   updateTestResolver,
@@ -133,12 +132,12 @@ export const resolvers = {
   },
   Query: {
     currentUser: currentUserResolver,
+    editor: editorResolver,
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
     gitHubBranches: gitHubBranchesResolver,
     groups: groupsResolver,
-    helpers: helpersResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,
     runner: runnerResolver,
@@ -146,7 +145,6 @@ export const resolvers = {
     suite: suiteResolver,
     suites: suitesResolver,
     team: teamResolver,
-    test: testResolver,
     testHistory: testHistoryResolver,
     testSummaries: testSummariesResolver,
     testTriggers: testTriggersResolver,

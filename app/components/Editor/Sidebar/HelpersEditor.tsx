@@ -25,9 +25,7 @@ export default function HelpersEditor({
 }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
-  const { hasWriteAccess, helpers, refetchHelpers, team } = useContext(
-    TestContext
-  );
+  const { hasWriteAccess, helpers, team } = useContext(TestContext);
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -35,10 +33,6 @@ export default function HelpersEditor({
   const [updateTeam] = useUpdateTeam();
 
   useEnvTypes({ env, monaco });
-
-  useEffect(() => {
-    if (refetchHelpers) refetchHelpers();
-  }, [refetchHelpers]);
 
   useEffect(() => {
     if (!editor) return;

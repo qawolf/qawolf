@@ -28,6 +28,22 @@ export const currentUserQuery = gql`
   ${userFragment}
 `;
 
+export const editorQuery = gql`
+  query editor($branch: String, $run_id: ID, $test_id: ID) {
+    editor(branch: $branch, run_id: $run_id, test_id: $test_id) {
+      helpers
+      run {
+        ...RunFragment
+      }
+      test {
+        ...TestFragment
+      }
+    }
+  }
+  ${runFragment}
+  ${testFragment}
+`;
+
 export const environmentsQuery = gql`
   query environments($team_id: ID!) {
     environments(team_id: $team_id) {
@@ -65,12 +81,6 @@ export const groupsQuery = gql`
     }
   }
   ${groupFragment}
-`;
-
-export const helpersQuery = gql`
-  query helpers($branch: String, $run_id: ID, $test_id: ID) {
-    helpers(branch: $branch, run_id: $run_id, test_id: $test_id)
-  }
 `;
 
 export const integrationsQuery = gql`
@@ -184,21 +194,6 @@ export const teamQuery = gql`
   }
   ${teamFragment}
   ${inviteFragment}
-`;
-
-export const testQuery = gql`
-  query test($id: ID, $run_id: ID) {
-    test(id: $id, run_id: $run_id) {
-      run {
-        ...RunFragment
-      }
-      test {
-        ...TestFragment
-      }
-    }
-  }
-  ${runFragment}
-  ${testFragment}
 `;
 
 export const testHistoryQuery = gql`
