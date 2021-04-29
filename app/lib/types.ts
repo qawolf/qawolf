@@ -125,6 +125,7 @@ export type Team = ShortTeam & {
   alert_only_on_failure: boolean;
   api_key: string;
   git_sync_integration_id: string | null;
+  helpers: string;
   inbox: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;

@@ -372,6 +372,9 @@ type Team {
   "The ID of a git integration associated with this team"
   git_sync_integration_id: ID
 
+  "Team helpers"
+  helpers: String!
+
   "Team ID"
   id: ID!
 
@@ -1150,6 +1153,11 @@ type Mutation {
     alert_only_on_failure: Boolean
 
     """
+    Team helpers
+    """
+    helpers: String
+
+    """
     Team ID
     """
     id: ID!
@@ -1364,6 +1372,23 @@ type Query {
   Requires that you have access to the team.
   """
   gitHubBranches("The team ID" team_id: ID!): [GitHubBranch!]
+
+  """
+  Returns helpers for a test by the test's team ID. Must provide one of
+  run ID or test ID.
+
+  Requires that you have access to the team that owns the test.
+  """
+  helpers(
+    "The git branch"
+    branch: String
+
+    "The run id"
+    run_id: ID
+
+    "The test id"
+    test_id: ID
+  ): String!
 
   """
   Returns the runner for the run or test.

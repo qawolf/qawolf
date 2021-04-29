@@ -120,6 +120,7 @@ export const teamFragment = gql`
     alert_only_on_failure
     api_key
     git_sync_integration_id
+    helpers
     id
     inbox
     is_email_alert_enabled
