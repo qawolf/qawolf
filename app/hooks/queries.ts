@@ -8,6 +8,7 @@ import {
   environmentVariablesQuery,
   gitHubBranchesQuery,
   groupsQuery,
+  helpersQuery,
   integrationsQuery,
   onboardingQuery,
   runCountQuery,
@@ -88,6 +89,16 @@ type GroupsData = {
 
 type GroupsVariables = {
   team_id: string;
+};
+
+type HelpersData = {
+  helpers: string;
+};
+
+type HelpersVariables = {
+  branch?: string | null;
+  run_id?: string | null;
+  test_id?: string | null;
 };
 
 type IntegrationsData = {
@@ -295,6 +306,17 @@ export const useGroups = (
     fetchPolicy,
     onError,
     skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useHelpers = (
+  variables: HelpersVariables
+): QueryResult<HelpersData, HelpersVariables> => {
+  return useQuery<HelpersData, HelpersVariables>(helpersQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.run_id && !variables.test_id,
     variables,
   });
 };

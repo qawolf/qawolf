@@ -67,6 +67,12 @@ export const groupsQuery = gql`
   ${groupFragment}
 `;
 
+export const helpersQuery = gql`
+  query helpers($branch: String, $run_id: ID, $test_id: ID) {
+    helpers(branch: $branch, run_id: $run_id, test_id: $test_id)
+  }
+`;
+
 export const integrationsQuery = gql`
   query integrations($team_id: ID!) {
     integrations(team_id: $team_id) {

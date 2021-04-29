@@ -25,7 +25,9 @@ export default function HelpersEditor({
 }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
-  const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
+  const { hasWriteAccess, helpers, refetchHelpers, team } = useContext(
+    TestContext
+  );
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -35,19 +37,19 @@ export default function HelpersEditor({
   useEnvTypes({ env, monaco });
 
   useEffect(() => {
-    if (refetchTeam) refetchTeam();
-  }, [refetchTeam]);
+    if (refetchHelpers) refetchHelpers();
+  }, [refetchHelpers]);
 
   useEffect(() => {
-    if (!editor || !team) return;
+    if (!editor) return;
 
     const value = editor.getValue();
-    const isChanged = value !== team.helpers;
+    const isChanged = value !== helpers;
 
     if (!value || isChanged) {
-      editor.setValue(team.helpers);
+      editor.setValue(helpers);
     }
-  }, [editor, team]);
+  }, [editor, helpers]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
 
@@ -57,14 +59,14 @@ export default function HelpersEditor({
     includeTypes(monaco);
 
     editor.onDidChangeModelContent(() => {
-      const helpers = editor.getValue();
-      if (!team || helpers === team.helpers) return;
+      const updatedHelpers = editor.getValue();
+      if (helpers === updatedHelpers) return;
 
       debouncedUpdateTeam({
         optimisticResponse: {
-          updateTeam: { ...team, helpers },
+          updateTeam: { ...team, helpers: updatedHelpers },
         },
-        variables: { helpers, id: teamId },
+        variables: { helpers: updatedHelpers, id: teamId },
       });
     });
   };
