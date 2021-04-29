@@ -1,7 +1,7 @@
 import { ClientError } from "../errors";
 import { findRunResult } from "../models/run";
 import { findSuite } from "../models/suite";
-import { findTest, findTestForRun } from "../models/test";
+import { findTest } from "../models/test";
 import {
   buildHelpersForFiles,
   findFilesForBranch,
@@ -27,12 +27,6 @@ type FindHelpersForEditor = {
   files: GitHubFile[] | null;
   run: RunResult | null;
   team: Team;
-};
-
-type FindTestForEditor = {
-  run_id?: string | null;
-  teams: Team[];
-  test_id?: string | null;
 };
 
 export const buildTestCode = (
@@ -71,18 +65,6 @@ export const findHelpersForEditor = async (
   return team.helpers;
 };
 
-export const findTestForEditor = async (
-  { run_id, teams, test_id }: FindTestForEditor,
-  options: ModelOptions
-): Promise<Test> => {
-  const test = test_id
-    ? await findTest(test_id, options)
-    : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      await findTestForRun(run_id!, options);
-
-  return test;
-};
-
 export const editorResolver = async (
   _: Record<string, unknown>,
   { branch, run_id, test_id }: EditorQuery,
@@ -97,15 +79,8 @@ export const editorResolver = async (
   }
 
   const run = run_id ? await findRunResult(run_id, { db, logger }) : null;
-  const test = await findTestForEditor(
-    { run_id, teams, test_id },
-    { db, logger }
-  );
-
+  const test = await findTest(run?.test_id || test_id, { db, logger });
   const team = await ensureTestAccess({ teams, test }, { db, logger });
-  if (run) {
-    await ensureTestAccess({ teams, test_id: run.test_id }, { db, logger });
-  }
 
   let files: GitHubFile[] | null = null;
 

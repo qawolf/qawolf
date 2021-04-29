@@ -269,27 +269,6 @@ export const findTest = async (
   return test;
 };
 
-export const findTestForRun = async (
-  run_id: string,
-  { db, logger }: ModelOptions
-): Promise<Test> => {
-  const log = logger.prefix("findTestForRun");
-
-  const test = await db
-    .select("tests.*" as "*")
-    .from("tests")
-    .innerJoin("runs", "runs.test_id", "tests.id")
-    .where({ "runs.id": run_id })
-    .first();
-
-  if (!test) {
-    log.error("not found", run_id);
-    throw new Error(`test for run not found ${run_id}`);
-  }
-
-  return test;
-};
-
 export const findTests = async (
   test_ids: string[],
   { db, logger }: ModelOptions

@@ -2,7 +2,6 @@ import {
   buildTestCode,
   editorResolver,
   findHelpersForEditor,
-  findTestForEditor,
 } from "../../../server/resolvers/editor";
 import * as treeService from "../../../server/services/gitHub/tree";
 import { Editor, RunResult } from "../../../server/types";
@@ -150,25 +149,5 @@ describe("findHelpersForEditor", () => {
     );
 
     expect(helpers).toBe("team helpers");
-  });
-});
-
-describe("findTestForEditor", () => {
-  it("returns test for test id", async () => {
-    const test = await findTestForEditor(
-      { teams: [team], test_id: "testId" },
-      options
-    );
-
-    expect(test).toMatchObject({ id: "testId" });
-  });
-
-  it("returns test for run id", async () => {
-    const test = await findTestForEditor(
-      { run_id: "runId", teams: [team] },
-      options
-    );
-
-    expect(test).toMatchObject({ id: "testId" });
   });
 });

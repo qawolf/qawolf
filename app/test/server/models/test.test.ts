@@ -9,7 +9,6 @@ import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
   buildGroup,
-  buildRun,
   buildRunner,
   buildTeam,
   buildTest,
@@ -27,7 +26,6 @@ const {
   findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
-  findTestForRun,
   findTestsForTeam,
   findTests,
   hasIntroGuide,
@@ -500,29 +498,6 @@ describe("findTest", () => {
   it("throws an error if test does not exist", async () => {
     await expect(findTest("fakeId", options)).rejects.toThrowError(
       "test not found fakeId"
-    );
-  });
-});
-
-describe("findTestForRun", () => {
-  beforeAll(async () => {
-    await db("tests").insert(buildTest({}));
-    await db("runs").insert(buildRun({}));
-  });
-
-  afterAll(async () => {
-    await db("runs").del();
-    await db("tests").del();
-  });
-
-  it("returns test for a given run", async () => {
-    const test = await findTestForRun("runId", options);
-    expect(test).toMatchObject({ id: "testId" });
-  });
-
-  it("throws an error if run does not exist", async () => {
-    await expect(findTestForRun("fakeId", options)).rejects.toThrowError(
-      "test for run not found fakeId"
     );
   });
 });
