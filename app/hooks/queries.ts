@@ -29,19 +29,18 @@ import { isServer } from "../lib/detection";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
+  Editor,
   Environment,
   EnvironmentVariable,
   GitHubBranch,
   Group,
   Integration,
   Onboarding,
-  Run,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
   TeamWithUsers,
-  Test,
   TestHistoryRun,
   TestSummary,
   TestTriggers,
@@ -56,11 +55,7 @@ type CurrentUserData = {
 };
 
 type EditorData = {
-  editor: {
-    helpers: string;
-    run: Run | null;
-    test: Test;
-  };
+  editor: Editor;
 };
 
 type EditorVariables = {

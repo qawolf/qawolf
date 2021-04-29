@@ -258,6 +258,32 @@ export const deleteTriggerMutation = gql`
   ${triggerFragment}
 `;
 
+export const saveEditorMutation = gql`
+  mutation saveEditor(
+    $branch: String
+    $code: String
+    $helpers: String
+    $name: String
+    $path: String
+    $test_id: ID!
+  ) {
+    saveEditor(
+      branch: $branch
+      code: $code
+      helpers: $helpers
+      name: $name
+      path: $path
+      test_id: $test_id
+    ) {
+      helpers
+      test {
+        ...TestFragment
+      }
+    }
+  }
+  ${testFragment}
+`;
+
 export const sendLoginCodeMutation = gql`
   mutation sendLoginCode(
     $email: String!

@@ -482,6 +482,15 @@ export type RunTestStatus = {
   pass: boolean;
 };
 
+export type SaveEditorMutation = {
+  branch?: string | null;
+  code?: string | null;
+  helpers?: string | null;
+  name?: string | null;
+  path?: string | null;
+  test_id: string;
+};
+
 export type SendEmailMutation = {
   from: string;
   html?: string;

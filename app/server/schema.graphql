@@ -936,16 +936,19 @@ type Mutation {
     branch: String
 
     "Test code"
-    code: String!
+    code: String
 
     "Helpers"
-    helpers: String!
+    helpers: String
 
     "Test name"
     name: String
 
     "Test path"
     path: String
+
+    "Test ID"
+    test_id: ID!
   ): Editor!
 
   """
