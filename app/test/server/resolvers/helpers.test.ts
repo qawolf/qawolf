@@ -3,6 +3,7 @@ import {
   findHelpersForTest,
   helpersResolver,
 } from "../../../server/resolvers/helpers";
+import * as treeService from "../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../db";
 import {
   buildRun,
@@ -55,12 +56,47 @@ describe("findHelpersForRun", () => {
 
 describe("findHelpersForTest", () => {
   it("returns the helpers for the test's team", async () => {
+    jest.spyOn(treeService, "findFilesForBranch");
+
     const helpers = await findHelpersForTest(
       { teams: context.teams, test_id: "testId" },
       options
     );
 
     expect(helpers).toBe("team helpers");
+    expect(treeService.findFilesForBranch).not.toBeCalled();
+  });
+
+  it("returns the helpers for the branch if specified", async () => {
+    jest.spyOn(treeService, "findFilesForBranch").mockResolvedValue({
+      files: [
+        {
+          path: "qawolf/helpers/index.js",
+          sha: "helpersSha",
+          text: "git helpers",
+        },
+        {
+          path: "qawolf/myTest.test.js",
+          sha: "sha",
+          text: "// code",
+        },
+      ],
+      owner: "qawolf",
+      repo: "repo",
+    });
+
+    const helpers = await findHelpersForTest(
+      {
+        branch: "feature",
+        teams: [
+          { ...context.teams[0], git_sync_integration_id: "integrationId" },
+        ],
+        test_id: "testId",
+      },
+      options
+    );
+
+    expect(helpers).toBe("git helpers");
   });
 });
 
@@ -75,6 +111,38 @@ describe("helpersResolver", () => {
     const helpers = await helpersResolver({}, { test_id: "testId" }, context);
 
     expect(helpers).toBe("team helpers");
+  });
+
+  it("returns helpers from branch if branch passed", async () => {
+    jest.spyOn(treeService, "findFilesForBranch").mockResolvedValue({
+      files: [
+        {
+          path: "qawolf/helpers/index.js",
+          sha: "helpersSha",
+          text: "git helpers",
+        },
+        {
+          path: "qawolf/myTest.test.js",
+          sha: "sha",
+          text: "// code",
+        },
+      ],
+      owner: "qawolf",
+      repo: "repo",
+    });
+
+    const helpers = await helpersResolver(
+      {},
+      { branch: "main", test_id: "testId" },
+      {
+        ...context,
+        teams: [
+          { ...context.teams[0], git_sync_integration_id: "integrationId" },
+        ],
+      }
+    );
+
+    expect(helpers).toBe("git helpers");
   });
 
   it("throws an error if no run or test id passed", async () => {

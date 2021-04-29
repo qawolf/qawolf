@@ -1,6 +1,9 @@
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
+import {
+  buildHelpersForFiles,
+  findFilesForBranch,
+} from "../services/gitHub/tree";
 import {
   FormattedVariables,
   GitHubFile,
@@ -73,21 +76,6 @@ type CreatedSuite = {
 type FindSuitesForTeam = {
   limit: number;
   team_id: string;
-};
-
-export const buildHelpersForFiles = (
-  files: GitHubFile[],
-  { logger }: ModelOptions
-): string => {
-  const log = logger.prefix("buildHelpersForFiles");
-
-  const helpersFile = files.find((f) => f.path === HELPERS_PATH);
-  if (!helpersFile) {
-    log.alert("no helpers");
-    throw new ClientError(`${HELPERS_PATH} not found`);
-  }
-
-  return helpersFile.text;
 };
 
 export const buildTestsForFiles = (

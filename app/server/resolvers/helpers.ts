@@ -1,6 +1,10 @@
 import { ClientError } from "../errors";
 import { findRun } from "../models/run";
 import { findSuite } from "../models/suite";
+import {
+  buildHelpersForFiles,
+  findFilesForBranch,
+} from "../services/gitHub/tree";
 import { Context, HelpersQuery, ModelOptions, Team } from "../types";
 import { ensureTestAccess } from "./utils";
 
@@ -10,6 +14,7 @@ type FindHelpersForRun = {
 };
 
 type FindHelpersForTest = {
+  branch?: string | null;
   teams: Team[];
   test_id: string;
 };
@@ -34,12 +39,24 @@ export const findHelpersForRun = async (
 };
 
 export const findHelpersForTest = async (
-  { teams, test_id }: FindHelpersForTest,
+  { branch, teams, test_id }: FindHelpersForTest,
   options: ModelOptions
 ): Promise<string> => {
+  const log = options.logger.prefix("findHelpersForTest");
+
   const team = await ensureTestAccess({ teams, test_id }, options);
 
-  return team.helpers;
+  if (!branch || !team.git_sync_integration_id) {
+    log.debug(`use team ${team.id} helpers, branch ${branch}`);
+    return team.helpers;
+  }
+
+  const { files } = await findFilesForBranch(
+    { branch, integrationId: team.git_sync_integration_id },
+    options
+  );
+
+  return buildHelpersForFiles(files, options);
 };
 
 /**
@@ -47,7 +64,7 @@ export const findHelpersForTest = async (
  */
 export const helpersResolver = async (
   _: Record<string, unknown>,
-  { run_id, test_id }: HelpersQuery,
+  { branch, run_id, test_id }: HelpersQuery,
   { db, logger, teams }: Context
 ): Promise<string> => {
   const log = logger.prefix("helpersResolver");
@@ -60,5 +77,5 @@ export const helpersResolver = async (
 
   if (run_id) return findHelpersForRun({ run_id, teams }, { db, logger });
 
-  return findHelpersForTest({ teams, test_id }, { db, logger });
+  return findHelpersForTest({ branch, teams, test_id }, { db, logger });
 };
