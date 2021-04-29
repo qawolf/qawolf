@@ -37,7 +37,7 @@ export const TestContext = createContext<TestContextValue>({
 const pollInterval = 2000;
 
 export const TestProvider: FC = ({ children }) => {
-  const { environmentId, teamId } = useContext(StateContext);
+  const { branch, environmentId, teamId } = useContext(StateContext);
 
   const { query } = useRouter();
 
@@ -45,6 +45,7 @@ export const TestProvider: FC = ({ children }) => {
   const test_id = query.test_id as string;
 
   const { data: helpersData, refetch: refetchHelpers } = useHelpers({
+    branch,
     run_id,
     test_id,
   });

@@ -32,7 +32,22 @@ type RepoFilesData = {
 export const GIT_TEST_FILE_EXTENSION = ".test.js";
 export const HELPERS_PATH = "qawolf/helpers/index.js";
 
-function flattenFiles(entries: GitEntry[]): GitHubFile[] {
+export const buildHelpersForFiles = (
+  files: GitHubFile[],
+  { logger }: ModelOptions
+): string => {
+  const log = logger.prefix("buildHelpersForFiles");
+
+  const helpersFile = files.find((f) => f.path === HELPERS_PATH);
+  if (!helpersFile) {
+    log.alert("no helpers");
+    throw new ClientError(`${HELPERS_PATH} not found`);
+  }
+
+  return helpersFile.text;
+};
+
+const flattenFiles = (entries: GitEntry[]): GitHubFile[] => {
   const files: GitHubFile[] = [];
 
   entries.forEach((entry) => {
@@ -48,7 +63,7 @@ function flattenFiles(entries: GitEntry[]): GitHubFile[] {
   });
 
   return files;
-}
+};
 
 export const findFilesForBranch = async (
   { branch, integrationId }: FindFiles,

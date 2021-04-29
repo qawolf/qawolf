@@ -1,6 +1,5 @@
 import { decrypt, encrypt } from "../../../server/models/encrypt";
 import {
-  buildHelpersForFiles,
   buildTestsForFiles,
   buildTestsForSuite,
   createSuite,
@@ -46,43 +45,6 @@ beforeAll(async () => {
 });
 
 describe("suite model", () => {
-  describe("buildHelpersForFiles", () => {
-    it("builds helpers from files", () => {
-      expect(
-        buildHelpersForFiles(
-          [
-            {
-              path: "qawolf/helpers/index.js",
-              sha: "helpersSha",
-              text: "helpers",
-            },
-            {
-              path: "qawolf/myTest.test.js",
-              sha: "sha",
-              text: "// code",
-            },
-          ],
-          options
-        )
-      ).toBe("helpers");
-    });
-
-    it("throws an error if no helpers file", () => {
-      expect(() => {
-        return buildHelpersForFiles(
-          [
-            {
-              path: "qawolf/myTest.test.js",
-              sha: "sha",
-              text: "// code",
-            },
-          ],
-          options
-        );
-      }).toThrowError("not found");
-    });
-  });
-
   describe("buildTestsForFiles", () => {
     it("replaces test code with file text", () => {
       const test = buildTest({ path: "qawolf/myTest2.test.js" });
