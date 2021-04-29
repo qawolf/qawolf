@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, FC, useContext, useEffect } from "react";
 
-import { useHelpers, useSuite, useTeam, useTest } from "../../../hooks/queries";
+import { useEditor, useSuite, useTeam } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
 import { Run, Suite, Team, Test } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
@@ -14,7 +14,6 @@ type TestContextValue = {
   hasWriteAccess: boolean;
   helpers: string;
   isTestLoading: boolean;
-  refetchHelpers: () => void | null;
   run: Run | null;
   suite: Suite | null;
   team: Team | null;
@@ -27,7 +26,6 @@ export const TestContext = createContext<TestContextValue>({
   hasWriteAccess: false,
   helpers: "",
   isTestLoading: true,
-  refetchHelpers: null,
   run: null,
   suite: null,
   team: null,
@@ -44,24 +42,21 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { data: helpersData, refetch: refetchHelpers } = useHelpers({
-    branch,
-    run_id,
-    test_id,
-  });
   const { data: teamData } = useTeam({ id: teamId });
-  const { data, loading, startPolling, stopPolling } = useTest(
+  const { data, loading, startPolling, stopPolling } = useEditor(
     {
-      id: test_id,
+      branch,
       run_id,
+      test_id,
     },
     { teamId }
   );
+  const editorData = data?.editor || null;
 
-  const helpers = helpersData?.helpers || "";
-  const run = data?.test?.run || null;
+  const helpers = editorData?.helpers || "";
+  const run = editorData?.run || null;
   const team = teamData?.team || null;
-  const test = data?.test?.test || null;
+  const test = editorData?.test || null;
 
   const { data: suiteData } = useSuite(
     { id: run?.suite_id || (query?.suite_id as string) },
@@ -99,7 +94,6 @@ export const TestProvider: FC = ({ children }) => {
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,
-    refetchHelpers,
     run,
     suite,
     team,

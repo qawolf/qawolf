@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 
 import {
   currentUserQuery,
+  editorQuery,
   environmentsQuery,
   environmentVariablesQuery,
   gitHubBranchesQuery,
   groupsQuery,
-  helpersQuery,
   integrationsQuery,
   onboardingQuery,
   runCountQuery,
@@ -18,7 +18,6 @@ import {
   suitesQuery,
   teamQuery,
   testHistoryQuery,
-  testQuery,
   testsQuery,
   testSummariesQuery,
   testTriggersQuery,
@@ -56,6 +55,20 @@ type CurrentUserData = {
   currentUser: User;
 };
 
+type EditorData = {
+  editor: {
+    helpers: string;
+    run: Run | null;
+    test: Test;
+  };
+};
+
+type EditorVariables = {
+  branch?: string;
+  run_id?: string | null;
+  test_id?: string | null;
+};
+
 type EnvironmentsData = {
   environments: Environment[];
 };
@@ -89,16 +102,6 @@ type GroupsData = {
 
 type GroupsVariables = {
   team_id: string;
-};
-
-type HelpersData = {
-  helpers: string;
-};
-
-type HelpersVariables = {
-  branch?: string | null;
-  run_id?: string | null;
-  test_id?: string | null;
 };
 
 type IntegrationsData = {
@@ -158,18 +161,6 @@ type TeamData = {
 
 type TeamVariables = {
   id: string;
-};
-
-type TestData = {
-  test: {
-    run: Run;
-    test: Test;
-  };
-};
-
-type TestQueryVariables = {
-  id?: string;
-  run_id?: string | null;
 };
 
 type TestHistoryData = {
@@ -242,6 +233,35 @@ export const useCurrentUser = (): QueryResult<CurrentUserData> => {
   });
 };
 
+export const useEditor = (
+  variables: EditorVariables,
+  { teamId }: { teamId: string }
+): QueryResult<EditorData, EditorVariables> => {
+  const { replace } = useRouter();
+
+  return useQuery<EditorData, EditorVariables>(editorQuery, {
+    fetchPolicy,
+    nextFetchPolicy,
+    onCompleted: (response) => {
+      const { editor } = response || {};
+      // set correct team id if needed
+      if (editor?.test?.team_id && editor.test.team_id !== teamId) {
+        state.setTeamId(editor.test.team_id);
+      }
+    },
+    onError: (error: ApolloError) => {
+      if (
+        error.message.includes("cannot access") ||
+        error.message.includes("not found")
+      ) {
+        replace(routes.tests);
+      }
+    },
+    skip: !variables.run_id && !variables.test_id,
+    variables,
+  });
+};
+
 export const useEnvironments = (
   variables: EnvironmentsVariables,
   { environmentId }: { environmentId: string | null }
@@ -306,17 +326,6 @@ export const useGroups = (
     fetchPolicy,
     onError,
     skip: !variables.team_id,
-    variables,
-  });
-};
-
-export const useHelpers = (
-  variables: HelpersVariables
-): QueryResult<HelpersData, HelpersVariables> => {
-  return useQuery<HelpersData, HelpersVariables>(helpersQuery, {
-    fetchPolicy,
-    onError,
-    skip: !variables.run_id && !variables.test_id,
     variables,
   });
 };
@@ -415,35 +424,6 @@ export const useTeam = (
     fetchPolicy,
     onError,
     skip: !variables.id,
-    variables,
-  });
-};
-
-export const useTest = (
-  variables: TestQueryVariables,
-  { teamId }: { teamId: string }
-): QueryResult<TestData, TestQueryVariables> => {
-  const { replace } = useRouter();
-
-  return useQuery<TestData, TestQueryVariables>(testQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onCompleted: (response) => {
-      const { test } = response || {};
-      // set correct team id if needed
-      if (test?.test?.team_id && test.test.team_id !== teamId) {
-        state.setTeamId(test.test.team_id);
-      }
-    },
-    onError: (error: ApolloError) => {
-      if (
-        error.message.includes("cannot access") ||
-        error.message.includes("not found")
-      ) {
-        replace(routes.tests);
-      }
-    },
-    skip: !variables.id && !variables.run_id,
     variables,
   });
 };
