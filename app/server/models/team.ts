@@ -16,7 +16,6 @@ type UpdateTeam = {
   alert_only_on_failure?: boolean;
   git_sync_integration_id?: string | null;
   helpers?: string;
-  helpers_version?: number;
   id: string;
   is_email_alert_enabled?: boolean;
   is_enabled?: boolean;
@@ -55,7 +54,6 @@ export const createDefaultTeam = async ({
     api_key: encrypt(buildApiKey()),
     created_at: timestamp,
     helpers: "",
-    helpers_version: 0,
     id,
     inbox: `${cuid()}@${environment.EMAIL_DOMAIN}`,
     is_email_alert_enabled: true,
@@ -189,7 +187,6 @@ export const updateTeam = async (
     alert_only_on_failure,
     git_sync_integration_id,
     helpers,
-    helpers_version,
     id,
     is_email_alert_enabled,
     is_enabled,
@@ -220,19 +217,7 @@ export const updateTeam = async (
   if (git_sync_integration_id !== undefined) {
     updates.git_sync_integration_id = git_sync_integration_id;
   }
-
   if (!isNil(helpers)) updates.helpers = helpers;
-  // do not overwrite current helpers with older version
-  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-  if (!isNil(helpers_version) && team.helpers_version >= helpers_version!) {
-    log.debug(
-      `ignore: team ${id} current helpers version ${team.helpers_version} >= update version ${helpers_version}`
-    );
-    return team;
-  } else if (!isNil(helpers_version)) {
-    updates.helpers_version = helpers_version;
-  }
-
   if (!isNil(is_email_alert_enabled)) {
     updates.is_email_alert_enabled = is_email_alert_enabled;
   }

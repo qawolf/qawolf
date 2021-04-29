@@ -289,7 +289,6 @@ export type Team = {
   id: string;
   inbox: string;
   helpers: string;
-  helpers_version: number;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   last_synced_at: string | null;

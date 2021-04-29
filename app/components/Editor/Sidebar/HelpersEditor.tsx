@@ -1,6 +1,6 @@
 import debounce from "debounce";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useUpdateTeam } from "../../../hooks/mutations";
 import { StateContext } from "../../StateContext";
@@ -27,8 +27,6 @@ export default function HelpersEditor({
   const { teamId } = useContext(StateContext);
   const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
 
-  const helpersVersionRef = useRef(team?.helpers_version || -1);
-
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
@@ -44,16 +42,10 @@ export default function HelpersEditor({
     if (!editor || !team) return;
 
     const value = editor.getValue();
-    const hasNewerVersion = team.helpers_version > helpersVersionRef.current;
     const isChanged = value !== team.helpers;
 
-    if (!value || (hasNewerVersion && isChanged)) {
+    if (!value || isChanged) {
       editor.setValue(team.helpers);
-    }
-
-    // update current team helpers version so it works in callback
-    if (team.helpers_version > -1) {
-      helpersVersionRef.current = team.helpers_version;
     }
   }, [editor, team]);
 
@@ -68,14 +60,11 @@ export default function HelpersEditor({
       const helpers = editor.getValue();
       if (!team || helpers === team.helpers) return;
 
-      helpersVersionRef.current += 1;
-      const helpers_version = helpersVersionRef.current;
-
       debouncedUpdateTeam({
         optimisticResponse: {
-          updateTeam: { ...team, helpers, helpers_version },
+          updateTeam: { ...team, helpers },
         },
-        variables: { helpers, helpers_version, id: teamId },
+        variables: { helpers, id: teamId },
       });
     });
   };
