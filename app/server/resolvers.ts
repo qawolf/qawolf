@@ -22,6 +22,7 @@ import {
   groupsResolver,
   updateGroupResolver,
 } from "./resolvers/group";
+import { helpersResolver } from "./resolvers/helpers";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -137,6 +138,7 @@ export const resolvers = {
     environmentVariables: environmentVariablesResolver,
     gitHubBranches: gitHubBranchesResolver,
     groups: groupsResolver,
+    helpers: helpersResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,
     runner: runnerResolver,

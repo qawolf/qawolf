@@ -40,7 +40,6 @@ describe("createDefaultTeam", () => {
         alert_integration_id: null,
         api_key: expect.any(String),
         helpers: "",
-        helpers_version: 0,
         id: expect.any(String),
         inbox: expect.any(String),
         is_email_alert_enabled: true,
@@ -308,7 +307,7 @@ describe("updateTeam", () => {
 
   it("updates a team helpers", async () => {
     const team = await updateTeam(
-      { helpers: "helpers", helpers_version: 1, id: "teamId" },
+      { helpers: "helpers", id: "teamId" },
       options
     );
 
@@ -316,7 +315,6 @@ describe("updateTeam", () => {
 
     expect(team.api_key).toMatch("qawolf_");
     expect(team.helpers).toBe("helpers");
-    expect(team.helpers_version).toBe(1);
     expect(team).toEqual({
       ...updatedTeam,
       api_key: expect.any(String),
@@ -325,23 +323,7 @@ describe("updateTeam", () => {
 
     await db("teams")
       .where({ id: "teamId" })
-      .update({ helpers: "", helpers_version: 0, id: "teamId" });
-  });
-
-  it("does not update team if helpers out of date", async () => {
-    await db("teams").where({ id: "teamId" }).update({ helpers_version: 10 });
-
-    const team = await updateTeam(
-      { helpers: "helpers", helpers_version: 1, id: "teamId" },
-      options
-    );
-
-    expect(team.helpers).not.toBe("helpers");
-
-    const updatedTeam = await db.select("*").from("teams").first();
-
-    expect(updatedTeam.helpers).toBe("");
-    expect(updatedTeam.helpers_version).toBe(10);
+      .update({ helpers: "", id: "teamId" });
   });
 
   it("updates a team name", async () => {

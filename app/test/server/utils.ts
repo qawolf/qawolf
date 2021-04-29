@@ -121,6 +121,7 @@ type BuildSuite = {
   created_at?: string;
   creator_id?: string;
   environment_id?: string;
+  helpers?: string;
   i?: number;
   team_id?: string;
   trigger_id?: string;
@@ -414,6 +415,7 @@ export const buildSuite = ({
   created_at,
   creator_id,
   environment_id,
+  helpers,
   team_id,
   trigger_id,
   i,
@@ -426,7 +428,7 @@ export const buildSuite = ({
     creator_id: creator_id || null,
     environment_id: environment_id || null,
     environment_variables: null,
-    helpers: "",
+    helpers: helpers || "",
     id: `suite${finalI === 1 ? "" : i}Id`,
     team_id: team_id || "teamId",
     trigger_id: trigger_id || "triggerId",
@@ -451,7 +453,6 @@ export const buildTeam = ({
     alert_integration_id: null,
     api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
     helpers: helpers || "",
-    helpers_version: 0,
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
     is_email_alert_enabled: true,

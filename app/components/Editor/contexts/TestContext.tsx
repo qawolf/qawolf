@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, FC, useContext, useEffect } from "react";
 
-import { useSuite, useTeam, useTest } from "../../../hooks/queries";
+import { useHelpers, useSuite, useTeam, useTest } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
 import { Run, Suite, Team, Test } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
@@ -12,8 +12,9 @@ type TestContextValue = {
   code: string;
   controller: TestController | null;
   hasWriteAccess: boolean;
+  helpers: string;
   isTestLoading: boolean;
-  refetchTeam: () => void | null;
+  refetchHelpers: () => void | null;
   run: Run | null;
   suite: Suite | null;
   team: Team | null;
@@ -24,8 +25,9 @@ export const TestContext = createContext<TestContextValue>({
   code: "",
   controller: null,
   hasWriteAccess: false,
+  helpers: "",
   isTestLoading: true,
-  refetchTeam: null,
+  refetchHelpers: null,
   run: null,
   suite: null,
   team: null,
@@ -42,7 +44,11 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { data: teamData, refetch: refetchTeam } = useTeam({ id: teamId });
+  const { data: helpersData, refetch: refetchHelpers } = useHelpers({
+    run_id,
+    test_id,
+  });
+  const { data: teamData } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useTest(
     {
       id: test_id,
@@ -51,6 +57,7 @@ export const TestProvider: FC = ({ children }) => {
     { teamId }
   );
 
+  const helpers = helpersData?.helpers || "";
   const run = data?.test?.run || null;
   const team = teamData?.team || null;
   const test = data?.test?.test || null;
@@ -87,10 +94,11 @@ export const TestProvider: FC = ({ children }) => {
     code,
     controller,
     hasWriteAccess: test_id && !test?.deleted_at,
+    helpers,
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,
-    refetchTeam,
+    refetchHelpers,
     run,
     suite,
     team,

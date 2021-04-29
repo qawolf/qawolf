@@ -289,7 +289,6 @@ export type Team = {
   id: string;
   inbox: string;
   helpers: string;
-  helpers_version: number;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
   last_synced_at: string | null;
@@ -576,7 +575,6 @@ export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
   helpers?: string | null;
-  helpers_version?: number;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;
@@ -623,6 +621,12 @@ export type EnvironmentIdQuery = {
   environment_id: string;
 };
 
+export type HelpersQuery = {
+  branch?: string | null;
+  run_id?: string | null;
+  test_id?: string | null;
+};
+
 export type IdQuery = {
   id: string;
 };
@@ -663,8 +667,9 @@ export type TestIdsQuery = {
 };
 
 export type TestQuery = {
-  id?: string;
-  run_id?: string;
+  branch?: string | null;
+  id?: string | null;
+  run_id?: string | null;
 };
 
 export type TestResult = {

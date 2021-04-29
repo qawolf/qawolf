@@ -1,6 +1,6 @@
 import debounce from "debounce";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useUpdateTeam } from "../../../hooks/mutations";
 import { StateContext } from "../../StateContext";
@@ -25,9 +25,9 @@ export default function HelpersEditor({
 }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
   const { teamId } = useContext(StateContext);
-  const { hasWriteAccess, refetchTeam, team } = useContext(TestContext);
-
-  const helpersVersionRef = useRef(team?.helpers_version || -1);
+  const { hasWriteAccess, helpers, refetchHelpers, team } = useContext(
+    TestContext
+  );
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
@@ -37,25 +37,19 @@ export default function HelpersEditor({
   useEnvTypes({ env, monaco });
 
   useEffect(() => {
-    if (refetchTeam) refetchTeam();
-  }, [refetchTeam]);
+    if (refetchHelpers) refetchHelpers();
+  }, [refetchHelpers]);
 
   useEffect(() => {
-    if (!editor || !team) return;
+    if (!editor) return;
 
     const value = editor.getValue();
-    const hasNewerVersion = team.helpers_version > helpersVersionRef.current;
-    const isChanged = value !== team.helpers;
+    const isChanged = value !== helpers;
 
-    if (!value || (hasNewerVersion && isChanged)) {
-      editor.setValue(team.helpers);
+    if (!value || isChanged) {
+      editor.setValue(helpers);
     }
-
-    // update current team helpers version so it works in callback
-    if (team.helpers_version > -1) {
-      helpersVersionRef.current = team.helpers_version;
-    }
-  }, [editor, team]);
+  }, [editor, helpers]);
 
   const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
 
@@ -65,17 +59,14 @@ export default function HelpersEditor({
     includeTypes(monaco);
 
     editor.onDidChangeModelContent(() => {
-      const helpers = editor.getValue();
-      if (!team || helpers === team.helpers) return;
-
-      helpersVersionRef.current += 1;
-      const helpers_version = helpersVersionRef.current;
+      const updatedHelpers = editor.getValue();
+      if (helpers === updatedHelpers) return;
 
       debouncedUpdateTeam({
         optimisticResponse: {
-          updateTeam: { ...team, helpers, helpers_version },
+          updateTeam: { ...team, helpers: updatedHelpers },
         },
-        variables: { helpers, helpers_version, id: teamId },
+        variables: { helpers: updatedHelpers, id: teamId },
       });
     });
   };
