@@ -3,13 +3,20 @@ import io from "socket.io-client";
 
 import { state } from "./state";
 import { CodeUpdate, RunOptions } from "./types";
+import { VersionedMap } from "./VersionedMap";
 
 type ConnectOptions = {
   apiKey: string | null;
   wsUrl?: string | null;
 };
 
-type SubscriptionType = "code" | "elementchooser" | "logs" | "run" | "users";
+type SubscriptionType =
+  | "code"
+  | "editor"
+  | "elementchooser"
+  | "logs"
+  | "run"
+  | "users";
 
 type User = {
   email: string;
@@ -37,11 +44,28 @@ const EVENTS = [
 export class RunnerClient extends EventEmitter {
   _apiKey: string | null = null;
   _browserReady = false;
+  _editor = new VersionedMap();
   _socket: SocketIOClient.Socket | null = null;
   _subscriptions: SubscriptionMessage[] = [];
   _wsUrl: string | null = null;
 
+  constructor() {
+    super();
+
+    this._editor.on("keychanged", (event) => {
+      this._socket?.emit("keychanged", event);
+    });
+  }
+
   _onConnect = (): void => {
+    // clear versions whenever we reconnect
+    this._editor._versions.clear();
+
+    // send our current version as 0 in case the runner has not been hydrated
+    this._editor._values.forEach((value, key) => {
+      this._socket?.emit("keychanged", { key, value, version: 0 });
+    });
+
     this._subscriptions.forEach((subscription) => {
       this._socket?.emit("subscribe", subscription);
     });
@@ -84,6 +108,10 @@ export class RunnerClient extends EventEmitter {
 
     this._socket.on("connect", this._onConnect);
 
+    this._socket.on("keychanged", (event) => {
+      this._editor.receive(event);
+    });
+
     EVENTS.forEach((event) =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this._socket.on(event, (...args: any[]) => {
@@ -93,6 +121,7 @@ export class RunnerClient extends EventEmitter {
   }
 
   close(): void {
+    this._editor.removeAllListeners();
     this.removeAllListeners();
     this._socket?.close();
   }
@@ -128,6 +157,8 @@ export class RunnerClient extends EventEmitter {
   }
 
   subscribe(message: SubscriptionMessage): void {
+    if (this._subscriptions.find((s) => s.type.includes(message.type))) return;
+
     this._subscriptions.push(message);
 
     if (this._socket?.connected) {

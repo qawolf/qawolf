@@ -16,6 +16,7 @@ type SubscribeData = User | undefined;
 
 export type SubscribeType =
   | "code"
+  | "editor"
   | "elementchooser"
   | "logs"
   | "run"
@@ -37,6 +38,7 @@ export class SubscriptionTracker {
 
   constructor() {
     this._subscriptions.set("code", { data: [], ids: [] });
+    this._subscriptions.set("editor", { data: [], ids: [] });
     this._subscriptions.set("elementchooser", { data: [], ids: [] });
     this._subscriptions.set("logs", { data: [], ids: [] });
     this._subscriptions.set("run", { data: [], ids: [] });

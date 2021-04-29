@@ -40,6 +40,7 @@ export class SocketServer {
       event: "elementchooser",
       to: "elementchooser",
     });
+    this._publish(this._runner, { event: "keychanged", to: "editor" });
     this._publish(this._runner, { event: "logs", to: "logs" });
     this._publish(this._runner, { event: "logscreated", to: "logs" });
     this._publish(this._runner, { event: "runprogress", to: "run" });
@@ -73,6 +74,7 @@ export class SocketServer {
     debug(`socket connected ${socket.id}`);
     socket.on("codeupdated", (message) => this._onCodeUpdated(message));
     socket.on("disconnect", () => this._onDisconnect(socket));
+    socket.on("keychanged", (message) => this._runner._editor.receive(message));
     socket.on("run", (message) => this._runner.run(message));
     socket.on("startelementchooser", () => this._runner.startElementChooser());
     socket.on("stop", async () => {
@@ -94,7 +96,14 @@ export class SocketServer {
     this._subscriptions.subscribe(socket, message);
 
     const { type } = message;
-    if (type === "elementchooser") {
+    if (type === "editor") {
+      // emit keychanged for each editor map
+      const editor = this._runner._editor;
+      editor._values.forEach((value, key) => {
+        const version = this._runner._editor._versions.get(key);
+        socket.emit("keychanged", { key, value, version });
+      });
+    } else if (type === "elementchooser") {
       const chooser = this._runner._environment?.elementChooser;
       if (chooser) socket.emit("elementchooser", chooser.value);
     } else if (type === "logs") {

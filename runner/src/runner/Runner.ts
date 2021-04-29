@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 
 import { Environment } from "../environment/Environment";
+import { VersionedMap } from "../server/VersionedMap";
 import { Log } from "../services/Logger";
 import {
   CodeUpdate,
@@ -35,11 +36,13 @@ export const createHooks = (
 };
 
 export class Runner extends EventEmitter {
+  _editor = new VersionedMap();
   _environment?: Environment;
   _hooks: RunHook[] = [];
 
   constructor() {
     super();
+    this._editor.on("keychanged", (event) => this.emit("keychanged", event));
   }
 
   async _createEnvironment(): Promise<Environment> {
