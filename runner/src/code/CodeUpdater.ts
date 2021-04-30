@@ -80,7 +80,6 @@ export class CodeUpdater extends EventEmitter {
       code: this._code,
       generated: true,
       test_id: this._testId,
-      version: this._version,
     };
     this.emit("codeupdated", update);
     return true;
@@ -106,17 +105,9 @@ export class CodeUpdater extends EventEmitter {
 
   // Called when code is updated by the user
   updateCode(update: CodeUpdate): boolean {
-    // Ignore updates that are lower versions that come from a race from multiple connected clients.
-    // Allow the update if the test id changes which can happen when running locally and switching tests.
-    // In the future we should reset everything when the test changes and move the test_id check.
-    if (update.version <= this._version && update.test_id === this._testId) {
-      return false;
-    }
-
-    debug(`update code ${update.version}`);
+    debug(`update code`);
     this._code = update.code;
     this._testId = update.test_id;
-    this._version = update.version;
     return true;
   }
 }

@@ -7,7 +7,6 @@ const runOptions: RunOptions = {
   helpers: "",
   restart: true,
   test_id: "",
-  version: 0,
 };
 
 describe("Run", () => {

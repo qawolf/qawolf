@@ -100,7 +100,6 @@ describe("SocketServer", () => {
       socket.emit("codeupdated", {
         code: "new code",
         test_id: "testId",
-        version: 2,
       });
     });
 
@@ -114,7 +113,7 @@ describe("SocketServer", () => {
         "code",
         {
           event: "codeupdated",
-          data: { code: "new code", test_id: "testId", version: 2 },
+          data: { code: "new code", test_id: "testId" },
         },
       ]);
     });
