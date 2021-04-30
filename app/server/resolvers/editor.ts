@@ -165,7 +165,11 @@ export const commitTestAndHelpers = async (
     });
     await createCommit({ branch, message, team, tree }, options);
 
-    if (path) updatedTest = await updateTest({ id: test.id, path }, options);
+    if (path && path !== testFile.path) {
+      // TODO: redirect the client to test with existing path
+      // if error due to uniqueness constraint on path and team
+      updatedTest = await updateTest({ id: test.id, path }, options);
+    }
 
     return {
       helpers: helpers || helpersFile.text,
