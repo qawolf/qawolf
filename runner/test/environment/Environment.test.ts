@@ -9,7 +9,6 @@ const runOptions: RunOptions = {
   code: "",
   helpers: "",
   restart: true,
-  test_id: "",
 };
 
 describe("close", () => {

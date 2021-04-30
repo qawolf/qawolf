@@ -3,8 +3,6 @@ import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api"
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 // TODO
-
-// 1) fix code generation
 // 2) sync saved state
 // 3) set up save & auto-save
 // 4) handle run special case

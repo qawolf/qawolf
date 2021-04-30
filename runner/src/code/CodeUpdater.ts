@@ -33,9 +33,7 @@ export class CodeUpdater extends EventEmitter {
   _collector?: ContextEventCollector;
   _context?: BrowserContext;
   _enabledAt: number | false = false;
-  _testId: string | undefined = "";
   _variables: Variables;
-  _version = -1;
 
   constructor(variables: Variables) {
     super();
@@ -74,13 +72,8 @@ export class CodeUpdater extends EventEmitter {
     }
 
     this._code = updatedCode;
-    this._version += 1;
 
-    const update: CodeUpdate = {
-      code: this._code,
-      generated: true,
-      test_id: this._testId,
-    };
+    const update: CodeUpdate = { code: this._code };
     this.emit("codeupdated", update);
     return true;
   }
@@ -104,10 +97,9 @@ export class CodeUpdater extends EventEmitter {
   }
 
   // Called when code is updated by the user
-  updateCode(update: CodeUpdate): boolean {
-    debug(`update code`);
-    this._code = update.code;
-    this._testId = update.test_id;
+  updateCode(code: string): boolean {
+    debug(`update code to ${code}`);
+    this._code = code;
     return true;
   }
 }

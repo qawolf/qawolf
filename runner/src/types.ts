@@ -13,8 +13,6 @@ export type Callback<S = void, T = void> = (data?: S) => T;
 
 export type CodeUpdate = {
   code: string;
-  generated?: boolean;
-  test_id?: string;
 };
 
 export interface CustomVideoMarkerMetadata {
@@ -91,7 +89,6 @@ export type RunOptions = {
   restart: boolean;
   run_id?: string;
   start_line?: number;
-  test_id: string;
 };
 
 export type RunHook = {
@@ -110,7 +107,6 @@ export type RunProgress = {
   run_id?: string;
   start_line?: number;
   status: RunStatus;
-  test_id: string;
 };
 
 export type Suite = {

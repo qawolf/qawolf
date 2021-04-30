@@ -73,7 +73,6 @@ export class Environment extends EventEmitter {
 
   async run(options: RunOptions, hooks: RunHook[] = []): Promise<void> {
     this._updater.disable();
-    this._updater.updateCode(options);
 
     this._inProgress.forEach((runInProgress) => runInProgress.stop());
 

@@ -30,7 +30,6 @@ type SubscriptionMessage = {
 };
 
 const EVENTS = [
-  "codeupdated",
   "connect",
   "elementchooser",
   "disconnect",
@@ -171,9 +170,5 @@ export class RunnerClient extends EventEmitter {
     if (this._socket?.connected) {
       this._socket.emit("unsubscribe", { type });
     }
-  }
-
-  updateTest(update: CodeUpdate): void {
-    this._socket?.emit("codeupdated", update);
   }
 }
