@@ -87,7 +87,13 @@ export const runnerResolver = async (
     // if there is no runner, request one for the test
     if (!runner && request_test_runner) {
       runner = await requestRunnerForTest(
-        { ip, test: { ...test, runner_requested_branch: test_branch } },
+        {
+          ip,
+          test: {
+            ...test,
+            runner_requested_branch: test_branch,
+          },
+        },
         { db: trx, logger }
       );
     }

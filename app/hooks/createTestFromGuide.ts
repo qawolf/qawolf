@@ -1,6 +1,8 @@
 import { ApolloError } from "@apollo/client";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
+import { StateContext } from "../components/StateContext";
 import { routes } from "../lib/routes";
 import { CreateTestData, useCreateTest } from "./mutations";
 
@@ -25,6 +27,7 @@ export const useCreateTestFromGuide = ({
   userId,
 }: UseCreateTestFromGuide): CreateTestFromGuide => {
   const { push } = useRouter();
+  const { branch } = useContext(StateContext);
 
   const [createTest, { called, error, loading }] = useCreateTest(
     ({ createTest }: CreateTestData): void => {
@@ -35,6 +38,7 @@ export const useCreateTestFromGuide = ({
   const handleClick = (): void => {
     createTest({
       variables: {
+        branch,
         guide,
         team_id: teamId,
         url: `${window.location.origin}${routes.guides}${href}?user_id=${userId}`,
