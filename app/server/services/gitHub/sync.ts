@@ -203,8 +203,5 @@ export const createCommit = async (
 //   const team = await findTeam("teamId", options);
 //   const tree = await buildQaWolfTree(team, options);
 
-//   createCommit(
-//     { message: "initial qawolf commit", team, tree },
-//     options
-//   );
+//   createCommit({ message: "initial qawolf commit", team, tree }, options);
 // })();
