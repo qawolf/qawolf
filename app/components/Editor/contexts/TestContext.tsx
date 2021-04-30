@@ -12,7 +12,7 @@ type TestContextValue = {
   code: string;
   controller: TestController | null;
   hasWriteAccess: boolean;
-  helpers: string;
+  helpers: string | null;
   isTestLoading: boolean;
   run: Run | null;
   suite: Suite | null;
@@ -24,7 +24,7 @@ export const TestContext = createContext<TestContextValue>({
   code: "",
   controller: null,
   hasWriteAccess: false,
-  helpers: "",
+  helpers: null,
   isTestLoading: true,
   run: null,
   suite: null,
@@ -53,7 +53,7 @@ export const TestProvider: FC = ({ children }) => {
   );
   const editorData = data?.editor || null;
 
-  const helpers = editorData?.helpers || "";
+  const helpers = editorData?.helpers || null;
   const run = editorData?.run || null;
   const team = teamData?.team || null;
   const test = editorData?.test || null;

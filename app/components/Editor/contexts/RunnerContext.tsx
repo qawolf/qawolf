@@ -23,6 +23,7 @@ type RunnerContext = ConnectRunnerHook &
 
 export const RunnerContext = createContext<RunnerContext>({
   apiKey: null,
+  editorController: null,
   elementChooserValue: { isActive: false },
   env: null,
   isRunnerConnected: false,
@@ -42,9 +43,11 @@ export const RunnerContext = createContext<RunnerContext>({
 
 export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
-  const { isRunnerConnected, runner } = useRunner();
+  const { editorController, isRunnerConnected, runner } = useRunner();
 
-  const { controller, run, suite, team } = useContext(TestContext);
+  const { controller, helpers, run, suite, team, test } = useContext(
+    TestContext
+  );
 
   const {
     elementChooserValue,
@@ -73,11 +76,18 @@ export const RunnerProvider: FC = ({ children }) => {
   });
 
   useEffect(() => {
+    if (typeof helpers !== "string") return;
+
+    editorController?.initializeHelpers(helpers);
+  }, [editorController, helpers]);
+
+  useEffect(() => {
     controller?.setRunner(runner);
   }, [controller, runner]);
 
   const value = {
     apiKey,
+    editorController,
     elementChooserValue,
     env,
     isRunnerConnected,

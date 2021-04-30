@@ -20,10 +20,13 @@ export class VersionedMap extends EventEmitter {
 
     this._values.set(key, value);
     this._versions.set(key, version);
+    this.emit("changed", { key, value });
     return true;
   }
 
   set(key: string, value: any): void {
+    if (value == this._values.get(key)) return;
+
     this._values.set(key, value);
 
     // only set the version if we have one synced from the runner
@@ -35,5 +38,6 @@ export class VersionedMap extends EventEmitter {
     }
 
     this.emit("keychanged", { key, value, version: version || 0 });
+    this.emit("changed", { key, value });
   }
 }

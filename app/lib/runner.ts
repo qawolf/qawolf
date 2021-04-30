@@ -44,25 +44,27 @@ const EVENTS = [
 export class RunnerClient extends EventEmitter {
   _apiKey: string | null = null;
   _browserReady = false;
-  _editor = new VersionedMap();
   _socket: SocketIOClient.Socket | null = null;
+  _state = new VersionedMap();
   _subscriptions: SubscriptionMessage[] = [];
   _wsUrl: string | null = null;
 
-  constructor() {
+  constructor(state = new VersionedMap()) {
     super();
 
-    this._editor.on("keychanged", (event) => {
+    this._state = state;
+
+    this._state.on("keychanged", (event) => {
       this._socket?.emit("keychanged", event);
     });
   }
 
   _onConnect = (): void => {
     // clear versions whenever we reconnect
-    this._editor._versions.clear();
+    this._state._versions.clear();
 
     // send our current version as 0 in case the runner has not been hydrated
-    this._editor._values.forEach((value, key) => {
+    this._state._values.forEach((value, key) => {
       this._socket?.emit("keychanged", { key, value, version: 0 });
     });
 
@@ -109,7 +111,7 @@ export class RunnerClient extends EventEmitter {
     this._socket.on("connect", this._onConnect);
 
     this._socket.on("keychanged", (event) => {
-      this._editor.receive(event);
+      this._state.receive(event);
     });
 
     EVENTS.forEach((event) =>
@@ -121,7 +123,7 @@ export class RunnerClient extends EventEmitter {
   }
 
   close(): void {
-    this._editor.removeAllListeners();
+    this._state.removeAllListeners();
     this.removeAllListeners();
     this._socket?.close();
   }
