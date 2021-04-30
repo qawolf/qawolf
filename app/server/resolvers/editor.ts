@@ -1,3 +1,5 @@
+import isNil from "lodash/isNil";
+
 import { ClientError } from "../errors";
 import { findRunResult } from "../models/run";
 import { findSuite } from "../models/suite";
@@ -30,7 +32,6 @@ type BuildTestCode = {
 type BuildTreeForCommit = {
   code?: string | null;
   helpers?: string | null;
-  helpersFile: GitHubFile;
   path?: string | null;
   testFile: GitHubFile;
 };
@@ -92,7 +93,6 @@ export const buildTestCode = (
 export const buildTreeForCommit = ({
   code,
   helpers,
-  helpersFile,
   path,
   testFile,
 }: BuildTreeForCommit): BuildTreeForCommitResult => {
@@ -100,7 +100,7 @@ export const buildTreeForCommit = ({
   const updates: string[] = [];
 
   // clear old file if renamed
-  if (path && path !== testFile.path) {
+  if (!isNil(path)) {
     tree.push({
       mode: BLOB_MODE,
       path: testFile.path,
@@ -111,17 +111,17 @@ export const buildTreeForCommit = ({
 
   // write updated test file
   tree.push({
-    content: code || testFile.text,
+    content: isNil(code) ? testFile.text : code,
     mode: BLOB_MODE,
     path: path || testFile.path,
   });
 
-  if (code && code !== testFile.text) {
+  if (!isNil(code)) {
     updates.push(`update ${path || testFile.path}`);
   }
 
   // update helpers file code if needed
-  if (helpers && helpers !== helpersFile.text) {
+  if (!isNil(helpers)) {
     tree.push({
       content: helpers,
       mode: BLOB_MODE,
@@ -159,7 +159,6 @@ export const commitTestAndHelpers = async (
     const { message, tree } = buildTreeForCommit({
       code,
       helpers,
-      helpersFile,
       path,
       testFile,
     });
@@ -202,15 +201,15 @@ export const updateTestAndHelpers = async (
     const options = { db: trx, logger };
     let updatedTest = test;
 
-    if (code || name) {
+    if (!isNil(code) || !isNil(name)) {
       const updates: TestUpdates = { id: test.id };
-      if (code) updates.code = code;
-      if (name) updates.name = name;
+      if (!isNil(code)) updates.code = code;
+      if (!isNil(code)) updates.name = name;
 
       updatedTest = await updateTest(updates, options);
     }
 
-    if (helpers) {
+    if (!isNil(helpers)) {
       await updateTeam({ helpers, id: test.team_id }, options);
     }
 
