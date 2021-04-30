@@ -282,9 +282,6 @@ type RunnerRun {
 
   "ID of the record for the running test"
   test_id: ID!
-
-  "Test version, incremented as the test code changes"
-  version: Int!
 }
 
 "A response from the sendLoginCode mutation"
@@ -928,6 +925,31 @@ type Mutation {
     """
     ids: [ID!]!
   ): [Test!]!
+
+  """
+  Update test and helpers in the editor.
+
+  Requires that you have access to the team that owns each test.
+  """
+  saveEditor(
+    "Git branch"
+    branch: String
+
+    "Test code"
+    code: String
+
+    "Helpers"
+    helpers: String
+
+    "Test name"
+    name: String
+
+    "Test path"
+    path: String
+
+    "Test ID"
+    test_id: ID!
+  ): Editor!
 
   """
   Send a test email and create an associated record in the database.

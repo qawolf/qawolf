@@ -68,8 +68,8 @@ export default function Sidebar(): JSX.Element {
         stopTest();
       } else {
         // run the test
-        const { code, id: test_id, version } = controller;
-        runTest({ code, helpers: team.helpers, selection, test_id, version });
+        const { code, id: test_id } = controller;
+        runTest({ code, helpers: team.helpers, selection, test_id });
       }
     }
   };

@@ -362,7 +362,7 @@ describe("run model", () => {
       return db("environments").del();
     });
 
-    it("returns a run and associated test version", async () => {
+    it("returns a run", async () => {
       await db("suites").update({
         environment_id: "environmentId",
         environment_variables: encrypt(
@@ -388,7 +388,6 @@ describe("run model", () => {
         helpers: "helpers",
         id: "run6Id",
         test_id: "test4Id",
-        version: 11,
       });
 
       await db("suites").update({
@@ -417,7 +416,6 @@ describe("run model", () => {
         helpers: "helpers",
         id: "run6Id",
         test_id: "test4Id",
-        version: 11,
       });
 
       await db("suites").update({ environment_id: null });
@@ -440,7 +438,6 @@ describe("run model", () => {
         helpers: "helpers",
         id: "run6Id",
         test_id: "test4Id",
-        version: 11,
       });
     });
 

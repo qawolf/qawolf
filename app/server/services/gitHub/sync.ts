@@ -3,15 +3,23 @@ import { camelCase } from "lodash";
 
 // import { connectDb } from "../../db";
 // import { Logger } from "../../Logger";
-import { findTeam } from "../../models/team";
+// import { findTeam } from "../../models/team";
 import { findTestsForTeam, updateTest } from "../../models/test";
 import { ModelOptions, Team } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
 import { findDefaultBranch } from "./branch";
 
-type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
+export type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
-type CreateCommit = OctokitRepo & {
+type CreateCommit = {
+  branch?: string;
+  message: string;
+  tree: Tree;
+  team: Team;
+};
+
+type CreateCommitForTree = OctokitRepo & {
+  message: string;
   parents: string[];
   treeSha: string;
 };
@@ -33,7 +41,7 @@ type UpdateRef = OctokitRepo & {
   sha: string;
 };
 
-const mode = "100644" as const; // blob
+export const BLOB_MODE = "100644" as const; // blob
 
 export const buildQaWolfTree = async (
   team: Team,
@@ -44,7 +52,7 @@ export const buildQaWolfTree = async (
   const helperFiles = [
     {
       content: team.helpers,
-      mode,
+      mode: BLOB_MODE,
       path: `qawolf/helpers/index.js`,
     },
   ];
@@ -54,7 +62,7 @@ export const buildQaWolfTree = async (
   const testFiles = filteredTests.map((test) => {
     return {
       content: test.code,
-      mode,
+      mode: BLOB_MODE,
       path: `qawolf/${camelCase(test.name)}.test.js`,
     };
   });
@@ -71,14 +79,14 @@ export const buildQaWolfTree = async (
   return [...testFiles, ...helperFiles];
 };
 
-export const createCommit = async (
-  { octokit, owner, repo, parents, treeSha }: CreateCommit,
+export const createCommitForTree = async (
+  { message, octokit, owner, repo, parents, treeSha }: CreateCommitForTree,
   { logger }: ModelOptions
 ): Promise<string> => {
-  const log = logger.prefix("createCommit");
+  const log = logger.prefix("createCommitForTree");
 
   const { data } = await octokit.git.createCommit({
-    message: "initial qawolf commit",
+    message,
     owner,
     parents,
     repo,
@@ -146,51 +154,53 @@ export const updateRef = async ({
   });
 };
 
-export const createInitialCommit = async (
-  team_id: string,
+export const createCommit = async (
+  { branch: passedBranch, message, tree, team }: CreateCommit,
   options: ModelOptions
 ): Promise<void> => {
-  const log = options.logger.prefix("createInitialCommit");
-  log.debug("team", team_id);
-
-  const team = await findTeam(team_id, options);
+  const log = options.logger.prefix("createCommit");
+  log.debug("team", team.id);
 
   const fields = await createOctokitForIntegration(
     team.git_sync_integration_id,
     options
   );
 
-  await options.db.transaction(async (trx) => {
-    const trxOptions = { db: trx, logger: options.logger };
+  const branch = passedBranch || (await findDefaultBranch(fields, options));
+  const currentCommit = await findCurrentCommit({ ...fields, branch }, options);
 
-    const branch = await findDefaultBranch(fields, trxOptions);
-    const tree = await buildQaWolfTree(team, trxOptions);
-    const currentCommit = await findCurrentCommit(
-      { ...fields, branch },
-      trxOptions
-    );
+  const treeSha = await createTree(
+    {
+      ...fields,
+      tree,
+      treeSha: currentCommit.treeSha,
+    },
+    options
+  );
 
-    const treeSha = await createTree(
-      {
-        ...fields,
-        tree,
-        treeSha: currentCommit.treeSha,
-      },
-      trxOptions
-    );
-    const commitSha = await createCommit(
-      { ...fields, parents: [currentCommit.sha], treeSha },
-      trxOptions
-    );
-    await updateRef({ ...fields, branch, sha: commitSha });
-  });
+  const commitSha = await createCommitForTree(
+    {
+      ...fields,
+      message,
+      parents: [currentCommit.sha],
+      treeSha,
+    },
+    options
+  );
+
+  await updateRef({ ...fields, branch, sha: commitSha });
 
   log.debug("success");
 };
 
 // (async () => {
-//   createInitialCommit("teamId", {
-//     db: connectDb(),
-//     logger: new Logger(),
-//   });
+//   const options = { db: connectDb(), logger: new Logger() };
+
+//   const team = await findTeam("teamId", options);
+//   const tree = await buildQaWolfTree(team, options);
+
+//   createCommit(
+//     { message: "initial qawolf commit", team, tree },
+//     options
+//   );
 // })();

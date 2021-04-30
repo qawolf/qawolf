@@ -58,7 +58,6 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
         endLine: patchIndex + 1 + snippetLines.length,
       },
       test_id: controller.id,
-      version: controller.version,
     });
   };
 

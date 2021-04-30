@@ -163,7 +163,6 @@ describe("createTest", () => {
       name: "My Test",
       path: null,
       team_id: "teamId",
-      version: 0,
     });
   });
 
@@ -485,7 +484,6 @@ describe("findTest", () => {
       creator_id: "userId",
       id: "testId",
       runner_locations: null,
-      version: 11,
     });
   });
 
@@ -597,7 +595,6 @@ describe("updateTest", () => {
         runner_locations: ["eastus2"],
         runner_requested_at: minutesFromNow(),
         runner_requested_branch: "main",
-        version: 2,
       }),
       buildTest({ i: 2 }),
       buildTest({ deleted_at: minutesFromNow(), i: 3 }),
@@ -605,23 +602,6 @@ describe("updateTest", () => {
   );
 
   afterAll(() => db("tests").del());
-
-  it("does not update test if newer version saved", async () => {
-    const test = await updateTest(
-      {
-        code: "code",
-        id: "testId",
-        version: 1,
-      },
-      options
-    );
-
-    expect(test).toMatchObject({
-      code: 'const x = "hello"',
-      id: "testId",
-      version: 2,
-    });
-  });
 
   it("updates existing test", async () => {
     const test = await updateTest(
@@ -631,7 +611,6 @@ describe("updateTest", () => {
         is_enabled: true,
         name: "test",
         runner_requested_at: null,
-        version: 13,
       },
       options
     );
@@ -644,7 +623,6 @@ describe("updateTest", () => {
       runner_requested_at: null,
       runner_requested_branch: null,
       name: "test",
-      version: 13,
     });
   });
 
@@ -675,20 +653,16 @@ describe("updateTest", () => {
 
   it("throws an error if test does not exist", async () => {
     await expect(
-      updateTest({ code: "code", id: "fakeId", version: 1 }, options)
+      updateTest({ code: "code", id: "fakeId" }, options)
     ).rejects.toThrowError("not found");
   });
 
   it("does not throw an error if test was deleted", async () => {
-    const result = await updateTest(
-      { code: "code", id: "test3Id", version: 12 },
-      options
-    );
+    const result = await updateTest({ code: "code", id: "test3Id" }, options);
 
     expect(result).toMatchObject({
       code: "code",
       id: "test3Id",
-      version: 12,
     });
   });
 });

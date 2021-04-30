@@ -345,7 +345,6 @@ describe("updateTestResolver", () => {
         code: "newCode",
         id: "testId",
         is_enabled: true,
-        version: 13,
       },
       context
     );
@@ -354,7 +353,6 @@ describe("updateTestResolver", () => {
       code: "newCode",
       id: "testId",
       is_enabled: true,
-      version: 13,
     });
   });
 });
