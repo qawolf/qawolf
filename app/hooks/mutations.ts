@@ -23,6 +23,7 @@ import {
   deleteGroupMutation,
   deleteTestsMutation,
   deleteTriggerMutation,
+  saveEditorMutation,
   sendLoginCodeMutation,
   sendSlackUpdateMutation,
   signInWithEmailMutation,
@@ -44,6 +45,7 @@ import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
   AuthenticatedUser,
+  Editor,
   Environment,
   EnvironmentVariable,
   Group,
@@ -242,6 +244,19 @@ type DeleteTriggerVariables = {
   id: string;
 };
 
+type SaveEditorData = {
+  saveEditor: Editor;
+};
+
+type SaveEditorVariables = {
+  branch?: string | null;
+  code?: string | null;
+  helpers?: string | null;
+  name?: string | null;
+  path?: string | null;
+  test_id: string;
+};
+
 type SendLoginCodeData = {
   sendLoginCode: {
     email: string;
@@ -332,7 +347,6 @@ type UpdateTestVariables = {
   code?: string;
   is_enabled?: boolean;
   name?: string;
-  version?: number;
 };
 
 type UpdateTestTriggersData = {
@@ -599,7 +613,7 @@ export const useCreateTest = (
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
     onCompleted: (data: CreateTestData) => {
-      const { code, id, url, version } = data.createTest;
+      const { code, id, url } = data.createTest;
 
       state.setPendingRun({
         code,
@@ -609,7 +623,6 @@ export const useCreateTest = (
         env: {},
         restart: true,
         test_id: id,
-        version,
       });
 
       if (callback) callback(data);
@@ -718,6 +731,15 @@ export const useDeleteTrigger = (): MutationTuple<
       refetchQueries: ["triggers"],
     }
   );
+};
+
+export const useSaveEditor = (): MutationTuple<
+  SaveEditorData,
+  SaveEditorVariables
+> => {
+  return useMutation<SaveEditorData, SaveEditorVariables>(saveEditorMutation, {
+    onError,
+  });
 };
 
 export const useSendLoginCode = (): MutationTuple<

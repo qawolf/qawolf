@@ -36,7 +36,6 @@ type UpdateTest = {
   name?: string | null;
   path?: string | null;
   runner_requested_at?: null;
-  version?: number;
 };
 
 type UpdateTestToPending = {
@@ -148,7 +147,6 @@ export const createTest = async (
     path: path || null,
     team_id,
     updated_at: timestamp,
-    version: 0,
   };
   await db("tests").insert(test);
 
@@ -335,15 +333,7 @@ export const hasTest = async (
 };
 
 export const updateTest = async (
-  {
-    code,
-    id,
-    is_enabled,
-    name,
-    path,
-    runner_requested_at,
-    version,
-  }: UpdateTest,
+  { code, id, is_enabled, name, path, runner_requested_at }: UpdateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("updateTest");
@@ -356,20 +346,10 @@ export const updateTest = async (
       throw new Error(`Test not found ${id}`);
     }
 
-    // do not overwrite current version with older version
-    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-    if (!isNil(version) && existingTest.version >= version!) {
-      log.debug(
-        `ignore: test ${id} current version ${existingTest.version} >= update version ${version}`
-      );
-      return existingTest;
-    }
-
     const updates: Partial<Test> = {
       code: code || existingTest.code,
       is_enabled: isNil(is_enabled) ? existingTest.is_enabled : is_enabled,
       updated_at: minutesFromNow(),
-      version: version || existingTest.version,
     };
 
     if (name !== undefined) {
