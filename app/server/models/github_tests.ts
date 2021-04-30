@@ -1,8 +1,7 @@
 import { uniq } from "lodash";
 
 import { ClientError } from "../errors";
-import { createOctokitForIntegration } from "../services/gitHub/app";
-import { deleteFile } from "../services/gitHub/file";
+import { BLOB_MODE, createCommit } from "../services/gitHub/sync";
 import { findTestsForBranch } from "../services/gitHub/tree";
 import { GitHubFile, ModelOptions, Team, Test } from "../types";
 import { createTest } from "./test";
@@ -53,27 +52,26 @@ export const deleteGitHubTests = async (
     throw new ClientError("tests belong to multiple teams");
   }
 
-  const integrationId = integrationIds[0];
-
-  const { octokit } = await createOctokitForIntegration(integrationId, options);
-
-  const { files: gitHubTests, ...ownerRepo } = await findTestsForBranch(
-    { branch, integrationId },
+  const { files } = await findTestsForBranch(
+    { branch, integrationId: integrationIds[0] },
     options
   );
 
-  const testsToDelete = gitHubTests.filter((test) => {
+  const testsToDelete = files.filter((test) => {
     return tests.some((t) => t.path === test.path);
   });
 
-  await Promise.all(
-    testsToDelete.map((test) => {
-      return deleteFile(
-        { ...ownerRepo, branch, octokit, path: test.path, sha: test.sha },
-        options
-      );
-    })
-  );
+  const message = `delete ${testsToDelete.map((t) => t.path).join(", ")}`;
+  // remove the contents of each file to delete
+  const tree = testsToDelete.map((test) => {
+    return {
+      mode: BLOB_MODE,
+      path: test.path,
+      sha: null,
+    };
+  });
+
+  await createCommit({ branch, message, team: teams[0], tree }, options);
 };
 
 export const upsertGitHubTests = async (

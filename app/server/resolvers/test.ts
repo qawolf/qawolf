@@ -11,7 +11,6 @@ import {
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
 import { createFileForTest } from "../services/gitHub/file";
-import { findFilesForBranch } from "../services/gitHub/tree";
 import { trackSegmentEvent } from "../services/segment";
 import {
   Context,

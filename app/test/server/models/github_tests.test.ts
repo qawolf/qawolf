@@ -5,7 +5,7 @@ import {
 } from "../../../server/models/github_tests";
 import * as testModel from "../../../server/models/test";
 import * as gitHubApp from "../../../server/services/gitHub/app";
-import * as gitHubFile from "../../../server/services/gitHub/file";
+import * as gitHubSync from "../../../server/services/gitHub/sync";
 import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../db";
 import {
@@ -46,7 +46,7 @@ beforeAll(async () => {
   ]);
 
   await db("tests").insert([
-    buildTest({ path: "group/myTest.test.js" }),
+    buildTest({ path: "qawolf/group/myTest.test.js" }),
     buildTest({ i: 2, name: "Other Test" }),
     buildTest({
       creator_id: "user2Id",
@@ -68,11 +68,11 @@ describe("deleteGitHubTests", () => {
   it("deletes tests from GitHub", async () => {
     jest.spyOn(gitHubTree, "findFilesForBranch").mockResolvedValue({
       files: [
-        { path: "group/myTest.test.js", sha: "sha" },
-        { path: "anotherTest.test.js", sha: "sha2" },
+        { path: "qawolf/group/myTest.test.js", sha: "sha" },
+        { path: "qawolf/anotherTest.test.js", sha: "sha2" },
       ],
     } as any);
-    const spy = jest.spyOn(gitHubFile, "deleteFile").mockResolvedValue();
+    const spy = jest.spyOn(gitHubSync, "createCommit").mockResolvedValue();
 
     jest
       .spyOn(gitHubApp, "createOctokitForIntegration")
@@ -83,11 +83,17 @@ describe("deleteGitHubTests", () => {
 
     await deleteGitHubTests({ branch: "main", teams: [team], tests }, options);
 
-    expect(gitHubFile.deleteFile).toBeCalledTimes(1);
+    expect(gitHubSync.createCommit).toBeCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatchObject({
       branch: "main",
-      path: "group/myTest.test.js",
-      sha: "sha",
+      message: "delete qawolf/group/myTest.test.js",
+      tree: [
+        {
+          mode: gitHubSync.BLOB_MODE,
+          path: "qawolf/group/myTest.test.js",
+          sha: null,
+        },
+      ],
     });
   });
 
