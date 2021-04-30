@@ -310,7 +310,6 @@ export type RunOptions = {
   restart: boolean;
   run_id?: string;
   start_line?: number;
-  test_id?: string;
 };
 
 export type RunProgress = {

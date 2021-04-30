@@ -11,7 +11,6 @@ type RunTestOptions = {
   code: string;
   helpers?: string;
   selection: Selection | null;
-  test_id: string;
 };
 
 export type RunTest = {
@@ -47,12 +46,7 @@ export const useRunTest = ({
     return () => clearInterval(interval);
   }, [ranAt]);
 
-  const runTest = async ({
-    code,
-    helpers,
-    selection,
-    test_id,
-  }: RunTestOptions) => {
+  const runTest = async ({ code, helpers, selection }: RunTestOptions) => {
     resetProgress(code);
     setRanAt(new Date());
 
@@ -61,7 +55,6 @@ export const useRunTest = ({
       env: env || {},
       helpers: helpers || "",
       restart: !selection || selection.startLine === 1,
-      test_id,
     };
 
     if (selection) {

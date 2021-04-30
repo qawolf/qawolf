@@ -5,14 +5,13 @@ import { useEditor, useSuite, useTeam } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
 import { Run, Suite, Team, Test } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
-import { useController } from "../hooks/controller";
-import { TestController } from "./TestController";
+import { useEditorController } from "../hooks/editorController";
+import { EditorController } from "./EditorController";
 
 type TestContextValue = {
-  code: string;
-  controller: TestController | null;
+  code: string | null;
+  controller: EditorController | null;
   hasWriteAccess: boolean;
-  helpers: string | null;
   isTestLoading: boolean;
   run: Run | null;
   suite: Suite | null;
@@ -21,10 +20,9 @@ type TestContextValue = {
 };
 
 export const TestContext = createContext<TestContextValue>({
-  code: "",
+  code: null,
   controller: null,
   hasWriteAccess: false,
-  helpers: null,
   isTestLoading: true,
   run: null,
   suite: null,
@@ -42,6 +40,8 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
+  const { code, editorController } = useEditorController();
+
   const { data: teamData } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useEditor(
     {
@@ -53,7 +53,6 @@ export const TestProvider: FC = ({ children }) => {
   );
   const editorData = data?.editor || null;
 
-  const helpers = editorData?.helpers || null;
   const run = editorData?.run || null;
   const team = teamData?.team || null;
   const test = editorData?.test || null;
@@ -73,8 +72,6 @@ export const TestProvider: FC = ({ children }) => {
     state.setEnvironmentId(suite.environment_id);
   }, [environmentId, suite]);
 
-  const { code, controller } = useController({ run, test });
-
   useEffect(() => {
     if (!run || run.completed_at) return;
 
@@ -85,12 +82,16 @@ export const TestProvider: FC = ({ children }) => {
     };
   }, [run, startPolling, stopPolling]);
 
+  useEffect(() => {
+    if (!editorController || !editorData) return;
+
+    editorController.setValue(editorData);
+  }, [editorController, editorData]);
+
   const value = {
-    // this is more up-to-date than test.code since it does not wait for apollo to update
     code,
-    controller,
+    controller: editorController,
     hasWriteAccess: test_id && !test?.deleted_at,
-    helpers,
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,

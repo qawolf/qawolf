@@ -45,26 +45,16 @@ export class RunnerClient extends EventEmitter {
   _apiKey: string | null = null;
   _browserReady = false;
   _socket: SocketIOClient.Socket | null = null;
-  _state = new VersionedMap();
+  _state: VersionedMap;
   _subscriptions: SubscriptionMessage[] = [];
   _wsUrl: string | null = null;
 
-  constructor(state = new VersionedMap()) {
-    super();
-
-    this._state = state;
-
-    this._state.on("keychanged", (event) => {
-      this._socket?.emit("keychanged", event);
-    });
-  }
-
   _onConnect = (): void => {
     // clear versions whenever we reconnect
-    this._state._versions.clear();
+    this._state?._versions.clear();
 
     // send our current version as 0 in case the runner has not been hydrated
-    this._state._values.forEach((value, key) => {
+    this._state?._values.forEach((value, key) => {
       this._socket?.emit("keychanged", { key, value, version: 0 });
     });
 
@@ -123,7 +113,7 @@ export class RunnerClient extends EventEmitter {
   }
 
   close(): void {
-    this._state.removeAllListeners();
+    this._state?.removeAllListeners();
     this.removeAllListeners();
     this._socket?.close();
   }
@@ -156,6 +146,15 @@ export class RunnerClient extends EventEmitter {
   setBrowserReady(ready: boolean): void {
     this._browserReady = ready;
     this._sendRun();
+  }
+
+  syncState(state: VersionedMap): void {
+    if (this._state) return;
+    this._state = state;
+
+    state.on("keychanged", (event) => {
+      this._socket?.emit("keychanged", event);
+    });
   }
 
   subscribe(message: SubscriptionMessage): void {

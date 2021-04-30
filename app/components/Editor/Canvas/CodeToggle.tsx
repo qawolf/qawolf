@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+import { PATCH_HANDLE } from "../../../lib/code";
 
 import { copy } from "../../../theme/copy";
 import Toggle from "../../shared/Toggle";
 import { TestContext } from "../contexts/TestContext";
-import { PATCH_HANDLE } from "../contexts/TestController";
 
 type Props = {
   isDisabled: boolean;

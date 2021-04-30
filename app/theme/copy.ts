@@ -1,4 +1,4 @@
-import { PATCH_HANDLE } from "../components/Editor/contexts/TestController";
+import { PATCH_HANDLE } from "../lib/code";
 
 export const copy = {
   acceptInviteLogIn: "Please log in to accept this invite",

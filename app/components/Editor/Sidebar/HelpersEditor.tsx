@@ -16,15 +16,15 @@ export default function HelpersEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
-  const { editorController, env } = useContext(RunnerContext);
-  const { hasWriteAccess } = useContext(TestContext);
+  const { env } = useContext(RunnerContext);
+  const { controller, hasWriteAccess } = useContext(TestContext);
 
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
   useEnvTypes({ env, monaco });
 
   const editorDidMount = ({ editor, monaco }) => {
-    editorController.setHelpersEditor(editor);
+    controller.setHelpersEditor(editor);
     setMonaco(monaco);
     includeTypes(monaco);
   };

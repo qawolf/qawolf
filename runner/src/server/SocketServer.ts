@@ -59,7 +59,7 @@ export class SocketServer {
   }
 
   _onCodeUpdated(data: CodeUpdate): void {
-    debug(`received codeupdated ${data.version}`);
+    debug(`received codeupdated`);
     if (!this._runner.updateCode(data)) return;
     this._subscriptions.emit("code", { event: "codeupdated", data });
   }

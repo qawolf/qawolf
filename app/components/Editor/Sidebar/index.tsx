@@ -33,7 +33,7 @@ export default function Sidebar(): JSX.Element {
   const { query, push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 
-  const { controller, run, suite, team, test } = useContext(TestContext);
+  const { controller, run, suite, test } = useContext(TestContext);
   const {
     elementChooserValue,
     progress,
@@ -67,9 +67,11 @@ export default function Sidebar(): JSX.Element {
       if (isRunning) {
         stopTest();
       } else {
-        // run the test
-        const { code, id: test_id } = controller;
-        runTest({ code, helpers: team.helpers, selection, test_id });
+        runTest({
+          code: controller.code,
+          helpers: controller.helpers,
+          selection,
+        });
       }
     }
   };
