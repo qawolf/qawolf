@@ -171,8 +171,8 @@ export const commitTestAndHelpers = async (
     }
 
     return {
-      helpers: helpers || helpersFile.text,
-      test: { ...updatedTest, code: code || testFile.text },
+      helpers: isNil(helpers) ? helpersFile.text : helpers,
+      test: { ...updatedTest, code: isNil(code) ? testFile.text : code },
     };
   });
 };
@@ -212,8 +212,9 @@ export const updateTestAndHelpers = async (
     if (!isNil(helpers)) {
       await updateTeam({ helpers, id: test.team_id }, options);
     }
+    const updatedHelpers = isNil(helpers) ? team.helpers : helpers;
 
-    return { helpers: helpers || team.helpers, test: updatedTest };
+    return { helpers: updatedHelpers, test: updatedTest };
   });
 };
 
