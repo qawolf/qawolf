@@ -212,9 +212,11 @@ export const updateTestAndHelpers = async (
     if (!isNil(helpers)) {
       await updateTeam({ helpers, id: test.team_id }, options);
     }
-    const updatedHelpers = isNil(helpers) ? team.helpers : helpers;
 
-    return { helpers: updatedHelpers, test: updatedTest };
+    return {
+      helpers: isNil(helpers) ? team.helpers : helpers,
+      test: updatedTest,
+    };
   });
 };
 
