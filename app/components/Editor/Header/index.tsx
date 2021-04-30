@@ -37,9 +37,9 @@ export default function Header({ mode }: Props): JSX.Element {
   const branch = team.git_sync_integration_id
     ? suite?.branch || stateBranch
     : null;
-  const testIds = [test_id] as string[];
+  const testId = test_id as string;
 
-  const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
+  const { data: testTriggersData } = useTestTriggers({ test_ids: [testId] });
   const hasTriggers = testTriggersData?.testTriggers[0]
     ? !!testTriggersData?.testTriggers[0].trigger_ids.length
     : false;
@@ -77,7 +77,7 @@ export default function Header({ mode }: Props): JSX.Element {
             <TestButtons
               branch={branch}
               hasTriggers={hasTriggers}
-              testIds={testIds}
+              testId={testId}
             />
           )}
           {run?.test_id && (

@@ -3,9 +3,11 @@ import { findRunResult } from "../models/run";
 import { findSuite } from "../models/suite";
 import { updateTeam } from "../models/team";
 import { findTest, updateTest } from "../models/test";
+import { BLOB_MODE, createCommit,Tree } from "../services/gitHub/sync";
 import {
   buildHelpersForFiles,
   findFilesForBranch,
+  HELPERS_PATH,
 } from "../services/gitHub/tree";
 import {
   Context,
@@ -23,6 +25,19 @@ import { ensureTeamAccess, ensureTestAccess } from "./utils";
 type BuildTestCode = {
   files: GitHubFile[] | null;
   test: Test;
+};
+
+type BuildTreeForCommit = {
+  code?: string | null;
+  helpers?: string | null;
+  helpersFile: GitHubFile;
+  path?: string | null;
+  testFile: GitHubFile;
+};
+
+type BuildTreeForCommitResult = {
+  message: string;
+  tree: Tree;
 };
 
 type CommitTestAndHelpers = {
@@ -74,21 +89,89 @@ export const buildTestCode = (
   return gitTest.text;
 };
 
+export const buildTreeForCommit = ({
+  code,
+  helpers,
+  helpersFile,
+  path,
+  testFile,
+}: BuildTreeForCommit): BuildTreeForCommitResult => {
+  const tree: Tree = [];
+  const updates: string[] = [];
+
+  // clear old file if renamed
+  if (path && path !== testFile.path) {
+    tree.push({
+      mode: BLOB_MODE,
+      path: testFile.path,
+      sha: null,
+    });
+    updates.push(`rename ${testFile.path}`);
+  }
+
+  // write updated test file
+  tree.push({
+    content: code || testFile.text,
+    mode: BLOB_MODE,
+    path: path || testFile.path,
+  });
+
+  if (code && code !== testFile.text) {
+    updates.push(`update ${path || testFile.path}`);
+  }
+
+  // update helpers file code if needed
+  if (helpers && helpers !== helpersFile.text) {
+    tree.push({
+      content: helpers,
+      mode: BLOB_MODE,
+      path: HELPERS_PATH,
+    });
+    updates.push(`update ${HELPERS_PATH}`);
+  }
+
+  return { message: updates.join(", "), tree };
+};
+
 export const commitTestAndHelpers = async (
   { branch, code, helpers, path, team, test }: CommitTestAndHelpers,
-  options: ModelOptions
+  { db, logger }: ModelOptions
 ): Promise<Editor> => {
-  const updatedTest = test;
-  // TODO: should this be in a transaction? or too slow to call API?
-  // commit code/helpers/path changes
-  const { files } = await findFilesForBranch(
-    { branch, integrationId: team.git_sync_integration_id },
-    options
-  );
+  const log = logger.prefix("commitTestAndHelpers");
 
-  // if (path) updatedTest = await updateTest({ id: test.id, path }, options);
+  return db.transaction(async (trx) => {
+    const options = { db: trx, logger };
+    let updatedTest = test;
 
-  return { helpers: helpers || team.helpers, test: updatedTest };
+    const { files } = await findFilesForBranch(
+      { branch, integrationId: team.git_sync_integration_id },
+      options
+    );
+
+    const helpersFile = files.find((f) => f.path === HELPERS_PATH);
+    const testFile = files.find((f) => f.path === test.path);
+
+    if (!helpersFile || !testFile) {
+      log.error(`team ${team.id} missing helpers or test file`);
+      throw new ClientError(`No helpers or test file ${test.path} in git`);
+    }
+
+    const { message, tree } = buildTreeForCommit({
+      code,
+      helpers,
+      helpersFile,
+      path,
+      testFile,
+    });
+    await createCommit({ branch, message, team, tree }, options);
+
+    if (path) updatedTest = await updateTest({ id: test.id, path }, options);
+
+    return {
+      helpers: helpers || helpersFile.text,
+      test: { ...updatedTest, code: code || testFile.text },
+    };
+  });
 };
 
 export const findHelpersForEditor = async (
