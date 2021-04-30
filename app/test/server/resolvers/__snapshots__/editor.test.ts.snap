@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildTreeForCommit handles renaming the file 1`] = `
+Object {
+  "message": "rename qawolf/myTest.test.js",
+  "tree": Array [
+    Object {
+      "mode": "100644",
+      "path": "qawolf/myTest.test.js",
+      "sha": null,
+    },
+    Object {
+      "content": "git code",
+      "mode": "100644",
+      "path": "qawolf/renamed.test.js",
+    },
+  ],
+}
+`;
+
+exports[`buildTreeForCommit handles updating code and helpers 1`] = `
+Object {
+  "message": "update qawolf/myTest.test.js, update qawolf/helpers/index.js",
+  "tree": Array [
+    Object {
+      "content": "// new code",
+      "mode": "100644",
+      "path": "qawolf/myTest.test.js",
+    },
+    Object {
+      "content": "// new helpers",
+      "mode": "100644",
+      "path": "qawolf/helpers/index.js",
+    },
+  ],
+}
+`;

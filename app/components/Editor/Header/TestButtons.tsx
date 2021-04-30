@@ -26,9 +26,9 @@ export default function TestButtons({
     saveEditor({
       variables: {
         branch,
-        // code: "// omg 123",
-        helpers: "// helpers edited",
-        path: "qawolf/random138.test.js",
+        code: "// new code",
+        // helpers: "// helpers edited",
+        path: "qawolf/random213.test.js",
         test_id: testId,
       },
     });

@@ -129,6 +129,7 @@ type BuildSuite = {
 
 type BuildTeam = {
   apiKey?: string;
+  git_sync_integration_id?: string;
   helpers?: string;
   i?: number;
   inbox?: string;
@@ -436,6 +437,7 @@ export const buildSuite = ({
 
 export const buildTeam = ({
   apiKey,
+  git_sync_integration_id,
   helpers,
   i,
   inbox,
@@ -451,6 +453,7 @@ export const buildTeam = ({
   return {
     alert_integration_id: null,
     api_key: apiKey ? encrypt(apiKey) : encrypt(buildApiKey()),
+    git_sync_integration_id: git_sync_integration_id || null,
     helpers: helpers || "",
     id: `team${finalI === 1 ? "" : i}Id`,
     inbox: inbox || `${cuid()}@dev.qawolf.email`,
