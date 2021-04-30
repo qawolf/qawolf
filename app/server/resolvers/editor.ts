@@ -3,7 +3,7 @@ import { findRunResult } from "../models/run";
 import { findSuite } from "../models/suite";
 import { updateTeam } from "../models/team";
 import { findTest, updateTest } from "../models/test";
-import { BLOB_MODE, createCommit,Tree } from "../services/gitHub/sync";
+import { BLOB_MODE, createCommit, Tree } from "../services/gitHub/sync";
 import {
   buildHelpersForFiles,
   findFilesForBranch,
@@ -150,7 +150,7 @@ export const commitTestAndHelpers = async (
 
     const helpersFile = files.find((f) => f.path === HELPERS_PATH);
     const testFile = files.find((f) => f.path === test.path);
-
+    // TODO: we should handle these cases better
     if (!helpersFile || !testFile) {
       log.error(`team ${team.id} missing helpers or test file`);
       throw new ClientError(`No helpers or test file ${test.path} in git`);
