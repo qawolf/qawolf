@@ -32,7 +32,7 @@ export default function Header({ mode }: Props): JSX.Element {
 
   const { progress } = useContext(RunnerContext);
   const { branch: stateBranch } = useContext(StateContext);
-  const { run, suite, team, test } = useContext(TestContext);
+  const { hasChanges, run, suite, team, test } = useContext(TestContext);
 
   const branch = team.git_sync_integration_id
     ? suite?.branch || stateBranch
@@ -66,7 +66,7 @@ export default function Header({ mode }: Props): JSX.Element {
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
         <Box align="center" direction="row">
-          <Branch branch={branch} mode={mode} />
+          <Branch hasChanges={hasChanges} branch={branch} mode={mode} />
           <TestHistory testId={test?.id || null} />
           <Divider
             height={edgeSize.large}
@@ -76,6 +76,7 @@ export default function Header({ mode }: Props): JSX.Element {
           {mode === "test" && (
             <TestButtons
               branch={branch}
+              hasChanges={hasChanges}
               hasTriggers={hasTriggers}
               testId={testId}
             />

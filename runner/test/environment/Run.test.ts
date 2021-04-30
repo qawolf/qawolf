@@ -6,7 +6,6 @@ const runOptions: RunOptions = {
   code: "",
   helpers: "",
   restart: true,
-  test_id: "",
 };
 
 describe("Run", () => {
@@ -55,7 +54,6 @@ describe("Run", () => {
       run_id: undefined,
       start_line: undefined,
       status: "created",
-      test_id: "",
     };
 
     expect(events).toEqual([
@@ -99,7 +97,6 @@ describe("Run", () => {
       run_id: undefined,
       start_line: undefined,
       status: "created",
-      test_id: "",
     };
 
     expect(events).toEqual([

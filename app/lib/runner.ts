@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import io from "socket.io-client";
 
 import { state } from "./state";
-import { CodeUpdate, RunOptions } from "./types";
+import { RunOptions } from "./types";
 import { VersionedMap } from "./VersionedMap";
 
 type ConnectOptions = {

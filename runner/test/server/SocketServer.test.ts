@@ -110,7 +110,7 @@ describe("SocketServer", () => {
       await waitUntil(() => runnerStopSpy.mock.calls.length > 0);
       expect(runnerStopSpy).toBeCalledTimes(1);
 
-      expect(subscriptionsEmitSpy).toBeCalledTimes(2);
+      expect(subscriptionsEmitSpy).toBeCalledTimes(1);
       expect(subscriptionsEmitSpy).toBeCalledWith("run", {
         data: null,
         event: "runstopped",

@@ -11,6 +11,7 @@ import { EditorController } from "./EditorController";
 type TestContextValue = {
   code: string | null;
   controller: EditorController | null;
+  hasChanges: boolean;
   hasWriteAccess: boolean;
   isTestLoading: boolean;
   run: Run | null;
@@ -22,6 +23,7 @@ type TestContextValue = {
 export const TestContext = createContext<TestContextValue>({
   code: null,
   controller: null,
+  hasChanges: false,
   hasWriteAccess: false,
   isTestLoading: true,
   run: null,
@@ -40,7 +42,7 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { code, editorController } = useEditorController();
+  const { code, editorController, hasChanges } = useEditorController();
 
   const { data: teamData } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useEditor(
@@ -91,6 +93,7 @@ export const TestProvider: FC = ({ children }) => {
   const value = {
     code,
     controller: editorController,
+    hasChanges,
     hasWriteAccess: test_id && !test?.deleted_at,
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll

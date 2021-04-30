@@ -282,12 +282,6 @@ export type Wolf = {
 };
 
 // Runner Types
-export type CodeUpdate = {
-  code: string;
-  generated?: boolean;
-  test_id: string;
-};
-
 export interface ElementChooserValue {
   isActive: boolean;
   isFillable?: boolean;

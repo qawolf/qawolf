@@ -8,18 +8,17 @@ import Lightning from "../../shared/icons/Lightning";
 
 type Props = {
   branch: string | null;
+  hasChanges: boolean;
   hasTriggers: boolean;
   testId: string;
 };
 
 export default function TestButtons({
   branch,
+  hasChanges,
   hasTriggers,
   testId,
 }: Props): JSX.Element {
-  // TODO: update to real value
-  const hasChanges = true;
-
   const [saveEditor, { loading }] = useSaveEditor();
 
   const handleCommitClick = (): void => {

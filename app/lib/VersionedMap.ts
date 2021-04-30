@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter } from "events";
 
 type UpdateKey = {
@@ -24,7 +25,7 @@ export class VersionedMap extends EventEmitter {
     return true;
   }
 
-  set(key: string, value: any): void {
+  set<T>(key: string, value: T): void {
     if (value == this._values.get(key)) return;
 
     this._values.set(key, value);

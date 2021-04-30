@@ -248,7 +248,7 @@ type SaveEditorData = {
   saveEditor: Editor;
 };
 
-type SaveEditorVariables = {
+export type SaveEditorVariables = {
   branch?: string | null;
   code?: string | null;
   helpers?: string | null;
@@ -622,7 +622,6 @@ export const useCreateTest = (
         code_to_run: buildTestCode(url, true),
         env: {},
         restart: true,
-        test_id: id,
       });
 
       if (callback) callback(data);
