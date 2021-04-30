@@ -14,6 +14,8 @@ type TestContextValue = {
   hasChanges: boolean;
   hasWriteAccess: boolean;
   isTestLoading: boolean;
+  name: string | null;
+  path: string | null;
   run: Run | null;
   suite: Suite | null;
   team: Team | null;
@@ -26,6 +28,8 @@ export const TestContext = createContext<TestContextValue>({
   hasChanges: false,
   hasWriteAccess: false,
   isTestLoading: true,
+  name: null,
+  path: null,
   run: null,
   suite: null,
   team: null,
@@ -42,15 +46,17 @@ export const TestProvider: FC = ({ children }) => {
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
 
-  const { code, editorController, hasChanges } = useEditorController();
+  const {
+    code,
+    editorController,
+    hasChanges,
+    name,
+    path,
+  } = useEditorController();
 
   const { data: teamData } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useEditor(
-    {
-      branch,
-      run_id,
-      test_id,
-    },
+    { branch, run_id, test_id },
     { teamId }
   );
   const editorData = data?.editor || null;
@@ -90,6 +96,12 @@ export const TestProvider: FC = ({ children }) => {
     editorController.setValue(editorData);
   }, [editorController, editorData]);
 
+  useEffect(() => {
+    if (!editorController) return;
+
+    editorController.setBranch(branch);
+  }, [branch, editorController]);
+
   const value = {
     code,
     controller: editorController,
@@ -98,6 +110,8 @@ export const TestProvider: FC = ({ children }) => {
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,
+    name,
+    path,
     run,
     suite,
     team,

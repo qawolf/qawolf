@@ -6,6 +6,8 @@ type EditorControllerHook = {
   code: string;
   editorController: EditorController;
   hasChanges: boolean;
+  name: string;
+  path: string;
 };
 
 export const useEditorController = (): EditorControllerHook => {
@@ -14,13 +16,22 @@ export const useEditorController = (): EditorControllerHook => {
     null
   );
   const [hasChanges, setHasChanges] = useState<boolean>(false);
+  const [name, setName] = useState<string>(null);
+  const [path, setPath] = useState<string>(null);
 
   useEffect(() => {
     const editorCtrl = new EditorController();
     setEditorController(editorCtrl);
 
-    editorCtrl._state.on("changed", ({ value }) => {
-      setCode(value);
+    editorCtrl._state.on("changed", ({ key, value }) => {
+      if (key === "test_code") {
+        setCode(value);
+      } else if (key === "name") {
+        setName(value);
+      } else if (key === "path") {
+        setPath(value);
+      }
+
       setHasChanges(!!editorCtrl.getChanges());
     });
 
@@ -30,7 +41,5 @@ export const useEditorController = (): EditorControllerHook => {
     };
   }, []);
 
-  // TODO set up save and auto-save
-
-  return { code, editorController, hasChanges };
+  return { code, editorController, hasChanges, name, path };
 };

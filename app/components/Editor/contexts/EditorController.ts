@@ -1,14 +1,19 @@
+import { debounce } from "lodash";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
+import { saveEditorMutation } from "../../../graphql/mutations";
 
 import { SaveEditorVariables } from "../../../hooks/mutations";
+import { client } from "../../../lib/client";
 import { Editor } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 export class EditorController {
   readonly _state = new VersionedMap();
 
+  _branch: string;
   _helpersEditor: editorNs.IStandaloneCodeEditor;
   _testEditor: editorNs.IStandaloneCodeEditor;
+  _testId: string;
 
   constructor() {
     // sync state to the editors
@@ -20,6 +25,8 @@ export class EditorController {
         const currentValue = this._testEditor.getValue();
         if (currentValue !== value) this._testEditor.setValue(value);
       }
+
+      this._autoSave();
     });
   }
 
@@ -36,7 +43,9 @@ export class EditorController {
 
     if (this._state.get("name") !== this._state.get("saved_name")) {
       changes.name = this._state.get("name");
-    } else if (this._state.get("path") !== this._state.get("saved_path")) {
+    }
+
+    if (this._state.get("path") !== this._state.get("saved_path")) {
       changes.path = this._state.get("path");
     }
 
@@ -51,6 +60,10 @@ export class EditorController {
     }
 
     return Object.keys(changes).length ? changes : null;
+  }
+
+  setBranch(branch: string) {
+    this._branch = branch;
   }
 
   setHelpersEditor(editor: editorNs.IStandaloneCodeEditor): void {
@@ -79,7 +92,29 @@ export class EditorController {
     });
   }
 
+  _autoSave = debounce(() => {
+    if (this._branch) return;
+
+    const test_id = this._testId;
+    if (!test_id) return;
+
+    const changes = this.getChanges();
+    if (!changes) return;
+
+    console.log("autosave");
+
+    client.mutate({
+      mutation: saveEditorMutation,
+      variables: { ...changes, test_id },
+    });
+  }, 100);
+
   setValue(value: Editor): void {
+    this._testId = value.test.id;
+
+    console.log("set test name", value.test.name);
+    console.log("set test path", value.test.path);
+
     // initialize test code
     if (this._state.get("name") === undefined) {
       this._state.set("name", value.test.name);

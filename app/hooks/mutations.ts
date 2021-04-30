@@ -32,7 +32,6 @@ import {
   updateEnvironmentVariableMutation,
   updateGroupMutation,
   updateTeamMutation,
-  updateTestMutation,
   updateTestsGroupMutation,
   updateTestTriggersMutation,
   updateTriggerMutation,
@@ -335,17 +334,6 @@ type UpdateTeamVariables = {
   helpers?: string;
   id: string;
   is_email_alert_enabled?: boolean;
-  name?: string;
-};
-
-type UpdateTestData = {
-  updateTest: Test;
-};
-
-type UpdateTestVariables = {
-  id: string;
-  code?: string;
-  is_enabled?: boolean;
   name?: string;
 };
 
@@ -869,15 +857,6 @@ export const useUpdateTeam = (): MutationTuple<
   UpdateTeamVariables
 > => {
   return useMutation<UpdateTeamData, UpdateTeamVariables>(updateTeamMutation, {
-    onError,
-  });
-};
-
-export const useUpdateTest = (): MutationTuple<
-  UpdateTestData,
-  UpdateTestVariables
-> => {
-  return useMutation<UpdateTestData, UpdateTestVariables>(updateTestMutation, {
     onError,
   });
 };

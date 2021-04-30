@@ -76,7 +76,6 @@ export default function Header({ mode }: Props): JSX.Element {
           {mode === "test" && (
             <TestButtons
               branch={branch}
-              hasChanges={hasChanges}
               hasTriggers={hasTriggers}
               testId={testId}
             />
