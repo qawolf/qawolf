@@ -54,7 +54,8 @@ export const createTestResolver = async (
   });
 
   return db.transaction(async (trx) => {
-    const syncToGit = !!(branch && team.git_sync_integration_id && !guide);
+    const syncToGit = !!(branch && team.git_sync_integration_id);
+    const path = `qawolf/${guide ? "guide_" : ""}${slug()}.test.js`;
 
     const test = await createTest(
       {
@@ -62,7 +63,7 @@ export const createTestResolver = async (
         creator_id: user.id,
         group_id,
         guide,
-        path: syncToGit ? `qawolf/${slug()}.test.js` : null,
+        path: syncToGit ? path : null,
         team_id: team_id,
       },
       { db: trx, logger }
@@ -97,7 +98,7 @@ export const deleteTestsResolver = async (
     tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
   );
 
-  if (branch && tests.some((t) => !t.guide)) {
+  if (branch) {
     log.debug("delete from git branch", branch);
 
     await deleteGitHubTests(

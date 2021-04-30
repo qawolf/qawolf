@@ -239,7 +239,7 @@ export const editorResolver = async (
 
   let files: GitHubFile[] | null = null;
 
-  if (branch && team.git_sync_integration_id && !test.guide) {
+  if (branch && team.git_sync_integration_id) {
     const branchFiles = await findFilesForBranch(
       { branch, integrationId: team.git_sync_integration_id },
       { db, logger }

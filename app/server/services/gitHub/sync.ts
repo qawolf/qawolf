@@ -57,9 +57,7 @@ export const buildQaWolfTree = async (
     },
   ];
 
-  const filteredTests = tests.filter((test) => !test.guide);
-
-  const testFiles = filteredTests.map((test) => {
+  const testFiles = tests.map((test) => {
     return {
       content: test.code,
       mode: BLOB_MODE,
@@ -68,7 +66,7 @@ export const buildQaWolfTree = async (
   });
 
   await Promise.all(
-    filteredTests.map((test) => {
+    tests.map((test) => {
       return updateTest(
         {
           id: test.id,

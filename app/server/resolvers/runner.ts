@@ -91,8 +91,7 @@ export const runnerResolver = async (
           ip,
           test: {
             ...test,
-            // do not want to set branch if test is guide, as guides not synced to git
-            runner_requested_branch: test.guide ? null : test_branch,
+            runner_requested_branch: test_branch,
           },
         },
         { db: trx, logger }
