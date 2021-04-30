@@ -156,6 +156,12 @@ export const commitTestAndHelpers = async (
       throw new ClientError(`No helpers or test file ${test.path} in git`);
     }
 
+    if (path && path !== testFile.path) {
+      // TODO: redirect the client to test with existing path
+      // if error due to uniqueness constraint on path and team
+      updatedTest = await updateTest({ id: test.id, path }, options);
+    }
+
     const { message, tree } = buildTreeForCommit({
       code,
       helpers,
@@ -163,12 +169,6 @@ export const commitTestAndHelpers = async (
       testFile,
     });
     await createCommit({ branch, message, team, tree }, options);
-
-    if (path && path !== testFile.path) {
-      // TODO: redirect the client to test with existing path
-      // if error due to uniqueness constraint on path and team
-      updatedTest = await updateTest({ id: test.id, path }, options);
-    }
 
     return {
       helpers: isNil(helpers) ? helpersFile.text : helpers,
