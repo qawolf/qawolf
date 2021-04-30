@@ -97,7 +97,7 @@ export const deleteTestsResolver = async (
     tests.map((test) => ensureTestAccess({ teams, test }, { db, logger }))
   );
 
-  if (branch) {
+  if (branch && tests.some((t) => !t.guide)) {
     log.debug("delete from git branch", branch);
 
     await deleteGitHubTests(
