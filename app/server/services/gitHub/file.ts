@@ -25,14 +25,12 @@ export const createFileForTest = async (
     options
   );
 
-  const path = `qawolf/${test.path}`;
-
   await octokit.repos.createOrUpdateFileContents({
     branch,
     content: Buffer.from(test.code).toString("base64"),
-    message: `create ${path}`,
+    message: `create ${test.path}`,
     owner,
-    path,
+    path: test.path,
     repo,
   });
 

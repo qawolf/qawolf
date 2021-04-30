@@ -70,7 +70,11 @@ export const buildQaWolfTree = async (
   await Promise.all(
     filteredTests.map((test) => {
       return updateTest(
-        { id: test.id, name: null, path: `${camelCase(test.name)}.test.js` },
+        {
+          id: test.id,
+          name: null,
+          path: `qawolf/${camelCase(test.name)}.test.js`,
+        },
         options
       );
     })

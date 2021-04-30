@@ -11,6 +11,7 @@ import {
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
 import { createFileForTest } from "../services/gitHub/file";
+import { findFilesForBranch } from "../services/gitHub/tree";
 import { trackSegmentEvent } from "../services/segment";
 import {
   Context,
@@ -54,7 +55,7 @@ export const createTestResolver = async (
   });
 
   return db.transaction(async (trx) => {
-    const syncToGit = !!(branch && team.git_sync_integration_id);
+    const syncToGit = !!(branch && team.git_sync_integration_id && !guide);
 
     const test = await createTest(
       {
@@ -62,7 +63,7 @@ export const createTestResolver = async (
         creator_id: user.id,
         group_id,
         guide,
-        path: syncToGit ? `${slug()}.test.js` : null,
+        path: syncToGit ? `qawolf/${slug()}.test.js` : null,
         team_id: team_id,
       },
       { db: trx, logger }
