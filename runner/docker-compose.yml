@@ -1,10 +1,9 @@
-version: "3.8"
+version: "3.7"
 services:
   runner:
     build:
       context: .
     environment:
-      DEBUG: "qawolf:*"
       QAWOLF_API_URL: "http://host.docker.internal:7071"
     ports:
       - "26367:26367"

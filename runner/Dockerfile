@@ -16,6 +16,7 @@ COPY scripts/nginx.list /etc/apt/sources.list.d/nginx.list
 RUN apt-get update && \ 
   # node
   apt-get install -y nodejs \
+  build-essential \
   # webkit \
   libwoff1 \
   libopus0 \

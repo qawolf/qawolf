@@ -9,8 +9,13 @@
     "build:tsc": "tsc",
     "build:recorder-script": "cd ../recorder && npm run build && cd ../runner && npm run copy-recorder-script",
     "copy-recorder-script": "cp ../recorder/build/qawolf.recorder.js ./qawolf.recorder.js",
+    "dev": "npm run dev-mode-on && concurrently --kill-others \"tsc --watch\" \"npm run watch-and-update-recorder\" \"docker-compose up\"",
+    "dev-mode-on": "ln -s docker-compose.dev.yml docker-compose.override.yml || true",
+    "dev-mode-off": "rm docker-compose.override.yml || true",
     "lint": "eslint . --ext .ts,.tsx --config eslintrc.json",
-    "test": "jest"
+    "start": "npm run dev-mode-off && docker-compose up",
+    "test": "jest",
+    "watch-and-update-recorder": "chokidar \"../recorder/build/qawolf.recorder.js\" -c \"npm run copy-recorder-script\""
   },
   "keywords": [],
   "author": "QA Wolf Inc. <info@qawolf.com>",
@@ -31,6 +36,8 @@
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
     "async-wait-until": "^1.2.6",
+    "chokidar-cli": "^2.1.0",
+    "concurrently": "^6.0.2",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-jest": "^24.1.3",
