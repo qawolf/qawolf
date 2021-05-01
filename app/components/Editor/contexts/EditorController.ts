@@ -86,14 +86,11 @@ export class EditorController extends EventEmitter {
     const test_id = this._value?.test?.id || null;
     if (!run_id && !test_id) return;
 
-    const result = await client.query({
-      fetchPolicy: "no-cache",
+    await client.query({
+      fetchPolicy: "network-only",
       query: editorQuery,
       variables: { branch: this._branch, run_id, test_id },
     });
-
-    const data = result.data?.editor;
-    if (data) this.setValue(data);
   }
 
   setBranch(branch: string): void {
@@ -141,13 +138,11 @@ export class EditorController extends EventEmitter {
     const changes = this.getChanges();
     if (!changes) return;
 
-    const result = await client.mutate({
+    await client.mutate({
       mutation: saveEditorMutation,
       variables: { ...changes, branch: this._branch, test_id },
     });
 
-    const data = result.data?.saveEditor;
-    if (data) this.setValue(data);
     this._saveCount += 1;
     this._state.set("save_count", this._saveCount);
   }

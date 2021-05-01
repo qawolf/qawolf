@@ -83,6 +83,9 @@ const versionLink = new ApolloLink((operation, forward) => {
 export const client = new ApolloClient({
   cache: new InMemoryCache({
     typePolicies: {
+      Editor: {
+        keyFields: ["test", ["id"]],
+      },
       TestSummary: {
         keyFields: ["test_id"],
       },
