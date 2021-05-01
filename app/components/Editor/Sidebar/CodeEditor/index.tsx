@@ -1,5 +1,5 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
@@ -30,36 +30,14 @@ export default function CodeEditor({
   useGlyphs({ code, editor, progress });
 
   const editorDidMount = ({ editor, monaco }) => {
+    controller.setTestEditor(editor);
+
     setEditor(editor);
     setMonaco(monaco);
     includeTypes(monaco);
 
     editor.onDidChangeCursorSelection(onSelectionChange);
   };
-
-  useEffect(() => {
-    if (!controller || !editor) return;
-
-    // set the initial editor code
-    editor.setValue(controller.code);
-
-    // update the editor when the controller code updates
-    const onCodeUpdated = (value: string) => {
-      if (value === editor.getValue()) return;
-
-      editor.setValue(value);
-    };
-    controller.on("codeupdated", onCodeUpdated);
-
-    // update the controller code when the editor updates
-    editor.onDidChangeModelContent(() =>
-      controller.updateCode(editor.getValue())
-    );
-
-    return () => {
-      controller.off("codeupdated", onCodeUpdated);
-    };
-  }, [controller, editor]);
 
   return (
     <EditorComponent

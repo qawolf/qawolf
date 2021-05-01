@@ -1,5 +1,5 @@
 import { Box, Button } from "grommet";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import {
@@ -44,6 +44,10 @@ export default function EditableText({
   value,
 }: Props): JSX.Element {
   const [editedValue, setEditedValue] = useState(value);
+
+  useEffect(() => {
+    if (value) setEditedValue(value);
+  }, [value]);
 
   const BoxComponent = disabled ? Box : StyledBox;
 

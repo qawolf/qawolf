@@ -27,6 +27,7 @@ describe("SubscriptionTracker", () => {
     it("unsubscribes each collection", () => {
       expect(unsubscribeSpy.mock.calls).toEqual([
         [socket, "code"],
+        [socket, "editor"],
         [socket, "elementchooser"],
         [socket, "logs"],
         [socket, "run"],

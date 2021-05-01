@@ -26,7 +26,6 @@ const {
   deleteTestsResolver,
   testSummariesResolver,
   testsResolver,
-  updateTestResolver,
   updateTestsGroupResolver,
 } = testResolvers;
 
@@ -334,26 +333,6 @@ describe("testsResolver", () => {
     ]);
 
     await db("tests").where({ path: "anotherTest.test.js" }).del();
-  });
-});
-
-describe("updateTestResolver", () => {
-  it("updates a test", async () => {
-    const test = await updateTestResolver(
-      {},
-      {
-        code: "newCode",
-        id: "testId",
-        is_enabled: true,
-      },
-      context
-    );
-
-    expect(test).toMatchObject({
-      code: "newCode",
-      id: "testId",
-      is_enabled: true,
-    });
   });
 });
 

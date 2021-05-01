@@ -32,7 +32,6 @@ export class Run extends EventEmitter {
       run_id: runOptions.run_id,
       start_line: runOptions.start_line,
       status: "created",
-      test_id: runOptions.test_id,
     };
   }
 

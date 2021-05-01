@@ -2,10 +2,10 @@ import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
+import { PATCH_HANDLE } from "../../../../lib/code";
 import { border } from "../../../../theme/theme";
 import { RunnerContext } from "../../contexts/RunnerContext";
 import { TestContext } from "../../contexts/TestContext";
-import { PATCH_HANDLE } from "../../contexts/TestController";
 import Action from "./Action";
 import Buttons from "./Buttons";
 import ChooseElement from "./ChooseElement";
@@ -53,11 +53,11 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
 
     runTest({
       code: updatedCode,
+      helpers: controller.helpers,
       selection: {
         startLine: patchIndex + 1,
         endLine: patchIndex + 1 + snippetLines.length,
       },
-      test_id: controller.id,
     });
   };
 

@@ -28,8 +28,6 @@ describe("createHooks", () => {
         code: "code",
         helpers: "",
         restart: false,
-        test_id: "",
-        version: 1,
       },
       environment
     );
@@ -47,8 +45,6 @@ describe("createHooks", () => {
         helpers: "",
         restart: false,
         run_id: "runId",
-        test_id: "",
-        version: 1,
       },
       environment
     );
@@ -76,8 +72,6 @@ describe("Runner", () => {
       code,
       helpers: "",
       restart: false,
-      test_id: "",
-      version: 1,
     });
 
     expect(progress).toMatchObject({
@@ -95,8 +89,6 @@ describe("Runner", () => {
       code,
       helpers: "",
       restart: true,
-      test_id: "",
-      version: 1,
     });
 
     expect(initialEnvironment === runner._environment).toBe(false);
@@ -119,8 +111,6 @@ console.log("Line 4");
       code: multiLineCode,
       helpers: "",
       restart: true,
-      test_id: "",
-      version: 1,
     });
 
     const videoHook = runner._hooks[1] as VideoArtifactsHook;
@@ -179,8 +169,6 @@ await page.goto("http://localhost:1001");
 `,
       helpers: "",
       restart: true,
-      test_id: "",
-      version: 1,
     });
 
     // keep this error format in sync with updateRun since we use it to determine retries

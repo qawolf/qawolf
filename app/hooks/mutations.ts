@@ -32,7 +32,6 @@ import {
   updateEnvironmentVariableMutation,
   updateGroupMutation,
   updateTeamMutation,
-  updateTestMutation,
   updateTestsGroupMutation,
   updateTestTriggersMutation,
   updateTriggerMutation,
@@ -248,7 +247,7 @@ type SaveEditorData = {
   saveEditor: Editor;
 };
 
-type SaveEditorVariables = {
+export type SaveEditorVariables = {
   branch?: string | null;
   code?: string | null;
   helpers?: string | null;
@@ -335,17 +334,6 @@ type UpdateTeamVariables = {
   helpers?: string;
   id: string;
   is_email_alert_enabled?: boolean;
-  name?: string;
-};
-
-type UpdateTestData = {
-  updateTest: Test;
-};
-
-type UpdateTestVariables = {
-  id: string;
-  code?: string;
-  is_enabled?: boolean;
   name?: string;
 };
 
@@ -613,7 +601,7 @@ export const useCreateTest = (
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
     onCompleted: (data: CreateTestData) => {
-      const { code, id, url } = data.createTest;
+      const { code, url } = data.createTest;
 
       state.setPendingRun({
         code,
@@ -622,7 +610,6 @@ export const useCreateTest = (
         code_to_run: buildTestCode(url, true),
         env: {},
         restart: true,
-        test_id: id,
       });
 
       if (callback) callback(data);
@@ -870,15 +857,6 @@ export const useUpdateTeam = (): MutationTuple<
   UpdateTeamVariables
 > => {
   return useMutation<UpdateTeamData, UpdateTeamVariables>(updateTeamMutation, {
-    onError,
-  });
-};
-
-export const useUpdateTest = (): MutationTuple<
-  UpdateTestData,
-  UpdateTestVariables
-> => {
-  return useMutation<UpdateTestData, UpdateTestVariables>(updateTestMutation, {
     onError,
   });
 };

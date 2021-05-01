@@ -70,8 +70,6 @@ export class StatusReporter {
         helpers: run.helpers,
         restart: true,
         run_id: run.id,
-        test_id: run.test_id,
-        version: run.version,
       });
     }
   }

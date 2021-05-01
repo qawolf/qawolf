@@ -411,20 +411,6 @@ export const updateTeamMutation = gql`
   ${teamFragment}
 `;
 
-export const updateTestMutation = gql`
-  mutation updateTest(
-    $code: String
-    $id: ID!
-    $is_enabled: Boolean
-    $name: String
-  ) {
-    updateTest(code: $code, id: $id, is_enabled: $is_enabled, name: $name) {
-      ...TestFragment
-    }
-  }
-  ${testFragment}
-`;
-
 export const updateTestsGroupMutation = gql`
   mutation updateTestsGroup($group_id: ID, $test_ids: [ID!]!) {
     updateTestsGroup(group_id: $group_id, test_ids: $test_ids) {

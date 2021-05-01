@@ -89,37 +89,6 @@ describe("SocketServer", () => {
     });
   });
 
-  describe("socket emits codeupdated", () => {
-    let emitSpy: jest.SpyInstance;
-    let updateCodeSpy: jest.SpyInstance;
-
-    beforeAll(() => {
-      emitSpy = jest.spyOn(server._subscriptions, "emit");
-      updateCodeSpy = jest.spyOn(server._runner, "updateCode");
-
-      socket.emit("codeupdated", {
-        code: "new code",
-        test_id: "testId",
-        version: 2,
-      });
-    });
-
-    it("updates the runner code", async () => {
-      await waitUntil(() => updateCodeSpy.mock.calls.length > 0, 1000);
-      expect(runner._environment?._updater._code).toBe("new code");
-    });
-
-    it("emits codeupdated to the code subscribers", () => {
-      expect(emitSpy.mock.calls[0]).toEqual([
-        "code",
-        {
-          event: "codeupdated",
-          data: { code: "new code", test_id: "testId", version: 2 },
-        },
-      ]);
-    });
-  });
-
   describe("socket emits run", () => {
     it("invokes runner run", async () => {
       const message = { code: "" };
@@ -141,7 +110,7 @@ describe("SocketServer", () => {
       await waitUntil(() => runnerStopSpy.mock.calls.length > 0);
       expect(runnerStopSpy).toBeCalledTimes(1);
 
-      expect(subscriptionsEmitSpy).toBeCalledTimes(2);
+      expect(subscriptionsEmitSpy).toBeCalledTimes(1);
       expect(subscriptionsEmitSpy).toBeCalledWith("run", {
         data: null,
         event: "runstopped",
@@ -185,7 +154,6 @@ describe("SocketServer", () => {
         code: "",
         completed_at: null,
         current_line: 1,
-        test_id: "testId",
         status: "created",
       };
 
@@ -229,14 +197,12 @@ describe("SocketServer", () => {
     spy.mockClear();
 
     const data = { example: 1 };
-    runner.emit("codeupdated", data);
     runner.emit("elementchooser", data);
     runner.emit("logs", data);
     runner.emit("logscreated", data);
     runner.emit("runprogress", data);
 
     expect(spy.mock.calls).toEqual([
-      ["code", { data, event: "codeupdated" }],
       ["elementchooser", { data, event: "elementchooser" }],
       ["logs", { data, event: "logs" }],
       ["logs", { data, event: "logscreated" }],

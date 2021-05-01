@@ -11,16 +11,19 @@ import { Mode } from "../hooks/mode";
 
 type Props = {
   branch: string | null;
+  hasChanges: boolean;
   mode: Mode;
 };
 
-export default function Branch({ branch, mode }: Props): JSX.Element {
+export default function Branch({
+  branch,
+  hasChanges,
+  mode,
+}: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
 
   if (!branch) return null;
-  // TODO: use actual value
-  const hasChanges = true;
 
   const color = hasChanges ? colors.gray4 : colors.success5;
   const IconComponent = hasChanges ? RiCheckboxBlankCircleFill : Check;

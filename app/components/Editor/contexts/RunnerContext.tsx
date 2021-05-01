@@ -73,7 +73,9 @@ export const RunnerProvider: FC = ({ children }) => {
   });
 
   useEffect(() => {
-    controller?.setRunner(runner);
+    if (!controller || !runner) return;
+
+    runner.syncState(controller._state);
   }, [controller, runner]);
 
   const value = {

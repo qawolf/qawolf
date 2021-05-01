@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-import { useUpdateTest } from "../../../hooks/mutations";
 import { Test } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Divider from "../../shared/Divider";
 import EditableText from "../../shared/EditableText";
+import { TestContext } from "../contexts/TestContext";
 
 type Props = {
   disabled?: boolean;
@@ -15,20 +15,14 @@ type Props = {
 export default function TestName({ disabled, test }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
 
-  const [updateTest] = useUpdateTest();
+  const { controller, name, path } = useContext(TestContext);
 
   if (!test) return null;
 
-  const handleSave = (name: string): void => {
-    updateTest({
-      optimisticResponse: {
-        updateTest: { ...test, name },
-      },
-      variables: { id: test.id, name },
-    });
+  const handleSave = (value: string): void => {
+    if (test.path) controller._state.set("path", value);
+    else controller._state.set("name", value);
   };
-
-  const testName = test.name || test.path;
 
   return (
     <>
@@ -38,7 +32,7 @@ export default function TestName({ disabled, test }: Props): JSX.Element {
         onSave={handleSave}
         placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
-        value={testName}
+        value={name || path || ""}
       />
       <Divider
         height={edgeSize.large}

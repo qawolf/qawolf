@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 
 import { Environment } from "../environment/Environment";
+import { VersionedMap } from "../server/VersionedMap";
 import { Log } from "../services/Logger";
 import {
   CodeUpdate,
@@ -35,11 +36,19 @@ export const createHooks = (
 };
 
 export class Runner extends EventEmitter {
+  _editor = new VersionedMap();
   _environment?: Environment;
   _hooks: RunHook[] = [];
 
   constructor() {
     super();
+    this._editor.on("keychanged", (event) => {
+      if (event.key === "test_code") {
+        this._environment?.updater.updateCode(event.value);
+      }
+
+      this.emit("keychanged", event);
+    });
   }
 
   async _createEnvironment(): Promise<Environment> {
@@ -47,12 +56,15 @@ export class Runner extends EventEmitter {
 
     const environment = new Environment();
 
+    environment.updater.updateCode(this._editor.get("test_code") || "");
+
     // reset the logs when a new environment is created
     this.emit("logs", environment.logger.logs);
 
-    environment.on("codeupdated", (update: CodeUpdate) =>
-      this.emit("codeupdated", update)
-    );
+    environment.on("codeupdated", (update: CodeUpdate) => {
+      console.log("set code updated", update);
+      this._editor.set("test_code", update.code);
+    });
 
     environment.on("elementchooser", (event: ElementChooserValue) =>
       this.emit("elementchooser", event)
@@ -113,10 +125,5 @@ export class Runner extends EventEmitter {
       this._environment?.elementChooser.stop(),
       this._environment?.updater.enable(),
     ]);
-  }
-
-  updateCode(update: CodeUpdate): boolean {
-    const updated = this._environment?.updater.updateCode(update);
-    return !!updated;
   }
 }

@@ -9,8 +9,6 @@ const runOptions: RunOptions = {
   code: "",
   helpers: "",
   restart: true,
-  test_id: "",
-  version: 0,
 };
 
 describe("close", () => {
@@ -58,13 +56,10 @@ describe("run", () => {
     let updatedCode = "";
     environment.on("codeupdated", ({ code }) => (updatedCode = code));
 
-    await environment.run(
-      {
-        ...runOptions,
-        code: `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${server.url}/Environment");\n// 🐺 QA Wolf will create code here`,
-      },
-      []
-    );
+    const code = `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${server.url}/Environment");\n// 🐺 QA Wolf will create code here`;
+    environment._updater.updateCode(code);
+
+    await environment.run({ ...runOptions, code }, []);
 
     await environment._variables.page.click("button");
     await sleep(0);

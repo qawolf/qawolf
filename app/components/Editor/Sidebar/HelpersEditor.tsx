@@ -1,9 +1,6 @@
-import debounce from "debounce";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
-import { useUpdateTeam } from "../../../hooks/mutations";
-import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { TestContext } from "../contexts/TestContext";
 import { useEnvTypes } from "./CodeEditor/hooks/envTypes";
@@ -15,54 +12,21 @@ type Props = {
   onKeyDown: (e: monacoEditor.IKeyboardEvent) => void;
 };
 
-type Editor = monacoEditor.editor.IStandaloneCodeEditor;
-
-const DEBOUNCE_MS = 250;
-
 export default function HelpersEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
   const { env } = useContext(RunnerContext);
-  const { teamId } = useContext(StateContext);
-  const { hasWriteAccess, helpers, team } = useContext(TestContext);
+  const { controller, hasWriteAccess } = useContext(TestContext);
 
-  const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
-
-  const [updateTeam] = useUpdateTeam();
 
   useEnvTypes({ env, monaco });
 
-  useEffect(() => {
-    if (!editor) return;
-
-    const value = editor.getValue();
-    const isChanged = value !== helpers;
-
-    if (!value || isChanged) {
-      editor.setValue(helpers);
-    }
-  }, [editor, helpers]);
-
-  const debouncedUpdateTeam = debounce(updateTeam, DEBOUNCE_MS);
-
   const editorDidMount = ({ editor, monaco }) => {
-    setEditor(editor);
+    controller.setHelpersEditor(editor);
     setMonaco(monaco);
     includeTypes(monaco);
-
-    editor.onDidChangeModelContent(() => {
-      const updatedHelpers = editor.getValue();
-      if (helpers === updatedHelpers) return;
-
-      debouncedUpdateTeam({
-        optimisticResponse: {
-          updateTeam: { ...team, helpers: updatedHelpers },
-        },
-        variables: { helpers: updatedHelpers, id: teamId },
-      });
-    });
   };
 
   return (

@@ -33,9 +33,7 @@ export class CodeUpdater extends EventEmitter {
   _collector?: ContextEventCollector;
   _context?: BrowserContext;
   _enabledAt: number | false = false;
-  _testId: string | undefined = "";
   _variables: Variables;
-  _version = -1;
 
   constructor(variables: Variables) {
     super();
@@ -74,14 +72,8 @@ export class CodeUpdater extends EventEmitter {
     }
 
     this._code = updatedCode;
-    this._version += 1;
 
-    const update: CodeUpdate = {
-      code: this._code,
-      generated: true,
-      test_id: this._testId,
-      version: this._version,
-    };
+    const update: CodeUpdate = { code: this._code };
     this.emit("codeupdated", update);
     return true;
   }
@@ -105,18 +97,9 @@ export class CodeUpdater extends EventEmitter {
   }
 
   // Called when code is updated by the user
-  updateCode(update: CodeUpdate): boolean {
-    // Ignore updates that are lower versions that come from a race from multiple connected clients.
-    // Allow the update if the test id changes which can happen when running locally and switching tests.
-    // In the future we should reset everything when the test changes and move the test_id check.
-    if (update.version <= this._version && update.test_id === this._testId) {
-      return false;
-    }
-
-    debug(`update code ${update.version}`);
-    this._code = update.code;
-    this._testId = update.test_id;
-    this._version = update.version;
+  updateCode(code: string): boolean {
+    debug(`update code to ${code}`);
+    this._code = code;
     return true;
   }
 }
