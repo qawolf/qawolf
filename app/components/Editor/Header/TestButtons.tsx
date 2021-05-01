@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RiGitCommitLine } from "react-icons/ri";
 
-import { useSaveEditor } from "../../../hooks/mutations";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import Button from "../../shared/AppButton";
@@ -19,14 +18,13 @@ export default function TestButtons({
   hasTriggers,
   testId,
 }: Props): JSX.Element {
-  const [saveEditor, { loading }] = useSaveEditor();
   const { hasChanges, controller } = useContext(TestContext);
+  const [loading, setLoading] = useState(false);
 
-  const handleCommitClick = (): void => {
-    const changes = controller.getChanges();
-    if (!changes) return;
-
-    saveEditor({ variables: { ...changes, branch, test_id: testId } });
+  const handleCommitClick = async (): Promise<void> => {
+    setLoading(true);
+    await controller.save();
+    setLoading(false);
   };
 
   const handleTriggerClick = (): void => {

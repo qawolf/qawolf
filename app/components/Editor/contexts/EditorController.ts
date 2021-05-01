@@ -1,24 +1,28 @@
+import { EventEmitter } from "events";
 import { debounce } from "lodash";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 
 import { saveEditorMutation } from "../../../graphql/mutations";
+import { editorQuery } from "../../../graphql/queries";
 import { SaveEditorVariables } from "../../../hooks/mutations";
 import { client } from "../../../lib/client";
-import { Editor, Run } from "../../../lib/types";
+import { Editor } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
-export class EditorController {
+export class EditorController extends EventEmitter {
   readonly _state = new VersionedMap();
 
   _branch: string;
   _helpersEditor: editorNs.IStandaloneCodeEditor;
-  _run: Run;
+  _saveCount = -1;
   _testEditor: editorNs.IStandaloneCodeEditor;
-  _testId: string;
+  _value: Editor;
 
   constructor() {
+    super();
+
     // sync state to the editors
-    this._state.on("changed", ({ key, value }) => {
+    this._state.on("changed", ({ key, value, sender }) => {
       if (key === "helpers_code" && this._helpersEditor) {
         const currentValue = this._helpersEditor.getValue();
         if (currentValue !== value) this._helpersEditor.setValue(value);
@@ -27,7 +31,19 @@ export class EditorController {
         if (currentValue !== value) this._testEditor.setValue(value);
       }
 
-      this._autoSave();
+      if (key === "save_count") {
+        if (value > this._saveCount) {
+          this._saveCount = value;
+          this._reload();
+        }
+
+        // prevent change causing infinite save loop
+        return;
+      }
+
+      this.emit("changed", { key, value });
+
+      if (sender) this._autoSave();
     });
   }
 
@@ -40,29 +56,44 @@ export class EditorController {
   }
 
   getChanges(): Partial<SaveEditorVariables> {
-    if (this._run) return null;
+    if (this._value?.run) return null;
 
     const changes: Partial<SaveEditorVariables> = {};
 
-    if (this._state.get("name") !== this._state.get("saved_name")) {
+    const name = this._value?.test.name;
+    if (typeof name === "string" && this._state.get("name") !== name) {
       changes.name = this._state.get("name");
     }
 
-    if (this._state.get("path") !== this._state.get("saved_path")) {
+    const path = this._value?.test.path;
+    if (typeof path === "string" && this._state.get("path") !== path) {
       changes.path = this._state.get("path");
     }
 
-    if (
-      this._state.get("helpers_code") !== this._state.get("saved_helpers_code")
-    ) {
+    if (this._state.get("helpers_code") !== this._value?.helpers) {
       changes.helpers = this._state.get("helpers_code");
     }
 
-    if (this._state.get("test_code") !== this._state.get("saved_test_code")) {
+    if (this._state.get("test_code") !== this._value?.test.code) {
       changes.code = this._state.get("test_code");
     }
 
     return Object.keys(changes).length ? changes : null;
+  }
+
+  async _reload(): Promise<void> {
+    const run_id = this._value?.run?.id || null;
+    const test_id = this._value?.test?.id || null;
+    if (!run_id && !test_id) return;
+
+    const result = await client.query({
+      fetchPolicy: "no-cache",
+      query: editorQuery,
+      variables: { branch: this._branch, run_id, test_id },
+    });
+
+    const data = result.data?.editor;
+    if (data) this.setValue(data);
   }
 
   setBranch(branch: string): void {
@@ -96,23 +127,33 @@ export class EditorController {
   }
 
   _autoSave = debounce(() => {
-    if (this._branch || this._run) return;
+    if (this._branch) return;
 
-    const test_id = this._testId;
+    this.save();
+  }, 100);
+
+  async save(): Promise<void> {
+    if (this._value?.run) return;
+
+    const test_id = this._value?.test.id;
     if (!test_id) return;
 
     const changes = this.getChanges();
     if (!changes) return;
 
-    client.mutate({
+    const result = await client.mutate({
       mutation: saveEditorMutation,
-      variables: { ...changes, test_id },
+      variables: { ...changes, branch: this._branch, test_id },
     });
-  }, 100);
+
+    const data = result.data?.saveEditor;
+    if (data) this.setValue(data);
+    this._saveCount += 1;
+    this._state.set("save_count", this._saveCount);
+  }
 
   setValue(value: Editor): void {
-    this._run = value.run;
-    this._testId = value.test.id;
+    this._value = value;
 
     if (this._state.get("name") === undefined) {
       this._state.set("name", value.test.name);
@@ -132,10 +173,7 @@ export class EditorController {
       this._state.set("test_code", value.test.code);
     }
 
-    this._state.set("saved_helpers_code", value.helpers);
-    this._state.set("saved_name", value.test.name);
-    this._state.set("saved_path", value.test.path);
-    this._state.set("saved_test_code", value.test.code);
+    this.emit("changed", {});
   }
 
   updateCode(code: string): void {

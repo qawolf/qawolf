@@ -23,7 +23,6 @@ import {
   deleteGroupMutation,
   deleteTestsMutation,
   deleteTriggerMutation,
-  saveEditorMutation,
   sendLoginCodeMutation,
   sendSlackUpdateMutation,
   signInWithEmailMutation,
@@ -44,7 +43,6 @@ import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
   AuthenticatedUser,
-  Editor,
   Environment,
   EnvironmentVariable,
   Group,
@@ -241,10 +239,6 @@ type DeleteTriggerData = {
 
 type DeleteTriggerVariables = {
   id: string;
-};
-
-type SaveEditorData = {
-  saveEditor: Editor;
 };
 
 export type SaveEditorVariables = {
@@ -718,15 +712,6 @@ export const useDeleteTrigger = (): MutationTuple<
       refetchQueries: ["triggers"],
     }
   );
-};
-
-export const useSaveEditor = (): MutationTuple<
-  SaveEditorData,
-  SaveEditorVariables
-> => {
-  return useMutation<SaveEditorData, SaveEditorVariables>(saveEditorMutation, {
-    onError,
-  });
 };
 
 export const useSendLoginCode = (): MutationTuple<
