@@ -24,6 +24,8 @@ export default function TestButtons({
 
   const handleCommitClick = (): void => {
     const changes = controller.getChanges();
+    if (!changes) return;
+
     saveEditor({ variables: { ...changes, branch, test_id: testId } });
   };
 

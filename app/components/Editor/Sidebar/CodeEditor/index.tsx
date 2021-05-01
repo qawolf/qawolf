@@ -23,7 +23,7 @@ export default function CodeEditor({
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
-  const { controller, code, hasWriteAccess, team } = useContext(TestContext);
+  const { code, controller, hasWriteAccess, team } = useContext(TestContext);
 
   useEnvTypes({ env, monaco });
   useHelpersTypes({ helpers: team?.helpers, monaco });

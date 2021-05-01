@@ -4,7 +4,7 @@ import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api"
 import { saveEditorMutation } from "../../../graphql/mutations";
 import { SaveEditorVariables } from "../../../hooks/mutations";
 import { client } from "../../../lib/client";
-import { Editor } from "../../../lib/types";
+import { Editor, Run } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 export class EditorController {
@@ -12,6 +12,7 @@ export class EditorController {
 
   _branch: string;
   _helpersEditor: editorNs.IStandaloneCodeEditor;
+  _run: Run;
   _testEditor: editorNs.IStandaloneCodeEditor;
   _testId: string;
 
@@ -39,6 +40,8 @@ export class EditorController {
   }
 
   getChanges(): Partial<SaveEditorVariables> {
+    if (this._run) return null;
+
     const changes: Partial<SaveEditorVariables> = {};
 
     if (this._state.get("name") !== this._state.get("saved_name")) {
@@ -69,8 +72,8 @@ export class EditorController {
   setHelpersEditor(editor: editorNs.IStandaloneCodeEditor): void {
     this._helpersEditor = editor;
 
-    const value = this._state.get("helpers_code");
     // hydrate with current value
+    const value = this._state.get("helpers_code");
     if (value !== undefined) editor.setValue(value);
 
     // update state when editor changes
@@ -82,8 +85,8 @@ export class EditorController {
   setTestEditor(editor: editorNs.IStandaloneCodeEditor): void {
     this._testEditor = editor;
 
-    const value = this._state.get("test_code");
     // hydrate with current value
+    const value = this._state.get("test_code");
     if (value !== undefined) editor.setValue(value);
 
     // update state when editor changes
@@ -93,15 +96,13 @@ export class EditorController {
   }
 
   _autoSave = debounce(() => {
-    if (this._branch) return;
+    if (this._branch || this._run) return;
 
     const test_id = this._testId;
     if (!test_id) return;
 
     const changes = this.getChanges();
     if (!changes) return;
-
-    console.log("autosave");
 
     client.mutate({
       mutation: saveEditorMutation,
@@ -110,12 +111,9 @@ export class EditorController {
   }, 100);
 
   setValue(value: Editor): void {
+    this._run = value.run;
     this._testId = value.test.id;
 
-    console.log("set test name", value.test.name);
-    console.log("set test path", value.test.path);
-
-    // initialize test code
     if (this._state.get("name") === undefined) {
       this._state.set("name", value.test.name);
     }
@@ -124,13 +122,13 @@ export class EditorController {
       this._state.set("path", value.test.path);
     }
 
-    // initialize helpers code
     if (this._state.get("helpers_code") === undefined) {
       this._state.set("helpers_code", value.helpers);
     }
 
-    // initialize test code
-    if (this._state.get("test_code") === undefined) {
+    if (value.run) {
+      this._state.set("test_code", value.run.code);
+    } else if (this._state.get("test_code") === undefined) {
       this._state.set("test_code", value.test.code);
     }
 
