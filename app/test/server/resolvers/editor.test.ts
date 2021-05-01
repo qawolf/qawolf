@@ -287,4 +287,34 @@ describe("updateTestAndHelpers", () => {
       .where({ id: "testId" })
       .update({ code: test.code, name: null, path: test.path });
   });
+
+  it("updates test code only", async () => {
+    const { helpers, test: updatedTest } = await updateTestAndHelpers(
+      { code: "another code", team, test },
+      options
+    );
+
+    expect(helpers).toBe("team helpers");
+    expect(updatedTest).toMatchObject({ code: "another code" });
+
+    await db("tests").where({ id: "testId" }).update({ code: test.code });
+  });
+
+  it("updates test name only", async () => {
+    await db("tests")
+      .where({ id: "testId" })
+      .update({ name: "old name", path: null });
+
+    const { helpers, test: updatedTest } = await updateTestAndHelpers(
+      { name: "another name", team, test },
+      options
+    );
+
+    expect(helpers).toBe("team helpers");
+    expect(updatedTest).toMatchObject({ name: "another name" });
+
+    await db("tests")
+      .where({ id: "testId" })
+      .update({ name: null, path: test.path });
+  });
 });

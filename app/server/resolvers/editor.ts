@@ -204,7 +204,7 @@ export const updateTestAndHelpers = async (
     if (!isNil(code) || !isNil(name)) {
       const updates: TestUpdates = { id: test.id };
       if (!isNil(code)) updates.code = code;
-      if (!isNil(code)) updates.name = name;
+      if (!isNil(name)) updates.name = name;
 
       updatedTest = await updateTest(updates, options);
     }
