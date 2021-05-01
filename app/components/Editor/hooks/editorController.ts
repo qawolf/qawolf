@@ -23,7 +23,7 @@ export const useEditorController = (): EditorControllerHook => {
     const editorCtrl = new EditorController();
     setEditorController(editorCtrl);
 
-    editorCtrl._state.on("changed", ({ key, value }) => {
+    editorCtrl.on("changed", ({ key, value }) => {
       if (key === "test_code") {
         setCode(value);
       } else if (key === "name") {
