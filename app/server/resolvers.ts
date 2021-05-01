@@ -59,7 +59,6 @@ import {
   deleteTestsResolver,
   testsResolver,
   testSummariesResolver,
-  updateTestResolver,
   updateTestsGroupResolver,
 } from "./resolvers/test";
 import {
@@ -124,7 +123,6 @@ export const resolvers = {
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
     updateTeam: updateTeamResolver,
-    updateTest: updateTestResolver,
     updateTestTriggers: updateTestTriggersResolver,
     updateTestsGroup: updateTestsGroupResolver,
     updateTrigger: updateTriggerResolver,

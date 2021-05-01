@@ -176,16 +176,6 @@ export const testsResolver = async (
   );
 };
 
-export const updateTestResolver = async (
-  _: Record<string, unknown>,
-  args: UpdateTestMutation,
-  { db, logger, teams }: Context
-): Promise<Test> => {
-  await ensureTestAccess({ teams, test_id: args.id }, { db, logger });
-  const test = await updateTest(args, { db, logger });
-  return test;
-};
-
 export const updateTestsGroupResolver = async (
   _: Record<string, unknown>,
   { group_id, test_ids }: UpdateTestsGroupMutation,

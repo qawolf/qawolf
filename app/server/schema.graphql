@@ -1199,46 +1199,6 @@ type Mutation {
   ): Team!
 
   """
-  Updates a test by ID.
-
-  Requires that you have access to the team that owns the test.
-  """
-  updateTest(
-    """
-    Updated test code (JavaScript that runs). If omitted or `null`,
-    the code will not be updated. Pass an empty string to clear the
-    code.
-    """
-    code: String
-
-    """
-    ID of test to update
-    """
-    id: ID!
-
-    """
-    Whether the test is enabled. If omitted or `null`,
-    the field will not be updated.
-    """
-    is_enabled: Boolean
-
-    """
-    Updated test name. If omitted or `null` or an empty string,
-    the name will not be updated.
-    """
-    name: String
-
-    """
-    Updated code version number. If omitted or `null`,
-    the version will not be updated. If this is provided and is
-    not higher than the current version, the update will fail.
-    This is done to prevent out-of-order updates from being
-    accepted.
-    """
-    version: Int
-  ): Test!
-
-  """
   Adds one or more tests to a trigger. Returns the updated
   test_trigger relationships.
 
