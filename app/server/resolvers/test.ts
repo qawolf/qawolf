@@ -6,7 +6,6 @@ import {
   deleteTests,
   findTests,
   findTestsForTeam,
-  updateTest,
   updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
@@ -20,7 +19,6 @@ import {
   TestsQuery,
   TestSummariesQuery,
   TestSummary,
-  UpdateTestMutation,
   UpdateTestsGroupMutation,
 } from "../types";
 import { slug } from "../utils";

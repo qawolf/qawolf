@@ -580,13 +580,6 @@ export type UpdateTeamMutation = {
   name?: string | null;
 };
 
-export type UpdateTestMutation = {
-  code?: string;
-  id: string;
-  is_enabled?: boolean;
-  name?: string;
-};
-
 export type UpdateTestsGroupMutation = {
   group_id: string | null;
   test_ids: string[];

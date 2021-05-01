@@ -1,7 +1,7 @@
 import { debounce } from "lodash";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
-import { saveEditorMutation } from "../../../graphql/mutations";
 
+import { saveEditorMutation } from "../../../graphql/mutations";
 import { SaveEditorVariables } from "../../../hooks/mutations";
 import { client } from "../../../lib/client";
 import { Editor } from "../../../lib/types";
@@ -62,7 +62,7 @@ export class EditorController {
     return Object.keys(changes).length ? changes : null;
   }
 
-  setBranch(branch: string) {
+  setBranch(branch: string): void {
     this._branch = branch;
   }
 

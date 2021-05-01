@@ -601,7 +601,7 @@ export const useCreateTest = (
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
   return useMutation<CreateTestData, CreateTestVariables>(createTestMutation, {
     onCompleted: (data: CreateTestData) => {
-      const { code, id, url } = data.createTest;
+      const { code, url } = data.createTest;
 
       state.setPendingRun({
         code,
