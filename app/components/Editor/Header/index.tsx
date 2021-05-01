@@ -32,11 +32,9 @@ export default function Header({ mode }: Props): JSX.Element {
 
   const { progress } = useContext(RunnerContext);
   const { branch: stateBranch } = useContext(StateContext);
-  const { hasChanges, run, suite, team, test } = useContext(TestContext);
+  const { hasChanges, run, suite, test } = useContext(TestContext);
 
-  const branch = team.git_sync_integration_id
-    ? suite?.branch || stateBranch
-    : null;
+  const branch = suite?.branch || stateBranch || null;
   const testId = test_id as string;
 
   const { data: testTriggersData } = useTestTriggers({ test_ids: [testId] });
