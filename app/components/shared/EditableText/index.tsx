@@ -46,8 +46,8 @@ export default function EditableText({
   const [editedValue, setEditedValue] = useState(value);
 
   useEffect(() => {
-    if (!editedValue && value) setEditedValue(value);
-  }, [editedValue, value]);
+    if (value) setEditedValue(value);
+  }, [value]);
 
   const BoxComponent = disabled ? Box : StyledBox;
 
