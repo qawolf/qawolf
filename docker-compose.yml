@@ -1,0 +1,40 @@
+version: '3.6'
+
+services:
+  app:
+    build: ./app
+    image: qawolf/app:latest
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    ports:
+      - 3000:3000
+    env_file:
+      - ./app/.env
+    environment:
+      DATABASE_URL: postgres://qawolf:qawolf@postgres:5432/qawolf
+      NODE_ENV: production
+
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: qawolf
+      POSTGRES_PASSWORD: qawolf
+      POSTGRES_DB: qawolf
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  runner:
+    build: ./runner
+    image: qawolf/runner:latest
+    environment:
+      DEBUG: "qawolf:*"
+      QAWOLF_API_URL: "http://host.docker.internal:7071"
+    ports:
+      - 26367:26367
+
+volumes:
+  pg-data:
