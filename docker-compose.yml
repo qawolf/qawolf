@@ -32,7 +32,7 @@ services:
     image: qawolf/runner:latest
     environment:
       DEBUG: "qawolf:*"
-      QAWOLF_API_URL: "http://host.docker.internal:7071"
+      QAWOLF_API_URL: "http://app:3000"
     ports:
       - 26367:26367
 
