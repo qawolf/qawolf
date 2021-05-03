@@ -1,5 +1,10 @@
 FROM ubuntu:20.04
 
+LABEL maintainer="QA Wolf Inc. <hello@qawolf.com>"
+
+RUN groupadd --gid 1000 node \
+  && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y curl gnupg2 && \
@@ -72,6 +77,8 @@ RUN apt-get update && \
 # upgrade npm to support lockfile v2
 RUN npm i -g npm@7
 
+WORKDIR /opt/runner
+
 COPY package.json package-lock.json ./
 RUN npm i
 
@@ -84,6 +91,8 @@ RUN npm run build:tsc
 COPY files/ /root/files
 COPY scripts/ scripts/
 
+RUN chown -R node:node /opt/runner
+
 # need to set DEBUG=pw:api to capture verbose logs
 ENV DEBUG=pw:api*,qawolf* \
   HOME=/root \
@@ -93,7 +102,9 @@ ENV DEBUG=pw:api*,qawolf* \
   QAWOLF_DISPLAY_WIDTH=1288 \
   QAWOLF_DISPLAY_HEIGHT=804
 
-CMD ["/scripts/entrypoint.sh"]
-
 EXPOSE 80
 EXPOSE 443
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+
+CMD ["supervisord", "-c", "./scripts/supervisord.conf"]

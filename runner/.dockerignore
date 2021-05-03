@@ -1,4 +1,5 @@
-node_modules/
 .eslintignore
 .gitignore
+bin
 eslintrc.json
+node_modules
