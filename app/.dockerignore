@@ -1,0 +1,9 @@
+.env
+.git
+.next
+.storybook
+*.md
+Dockerfile
+netlify.toml
+node_modules
+vercel.json
