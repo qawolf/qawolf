@@ -1,0 +1,149 @@
+#!/bin/bash
+
+set -e
+
+
+showHelp() {
+  printf "\nUsage: \n\n ./wolf [OPTION] \n"
+  printf "\nOptions:\n
+  init      Install deps in all projects, build the runner container, and run app migrations
+  build     Build all containers (or specify a container to build with an additional argument)
+  dev       Start postgres and runner containers, then start app in dev mode
+  start     Run production builds in docker containers and tail logs app/runner logs
+  stop      Stop all running containers
+  clean     Clean up all containers, volumes, and node_modules (full reset)
+  "
+}
+
+# if no arg was provided, show help
+if [ -z "$1" ] || [ "$1" == "help" ]; then
+  showHelp
+  exit 1
+fi
+
+
+# confirm docker 
+if ! command -v docker &> /dev/null; then
+  printf "\nDocker must be installed!\n"
+  printf "More info: https://docs.docker.com/engine/install/\n\n"
+  exit 1
+fi
+
+# confirm node/npm
+if ! command -v npm &> /dev/null; then
+  printf "\nNode and npm must be installed!\n"
+  printf "More info: https://nodejs.org/en/download/\n\n"
+  exit 1
+fi
+
+# ensure a .env file exists for the app and docker-compose file
+ensureDotenv() {
+  if [ ! -f ./app/.env ]; then
+    printf "\nCreating .env file...\n\n"
+    cp ./app/.env.example ./app/.env
+  fi
+}
+
+
+# install deps in all projects, run migrations, and build the runner container
+if [[ $1 == "init" ]]; then
+  ensureDotenv
+
+  # postgres
+  printf "\nStarting postgres...\n\n"
+  docker-compose up -d postgres
+
+  # app
+  printf "\nInstalling node_modules for app...\n\n"
+  cd app
+  npm i
+  
+  # qawolf
+  printf "\nInstalling node_modules for qawolf...\n\n"
+  cd ../qawolf && npm i
+  
+  # recorder
+  printf "\nInstalling node_modules for recorder...\n\n"
+  cd ../recorder && npm i 
+
+  # runner
+  printf "\nInstalling node_modules for runner...\n\n"
+  cd ../runner && npm i 
+  printf "\nBuilding recorder script for runner container...\n\n"
+  npm run build:recorder-script
+  printf "\nBuilding runner image...\n\n"
+  docker-compose build runner
+  
+  # run migrations
+  printf "\nRunning migrations...\n\n"
+  cd ../app && npm run migrate:run:dev
+
+  exit 0
+fi
+
+
+# build all containers (or specify a container to build with an additional argument)
+if [[ $1 == "build" ]]; then  
+  # if we're rebuilding the runner container, 
+  # make sure to build the recorder script first
+  if [[ -z "$2" ]] || [[ "$2" == "runner" ]]; then
+    printf "\nBuilding recorder script for runner container...\n\n"
+    cd runner && npm run build:recorder-script
+  fi
+
+  printf "\nBuilding docker containers...\n\n"
+  docker-compose build $2
+  
+  exit 0
+fi
+
+
+# start postgres and runner containers, then start app in dev mode
+if [[ $1 == "dev" ]]; then
+  ensureDotenv
+  docker-compose stop app
+  docker-compose up -d postgres runner
+  cd app 
+  npm run dev
+  exit 0
+fi
+
+
+# run production builds in docker containers and tail logs
+if [[ $1 == "start" ]]; then
+  ensureDotenv
+  docker-compose up -d
+  docker-compose logs -f app runner
+  exit 0
+fi
+
+
+# kill all running containers
+if [[ $1 == "stop" ]]; then
+  docker-compose stop
+  exit 0
+fi
+
+
+# clean up all containers, volumes, and node_modules
+# this is essentially like a fresh checkout, except it preserves your ./app/.env
+if [[ $1 == "clean" ]]; then
+  printf "\nCleaning up docker containers...\n\n"
+  docker-compose stop
+  docker-compose rm -f
+
+  printf "\nCleaning up docker volumes...\n"
+  docker volume rm -f qawolf_pg-data
+  
+  printf "\nCleaning up node_modules in all projects...\n"
+  rm -rf ./{app,qawolf,recorder,runner}/node_modules
+  
+  printf "\nDone!"
+  exit 0
+fi
+
+
+# if the provided command arg didn't match any of the options above,
+# show the help message
+showHelp
+exit 1
