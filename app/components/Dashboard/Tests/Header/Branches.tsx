@@ -1,4 +1,5 @@
 import { Box } from "grommet";
+import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { RiGitBranchLine } from "react-icons/ri";
 
@@ -14,11 +15,14 @@ import { StateContext } from "../../../StateContext";
 const width = "200px";
 
 export default function Branches(): JSX.Element {
+  const { query } = useRouter();
   const { branch, teamId } = useContext(StateContext);
 
   const { data } = useGitHubBranches({ team_id: teamId });
   const branches = data?.gitHubBranches || null;
-  const selectedBranch = branches?.find((b) => b.name === branch);
+  const selectedBranch = query.branch
+    ? { name: query.branch }
+    : branches?.find((b) => b.name === branch);
 
   useEffect(() => {
     if (!branches?.length || selectedBranch) return;

@@ -27,7 +27,10 @@ export const findBranchesForIntegration = async (
 
   const defaultBranch = await findDefaultBranch(octokitRepo, options);
 
-  const { data } = await octokitRepo.octokit.repos.listBranches(octokitRepo);
+  const { data } = await octokitRepo.octokit.repos.listBranches({
+    ...octokitRepo,
+    per_page: 100,
+  });
 
   const branches = uniq([defaultBranch, ...data.map((branch) => branch.name)]);
   branches.sort();
