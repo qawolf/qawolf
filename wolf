@@ -15,6 +15,8 @@ showHelp() {
   "
 }
 
+DOCKER_BASE_VERSION=1.0.0
+
 # if no arg was provided, show help
 if [ -z "$1" ] || [ "$1" == "help" ]; then
   showHelp
@@ -72,6 +74,7 @@ if [[ $1 == "init" ]]; then
   printf "\nBuilding recorder script for runner container...\n\n"
   npm run build:recorder-script
   printf "\nBuilding runner image...\n\n"
+  docker build -f Dockerfile.base -t qawolf/runner-base:$DOCKER_BASE_VERSION .
   docker-compose build runner
   
   # run migrations
@@ -89,6 +92,8 @@ if [[ $1 == "build" ]]; then
   if [[ -z "$2" ]] || [[ "$2" == "runner" ]]; then
     printf "\nBuilding recorder script for runner container...\n\n"
     cd runner && npm run build:recorder-script
+    printf "\nBuilding base image for runner container...\n\n"
+    docker build -f Dockerfile.base -t qawolf/runner-base:$DOCKER_BASE_VERSION .
   fi
 
   printf "\nBuilding docker containers...\n\n"
