@@ -74,7 +74,7 @@ if [[ $1 == "init" ]]; then
   printf "\nBuilding recorder script for runner container...\n\n"
   npm run build:recorder-script
   printf "\nBuilding runner image...\n\n"
-  docker build -f Dockerfile.base -t qawolf/runner-base:$DOCKER_BASE_VERSION .
+  docker pull qawolf/runner-base:$DOCKER_BASE_VERSION
   docker-compose build runner
   
   # run migrations
