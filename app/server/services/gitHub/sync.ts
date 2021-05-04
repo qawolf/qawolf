@@ -7,7 +7,6 @@ import { camelCase } from "lodash";
 import { findTestsForTeam, updateTest } from "../../models/test";
 import { ModelOptions, Team } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
-import { findDefaultBranch } from "./branch";
 
 export type Tree = RestEndpointMethodTypes["git"]["createTree"]["parameters"]["tree"];
 
@@ -157,7 +156,7 @@ export const updateRef = async ({
 };
 
 export const createCommit = async (
-  { branch: passedBranch, message, tree, team }: CreateCommit,
+  { branch, message, tree, team }: CreateCommit,
   options: ModelOptions
 ): Promise<void> => {
   const log = options.logger.prefix("createCommit");
@@ -168,7 +167,6 @@ export const createCommit = async (
     options
   );
 
-  const branch = passedBranch || (await findDefaultBranch(fields, options));
   const currentCommit = await findCurrentCommit({ ...fields, branch }, options);
 
   const treeSha = await createTree(
@@ -201,5 +199,8 @@ export const createCommit = async (
 //   const team = await findTeam("teamId", options);
 //   const tree = await buildQaWolfTree(team, options);
 
-//   createCommit({ message: "initial qawolf commit", team, tree }, options);
+//   createCommit(
+//     { branch: "main", message: "initial qawolf commit", team, tree },
+//     options
+//   );
 // })();

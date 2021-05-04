@@ -283,6 +283,7 @@ export type Team = {
   alert_only_on_failure?: boolean;
   api_key: string;
   created_at?: string;
+  default_branches?: string | null;
   deleted_at?: string | null;
   forward_email?: string | null;
   git_sync_integration_id?: string | null;

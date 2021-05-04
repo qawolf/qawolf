@@ -88,7 +88,7 @@ describe("gitHubBranchesResolver", () => {
       { git_sync_integration_id: "integrationId", id: "teamId" },
       { db, logger: testContext.logger }
     );
-    jest.spyOn(branchService, "findBranchesForIntegration").mockResolvedValue([
+    jest.spyOn(branchService, "findBranchesForTeam").mockResolvedValue([
       { is_default: false, name: "feature" },
       { is_default: true, name: "main" },
     ]);

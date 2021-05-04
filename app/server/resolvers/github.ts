@@ -3,7 +3,7 @@ import {
   deleteIntegrations,
   findIntegrationsForTeam,
 } from "../models/integration";
-import { findBranchesForIntegration } from "../services/gitHub/branch";
+import { findBranchesForTeam } from "../services/gitHub/branch";
 import { findGitHubReposForInstallation } from "../services/gitHub/commitStatus";
 import {
   Context,
@@ -87,8 +87,5 @@ export const gitHubBranchesResolver = async (
     return null;
   }
 
-  return findBranchesForIntegration(team.git_sync_integration_id, {
-    db,
-    logger,
-  });
+  return findBranchesForTeam(team, { db, logger });
 };
