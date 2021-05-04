@@ -1,4 +1,4 @@
-import { pull, uniq } from "lodash";
+import { uniq } from "lodash";
 
 import { GitHubBranch, ModelOptions } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
