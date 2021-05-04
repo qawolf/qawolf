@@ -7,6 +7,11 @@ export async function up(knex: Knex): Promise<void> {
     table.string("color").notNullable().defaultTo("#4545E5");
   });
 
+  await knex.raw(
+    `ALTER INDEX IF EXISTS groups_name_team_id_unique RENAME TO tags_unique_name_team_id;
+    ALTER INDEX groups_pkey RENAME to tags_pkey;`
+  );
+
   await knex.schema.createTable("tag_tests", (table) => {
     table.string("id").primary();
     table.string("tag_id").notNullable();
@@ -18,10 +23,6 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp("created_at").defaultTo(knex.fn.now()).notNullable();
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
   });
-
-  //   await knex.schema.table("tests", (table) => {
-  //     table.dropColumn("group_id");
-  //   });
 }
 
 export async function down(knex: Knex): Promise<void> {
@@ -32,8 +33,4 @@ export async function down(knex: Knex): Promise<void> {
   });
 
   await knex.schema.renameTable("tags", "groups");
-
-  //   await knex.schema.table("tests", (table) => {
-  //     table.foreign("group_id").references("id").inTable("groups");
-  //   });
 }
