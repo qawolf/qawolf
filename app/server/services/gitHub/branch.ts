@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import { pull, uniq } from "lodash";
 
 import { GitHubBranch, ModelOptions } from "../../types";
 import { createOctokitForIntegration, OctokitRepo } from "./app";
@@ -27,12 +27,13 @@ export const findBranchesForIntegration = async (
 
   const defaultBranch = await findDefaultBranch(octokitRepo, options);
 
-  const { data } = await octokitRepo.octokit.repos.listBranches({
+  const { data } = await octokitRepo.octokit.pulls.list({
     ...octokitRepo,
     per_page: 100,
+    state: "open",
   });
 
-  const branches = uniq([defaultBranch, ...data.map((branch) => branch.name)]);
+  const branches = uniq([defaultBranch, ...data.map((pull) => pull.head.ref)]);
   branches.sort();
 
   log.debug("found branches", branches);
