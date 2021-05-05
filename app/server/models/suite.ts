@@ -63,6 +63,7 @@ type CreateSuiteForTests = {
 };
 
 type CreateSuiteForTrigger = {
+  branch?: string | null;
   environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
@@ -165,7 +166,7 @@ export const createSuite = async (
 };
 
 export const createSuiteForTrigger = async (
-  { environment_variables, team_id, trigger_id }: CreateSuiteForTrigger,
+  { branch, environment_variables, team_id, trigger_id }: CreateSuiteForTrigger,
   { db, logger }: ModelOptions
 ): Promise<CreatedSuite | null> => {
   const log = logger.prefix("createSuiteForTrigger");
@@ -178,7 +179,7 @@ export const createSuiteForTrigger = async (
 
   if (tests.length) {
     const result = await createSuiteForTests(
-      { environment_variables, team_id, trigger_id, tests },
+      { branch, environment_variables, team_id, trigger_id, tests },
       { db, logger }
     );
 
