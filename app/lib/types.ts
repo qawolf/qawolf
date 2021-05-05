@@ -228,6 +228,7 @@ export type Modal =
   | "createTest"
   | "environments"
   | "deleteTests"
+  | "tags"
   | "triggers";
 
 export type MutableListArgs = {

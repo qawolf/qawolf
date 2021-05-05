@@ -15,8 +15,6 @@ export const copy = {
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
-  addToGroup: "Add to group",
-  addToGroupDetail: "Tests can only belong to one group at a time",
   addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
@@ -90,6 +88,7 @@ export const copy = {
   createFirstTestDetail:
     "Create a test for a critical path to find bugs before customers do.",
   createOnline: "Create unlimited tests online",
+  createTag: "Create tag",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
   createTrigger: "Create trigger",
@@ -101,7 +100,6 @@ export const copy = {
   dedicatedSupport: "Dedicated support",
   delete: "Delete",
   deleted: "(Deleted)",
-  deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
   deleteTests: (count: number): string =>
     `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
@@ -124,9 +122,10 @@ export const copy = {
   easyDebugDetail:
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
+  editTagsDetail: "Choose which tags you want to assign",
+  editTagsForTests: (count: number): string =>
+    `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,
   editTest: "Edit test",
-  editTestsGroup: (count: number): string =>
-    `Add ${count === 1 ? "" : `${count} tests `}to a group`,
   editTrigger: "Edit trigger",
   editTriggers: "Edit triggers",
   editTriggersDetail: "Choose which triggers you want to assign",
@@ -174,12 +173,6 @@ export const copy = {
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
-  group: "Group",
-  groupDelete: "Delete group",
-  groupDeleteConfirm:
-    "Are you sure? This will permanently delete this group, but not the tests inside it.",
-  groupNew: "Create group",
-  groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
@@ -238,7 +231,6 @@ export const copy = {
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
   noEmail: "Please enter a valid email address",
-  noGroup: "No group",
   noHistory: "No history yet",
   noMobile:
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
@@ -280,8 +272,6 @@ export const copy = {
   runTestIntro3:
     "in the bottom right corner of the code editor to run your test.",
   runsFail: "Failing tests",
-  runGroup: (count: number): string =>
-    `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
   runsInProgress: "Running tests",
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
@@ -306,6 +296,7 @@ export const copy = {
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 6`,
   tagline: "Create tests online with your team and run them in 100% parallel",
+  tags: "Tags",
   toggleCreateCode: "Toggle code creation",
   toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
@@ -349,6 +340,8 @@ export const copy = {
   stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeSuccess: "Thanks for subscribing 🎉",
+  tagsDetail: "Use tags to organize your tests",
+  tagsEmpty: "No tags created",
   team: "Team",
   teamName: "Team name",
   teamNamePlaceholder: "My Team",

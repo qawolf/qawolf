@@ -31,6 +31,7 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
       <Button
         IconComponent={Lightning}
         label={copy.editTriggers}
+        margin={{ horizontal: "xxsmall" }}
         onClick={handleTriggersClick}
         type="ghost"
       />

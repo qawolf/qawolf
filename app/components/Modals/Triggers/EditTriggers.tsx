@@ -102,10 +102,10 @@ export default function EditTriggers({
       <Divider />
       {innerHtml}
       <Buttons
+        SecondaryIconComponent={Add}
         onPrimaryClick={closeModal}
         onSecondaryClick={onCreate}
         primaryLabel={copy.done}
-        SecondaryIconComponent={Add}
         secondaryLabel={copy.createTrigger}
         showDivider
       />

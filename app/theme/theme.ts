@@ -262,11 +262,14 @@ export const theme: ThemeType = {
     border: {
       radius: edgeSize.xxsmall,
     },
+    extend: (): CSSProperties => {
+      return { cursor: "pointer" };
+    },
     overlay: {
       background: "rgba(21, 27, 38, 0.6)",
     },
     responsiveBreakpoint: null,
-  },
+  } as any,
   meter: {
     color: colors.success5,
   },

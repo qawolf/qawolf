@@ -8,6 +8,7 @@ import ConfirmBack from "./ConfirmBack";
 import CreateTest from "./CreateTest";
 import DeleteTests from "./DeleteTests";
 import Environments from "./Environments";
+import Tags from "./Tags";
 import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
@@ -41,6 +42,10 @@ export default function Modals(): JSX.Element {
 
   if ((isDashboard || isTest) && name === "environments") {
     return <Environments closeModal={closeModal} />;
+  }
+
+  if ((isDashboard || isTest) && name === "tags" && testIds) {
+    return <Tags closeModal={closeModal} testIds={testIds} />;
   }
 
   if ((isDashboard || isTest) && name === "triggers" && testIds) {
