@@ -89,7 +89,12 @@ export const handleSuitesRequest = async (
       : null;
 
     const result = await createSuiteForTrigger(
-      { environment_variables, team_id, trigger_id: id },
+      {
+        branch: req.body.branch,
+        environment_variables,
+        team_id,
+        trigger_id: id,
+      },
       options
     );
 

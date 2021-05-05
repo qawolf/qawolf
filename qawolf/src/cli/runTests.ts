@@ -3,6 +3,7 @@ import axios from "axios";
 import { bold, green, red } from "kleur";
 
 type CreateSuite = {
+  branch?: string;
   env?: string;
   triggerId: string;
 };
@@ -14,6 +15,7 @@ type Status = "fail" | "pass";
 const qaWolfUrl = process.env.QAWOLF_URL || "https://www.qawolf.com";
 
 const createSuite = async ({
+  branch,
   env,
   triggerId,
 }: CreateSuite): Promise<{ id: string; url: string }> => {
@@ -24,7 +26,7 @@ const createSuite = async ({
       data: { id, url },
     } = await axios.post(
       suitesUrl,
-      { env, trigger_id: triggerId },
+      { branch: branch || null, env, trigger_id: triggerId },
       { headers: { authorization: process.env.QAWOLF_API_KEY } }
     );
 
@@ -85,6 +87,7 @@ const waitForSuite = async (suiteId: string): Promise<Status> => {
 };
 
 export default async function runTests({
+  branch,
   env,
   triggerId,
   wait,
@@ -92,7 +95,7 @@ export default async function runTests({
   console.log(bold(`\n🐺 Run QA Wolf tests for trigger ${triggerId}`));
 
   ensureApiKey();
-  const { id: suiteId, url } = await createSuite({ env, triggerId });
+  const { id: suiteId, url } = await createSuite({ branch, env, triggerId });
 
   if (!wait) return;
 
