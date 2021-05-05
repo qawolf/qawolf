@@ -1,11 +1,6 @@
 import { ModelOptions, TestTrigger, TestTriggers } from "../types";
 import { cuid } from "../utils";
 
-type CreateTestTrigger = {
-  test_id: string;
-  trigger_id: string;
-};
-
 type CreateTestTriggersForTrigger = {
   test_ids: string[];
   trigger_id: string;
@@ -14,25 +9,6 @@ type CreateTestTriggersForTrigger = {
 type DeleteTestTriggersForTrigger = {
   test_ids?: string[];
   trigger_id: string;
-};
-
-export const createTestTrigger = async (
-  { test_id, trigger_id }: CreateTestTrigger,
-  { db, logger }: ModelOptions
-): Promise<TestTrigger> => {
-  const log = logger.prefix("createTestTrigger");
-  log.debug(`test ${test_id} and trigger ${trigger_id}`);
-
-  const testTrigger = {
-    id: cuid(),
-    test_id,
-    trigger_id,
-  };
-  await db("test_triggers").insert(testTrigger);
-
-  log.debug(`created ${testTrigger.id}`);
-
-  return testTrigger;
 };
 
 export const createTestTriggersForTrigger = async (

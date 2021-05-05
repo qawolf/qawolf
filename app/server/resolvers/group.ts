@@ -3,7 +3,7 @@ import {
   deleteGroup,
   findGroupsForTeam,
   updateGroup,
-} from "../models/group";
+} from "../models/tag";
 import {
   Context,
   CreateGroupMutation,

@@ -17,8 +17,16 @@ export async function up(knex: Knex): Promise<void> {
     table.string("tag_id").notNullable();
     table.string("test_id").notNullable();
 
-    table.foreign("tag_id").references("id").inTable("tags");
-    table.foreign("test_id").references("id").inTable("tests");
+    table
+      .foreign("tag_id")
+      .references("id")
+      .inTable("tags")
+      .onDelete("CASCADE");
+    table
+      .foreign("test_id")
+      .references("id")
+      .inTable("tests")
+      .onDelete("CASCADE");
 
     table.timestamp("created_at").defaultTo(knex.fn.now()).notNullable();
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();

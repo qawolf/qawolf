@@ -130,14 +130,6 @@ export type GitHubCommitStatus = {
   updated_at?: string;
 };
 
-export type Group = {
-  created_at?: string;
-  id: string;
-  name: string;
-  team_id: string;
-  updated_at?: string;
-};
-
 export type Invite = {
   accepted_at: string | null;
   created_at?: string;
@@ -276,6 +268,28 @@ export type SuiteRun = {
   test_name: string;
 };
 
+export type Tag = {
+  created_at?: string;
+  color: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
+export type TagsForTest = {
+  tags: Tag[];
+  test_id: string;
+};
+
+export type TagTest = {
+  created_at?: string;
+  id: string;
+  tag_id: string;
+  test_id: string;
+  updated_at?: string;
+};
+
 export type TeamPlan = "business" | "custom" | "free";
 
 export type Team = {
@@ -318,7 +332,6 @@ export type Test = {
   creator_id: string | null;
   code: string;
   deleted_at: string | null;
-  group_id: string | null;
   guide?: string | null;
   id: string;
   is_enabled: boolean;

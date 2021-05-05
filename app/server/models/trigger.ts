@@ -5,17 +5,7 @@ import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
-
-export const TRIGGER_COLORS = [
-  "#4545E5",
-  "#C54BDE",
-  "#56BBD6",
-  "#8BC22D",
-  "#E59C59",
-  "#DA4E94",
-  "#ABB3C2",
-  "#667080",
-];
+import { buildColor } from "./utils";
 
 type GetNextAt = {
   repeat_minutes?: number | null;
@@ -53,19 +43,6 @@ type UpdateTrigger = GetNextAt & {
   name?: string;
 };
 
-export const buildTriggerColor = (
-  triggers: Trigger[],
-  colors: string[] = TRIGGER_COLORS
-): string => {
-  const availableColor = colors.find(
-    (c) => !triggers.some((t) => t.color === c)
-  );
-
-  if (availableColor) return availableColor;
-
-  return colors[triggers.length % colors.length];
-};
-
 const formatBranches = (branches: string | null): string | null => {
   if (!branches) return null;
 
@@ -96,7 +73,7 @@ export const createTrigger = async (
   const teamTriggers = await findTriggersForTeam(team_id, { db, logger });
 
   const trigger = {
-    color: buildTriggerColor(teamTriggers),
+    color: buildColor(teamTriggers.map((t) => t.color)),
     creator_id,
     deleted_at: null,
     deployment_branches: formatBranches(deployment_branches),

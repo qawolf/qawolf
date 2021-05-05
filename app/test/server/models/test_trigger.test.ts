@@ -1,5 +1,4 @@
 import {
-  createTestTrigger,
   createTestTriggersForTrigger,
   deleteTestTriggersForTests,
   deleteTestTriggersForTrigger,
@@ -25,41 +24,6 @@ describe("test trigger model", () => {
     await db("teams").insert(buildTeam({}));
     await db("tests").insert(buildTest({}));
     return db("triggers").insert(buildTrigger({}));
-  });
-
-  describe("createTestTrigger", () => {
-    afterEach(() => db("test_triggers").del());
-
-    it("creates a test trigger", async () => {
-      await createTestTrigger(
-        { test_id: "testId", trigger_id: "triggerId" },
-        options
-      );
-
-      const testTriggers = await db.select("*").from("test_triggers");
-
-      expect(testTriggers).toMatchObject([
-        {
-          id: expect.any(String),
-          test_id: "testId",
-          trigger_id: "triggerId",
-        },
-      ]);
-    });
-
-    it("does not create team user if user already on team", async () => {
-      await createTestTrigger(
-        { test_id: "testId", trigger_id: "triggerId" },
-        options
-      );
-
-      await expect(
-        createTestTrigger(
-          { test_id: "testId", trigger_id: "triggerId" },
-          options
-        )
-      ).rejects.toThrowError("unique constraint");
-    });
   });
 
   describe("createTestTriggersForTrigger", () => {

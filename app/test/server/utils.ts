@@ -8,7 +8,6 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubCommitStatus,
-  Group,
   Integration,
   IntegrationType,
   Invite,
@@ -20,6 +19,8 @@ import {
   RunStatus,
   SaveArtifacts,
   Suite,
+  Tag,
+  TagTest,
   Team,
   TeamPlan,
   TeamUser,
@@ -55,12 +56,6 @@ type BuildEnvironmentVariable = {
 
 type BuildGitHubCommitStatus = {
   i?: number;
-};
-
-type BuildGroup = {
-  i?: number;
-  name?: string;
-  team_id?: string;
 };
 
 type BuildIntegration = {
@@ -127,6 +122,18 @@ type BuildSuite = {
   trigger_id?: string;
 };
 
+type BuildTag = {
+  i?: number;
+  name?: string;
+  team_id?: string;
+};
+
+type BuildTagTest = {
+  i?: number;
+  tag_id?: string;
+  test_id?: string;
+};
+
 type BuildTeam = {
   apiKey?: string;
   git_sync_integration_id?: string;
@@ -151,7 +158,6 @@ type BuildTest = {
   code?: string;
   creator_id?: string;
   deleted_at?: string;
-  group_id?: string;
   guide?: string;
   i?: number;
   id?: string;
@@ -261,20 +267,6 @@ export const buildGitHubCommitStatus = ({
     suite_id: "suiteId",
     trigger_id: "triggerId",
   };
-};
-
-export const buildGroup = ({ i, name, team_id }: BuildGroup): Group => {
-  const finalI = i || 1;
-
-  return {
-    id: `group${finalI === 1 ? "" : i}Id`,
-    name: name || `group${finalI}`,
-    team_id: team_id || "teamId",
-  };
-};
-
-export const buildTestTrigger = (): TestTrigger => {
-  return { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" };
 };
 
 export const buildInvite = ({
@@ -435,6 +427,27 @@ export const buildSuite = ({
   };
 };
 
+export const buildTag = ({ i, name, team_id }: BuildTag): Tag => {
+  const finalI = i || 1;
+
+  return {
+    color: "#4545E5",
+    id: `tag${finalI === 1 ? "" : i}Id`,
+    name: name || `tag${finalI}`,
+    team_id: team_id || "teamId",
+  };
+};
+
+export const buildTagTest = ({ i, tag_id, test_id }: BuildTagTest): TagTest => {
+  const finalI = i || 1;
+
+  return {
+    id: `tagTest${finalI === 1 ? "" : i}Id`,
+    tag_id: tag_id || "tagId",
+    test_id: test_id || "testId",
+  };
+};
+
 export const buildTeam = ({
   apiKey,
   git_sync_integration_id,
@@ -490,7 +503,6 @@ export const buildTest = ({
   code,
   creator_id,
   deleted_at,
-  group_id,
   guide,
   i,
   id,
@@ -509,7 +521,6 @@ export const buildTest = ({
     creator_id: creator_id || "userId",
     code: code || 'const x = "hello"',
     deleted_at: deleted_at || null,
-    group_id: group_id || null,
     guide: guide || null,
     id: id || `test${finalI === 1 ? "" : i}Id`,
     is_enabled: is_enabled === undefined ? true : is_enabled,
@@ -523,6 +534,10 @@ export const buildTest = ({
     team_id: team_id || "teamId",
     updated_at: timestamp,
   };
+};
+
+export const buildTestTrigger = (): TestTrigger => {
+  return { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" };
 };
 
 export const buildTrigger = ({

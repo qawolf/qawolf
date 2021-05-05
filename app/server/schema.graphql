@@ -1199,8 +1199,7 @@ type Mutation {
   ): Team!
 
   """
-  Adds one or more tests to a trigger. Returns the updated
-  test_trigger relationships.
+  Adds one or more tests to a trigger. Returns the updated test_trigger relationships.
 
   Requires that you have access to the team that owns the trigger.
   """
