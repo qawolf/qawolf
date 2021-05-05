@@ -32,12 +32,6 @@ export type GitHubBranch = {
   name: string;
 };
 
-export type Group = {
-  id: string;
-  name: string;
-  team_id: string;
-};
-
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -126,6 +120,18 @@ export type ShortTeam = {
   name: string;
 };
 
+export type Tag = {
+  color: string;
+  id: string;
+  name: string;
+  team_id: string;
+};
+
+export type TagsForTest = {
+  tags: Tag[];
+  test_id: string;
+};
+
 export type Team = ShortTeam & {
   alert_integration_id: string | null;
   alert_only_on_failure: boolean;
@@ -146,7 +152,6 @@ export type TeamWithUsers = Team & {
 };
 
 export type ShortTest = {
-  group_id: string | null;
   id: string;
   name: string | null;
   path: string | null;
@@ -247,7 +252,6 @@ export type NavigationOption = "code" | "logs" | "helpers";
 export type NavigationType = "dark" | "light";
 
 export type SelectedTest = {
-  group_id?: string;
   id: string;
   name: string;
 };
@@ -255,7 +259,6 @@ export type SelectedTest = {
 export type Side = "left" | "right";
 
 export type TestTriggers = {
-  group_id: string | null;
   test_id: string;
   trigger_ids: string[];
 };

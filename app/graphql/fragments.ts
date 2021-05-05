@@ -17,14 +17,6 @@ export const environmentVariableFragment = gql`
   }
 `;
 
-export const groupFragment = gql`
-  fragment GroupFragment on Group {
-    id
-    name
-    team_id
-  }
-`;
-
 export const integrationFragment = gql`
   fragment IntegrationFragment on Integration {
     github_repo_name
@@ -114,6 +106,27 @@ export const suiteFragment = gql`
   ${shortTriggerFragment}
 `;
 
+export const tagFragment = gql`
+  fragment TagFragment on Tag {
+    color
+    id
+    name
+    team_id
+  }
+`;
+
+export const tagsForTestFragment = gql`
+  fragment TagsForTestFragment on TagsForTest {
+    tags {
+      color
+      id
+      name
+      team_id
+    }
+    test_id
+  }
+`;
+
 export const teamFragment = gql`
   fragment TeamFragment on Team {
     alert_integration_id
@@ -136,7 +149,6 @@ export const testFragment = gql`
   fragment TestFragment on Test {
     code
     deleted_at
-    group_id
     id
     is_enabled
     name
@@ -149,7 +161,6 @@ export const testFragment = gql`
 
 export const testTriggersFragment = gql`
   fragment TestTriggersFragment on TestTriggers {
-    group_id
     test_id
     trigger_ids
   }

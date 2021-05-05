@@ -8,7 +8,6 @@ import {
   environmentsQuery,
   environmentVariablesQuery,
   gitHubBranchesQuery,
-  groupsQuery,
   integrationsQuery,
   onboardingQuery,
   runCountQuery,
@@ -16,6 +15,8 @@ import {
   shortSuiteQuery,
   suiteQuery,
   suitesQuery,
+  tagsForTestsQuery,
+  tagsQuery,
   teamQuery,
   testHistoryQuery,
   testsQuery,
@@ -33,13 +34,13 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubBranch,
-  Group,
   Integration,
   Onboarding,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
+  Tag,
   TeamWithUsers,
   TestHistoryRun,
   TestSummary,
@@ -48,6 +49,7 @@ import {
   User,
   Wolf,
 } from "../lib/types";
+import { TagsForTest } from "../server/types";
 import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
@@ -88,14 +90,6 @@ type GitHubBranchesData = {
 };
 
 type GitHubBranchesVariables = {
-  team_id: string;
-};
-
-type GroupsData = {
-  groups: Group[];
-};
-
-type GroupsVariables = {
   team_id: string;
 };
 
@@ -148,6 +142,22 @@ type SuitesData = {
 
 type SuitesVariables = {
   team_id: string | null;
+};
+
+type TagsData = {
+  tags: Tag[];
+};
+
+type TagsVariables = {
+  team_id: string;
+};
+
+type TagsForTestsData = {
+  tagsForTests: TagsForTest[];
+};
+
+type TagsForTestsVariables = {
+  test_ids: string[];
 };
 
 type TeamData = {
@@ -314,17 +324,6 @@ export const useGitHubBranches = (
   );
 };
 
-export const useGroups = (
-  variables: GroupsVariables
-): QueryResult<GroupsData, GroupsVariables> => {
-  return useQuery<GroupsData, GroupsVariables>(groupsQuery, {
-    fetchPolicy,
-    onError,
-    skip: !variables.team_id,
-    variables,
-  });
-};
-
 export const useIntegrations = (
   variables: IntegrationsVariables
 ): QueryResult<IntegrationsData, IntegrationsVariables> => {
@@ -408,6 +407,29 @@ export const useSuites = (
     onError,
     pollInterval,
     skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useTags = (
+  variables: TagsVariables
+): QueryResult<TagsData, TagsVariables> => {
+  return useQuery<TagsData, TagsVariables>(tagsQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useTagsForTests = (
+  variables: TagsForTestsVariables
+): QueryResult<TagsForTestsData, TagsForTestsVariables> => {
+  return useQuery<TagsForTestsData, TagsForTestsVariables>(tagsForTestsQuery, {
+    fetchPolicy,
+    onError,
+    // if null is passed as an id, skip the query (this happens prehydration)
+    skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
     variables,
   });
 };

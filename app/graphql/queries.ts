@@ -3,13 +3,14 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
-  groupFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
   runnerFragment,
   shortTriggerFragment,
   suiteFragment,
+  tagFragment,
+  tagsForTestFragment,
   teamFragment,
   testFragment,
   testTriggersFragment,
@@ -72,15 +73,6 @@ export const gitHubBranchesQuery = gql`
       name
     }
   }
-`;
-
-export const groupsQuery = gql`
-  query groups($team_id: ID!) {
-    groups(team_id: $team_id) {
-      ...GroupFragment
-    }
-  }
-  ${groupFragment}
 `;
 
 export const integrationsQuery = gql`
@@ -176,6 +168,24 @@ export const suitesQuery = gql`
   ${shortTriggerFragment}
 `;
 
+export const tagsQuery = gql`
+  query tags($team_id: ID!) {
+    tags(team_id: $team_id) {
+      ...TagFragment
+    }
+  }
+  ${tagFragment}
+`;
+
+export const tagsForTestsQuery = gql`
+  query tagsForTests($test_ids: [ID!]!) {
+    tagsForTests(test_ids: $test_ids) {
+      ...TagsForTestFragment
+    }
+  }
+  ${tagsForTestFragment}
+`;
+
 export const teamQuery = gql`
   query team($id: ID!) {
     team(id: $id) {
@@ -234,7 +244,6 @@ export const testTriggersQuery = gql`
 export const testsQuery = gql`
   query tests($branch: String, $team_id: ID!) {
     tests(branch: $branch, team_id: $team_id) {
-      group_id
       id
       name
       path
