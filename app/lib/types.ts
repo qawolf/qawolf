@@ -226,9 +226,7 @@ export type CreateCode = {
 export type Modal =
   | "confirmBack"
   | "createTest"
-  | "editTestsGroup"
   | "environments"
-  | "deleteGroup"
   | "deleteTests"
   | "triggers";
 
@@ -245,7 +243,7 @@ export type MutableListFields = {
   name: string;
 };
 
-export type MutableListType = "environment" | "group";
+export type MutableListType = "environment";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
@@ -325,7 +323,6 @@ type SignUp = {
 };
 
 type ModalState = {
-  group?: MutableListFields;
   name: Modal | null;
   testIds?: string[];
   tests?: SelectedTest[];

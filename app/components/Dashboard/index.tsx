@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 
 import { useEnsureUser } from "../../hooks/ensureUser";
-import { useGroups } from "../../hooks/queries";
 import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
@@ -20,15 +19,12 @@ export default function Dashboard(): JSX.Element {
   const { asPath, pathname, query } = useRouter();
   const { branch, teamId } = useContext(StateContext);
 
-  const { data } = useGroups({ team_id: teamId });
-  const groups = data?.groups || null;
-
   // update the current location in global state for use in editor back button
   useEffect(() => {
     state.setDashboardUri(asPath);
   }, [asPath]);
 
-  let innerHtml = <Tests branch={branch} groups={groups} teamId={teamId} />;
+  let innerHtml = <Tests branch={branch} teamId={teamId} />;
   if (pathname.includes(routes.suites) && query.suite_id) {
     innerHtml = <Suite suiteId={query.suite_id as string} teamId={teamId} />;
   } else if (pathname.includes(routes.suites)) {
@@ -42,7 +38,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <Box data-hj-suppress height="100vh">
       <Box direction="row" fill>
-        <Sidebar groups={groups} />
+        <Sidebar />
         {innerHtml}
       </Box>
     </Box>

@@ -12,8 +12,6 @@ import TestName from "./TestName";
 import Triggers from "./Triggers";
 
 type Props = {
-  groupName: string | null;
-  hasGroups: boolean;
   isChecked: boolean;
   isSummaryLoading: boolean;
   noBorder?: boolean;
@@ -24,8 +22,6 @@ type Props = {
 };
 
 export default function TestCard({
-  groupName,
-  hasGroups,
   isChecked,
   isSummaryLoading,
   noBorder,
@@ -68,7 +64,7 @@ export default function TestCard({
                   isRunning={!!runs?.length && !runs[0].gif_url}
                   testName={testName}
                 />
-                <TestName groupName={groupName} testName={testName} />
+                <TestName testName={testName} />
               </Box>
             </a>
           </Link>
@@ -77,7 +73,7 @@ export default function TestCard({
       <Box align="center" direction="row" flex={false}>
         <Triggers triggers={triggers} />
         <RunBars runs={runs} />
-        <Options hasGroups={hasGroups} test={test} />
+        <Options test={test} />
       </Box>
     </Box>
   );

@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
-import { Group, ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme";
 import Spinner from "../../../shared/Spinner";
 import { noTriggerId } from "../../helpers";
@@ -11,7 +11,6 @@ import TestCard from "./TestCard";
 
 type Props = {
   checkedTestIds: string[];
-  groups: Group[] | null;
   setCheckedTestIds: (testIds: string[]) => void;
   testIds: string[];
   tests: ShortTest[] | null;
@@ -21,7 +20,6 @@ type Props = {
 
 export default function List({
   checkedTestIds,
-  groups,
   setCheckedTestIds,
   testIds,
   tests,
@@ -63,15 +61,12 @@ export default function List({
       testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
     const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
 
-    const groupName = groups?.find((g) => g.id === test.group_id)?.name || null;
     const summary = (data?.testSummaries || []).find(
       (s) => s.test_id === test.id
     );
 
     return (
       <TestCard
-        groupName={groupName}
-        hasGroups={!!groups?.length}
         isChecked={checkedTestIds.includes(test.id)}
         isSummaryLoading={loading}
         key={test.id}

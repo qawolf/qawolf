@@ -6,9 +6,7 @@ import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
 import ConfirmBack from "./ConfirmBack";
 import CreateTest from "./CreateTest";
-import DeleteGroup from "./DeleteGroup";
 import DeleteTests from "./DeleteTests";
-import EditTestsGroup from "./EditTestsGroup";
 import Environments from "./Environments";
 import Triggers from "./Triggers";
 
@@ -16,7 +14,7 @@ export default function Modals(): JSX.Element {
   const { pathname } = useRouter();
 
   const { modal } = useContext(StateContext);
-  const { group, name, testIds, tests } = modal || {};
+  const { name, testIds, tests } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
@@ -37,16 +35,8 @@ export default function Modals(): JSX.Element {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (isDashboard && name === "deleteGroup" && group) {
-    return <DeleteGroup closeModal={closeModal} group={group} />;
-  }
-
   if (isTests && name === "deleteTests" && tests) {
     return <DeleteTests closeModal={closeModal} tests={tests} />;
-  }
-
-  if (isTests && name === "editTestsGroup" && tests) {
-    return <EditTestsGroup closeModal={closeModal} tests={tests} />;
   }
 
   if ((isDashboard || isTest) && name === "environments") {

@@ -6,29 +6,19 @@ import { copy } from "../../../../theme/copy";
 import { borderSize, colors, edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import Divider from "../../../shared/Divider";
-import Folder from "../../../shared/icons/Folder";
 import Lightning from "../../../shared/icons/Lightning";
 import Trash from "../../../shared/icons/Trash";
 
 type Props = {
   checkedTests: ShortTest[];
-  hasGroups: boolean;
 };
 
-export default function Actions({
-  checkedTests,
-  hasGroups,
-}: Props): JSX.Element {
+export default function Actions({ checkedTests }: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
   const handleDeleteClick = (): void => {
     state.setModal({ name: "deleteTests", tests: checkedTests });
   };
-
-  const handleGroupClick = (): void => {
-    state.setModal({ name: "editTestsGroup", tests: checkedTests });
-  };
-
   const handleTriggersClick = (): void => {
     state.setModal({
       name: "triggers",
@@ -44,15 +34,6 @@ export default function Actions({
         onClick={handleTriggersClick}
         type="ghost"
       />
-      {hasGroups && (
-        <Button
-          IconComponent={Folder}
-          label={copy.addToGroup}
-          margin={{ horizontal: "xxsmall" }}
-          onClick={handleGroupClick}
-          type="ghost"
-        ></Button>
-      )}
       <Button
         IconComponent={Trash}
         color={colors.danger5}
