@@ -1,7 +1,7 @@
 import cuid from "cuid";
 
 import { ClientError } from "../errors";
-import { ModelOptions, Tag } from "../types";
+import { ModelOptions, Tag, TagsForTest } from "../types";
 import { buildColor } from "./utils";
 
 type CreateTag = {
@@ -97,6 +97,33 @@ export const findTagsForTeam = async (
   log.debug(`found ${tags.length} tags`);
 
   return tags;
+};
+
+export const findTagsForTests = async (
+  test_ids: string[],
+  { db, logger }: ModelOptions
+): Promise<TagsForTest[]> => {
+  const log = logger.prefix("findTagsForTests");
+  log.debug("tests", test_ids);
+
+  const tests = await db("tests").select("id").whereIn("id", test_ids);
+
+  const tags = await db("tags")
+    .select("tags.*")
+    .select("tag_tests.test_id")
+    .innerJoin("tag_tests", "tags.id", "tag_tests.tag_id")
+    .whereIn("tag_tests.test_id", test_ids)
+    .orderBy("tags.name", "asc");
+
+  const result: TagsForTest[] = tests.map(({ id }) => {
+    return { tags: [], test_id: id };
+  });
+
+  tags.forEach((t) => {
+    result.find((r) => r.test_id === t.test_id)?.tags.push(t);
+  });
+
+  return result;
 };
 
 export const updateTag = async (

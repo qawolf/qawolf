@@ -1,7 +1,6 @@
 import {
   createTagTestsForTag,
   deleteTagTestsForTag,
-  findTagsForTests,
 } from "../../../server/models/tag_test";
 import { prepareTestDb } from "../db";
 import {
@@ -93,29 +92,5 @@ describe("deleteTagTestsForTag", () => {
     const dbTagTests = await db("tag_tests");
 
     expect(dbTagTests).toHaveLength(2);
-  });
-});
-
-describe("findTagsForTests", () => {
-  it("finds tags for tests", async () => {
-    afterEach(() => db("tag_tests").del());
-
-    await db("tag_tests").insert([
-      buildTagTest({ tag_id: "tag2Id", test_id: "test2Id" }),
-      buildTagTest({ i: 2, tag_id: "tag2Id", test_id: "test3Id" }),
-      buildTagTest({ i: 3, tag_id: "tag2Id", test_id: "test4Id" }),
-      buildTagTest({ i: 4, tag_id: "tagId", test_id: "test3Id" }),
-    ]);
-
-    const tagsForTests = await findTagsForTests(
-      ["testId", "test2Id", "test3Id"],
-      options
-    );
-
-    expect(tagsForTests).toMatchObject([
-      { tags: [], test_id: "testId" },
-      { tags: [{ id: "tag2Id" }], test_id: "test2Id" },
-      { tags: [{ id: "tagId" }, { id: "tag2Id" }], test_id: "test3Id" },
-    ]);
   });
 });

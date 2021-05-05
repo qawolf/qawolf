@@ -4,8 +4,8 @@ import * as triggerModel from "../../../server/models/trigger";
 import {
   ensureEnvironmentAccess,
   ensureEnvironmentVariableAccess,
-  ensureGroupAccess,
   ensureSuiteAccess,
+  ensureTagAccess,
   ensureTeamAccess,
   ensureTeams,
   ensureTestAccess,
@@ -17,8 +17,8 @@ import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
-  buildGroup,
   buildSuite,
+  buildTag,
   buildTeam,
   logger,
 } from "../utils";
@@ -142,26 +142,68 @@ describe("ensureEnvironmentVariableAccess", () => {
   });
 });
 
-describe("ensureGroupAccess", () => {
+describe("ensureSuiteAccess", () => {
+  it("throws an error if teams not provided", async () => {
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams: null,
+          suite_id: "suiteId",
+        },
+        options
+      )
+    ).rejects.toThrowError("no teams");
+  });
+
+  it("throws an error if teams do not have access", async () => {
+    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
+
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams,
+          suite_id: "suite2Id",
+        },
+        options
+      )
+    ).rejects.toThrowError("cannot access suite");
+  });
+
+  it("does not throw an error if teams have access", async () => {
+    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
+
+    await expect(
+      ensureSuiteAccess(
+        {
+          teams: [{ ...teams[0], id: "team2Id" }],
+          suite_id: "suiteId",
+        },
+        options
+      )
+    ).resolves.not.toThrowError();
+  });
+});
+
+describe("ensureTagAccess", () => {
   beforeAll(async () => {
     await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
 
-    await db("groups").insert([
-      buildGroup({}),
-      buildGroup({ i: 2, team_id: "team2Id" }),
+    await db("tags").insert([
+      buildTag({}),
+      buildTag({ i: 2, team_id: "team2Id" }),
     ]);
   });
 
   afterAll(async () => {
-    await db("groups").del();
+    await db("tags").del();
     return db("teams").del();
   });
 
   it("throws an error if teams not provided", async () => {
     await expect(
-      ensureGroupAccess(
+      ensureTagAccess(
         {
-          group_id: "groupId",
+          tag_id: "tagId",
           teams: null,
         },
         options
@@ -171,20 +213,20 @@ describe("ensureGroupAccess", () => {
 
   it("throws an error if teams do not have access", async () => {
     await expect(
-      ensureGroupAccess(
+      ensureTagAccess(
         {
-          group_id: "group2Id",
+          tag_id: "tag2Id",
           teams,
         },
         options
       )
-    ).rejects.toThrowError("cannot access group");
+    ).rejects.toThrowError("cannot access tag");
   });
 
   it("returns selected team if teams have access", async () => {
-    const team = await ensureGroupAccess(
+    const team = await ensureTagAccess(
       {
-        group_id: "groupId",
+        tag_id: "tagId",
         teams,
       },
       options
@@ -234,48 +276,6 @@ describe("ensureTeams", () => {
         plan: "free",
       },
     ]);
-  });
-});
-
-describe("ensureSuiteAccess", () => {
-  it("throws an error if teams not provided", async () => {
-    await expect(
-      ensureSuiteAccess(
-        {
-          teams: null,
-          suite_id: "suiteId",
-        },
-        options
-      )
-    ).rejects.toThrowError("no teams");
-  });
-
-  it("throws an error if teams do not have access", async () => {
-    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
-
-    await expect(
-      ensureSuiteAccess(
-        {
-          teams,
-          suite_id: "suite2Id",
-        },
-        options
-      )
-    ).rejects.toThrowError("cannot access suite");
-  });
-
-  it("does not throw an error if teams have access", async () => {
-    jest.spyOn(suiteModel, "findSuite").mockResolvedValue(suite);
-
-    await expect(
-      ensureSuiteAccess(
-        {
-          teams: [{ ...teams[0], id: "team2Id" }],
-          suite_id: "suiteId",
-        },
-        options
-      )
-    ).resolves.not.toThrowError();
   });
 });
 

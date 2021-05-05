@@ -414,11 +414,6 @@ export type CreateGitHubIntegrationsMutation = {
   team_id: string;
 };
 
-export type CreateGroupMutation = {
-  name: string;
-  team_id: string;
-};
-
 export type CreateInviteMutation = {
   emails: string[];
   team_id: string;
@@ -451,6 +446,11 @@ export type CreateSuiteMutation = {
   environment_id: string | null;
   environment_variables: string | null;
   test_ids: string[];
+};
+
+export type CreateTagMutation = {
+  name: string;
+  team_id: string;
 };
 
 export type CreateTestMutation = {
@@ -543,28 +543,6 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
-export type UpdateEnvironmentVariableMutation = {
-  id: string;
-  name: string;
-  value: string;
-};
-
-export type UpdateGroupMutation = {
-  id: string;
-  name: string;
-};
-
-export type UpdateTriggerMutation = {
-  deployment_branches?: string | null;
-  deployment_environment?: string | null;
-  deployment_integration_id?: string | null;
-  deployment_provider?: DeploymentProvider | null;
-  environment_id?: string | null;
-  id: string;
-  name?: string;
-  repeat_minutes?: number | null;
-};
-
 export type UpdateTestTriggersMutation = {
   add_trigger_id: string | null;
   remove_trigger_id: string | null;
@@ -584,6 +562,17 @@ export type UpdateRunnerMutation = {
   is_ready?: boolean;
 };
 
+export type UpdateEnvironmentVariableMutation = {
+  id: string;
+  name: string;
+  value: string;
+};
+
+export type UpdateTagMutation = {
+  id: string;
+  name: string;
+};
+
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
@@ -591,6 +580,17 @@ export type UpdateTeamMutation = {
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;
+};
+
+export type UpdateTriggerMutation = {
+  deployment_branches?: string | null;
+  deployment_environment?: string | null;
+  deployment_integration_id?: string | null;
+  deployment_provider?: DeploymentProvider | null;
+  environment_id?: string | null;
+  id: string;
+  name?: string;
+  repeat_minutes?: number | null;
 };
 
 export type UpdateUserMutation = {
