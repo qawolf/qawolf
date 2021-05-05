@@ -13,7 +13,6 @@ type BuildTestName = {
 type CreateTest = {
   code: string;
   creator_id?: string;
-  group_id?: string | null;
   guide?: string | null;
   path?: string | null;
   team_id: string;
@@ -42,11 +41,6 @@ type UpdateTestToPending = {
   id: string;
   runner_locations: string[];
   runner_requested_branch?: string;
-};
-
-type UpdateTestsGroup = {
-  group_id: string | null;
-  test_ids: string[];
 };
 
 const formatTestName = (name: string, testNumber: number): string => {
@@ -123,7 +117,7 @@ export const countTestsForTeam = async (
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, guide, path, team_id }: CreateTest,
+  { code, creator_id, guide, path, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
@@ -139,7 +133,6 @@ export const createTest = async (
     creator_id: creator_id || null,
     code,
     deleted_at: null,
-    group_id: group_id || null,
     guide: guide || null,
     id: cuid(),
     is_enabled: true,
@@ -407,26 +400,4 @@ export const updateTestToPending = async (
   log.debug(options, didUpdate ? "updated" : "skipped");
 
   return didUpdate;
-};
-
-export const updateTestsGroup = async (
-  { group_id, test_ids }: UpdateTestsGroup,
-  { db, logger }: ModelOptions
-): Promise<Test[]> => {
-  const log = logger.prefix("updateTestsGroup");
-  log.debug("group", group_id, "tests", test_ids);
-
-  const tests = await db("tests")
-    .whereIn("id", test_ids)
-    .andWhere({ deleted_at: null });
-  const testIds = tests.map((t) => t.id);
-
-  const updated_at = new Date().toISOString();
-
-  await db("tests").whereIn("id", testIds).update({ group_id, updated_at });
-  log.debug("updated", testIds);
-
-  return tests.map((t) => {
-    return { ...t, group_id, updated_at };
-  });
 };

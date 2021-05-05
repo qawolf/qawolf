@@ -455,7 +455,6 @@ export type CreateSuiteMutation = {
 
 export type CreateTestMutation = {
   branch?: string | null;
-  group_id: string | null;
   guide: string | null;
   team_id: string;
   url: string;
@@ -594,11 +593,6 @@ export type UpdateTeamMutation = {
   name?: string | null;
 };
 
-export type UpdateTestsGroupMutation = {
-  group_id: string | null;
-  test_ids: string[];
-};
-
 export type UpdateUserMutation = {
   onboarded_at: string;
 };
@@ -690,7 +684,6 @@ export type TestSummary = {
 };
 
 export type TestTriggers = {
-  group_id: string | null;
   test_id: string;
   trigger_ids: string[];
 };

@@ -1,4 +1,4 @@
-import { ModelOptions, TagsForTest,TagTest } from "../types";
+import { ModelOptions, TagsForTest, TagTest } from "../types";
 import { cuid } from "../utils";
 
 type UpdateTagTestsForTag = {
@@ -56,7 +56,7 @@ export const findTagsForTests = async (
   const log = logger.prefix("findTagsForTests");
   log.debug("tests", test_ids);
 
-  const tests = await db("tests").whereIn("id", test_ids);
+  const tests = await db("tests").select("id").whereIn("id", test_ids);
 
   const tags = await db("tags")
     .select("tags.*")

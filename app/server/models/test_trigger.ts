@@ -81,9 +81,7 @@ export const findTestTriggersForTests = async (
   const log = logger.prefix("findTestTriggersForTests");
   log.debug(testIds);
 
-  const tests = await db("tests")
-    .select("group_id", "id")
-    .whereIn("id", testIds);
+  const tests = await db("tests").select("id").whereIn("id", testIds);
 
   const testTriggers = await db("test_triggers")
     .select("test_triggers.*")
@@ -92,7 +90,7 @@ export const findTestTriggersForTests = async (
     .andWhere({ "triggers.deleted_at": null });
 
   const result: TestTriggers[] = tests.map((test) => {
-    return { group_id: test.group_id, test_id: test.id, trigger_ids: [] };
+    return { test_id: test.id, trigger_ids: [] };
   });
 
   testTriggers.forEach((t) => {

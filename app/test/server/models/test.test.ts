@@ -8,7 +8,6 @@ import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
-  buildGroup,
   buildRunner,
   buildTeam,
   buildTest,
@@ -31,7 +30,6 @@ const {
   hasIntroGuide,
   hasTest,
   updateTest,
-  updateTestsGroup,
 } = testModel;
 
 const db = prepareTestDb();
@@ -41,7 +39,6 @@ beforeAll(async () => {
   await db("users").insert([buildUser({}), buildUser({ i: 2 })]);
   await db("teams").insert(buildTeam({}));
   await db("triggers").insert(buildTrigger({}));
-  await db("groups").insert(buildGroup({}));
 });
 
 afterAll(() => jest.restoreAllMocks());
@@ -144,7 +141,6 @@ describe("createTest", () => {
       {
         code: "code",
         creator_id: "userId",
-        group_id: null,
         team_id: "teamId",
       },
       options
@@ -156,33 +152,12 @@ describe("createTest", () => {
       code: "code",
       creator_id: "userId",
       deleted_at: null,
-      group_id: null,
       guide: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
       path: null,
       team_id: "teamId",
-    });
-  });
-
-  it("creates a new test with a group", async () => {
-    await createTest(
-      {
-        code: "code",
-        creator_id: "userId",
-        group_id: "groupId",
-        path: "myTest.test.js",
-        team_id: "teamId",
-      },
-      options
-    );
-
-    const tests = await db.select("*").from("tests").where({ code: "code" });
-
-    expect(tests[0]).toMatchObject({
-      group_id: "groupId",
-      path: "myTest.test.js",
     });
   });
 
@@ -664,52 +639,5 @@ describe("updateTest", () => {
       code: "code",
       id: "test3Id",
     });
-  });
-});
-
-describe("updateTestsGroup", () => {
-  beforeAll(async () => {
-    await db("groups").insert(buildGroup({ i: 2 }));
-    return db("tests").insert([
-      buildTest({
-        i: 1,
-      }),
-      buildTest({ i: 2 }),
-      buildTest({ deleted_at: minutesFromNow(), i: 3 }),
-      buildTest({ i: 4 }),
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("groups").where({ id: "group2Id" }).del();
-    return db("tests").del();
-  });
-
-  it("updates the group for tests", async () => {
-    const tests = await updateTestsGroup(
-      { group_id: "groupId", test_ids: ["testId", "test2Id", "test3Id"] },
-      options
-    );
-    expect(tests).toMatchObject([
-      { group_id: "groupId", id: "testId" },
-      { group_id: "groupId", id: "test2Id" },
-    ]);
-
-    const otherTests = await db("tests")
-      .where({ group_id: null })
-      .orderBy("id", "asc");
-    expect(otherTests).toMatchObject([{ group_id: null }, { group_id: null }]);
-
-    const tests2 = await updateTestsGroup(
-      { group_id: "group2Id", test_ids: ["testId"] },
-      options
-    );
-    expect(tests2).toMatchObject([{ group_id: "group2Id", id: "testId" }]);
-
-    const tests3 = await updateTestsGroup(
-      { group_id: null, test_ids: ["testId"] },
-      options
-    );
-    expect(tests3).toMatchObject([{ group_id: null, id: "testId" }]);
   });
 });
