@@ -1162,6 +1162,30 @@ type Mutation {
   ): Tag!
 
   """
+  Adds one or more tests to a tag. Returns the updated tag for tests relationships.
+
+  Requires that you have access to the team that owns the tag.
+  """
+  updateTagTests(
+    """
+    ID of tag to add all the tests to. If this field is set,
+    `remove_tag_id` may not be set.
+    """
+    add_tag_id: ID
+
+    """
+    ID of test tag to remove all the tests from. If this field is set,
+    `add_tag_id` may not be set.
+    """
+    remove_tag_id: ID
+
+    """
+    List of test IDs to add to / remove from the tag.
+    """
+    test_ids: [ID!]
+  ): [TagsForTest!]!
+
+  """
   Updates a team by ID.
 
   Requires that you have access to the team.

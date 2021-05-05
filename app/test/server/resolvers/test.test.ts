@@ -9,7 +9,6 @@ import { RunWithGif } from "../../../server/types";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
-  buildGroup,
   buildIntegration,
   buildRun,
   buildTeam,
@@ -26,7 +25,6 @@ const {
   deleteTestsResolver,
   testSummariesResolver,
   testsResolver,
-  updateTestsGroupResolver,
 } = testResolvers;
 
 const run = buildRun({ code: "run code" });
@@ -43,7 +41,6 @@ beforeAll(async () => {
     buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
   ]);
 
-  await db("groups").insert(buildGroup({}));
   await db("integrations").insert(buildIntegration({ type: "github_sync" }));
 
   await db("triggers").insert([
@@ -92,7 +89,6 @@ describe("createTestResolver", () => {
     const test = await createTestResolver(
       {},
       {
-        group_id: "groupId",
         guide: null,
         team_id: "teamId",
         url: "https://google.com",
@@ -103,7 +99,6 @@ describe("createTestResolver", () => {
     expect(test).toMatchObject({
       team_id: "teamId",
       creator_id: "userId",
-      group_id: "groupId",
       guide: null,
       id: expect.any(String),
       name: "My Test",
@@ -122,7 +117,6 @@ describe("createTestResolver", () => {
       {},
       {
         branch: "main",
-        group_id: null,
         guide: null,
         team_id: "teamId",
         url: "https://google.com",
@@ -138,7 +132,6 @@ describe("createTestResolver", () => {
     expect(test).toMatchObject({
       team_id: "teamId",
       creator_id: "userId",
-      group_id: null,
       guide: null,
       id: expect.any(String),
       name: null,
@@ -162,7 +155,6 @@ describe("createTestResolver", () => {
     const test = await createTestResolver(
       {},
       {
-        group_id: "groupId",
         guide: "Create a Test",
         team_id: "teamId",
         url: "https://google.com",
@@ -333,17 +325,5 @@ describe("testsResolver", () => {
     ]);
 
     await db("tests").where({ path: "anotherTest.test.js" }).del();
-  });
-});
-
-describe("updateTestsGroupResolver", () => {
-  it("updates the group for tests", async () => {
-    const tests = await updateTestsGroupResolver(
-      {},
-      { group_id: "groupId", test_ids: ["testId"] },
-      context
-    );
-
-    expect(tests).toMatchObject([{ group_id: "groupId", id: "testId" }]);
   });
 });

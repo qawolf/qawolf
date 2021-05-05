@@ -6,7 +6,6 @@ import {
   deleteTests,
   findTests,
   findTestsForTeam,
-  updateTestsGroup,
 } from "../models/test";
 import { deleteTestTriggersForTests } from "../models/test_trigger";
 import { createFileForTest } from "../services/gitHub/file";
@@ -19,29 +18,22 @@ import {
   TestsQuery,
   TestSummariesQuery,
   TestSummary,
-  UpdateTestsGroupMutation,
 } from "../types";
 import { slug } from "../utils";
-import {
-  ensureGroupAccess,
-  ensureTeamAccess,
-  ensureTestAccess,
-  ensureUser,
-} from "./utils";
+import { ensureTeamAccess, ensureTestAccess, ensureUser } from "./utils";
 
 /**
  * @returns The new test object
  */
 export const createTestResolver = async (
   _: Record<string, unknown>,
-  { branch, group_id, guide, team_id, url }: CreateTestMutation,
+  { branch, guide, team_id, url }: CreateTestMutation,
   { db, logger, user: contextUser, teams }: Context
 ): Promise<Test> => {
   const log = logger.prefix("createTestResolver");
 
   const user = ensureUser({ logger, user: contextUser });
   const team = ensureTeamAccess({ logger, team_id, teams });
-  if (group_id) await ensureGroupAccess({ group_id, teams }, { db, logger });
 
   log.debug(user.id);
 
@@ -59,7 +51,6 @@ export const createTestResolver = async (
       {
         code: buildTestCode(url),
         creator_id: user.id,
-        group_id,
         guide,
         path: syncToGit ? path : null,
         team_id: team_id,
@@ -172,21 +163,4 @@ export const testsResolver = async (
     },
     { db, logger }
   );
-};
-
-export const updateTestsGroupResolver = async (
-  _: Record<string, unknown>,
-  { group_id, test_ids }: UpdateTestsGroupMutation,
-  { db, logger, teams }: Context
-): Promise<Test[]> => {
-  const log = logger.prefix("updateTestsGroupResolver");
-  log.debug("group", group_id, "tests", test_ids);
-
-  await Promise.all(
-    test_ids.map((test_id) => {
-      return ensureTestAccess({ teams, test_id }, { db, logger });
-    })
-  );
-
-  return updateTestsGroup({ group_id, test_ids }, { db, logger });
 };

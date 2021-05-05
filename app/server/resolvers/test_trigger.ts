@@ -31,9 +31,6 @@ export const testTriggersResolver = async (
   return findTestTriggersForTests(test_ids, { db, logger });
 };
 
-/**
- * @returns Count of test triggers deleted
- */
 export const updateTestTriggersResolver = async (
   _: Record<string, unknown>,
   { add_trigger_id, remove_trigger_id, test_ids }: UpdateTestTriggersMutation,

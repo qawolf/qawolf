@@ -573,6 +573,12 @@ export type UpdateTagMutation = {
   name: string;
 };
 
+export type UpdateTagTestsMutation = {
+  add_tag_id?: string | null;
+  remove_tag_id?: string | null;
+  test_ids: string[];
+};
+
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
