@@ -20,7 +20,7 @@ export default function Actions({ checkedTests }: Props): JSX.Element {
   const testIds = checkedTests.map((t) => t.id);
 
   const handleDeleteClick = (): void => {
-    state.setModal({ name: "deleteTests", tests: checkedTests });
+    state.setModal({ name: "deleteTests", testIds });
   };
 
   const handleTagsClick = (): void => {

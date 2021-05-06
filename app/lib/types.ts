@@ -225,6 +225,7 @@ export type CreateCode = {
 
 export type Modal =
   | "confirmBack"
+  | "createSuite"
   | "createTest"
   | "environments"
   | "deleteTests"
@@ -328,7 +329,6 @@ type SignUp = {
 type ModalState = {
   name: Modal | null;
   testIds?: string[];
-  tests?: SelectedTest[];
 };
 
 export type State = {

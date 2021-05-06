@@ -88,6 +88,7 @@ export const copy = {
   createFirstTestDetail:
     "Create a test for a critical path to find bugs before customers do.",
   createOnline: "Create unlimited tests online",
+  createSuiteDetail: "Select the environment to use when running your tests",
   createTag: "Create tag",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
@@ -287,10 +288,8 @@ export const copy = {
     "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
   runSelectedCode3: "Highlight and run the last line of code,",
   runSelectedCode4: 'which will automatically click this step’s "Next" button.',
-  runTests: (count: number, environment?: string | null): string =>
-    `Run ${count} test${count === 1 ? "" : "s"}${
-      environment ? ` on ${environment}` : ""
-    }`,
+  runTests: (count: number): string =>
+    `Run ${count} test${count === 1 ? "" : "s"}`,
   openVpn: "Connect with OpenVPN",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",

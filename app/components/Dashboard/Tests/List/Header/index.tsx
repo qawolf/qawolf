@@ -1,10 +1,11 @@
 import { Box } from "grommet";
 
-import { ShortTest } from "../../../../lib/types";
-import { copy } from "../../../../theme/copy";
-import { borderSize } from "../../../../theme/theme";
-import CheckBox from "../../../shared/CheckBox";
-import Text from "../../../shared/Text";
+import { ShortTest } from "../../../../../lib/types";
+import { copy } from "../../../../../theme/copy";
+import { borderSize } from "../../../../../theme/theme";
+import CheckBox from "../../../../shared/CheckBox";
+import Text from "../../../../shared/Text";
+import Actions from "./Actions";
 
 type Props = {
   checkedTestIds: string[];
@@ -35,27 +36,31 @@ export default function Header({
     ? copy.selected(checkedTestIds.length)
     : copy.testCount(tests.length);
 
+  const testIds = checkedTestIds.length
+    ? checkedTestIds
+    : tests.map((t) => t.id);
+
   return (
     <Box
       align="center"
       background="gray1"
-      border={
-        tests.length
-          ? { color: "gray3", side: "bottom", size: borderSize.xsmall }
-          : undefined
-      }
+      border={{ color: "gray3", side: "horizontal", size: borderSize.xsmall }}
       direction="row"
       flex={false}
-      pad="small"
+      justify="between"
+      pad={{ horizontal: "medium", vertical: "small" }}
     >
-      <CheckBox
-        checked={checked}
-        indeterminate={indeterminate}
-        onChange={handleClick}
-      />
-      <Text color="gray9" margin={{ left: "small" }} size="componentBold">
-        {label}
-      </Text>
+      <Box align="center" direction="row">
+        <CheckBox
+          checked={checked}
+          indeterminate={indeterminate}
+          onChange={handleClick}
+        />
+        <Text color="gray9" margin={{ left: "small" }} size="componentBold">
+          {label}
+        </Text>
+      </Box>
+      <Actions testIds={testIds} />
     </Box>
   );
 }

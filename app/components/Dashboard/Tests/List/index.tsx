@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
 import { ShortTest, TagsForTest } from "../../../../lib/types";
-import { borderSize } from "../../../../theme/theme";
 import Spinner from "../../../shared/Spinner";
 import Header from "./Header";
 import TestCard from "./TestCard";
@@ -48,7 +47,7 @@ export default function List({
     }
   };
 
-  const testsHtml = tests.map((test, i) => {
+  const testsHtml = tests.map((test) => {
     const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
     const summary = (data?.testSummaries || []).find(
@@ -60,7 +59,6 @@ export default function List({
         isChecked={checkedTestIds.includes(test.id)}
         isSummaryLoading={loading}
         key={test.id}
-        noBorder={!i}
         onCheck={() => handleTestCheck(test.id)}
         summary={summary || null}
         tags={tags}
@@ -70,11 +68,7 @@ export default function List({
   });
 
   return (
-    <Box
-      border={{ color: "gray3", size: borderSize.xsmall }}
-      margin={{ top: "medium" }}
-      round={borderSize.small}
-    >
+    <>
       <Header
         checkedTestIds={checkedTestIds}
         setCheckedTestIds={setCheckedTestIds}
@@ -83,6 +77,6 @@ export default function List({
       <Box overflow={{ vertical: "auto" }}>
         <Box flex={false}>{testsHtml}</Box>
       </Box>
-    </Box>
+    </>
   );
 }

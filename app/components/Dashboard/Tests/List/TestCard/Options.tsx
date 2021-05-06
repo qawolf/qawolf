@@ -8,15 +8,12 @@ import { edgeSize } from "../../../../../theme/theme";
 import Button from "../../../../shared/AppButton";
 import Divider from "../../../../shared/Divider";
 import Drop from "../../../../shared/Drop";
-import Lightning from "../../../../shared/icons/Lightning";
 import More from "../../../../shared/icons/More";
 import Tag from "../../../../shared/icons/Tag";
 import Trash from "../../../../shared/icons/Trash";
 import Option from "../../../../shared/Select/Option";
 
-type Props = {
-  test: ShortTest;
-};
+type Props = { test: ShortTest };
 
 const width = "240px";
 
@@ -32,15 +29,11 @@ export default function Options({ test }: Props): JSX.Element {
   const handleClose = (): void => setIsOpen(false);
 
   const handleDeleteClick = (): void => {
-    state.setModal({ name: "deleteTests", tests: [test] });
+    state.setModal({ name: "deleteTests", testIds });
   };
 
   const handleTagsClick = (): void => {
     state.setModal({ name: "tags", testIds });
-  };
-
-  const handleTriggersClick = (): void => {
-    state.setModal({ name: "triggers", testIds });
   };
 
   return (
@@ -64,11 +57,6 @@ export default function Options({ test }: Props): JSX.Element {
             IconComponent={Tag}
             label={copy.editTags}
             onClick={handleTagsClick}
-          />
-          <Option
-            IconComponent={Lightning}
-            label={copy.editTriggers}
-            onClick={handleTriggersClick}
           />
           <Divider margin={{ vertical: "xxxsmall" }} />
           <Option

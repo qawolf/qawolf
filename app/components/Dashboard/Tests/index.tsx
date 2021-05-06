@@ -2,11 +2,7 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import {
-  useTagsForTests,
-  useTestTriggers,
-  useTriggers,
-} from "../../../hooks/queries";
+import { useTagsForTests } from "../../../hooks/queries";
 import { useTests } from "../../../hooks/tests";
 import { filterTests } from "../helpers";
 import Header from "./Header";
@@ -31,16 +27,10 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   });
   const testTags = tagsData?.tagsForTests || [];
 
-  const { data: triggersData } = useTriggers({ team_id: teamId });
-
-  const { data: testTriggersData } = useTestTriggers({
-    test_ids: testsData.map((t) => t.id),
-  });
-
   const tests = filterTests({
     search,
     tests: loading ? null : testsData,
-    testTriggers: testTriggersData?.testTriggers,
+    // testTriggers: testTriggersData?.testTriggers,
     trigger_id,
   });
 
@@ -55,24 +45,11 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
     setCheckedTestIds([]);
   }, [testsData]);
 
-  const testTriggers = testTriggersData?.testTriggers || [];
-  const triggers = triggersData?.triggers || [];
-
-  const checkedTests = (tests || []).filter((t) =>
-    checkedTestIds.includes(t.id)
-  );
   const testIds = testsData.map((t) => t.id);
 
   return (
-    <Box pad="medium" width="full">
-      <Header
-        checkedTests={checkedTests}
-        search={search}
-        setSearch={setSearch}
-        tests={tests}
-        testTriggers={testTriggers}
-        triggers={triggers}
-      />
+    <Box width="full">
+      <Header search={search} setSearch={setSearch} />
       <List
         checkedTestIds={checkedTestIds}
         setCheckedTestIds={setCheckedTestIds}

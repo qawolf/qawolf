@@ -14,7 +14,6 @@ import TestName from "./TestName";
 type Props = {
   isChecked: boolean;
   isSummaryLoading: boolean;
-  noBorder?: boolean;
   onCheck: () => void;
   summary: TestSummary | null;
   tags: Tag[];
@@ -24,7 +23,6 @@ type Props = {
 export default function TestCard({
   isChecked,
   isSummaryLoading,
-  noBorder,
   onCheck,
   summary,
   tags,
@@ -36,10 +34,10 @@ export default function TestCard({
   return (
     <Box
       align="center"
-      border={noBorder ? undefined : { ...border, side: "top" }}
+      border={{ ...border, side: "bottom" }}
       direction="row"
       justify="between"
-      pad={{ horizontal: "small" }}
+      pad={{ horizontal: "medium" }}
     >
       <Box align="center" direction="row" fill="horizontal">
         <Box flex={false} margin={{ right: "small" }}>

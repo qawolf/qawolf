@@ -5,6 +5,7 @@ import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
 import ConfirmBack from "./ConfirmBack";
+import CreateSuite from "./CreateSuite";
 import CreateTest from "./CreateTest";
 import DeleteTests from "./DeleteTests";
 import Environments from "./Environments";
@@ -15,7 +16,7 @@ export default function Modals(): JSX.Element {
   const { pathname } = useRouter();
 
   const { modal } = useContext(StateContext);
-  const { name, testIds, tests } = modal || {};
+  const { name, testIds } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
@@ -32,12 +33,16 @@ export default function Modals(): JSX.Element {
     return <ConfirmBack closeModal={closeModal} />;
   }
 
+  if (isTests && name === "createSuite" && testIds) {
+    return <CreateSuite closeModal={closeModal} testIds={testIds} />;
+  }
+
   if ((isGetStarted || isTests) && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (isTests && name === "deleteTests" && tests) {
-    return <DeleteTests closeModal={closeModal} tests={tests} />;
+  if (isTests && name === "deleteTests" && testIds) {
+    return <DeleteTests closeModal={closeModal} testIds={testIds} />;
   }
 
   if ((isDashboard || isTest) && name === "environments") {

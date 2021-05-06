@@ -1,41 +1,26 @@
 import { Box } from "grommet";
 
-import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { state } from "../../../../lib/state";
 import { copy } from "../../../../theme/copy";
+import Button from "../../../shared/AppButton";
+import Add from "../../../shared/icons/Add";
 import Search from "../../../shared/Search";
 import Text from "../../../shared/Text";
-import Actions from "./Actions";
 import Branches from "./Branches";
-import Buttons from "./Buttons";
-import SelectTrigger from "./SelectTrigger";
 
 type Props = {
-  checkedTests: ShortTest[];
   search: string;
   setSearch: (search: string) => void;
-  tests: ShortTest[] | null;
-  testTriggers: TestTriggers[];
-  triggers: Trigger[];
 };
 
-export default function Header({
-  checkedTests,
-  search,
-  setSearch,
-  testTriggers,
-  tests,
-  triggers,
-}: Props): JSX.Element {
-  const selectedTests = checkedTests.length ? checkedTests : tests;
+export default function Header({ search, setSearch }: Props): JSX.Element {
+  const handleCreateTestClick = (): void => {
+    state.setModal({ name: "createTest" });
+  };
 
   return (
-    <Box flex={false}>
-      <Box
-        align="center"
-        direction="row"
-        justify="between"
-        margin={{ bottom: "medium" }}
-      >
+    <Box flex={false} pad="medium">
+      <Box align="center" direction="row" justify="between">
         <Box align="center" direction="row">
           <Text
             color="gray9"
@@ -44,16 +29,17 @@ export default function Header({
           >
             {copy.tests}
           </Text>
-          <Branches />
+          <Search search={search} setSearch={setSearch} />
         </Box>
         <Box align="center" direction="row">
-          <Actions checkedTests={checkedTests} />
-          <Buttons tests={selectedTests} />
+          <Branches />
+          <Button
+            IconComponent={Add}
+            label={copy.createTest}
+            onClick={handleCreateTestClick}
+            type="primary"
+          />
         </Box>
-      </Box>
-      <Box align="center" direction="row" justify="between">
-        <Search search={search} setSearch={setSearch} />
-        <SelectTrigger testTriggers={testTriggers} triggers={triggers} />
       </Box>
     </Box>
   );
