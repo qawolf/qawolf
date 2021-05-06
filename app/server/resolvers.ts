@@ -37,7 +37,7 @@ import {
   testHistoryResolver,
   updateRunResolver,
 } from "./resolvers/run";
-import { runnerResolver, updateRunnerResolver } from "./resolvers/runner";
+import { runnerResolver } from "./resolvers/runner";
 import {
   createSlackIntegrationResolver,
   createSlackIntegrationUrlResolver,
@@ -121,7 +121,6 @@ export const resolvers = {
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
     updateGroup: updateGroupResolver,
     updateRun: updateRunResolver,
-    updateRunner: updateRunnerResolver,
     updateTeam: updateTeamResolver,
     updateTestTriggers: updateTestTriggersResolver,
     updateTestsGroup: updateTestsGroupResolver,

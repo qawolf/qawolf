@@ -10,7 +10,7 @@ import {
   UpdateRun,
   updateRun,
 } from "../models/run";
-import { findRunner, resetRunner } from "../models/runner";
+import { findRunner } from "../models/runner";
 import {
   Context,
   IdQuery,
@@ -161,13 +161,11 @@ export const updateRunResolver = async (
       updates.status = status;
     }
 
-    // update the run before resetRunner
-    // otherwise the run will be marked as expired
     const updatedRun = await updateRun(updates, { db: trx, logger });
 
-    if (["fail", "pass"].includes(status)) {
-      await resetRunner({ run_id: id, type: "expire" }, { db: trx, logger });
-    }
+    // if (["fail", "pass"].includes(status)) {
+    // TODO notify runner pool
+    // }
 
     return updatedRun;
   });

@@ -38,12 +38,6 @@ type UpdateTest = {
   runner_requested_at?: null;
 };
 
-type UpdateTestToPending = {
-  id: string;
-  runner_locations: string[];
-  runner_requested_branch?: string;
-};
-
 type UpdateTestsGroup = {
   group_id: string | null;
   test_ids: string[];
@@ -68,35 +62,6 @@ export const buildTestName = async (
   }
 
   return formatTestName(proposedName, testNumber);
-};
-
-export const countIncompleteTests = async (
-  defaultLocation: string,
-  { db, logger }: ModelOptions
-): Promise<LocationCount[]> => {
-  const log = logger.prefix("countIncompleteTests");
-
-  const countQuery = `SELECT COUNT(s.*), s.location
-  FROM (
-    SELECT coalesce(runner_locations::json->> 0, ?) as location
-    FROM tests
-    WHERE runner_requested_at IS NOT NULL
-    UNION ALL
-    SELECT location FROM runners
-    WHERE test_id IS NOT NULL
-  ) as s
-  GROUP BY s.location`;
-
-  const { rows } = await db.raw(countQuery, [defaultLocation]);
-
-  const result = rows.map((row) => ({
-    count: Number(row.count),
-    location: row.location,
-  }));
-
-  log.debug(result);
-
-  return result;
 };
 
 export const countTestsForTeam = async (
@@ -213,36 +178,6 @@ export const findEnabledTestsForTrigger = async (
   log.debug(`found ${tests.length} enabled tests for trigger ${trigger_id}`);
 
   return tests;
-};
-
-export const findPendingTest = async (
-  location: string | null,
-  { db, logger }: ModelOptions
-): Promise<Pick<
-  Test,
-  "id" | "runner_requested_at" | "runner_requested_branch"
-> | null> => {
-  const log = logger.prefix("findPendingTest");
-
-  let query = db("tests")
-    .select("id")
-    .select("runner_requested_at")
-    .select("runner_requested_branch")
-    .whereNotNull("runner_requested_at")
-    .where({ deleted_at: null });
-
-  if (location) {
-    query = query.where("runner_locations", "like", `%${location}%`);
-  }
-
-  const result = await query.orderBy("runner_requested_at", "asc").first();
-
-  if (result) {
-    log.debug("found", result, "for location", location);
-    return result;
-  }
-
-  return null;
 };
 
 export const findTest = async (
@@ -377,36 +312,6 @@ export const updateTest = async (
 
     return { ...existingTest, ...updates };
   });
-};
-
-export const updateTestToPending = async (
-  options: UpdateTestToPending,
-  { db, logger }: ModelOptions
-): Promise<boolean> => {
-  const log = logger.prefix("updateTestToPending");
-
-  const runner_locations = options.runner_locations?.length
-    ? JSON.stringify(options.runner_locations.slice(0, 2))
-    : null;
-
-  // do not update if there is a runner assigned
-  // this could happen during a concurrent assignment
-  const sql = `UPDATE tests
-  SET runner_locations = ?, runner_requested_at = now(), runner_requested_branch = ?
-  WHERE id = ? 
-    AND runner_requested_at IS NULL 
-    AND id NOT IN (SELECT test_id FROM runners)`;
-
-  const result = await db.raw(sql, [
-    runner_locations,
-    options.runner_requested_branch || null,
-    options.id,
-  ]);
-
-  const didUpdate = result.rowCount > 0;
-  log.debug(options, didUpdate ? "updated" : "skipped");
-
-  return didUpdate;
 };
 
 export const updateTestsGroup = async (

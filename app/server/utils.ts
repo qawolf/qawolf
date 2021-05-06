@@ -55,22 +55,6 @@ export const buildLoginCode = (length = 6): string => {
   return code;
 };
 
-export const buildRunnerHost = (options: RunnerUrl): string => {
-  if (options.location === "local") return `localhost`;
-
-  return `${options.location}.qawolf.com/runner/${options.id}`;
-};
-
-export const buildRunnerStatusUrl = (options: RunnerUrl): string => {
-  const protocol = options.location === "local" ? "http" : "https";
-  return `${protocol}://${buildRunnerHost(options)}/.qawolf/runner/status`;
-};
-
-export const buildRunnerWsUrl = (options: RunnerUrl): string => {
-  const protocol = options.location === "local" ? "ws" : "wss";
-  return `${protocol}://${buildRunnerHost(options)}/.qawolf`;
-};
-
 export const cuid = (): string => buildCuid();
 
 export const isCorrectCode = async ({

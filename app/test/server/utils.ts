@@ -16,9 +16,7 @@ import {
   JobName,
   PullRequestComment,
   Run,
-  Runner,
   RunStatus,
-  SaveArtifacts,
   Suite,
   Team,
   TeamPlan,
@@ -103,20 +101,6 @@ type BuildRun = {
   test_id?: string;
 };
 
-type BuildRunner = {
-  api_key?: string;
-  created_at?: string;
-  deleted_at?: string;
-  deployed_at?: string;
-  health_checked_at?: string;
-  i?: number;
-  location?: string;
-  ready_at?: string;
-  run_id?: string;
-  session_expires_at?: string;
-  test_id?: string;
-};
-
 type BuildSuite = {
   created_at?: string;
   creator_id?: string;
@@ -181,13 +165,6 @@ type BuildUser = {
   i?: number;
   is_enabled?: boolean;
 };
-
-export const buildArtifacts = (): SaveArtifacts => ({
-  gifUrl: "gif_url",
-  jsonUrl: "json_url",
-  logsUrl: "logs_url",
-  videoUrl: "video_url",
-});
 
 export const buildEmail = ({
   created_at,
@@ -378,36 +355,6 @@ export const buildRun = ({
     status: status || "created",
     suite_id: suite_id || null,
     test_id: test_id || "testId",
-  };
-};
-
-export const buildRunner = ({
-  api_key,
-  created_at,
-  deleted_at,
-  deployed_at,
-  i,
-  health_checked_at,
-  location,
-  ready_at,
-  run_id,
-  session_expires_at,
-  test_id,
-}: BuildRunner): Runner => {
-  const finalI = i || 1;
-
-  return {
-    api_key: api_key || null,
-    created_at: created_at || minutesFromNow(),
-    deleted_at: deleted_at || null,
-    deployed_at: deployed_at || null,
-    id: `runner${finalI === 1 ? "" : i}Id`,
-    health_checked_at: health_checked_at || null,
-    location: location || "westus2",
-    ready_at: ready_at || null,
-    run_id: run_id || null,
-    session_expires_at: session_expires_at || null,
-    test_id: test_id || null,
   };
 };
 

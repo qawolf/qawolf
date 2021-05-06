@@ -1,5 +1,4 @@
 import { RunStatus } from "../../../lib/types";
-import * as runnerModel from "../../../server/models/runner";
 import {
   RETRY_ERRORS,
   runCountResolver,
@@ -16,7 +15,6 @@ import { Suite } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import {
   buildRun,
-  buildRunner,
   buildSuite,
   buildTeam,
   buildTeamUser,
@@ -50,12 +48,6 @@ beforeAll(async () => {
   await db("tests").insert([test, buildTest({ i: 2, name: "testName" })]);
 
   await db("runs").insert(runs);
-
-  await db("runners").insert([
-    buildRunner({ api_key: "apiKey", run_id: "runId" }),
-    buildRunner({ api_key: "apiKey", i: 2, run_id: "run2Id" }),
-    buildRunner({ api_key: "apiKey", i: 3, run_id: "run3Id" }),
-  ]);
 });
 
 afterEach(() => jest.restoreAllMocks());
@@ -134,7 +126,6 @@ describe("testHistoryResolver", () => {
 describe("updateRunResolver", () => {
   beforeEach(() => {
     jest.spyOn(alertService, "sendAlert").mockResolvedValue();
-    jest.spyOn(runnerModel, "resetRunner").mockResolvedValue();
     jest.spyOn(runResolver, "validateApiKey").mockResolvedValue();
   });
 
@@ -170,7 +161,6 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "fail" });
-    expect(runnerModel.resetRunner).toBeCalled();
   });
 
   it("updates the run and expires the runner if run succeeded", async () => {
@@ -183,7 +173,8 @@ describe("updateRunResolver", () => {
     const run = await db("runs").select("*").where({ id: "run2Id" }).first();
 
     expect(run).toMatchObject({ current_line: 2, status: "pass" });
-    expect(runnerModel.resetRunner).toBeCalled();
+    // TODO
+    // expect(runnerModel.resetRunner).toBeCalled();
   });
 
   it("retries the run if shouldRetry is true", async () => {
@@ -200,7 +191,8 @@ describe("updateRunResolver", () => {
       started_at: null,
       status: "created",
     });
-    expect(runnerModel.resetRunner).toBeCalled();
+    // TODO
+    // expect(runnerModel.resetRunner).toBeCalled();
   });
 });
 

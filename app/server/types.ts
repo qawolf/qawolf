@@ -3,14 +3,16 @@ import knex, { Transaction } from "knex";
 import { Logger } from "./Logger";
 
 // AWS types
+
 export type SaveArtifacts = {
-  gifUrl: string | null;
-  jsonUrl: string | null;
+  gifUrl: string;
+  jsonUrl: string;
   logsUrl: string;
-  videoUrl: string | null;
+  videoUrl: string;
 };
 
 // Context type
+
 export type Context = {
   api_key: string | null;
   db: knex;
@@ -218,20 +220,8 @@ export type Run = {
 };
 
 export type Runner = {
-  api_key?: string | null;
-  created_at: string;
-  deleted_at?: string | null;
-  deployed_at?: string | null;
-  health_checked_at?: string | null;
-  id: string;
-  location: string;
-  ready_at?: string | null;
-  restarted_at?: string | null;
-  run_id?: string | null;
-  session_expires_at?: string | null;
-  test_branch?: string | null;
-  test_id?: string | null;
-  updated_at?: string;
+  vnc_url?: string;
+  ws_url?: string;
 };
 
 export type RunnerLocation = {
@@ -468,20 +458,6 @@ export type DeleteTestsMutation = {
   ids: string[];
 };
 
-export type RunnerRun = {
-  artifacts: SaveArtifacts;
-  code: string;
-  env: string;
-  helpers: string;
-  id: string;
-  test_id: string;
-};
-
-export type RunTestStatus = {
-  message: string;
-  pass: boolean;
-};
-
 export type SaveEditorMutation = {
   branch?: string | null;
   code?: string | null;
@@ -565,12 +541,6 @@ export type UpdateRunMutation = {
   status: RunStatus;
 };
 
-export type UpdateRunnerMutation = {
-  id: string;
-  is_healthy?: boolean;
-  is_ready?: boolean;
-};
-
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
@@ -644,11 +614,6 @@ export type RunResult = Run & {
 
 export type RunWithGif = Run & {
   gif_url: string | null;
-};
-
-export type RunnerResult = {
-  api_key?: string;
-  ws_url?: string;
 };
 
 export type SuiteResult = Suite & {
