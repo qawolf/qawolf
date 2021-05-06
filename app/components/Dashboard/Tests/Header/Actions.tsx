@@ -7,6 +7,7 @@ import { borderSize, colors, edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import Divider from "../../../shared/Divider";
 import Lightning from "../../../shared/icons/Lightning";
+import Tag from "../../../shared/icons/Tag";
 import Trash from "../../../shared/icons/Trash";
 
 type Props = {
@@ -16,18 +17,28 @@ type Props = {
 export default function Actions({ checkedTests }: Props): JSX.Element {
   if (!checkedTests.length) return null;
 
+  const testIds = checkedTests.map((t) => t.id);
+
   const handleDeleteClick = (): void => {
     state.setModal({ name: "deleteTests", tests: checkedTests });
   };
+
+  const handleTagsClick = (): void => {
+    state.setModal({ name: "tags", testIds });
+  };
+
   const handleTriggersClick = (): void => {
-    state.setModal({
-      name: "triggers",
-      testIds: checkedTests.map((t) => t.id),
-    });
+    state.setModal({ name: "triggers", testIds });
   };
 
   return (
     <Box align="center" direction="row">
+      <Button
+        IconComponent={Tag}
+        label={copy.editTags}
+        onClick={handleTagsClick}
+        type="ghost"
+      />
       <Button
         IconComponent={Lightning}
         label={copy.editTriggers}

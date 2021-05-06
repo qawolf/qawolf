@@ -152,7 +152,7 @@ export const updateTag = async (
     log.error(error.message);
 
     if (error.message.includes("tags_unique_name_team_id")) {
-      throw new Error("tag name must be unique");
+      throw new ClientError("tag name must be unique");
     }
 
     throw error;

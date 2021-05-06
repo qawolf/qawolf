@@ -86,6 +86,9 @@ export const client = new ApolloClient({
       Editor: {
         keyFields: ["test", ["id"]],
       },
+      TagsForTest: {
+        keyFields: ["test_id"],
+      },
       TestSummary: {
         keyFields: ["test_id"],
       },

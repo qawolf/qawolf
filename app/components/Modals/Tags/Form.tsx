@@ -1,6 +1,7 @@
 import { ChangeEvent, useContext, useState } from "react";
 
-import { useCreateTag } from "../../../hooks/mutations";
+import { useCreateTag, useUpdateTag } from "../../../hooks/mutations";
+import { Tag } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import TextInput from "../../shared/AppTextInput";
 import ListItemForm from "../../shared/ListItemForm";
@@ -8,17 +9,19 @@ import { StateContext } from "../../StateContext";
 
 type Props = {
   onCancel: () => void;
+  tag?: Tag;
 };
 
 export const id = "tag";
 
-export default function Form({ onCancel }: Props): JSX.Element {
+export default function Form({ tag, onCancel }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(tag?.name || "");
   const [nameError, setNameError] = useState("");
 
   const [createTag, { loading: isCreateLoading }] = useCreateTag();
+  const [updateTag, { loading: isEditLoading }] = useUpdateTag();
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
@@ -32,12 +35,18 @@ export default function Form({ onCancel }: Props): JSX.Element {
 
     setNameError("");
 
-    createTag({ variables: { name, team_id: teamId } }).then(onCancel);
+    if (tag) {
+      updateTag({
+        variables: { id: tag.id, name },
+      }).then(onCancel);
+    } else {
+      createTag({ variables: { name, team_id: teamId } }).then(onCancel);
+    }
   };
 
   return (
     <ListItemForm
-      isSaveDisabled={isCreateLoading}
+      isSaveDisabled={isCreateLoading || isEditLoading}
       onCancel={onCancel}
       onSave={handleSave}
     >

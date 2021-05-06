@@ -10,6 +10,7 @@ import Divider from "../../../../shared/Divider";
 import Drop from "../../../../shared/Drop";
 import Lightning from "../../../../shared/icons/Lightning";
 import More from "../../../../shared/icons/More";
+import Tag from "../../../../shared/icons/Tag";
 import Trash from "../../../../shared/icons/Trash";
 import Option from "../../../../shared/Select/Option";
 
@@ -22,6 +23,7 @@ const width = "240px";
 export default function Options({ test }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const testIds = [test.id];
 
   const handleClick = (): void => {
     setIsOpen((prev) => !prev);
@@ -33,8 +35,12 @@ export default function Options({ test }: Props): JSX.Element {
     state.setModal({ name: "deleteTests", tests: [test] });
   };
 
+  const handleTagsClick = (): void => {
+    state.setModal({ name: "tags", testIds });
+  };
+
   const handleTriggersClick = (): void => {
-    state.setModal({ name: "triggers", testIds: [test.id] });
+    state.setModal({ name: "triggers", testIds });
   };
 
   return (
@@ -54,6 +60,11 @@ export default function Options({ test }: Props): JSX.Element {
           target={ref.current}
           width={width}
         >
+          <Option
+            IconComponent={Tag}
+            label={copy.editTags}
+            onClick={handleTagsClick}
+          />
           <Option
             IconComponent={Lightning}
             label={copy.editTriggers}

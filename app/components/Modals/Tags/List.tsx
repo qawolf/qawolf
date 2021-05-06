@@ -9,10 +9,12 @@ import Buttons from "../../shared/Modal/Buttons";
 import Text from "../../shared/Text";
 import Form, { id as formInputId } from "./Form";
 import Header from "./Header";
+import TagListItems from "./TagListItems";
 
 type Props = {
   closeModal: () => void;
   isLoading: boolean;
+  onDelete: (tag: Tag) => void;
   tags: Tag[] | null;
   testIds: string[];
   testTags: TagsForTest[];
@@ -21,6 +23,7 @@ type Props = {
 export default function List({
   closeModal,
   isLoading,
+  onDelete,
   tags,
   testIds,
   testTags,
@@ -40,9 +43,24 @@ export default function List({
     document.getElementById(formInputId)?.focus();
   };
 
+  const handleEdit = (tag: Tag): void => {
+    setEditTagId(tag.id);
+  };
+
   let innerHtml: ReactNode;
 
   if (!isLoading && tags?.length) {
+    innerHtml = (
+      <TagListItems
+        editTagId={editTagId}
+        onCancel={handleCancel}
+        onDelete={onDelete}
+        onEdit={handleEdit}
+        tags={tags}
+        testIds={testIds}
+        testTags={testTags}
+      />
+    );
   } else {
     innerHtml = (
       <Text

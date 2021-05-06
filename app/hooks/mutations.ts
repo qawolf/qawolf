@@ -49,6 +49,7 @@ import {
   Invite,
   State,
   Tag,
+  TagsForTest,
   Team,
   Test,
   TestTriggers,
@@ -318,7 +319,7 @@ type UpdateTagVariables = {
 };
 
 type UpdateTagTestsData = {
-  updateTagTests: Test[];
+  updateTagTests: TagsForTest[];
 };
 
 type UpdateTagTestsVariables = {
@@ -583,7 +584,7 @@ export const useCreateTag = (): MutationTuple<
   return useMutation<CreateTagData, CreateTagVariables>(createTagMutation, {
     awaitRefetchQueries: true,
     onError,
-    refetchQueries: ["tags"], // TODO: include "tagsForTests"?
+    refetchQueries: ["tags", "tagsForTests"],
   });
 };
 

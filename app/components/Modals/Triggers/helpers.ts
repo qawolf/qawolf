@@ -2,13 +2,13 @@ import capitalize from "lodash/capitalize";
 
 import {
   DeploymentProvider,
+  SelectState,
   TestTriggers,
   Trigger,
   TriggerFields,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 
-export type SelectState = "all" | "none" | "some";
 export type TriggerMode = "api" | "deployment" | "schedule";
 
 type BuildTriggerFields = {

@@ -416,6 +416,7 @@ export const useTags = (
 ): QueryResult<TagsData, TagsVariables> => {
   return useQuery<TagsData, TagsVariables>(tagsQuery, {
     fetchPolicy,
+    nextFetchPolicy,
     onError,
     skip: !variables.team_id,
     variables,

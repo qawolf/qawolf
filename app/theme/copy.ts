@@ -122,6 +122,7 @@ export const copy = {
   easyDebugDetail:
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
+  editTags: "Edit tags",
   editTagsDetail: "Choose which tags you want to assign",
   editTagsForTests: (count: number): string =>
     `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,

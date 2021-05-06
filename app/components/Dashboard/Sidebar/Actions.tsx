@@ -12,7 +12,6 @@ import DotCircle from "../../shared/icons/DotCircle";
 import Lightning from "../../shared/icons/Lightning";
 import List from "../../shared/icons/List";
 import Share from "../../shared/icons/Share";
-import Tag from "../../shared/icons/Tag";
 import DashboardLink from "./DashboardLink";
 
 export default function Actions(): JSX.Element {
@@ -20,10 +19,6 @@ export default function Actions(): JSX.Element {
 
   const handleEnvironmentsClick = (): void => {
     state.setModal({ name: "environments" });
-  };
-
-  const handleTagsClick = (): void => {
-    state.setModal({ name: "tags", testIds: [] });
   };
 
   const handleTriggersClick = (): void => {
@@ -54,11 +49,6 @@ export default function Actions(): JSX.Element {
         IconComponent={Configure}
         label={copy.environments}
         onClick={handleEnvironmentsClick}
-      />
-      <DashboardLink
-        IconComponent={Tag}
-        label={copy.tags}
-        onClick={handleTagsClick}
       />
       <DashboardLink
         IconComponent={Lightning}

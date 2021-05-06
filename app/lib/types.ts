@@ -250,6 +250,8 @@ export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
+export type SelectState = "all" | "none" | "some";
+
 export type SelectedTest = {
   id: string;
   name: string;
