@@ -243,6 +243,7 @@ export const copy = {
   noPassword: "Please provide your password",
   noTrigger: "No trigger",
   none: "None",
+  notAvailable: "Not available",
   notFound: "(404. Page not found.)",
   notRunYet: "Not run yet",
   notStarted: "Preparing",
