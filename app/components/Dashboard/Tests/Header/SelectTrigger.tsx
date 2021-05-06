@@ -21,15 +21,14 @@ export default function SelectTrigger({
 }: Props): JSX.Element {
   const { replace, query } = useRouter();
 
-  const groupId = (query.group_id as string) || null;
   const triggerId = query.trigger_id as string;
 
   const handleAllTriggersClick = (): void => {
-    replace(buildTestsPath(groupId, null)); // clear query
+    replace(buildTestsPath(null)); // clear query
   };
 
   const handleTriggerClick = (triggerId: string): void => {
-    replace(buildTestsPath(groupId, triggerId));
+    replace(buildTestsPath(triggerId));
   };
 
   const optionsHtml = triggers.map((trigger) => {
