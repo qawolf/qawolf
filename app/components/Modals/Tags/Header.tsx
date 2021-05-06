@@ -12,14 +12,14 @@ export default function Header({ closeModal, testCount }: Props): JSX.Element {
     <>
       <ModalHeader
         closeModal={closeModal}
-        label={testCount ? copy.editTagsForTests(testCount) : copy.tags}
+        label={copy.editTagsForTests(testCount)}
       />
       <Text
         color="gray8"
         margin={{ bottom: "medium", top: "xxsmall" }}
         size="componentParagraph"
       >
-        {testCount ? copy.editTagsDetail : copy.tagsDetail}
+        {copy.editTagsDetail}
       </Text>
     </>
   );

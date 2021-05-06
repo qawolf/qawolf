@@ -25,7 +25,7 @@ export default function ListItemForm({
         flex={false}
         margin={{ vertical: "xxsmall" }}
       >
-        <Box direction="row" justify="between">
+        <Box direction="row" fill="horizontal" justify="between">
           {children}
         </Box>
         <Button

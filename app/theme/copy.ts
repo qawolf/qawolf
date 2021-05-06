@@ -230,6 +230,7 @@ export const copy = {
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
+  noCommas: "No commas",
   noEmail: "Please enter a valid email address",
   noHistory: "No history yet",
   noMobile:
@@ -295,6 +296,7 @@ export const copy = {
   selector: "Selector",
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 6`,
+  tagName: "Tag name",
   tagline: "Create tests online with your team and run them in 100% parallel",
   tags: "Tags",
   toggleCreateCode: "Toggle code creation",
@@ -340,7 +342,6 @@ export const copy = {
   stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeSuccess: "Thanks for subscribing 🎉",
-  tagsDetail: "Use tags to organize your tests",
   tagsEmpty: "No tags created",
   team: "Team",
   teamName: "Team name",
