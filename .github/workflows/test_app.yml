@@ -15,7 +15,8 @@ jobs:
       postgres:
         image: postgres:12
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: qawolf
+          POSTGRES_PASSWORD: qawolf
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         ports:
           - 5432:5432
@@ -55,8 +56,8 @@ jobs:
           JWT_EXPIRATION: 30d
           JWT_SECRET: secret
           # from https://node-postgres.com/features/connecting
-          PGUSER: postgres
-          PGPASSWORD: postgres
+          PGUSER: qawolf
+          PGPASSWORD: qawolf
           QAWOLF_AWS_REGION: us-west-1
           SENDGRID_WEBHOOK_SECRET: secret
           SLACK_CLIENT_ID: client-id

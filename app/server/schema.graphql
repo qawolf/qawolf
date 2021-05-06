@@ -1,18 +1,3 @@
-"URLs where artifacts from a test run can be found"
-type Artifacts {
-  "Secure URL for a GIF of a test run"
-  gifUrl: String
-
-  "Secure URL for JSON video metadata from a test run"
-  jsonUrl: String
-
-  "Secure URL for the logs of a test run"
-  logsUrl: String!
-
-  "Secure URL for the video of a test run"
-  videoUrl: String
-}
-
 "A grouper for a user with their access token"
 type AuthenticatedUser {
   "An access token that can be used to authenticate future requests"
@@ -253,35 +238,11 @@ type Run {
 
 "Connection information for a test runner"
 type Runner {
-  "The API key associated with the test runner"
-  api_key: String
+  "The VNC URL"
+  vnc_url: String
 
-  "The WebSockets URL for connecting to the runner"
+  "The WebSockets URL"
   ws_url: String
-}
-
-"Information needed by a test runner to run a single test"
-type RunnerRun {
-  "The secure URLs at which to store artifacts"
-  artifacts: Artifacts!
-
-  "Test code to run"
-  code: String!
-
-  """
-  Environment variables as a JSON key:value object string. The runner
-  makes these available on `process.env`.
-  """
-  env: String!
-
-  "Team helper code, for sharing functionality between tests"
-  helpers: String!
-
-  "The RunnerRun ID"
-  id: ID!
-
-  "ID of the record for the running test"
-  test_id: ID!
 }
 
 "A response from the sendLoginCode mutation"
@@ -1100,65 +1061,6 @@ type Mutation {
     "New name of the group"
     name: String!
   ): Group!
-
-  """
-  Updates information about a test run by run ID. A runner service calls
-  this to provide status updates.
-
-  An API key is needed to call this mutation.
-  """
-  updateRun(
-    """
-    Which line of code is currently being executed by the runner.
-    If not provided, defaults to `1`.
-    """
-    current_line: Int
-
-    """
-    The run's error.
-    """
-    error: String
-
-    """
-    The ID of the run to update
-    """
-    id: ID!
-
-    """
-    The current status of the run
-    """
-    status: RunStatus!
-  ): Run!
-
-  """
-  Updates information about a test runner by runner ID. A
-  runner service calls this to provide status updates.
-
-  You are expected to provide either `is_healthy` or `is_ready`
-  but not both. If both are provided, only `is_ready` is
-  used. If neither are provided, there will be an error.
-
-  If the runner has no suite run currently associated with it,
-  this will return `null`.
-
-  An API key is needed to call this mutation.
-  """
-  updateRunner(
-    """
-    The ID of the runner to update
-    """
-    id: ID!
-
-    """
-    Whether the runner is currently in a healthy state
-    """
-    is_healthy: Boolean
-
-    """
-    Whether the runner is currently in a ready state
-    """
-    is_ready: Boolean
-  ): RunnerRun
 
   """
   Updates a team by ID.

@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 
 services:
   app:
@@ -34,7 +34,8 @@ services:
       DEBUG: "qawolf:*"
       QAWOLF_API_URL: "http://app:3000"
     ports:
-      - 26367:26367
+      - 4000:4000
+      - 5000:5000
 
 volumes:
   pg-data:

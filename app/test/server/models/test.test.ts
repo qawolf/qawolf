@@ -1,15 +1,11 @@
 import * as testModel from "../../../server/models/test";
-import {
-  countTestsForTeam,
-  updateTestToPending,
-} from "../../../server/models/test";
+import { countTestsForTeam } from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
   buildGroup,
-  buildRunner,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -20,11 +16,9 @@ import {
 const {
   buildTestName,
   createTest,
-  countIncompleteTests,
   deleteTests,
   findEnabledTests,
   findEnabledTestsForTrigger,
-  findPendingTest,
   findTest,
   findTestsForTeam,
   findTests,
@@ -365,100 +359,6 @@ describe("findEnabledTestsForTrigger", () => {
     expect(tests).toMatchObject([
       { id: "test2Id", is_enabled: true, team_id: "teamId" },
     ]);
-  });
-});
-
-describe("pending tests", () => {
-  beforeAll(async () => {
-    await db("tests").insert([
-      buildTest({}),
-      buildTest({ i: 2 }),
-      buildTest({
-        i: 3,
-        runner_locations: ["eastus2"],
-        runner_requested_at: minutesFromNow(1),
-      }),
-      buildTest({
-        i: 4,
-        runner_locations: ["eastus2"],
-        runner_requested_at: minutesFromNow(),
-        runner_requested_branch: "feat-a",
-      }),
-      buildTest({
-        i: 5,
-        runner_locations: ["westus2"],
-        runner_requested_at: minutesFromNow(),
-      }),
-    ]);
-
-    await db("runners").insert(buildRunner({ test_id: "testId" }));
-  });
-
-  afterAll(async () => {
-    await db("runners").del();
-    await db("tests").del();
-  });
-
-  describe("countIncompleteTests", () => {
-    it("counts tests assigned to and requesting a runner", async () => {
-      const result = await countIncompleteTests("eastus2", options);
-      result.sort((a, b) => (a < b ? 1 : -1));
-
-      expect(result).toEqual([
-        { count: 2, location: "eastus2" },
-        { count: 2, location: "westus2" },
-      ]);
-    });
-  });
-
-  describe("findPendingTest", () => {
-    it("returns the first test that requested a runner", async () => {
-      const pending = await findPendingTest("eastus2", options);
-      expect(pending).toMatchObject({
-        id: "test4Id",
-        runner_requested_at: expect.any(Date),
-        runner_requested_branch: "feat-a",
-      });
-    });
-  });
-
-  describe("updateTestToPending", () => {
-    it("does not update a test that is assigned a runner", async () => {
-      const didUpdate = await updateTestToPending(
-        { id: "testId", runner_locations: ["eastus2"] },
-        options
-      );
-      expect(didUpdate).toEqual(false);
-    });
-
-    it("does not update a test that is already pending", async () => {
-      const didUpdate = await updateTestToPending(
-        { id: "test3Id", runner_locations: ["eastus2"] },
-        options
-      );
-      expect(didUpdate).toEqual(false);
-    });
-
-    it("updates the test to pending", async () => {
-      const didUpdate = await updateTestToPending(
-        {
-          id: "test2Id",
-          runner_locations: ["westus2", "eastus2", "centralindia"],
-          runner_requested_branch: "main",
-        },
-        options
-      );
-      expect(didUpdate).toEqual(true);
-
-      const result = await findTest("test2Id", options);
-      expect(result).toMatchObject({
-        id: "test2Id",
-        // check it only uses the first two locations
-        runner_locations: ["westus2", "eastus2"],
-        runner_requested_at: expect.any(Date),
-        runner_requested_branch: "main",
-      });
-    });
   });
 });
 

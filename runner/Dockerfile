@@ -16,7 +16,6 @@ RUN npm run build:tsc
 # under the user so it shows in the file shortcut
 COPY files/ /root/files
 COPY scripts/ scripts/
-COPY scripts/nginx.list /etc/apt/sources.list.d/nginx.list
 
 RUN chown -R node:node /opt/runner
 
@@ -29,8 +28,8 @@ ENV LC_ALL=C.UTF-8
 ENV QAWOLF_DISPLAY_WIDTH=1288
 ENV QAWOLF_DISPLAY_HEIGHT=804
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 4000
+EXPOSE 5000
 
 ENTRYPOINT ["./scripts/entrypoint.sh"]
 

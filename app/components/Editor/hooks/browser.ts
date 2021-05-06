@@ -22,7 +22,6 @@ export class Browser extends EventEmitter {
   _connected: boolean;
   _container?: HTMLDivElement;
   _ensureInterval: number | null = null;
-  _password = "";
   _rfb?: typeof RFB;
   _url?: string;
   _reconnectedAt = 0;
@@ -30,9 +29,7 @@ export class Browser extends EventEmitter {
   _connect(): void {
     if (!this._container || !this._url || this._connected) return;
 
-    const rfb = new RFB(this._container, this._url, {
-      credentials: { password: this._password },
-    });
+    const rfb = new RFB(this._container, this._url);
 
     this._rfb = rfb;
     rfb.scaleViewport = true;
@@ -132,25 +129,18 @@ export class Browser extends EventEmitter {
     }
   };
 
-  connect(container: HTMLDivElement, url: string, password: string): void {
-    if (
-      this._container === container &&
-      this._url === url &&
-      this._password === password
-    )
-      return;
+  connect(container: HTMLDivElement, url: string): void {
+    if (this._container === container && this._url === url) return;
 
     this.disconnect();
 
     this._container = container;
-    this._password = password;
     this._url = url;
     this._connect();
   }
 
   disconnect(): void {
     this._container = null;
-    this._password = null;
     this._url = null;
 
     this._connected = false;

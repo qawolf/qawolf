@@ -9,8 +9,13 @@ if (environment.NODE_ENV !== "test") {
   throw new Error("Do not use test db outside of tests");
 }
 
+const params = {
+  password: process.env.PGPASSWORD || "qawolf",
+  user: process.env.PGUSER || "qawolf",
+};
+
 const createTestDb = async (name: string): Promise<void> => {
-  const client = new Client();
+  const client = new Client(params);
   await client.connect();
   await client.query(`CREATE DATABASE ${name}`);
   await client.end();
@@ -18,7 +23,7 @@ const createTestDb = async (name: string): Promise<void> => {
 
 const dropTestDb = async (testDb: knex, name: string): Promise<void> => {
   await testDb.destroy();
-  const client = new Client();
+  const client = new Client(params);
   await client.connect();
   await client.query(`DROP DATABASE ${name}`);
   await client.end();
@@ -42,8 +47,7 @@ export const prepareTestDb = (): knex => {
 
       return {
         database: testDbName,
-        password: process.env.PGPASSWORD,
-        user: process.env.PGUSER,
+        ...params,
       };
     },
   });

@@ -51,9 +51,9 @@ const rowRenderer: ListRowRenderer = function ({
 };
 
 export default function RunLogs({ isVisible }: Props): JSX.Element {
-  const { apiKey, wsUrl } = useContext(RunnerContext);
+  const { wsUrl } = useContext(RunnerContext);
   const { run } = useContext(TestContext);
-  const { logs } = useLogs({ apiKey, run, wsUrl });
+  const { logs } = useLogs({ run, wsUrl });
   const [list, setList] = useState<List>(null);
 
   const [size, setSize] = useState(0);

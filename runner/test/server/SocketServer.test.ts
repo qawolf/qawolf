@@ -19,13 +19,12 @@ describe("SocketServer", () => {
 
     runner = new Runner();
     await runner._createEnvironment();
-    server = new SocketServer({ apiKey: "qawolf_key", httpServer, runner });
+    server = new SocketServer({ httpServer, runner });
     await new Promise((resolve) =>
       httpServer.listen({ port }, () => resolve(null))
     );
 
     socket = io(serverUrl, {
-      auth: { apiKey: "qawolf_key" },
       transports: ["websocket"],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
@@ -37,30 +36,6 @@ describe("SocketServer", () => {
     jest.clearAllMocks();
     socket.close();
     await Promise.all([runner.close(), server.close()]);
-  });
-
-  describe("authentication", () => {
-    const invalidSocket = {
-      disconnect: jest.fn(),
-      handshake: { auth: { apiKey: "invalid" } },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
-
-    it("validates the auth against the api key", () => {
-      expect(server._authenticate(invalidSocket)).toEqual(false);
-
-      expect(
-        server._authenticate({
-          handshake: { auth: { apiKey: "qawolf_key" } },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any)
-      ).toEqual(true);
-    });
-
-    it("ensures authentication on connection", () => {
-      server._onConnect(invalidSocket);
-      expect(invalidSocket.disconnect).toBeCalled();
-    });
   });
 
   describe("socket disconnects", () => {

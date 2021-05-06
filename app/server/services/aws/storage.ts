@@ -6,11 +6,6 @@ import { formatUrl } from "@aws-sdk/util-format-url";
 import environment from "../../environment";
 import { SaveArtifacts } from "../../types";
 
-type GetArtifactsOptions = {
-  excludeVideo?: boolean;
-  name: string;
-};
-
 const client = new S3({
   credentials: {
     accessKeyId: environment.QAWOLF_AWS_ACCESS_KEY_ID,
@@ -48,25 +43,18 @@ export const createStorageWriteAccessUrl = async (
   return url;
 };
 
-export const getArtifactsOptions = async ({
-  excludeVideo,
-  name,
-}: GetArtifactsOptions): Promise<SaveArtifacts> => {
+export const getArtifactsOptions = async (
+  name: string
+): Promise<SaveArtifacts> => {
   const gifFileName = `${name}.gif`;
   const jsonFileName = `${name}.json`;
   const logsFileName = `${name}.txt`;
   const videoFileName = `${name}.mp4`;
 
   return {
-    gifUrl: excludeVideo
-      ? null
-      : await createStorageWriteAccessUrl(gifFileName),
-    jsonUrl: excludeVideo
-      ? null
-      : await createStorageWriteAccessUrl(jsonFileName),
+    gifUrl: await createStorageWriteAccessUrl(gifFileName),
+    jsonUrl: await createStorageWriteAccessUrl(jsonFileName),
     logsUrl: await createStorageWriteAccessUrl(logsFileName),
-    videoUrl: excludeVideo
-      ? null
-      : await createStorageWriteAccessUrl(videoFileName),
+    videoUrl: await createStorageWriteAccessUrl(videoFileName),
   };
 };
