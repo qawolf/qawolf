@@ -8,12 +8,11 @@ import { Log, Run } from "../../../lib/types";
 type LogsHook = { logs: Log[] };
 
 type UseLogs = {
-  apiKey: string | null;
   run: Run | null;
   wsUrl: string | null;
 };
 
-export const useLogs = ({ apiKey, run, wsUrl }: UseLogs): LogsHook => {
+export const useLogs = ({ run, wsUrl }: UseLogs): LogsHook => {
   const { query } = useRouter();
   const runId = query.run_id;
 
@@ -57,12 +56,12 @@ export const useLogs = ({ apiKey, run, wsUrl }: UseLogs): LogsHook => {
 
     client.subscribe({ type: "logs" });
 
-    client.connect({ apiKey, wsUrl });
+    client.connect(wsUrl);
 
     return () => {
       client.close();
     };
-  }, [apiKey, wsUrl]);
+  }, [wsUrl]);
 
   return { logs };
 };

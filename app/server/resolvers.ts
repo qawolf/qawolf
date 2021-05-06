@@ -35,7 +35,6 @@ import {
   statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
-  updateRunResolver,
 } from "./resolvers/run";
 import { runnerResolver } from "./resolvers/runner";
 import {
@@ -120,7 +119,6 @@ export const resolvers = {
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
     updateGroup: updateGroupResolver,
-    updateRun: updateRunResolver,
     updateTeam: updateTeamResolver,
     updateTestTriggers: updateTestTriggersResolver,
     updateTestsGroup: updateTestsGroupResolver,

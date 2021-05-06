@@ -10,20 +10,17 @@ import { SocketServer } from "./SocketServer";
 const debug = Debug("qawolf:RunnerServer");
 
 export class RunnerServer {
-  static async start(
-    port = config.INTERNAL_SERVER_PORT
-  ): Promise<RunnerServer> {
+  static async start(): Promise<RunnerServer> {
     const server = new RunnerServer();
 
     server._socketServer = new SocketServer({
-      apiKey: config.RUNNER_API_KEY,
       httpServer: server._httpServer,
       runner: server._runner,
     });
 
     await new Promise((resolve) => {
-      server._httpServer.listen(port, () => {
-        debug("listening on %s", port);
+      server._httpServer.listen(config.SERVER_PORT, () => {
+        debug("listening on %s", config.SERVER_PORT);
         resolve(null);
       });
     });

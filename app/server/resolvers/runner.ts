@@ -26,13 +26,10 @@ export const runnerResolver = async (
 
   await ensureTestAccess({ teams, test_id: testId }, { db, logger });
 
-  // TODO for now just return the localhost runner...
-  // XXX request a runner by session key (run_id, test_id_branch)
+  // TODO get runner from pool by session key (run_id or test_id_branch)
   // we need to track this centrally to send to the same region
-
   return {
-    // TODO env vriables
-    vnc_url: "ws://localhost:",
-    ws_url: "ws://localhost:",
+    vnc_url: "ws://localhost:5000",
+    ws_url: "ws://localhost:4000/socket.io",
   };
 };

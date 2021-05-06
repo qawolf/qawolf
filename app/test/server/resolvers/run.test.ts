@@ -6,11 +6,7 @@ import {
   statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
-  updateRunResolver,
-  validateApiKey,
 } from "../../../server/resolvers/run";
-import * as runResolver from "../../../server/resolvers/run";
-import * as alertService from "../../../server/services/alert/send";
 import { Suite } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import {
@@ -21,7 +17,6 @@ import {
   buildTest,
   buildTrigger,
   buildUser,
-  logger,
   testContext,
 } from "../utils";
 
@@ -120,100 +115,5 @@ describe("testHistoryResolver", () => {
     const runs = await testHistoryResolver({}, { id: "testId" }, context);
 
     expect(runs).toMatchObject([{ id: "runId" }, { id: "run3Id" }]);
-  });
-});
-
-describe("updateRunResolver", () => {
-  beforeEach(() => {
-    jest.spyOn(alertService, "sendAlert").mockResolvedValue();
-    jest.spyOn(runResolver, "validateApiKey").mockResolvedValue();
-  });
-
-  afterEach(async () => {
-    jest.restoreAllMocks();
-
-    return db("runs").update({
-      current_line: null,
-      status: "created",
-      started_at: null,
-    });
-  });
-
-  it("updates run start time", async () => {
-    await updateRunResolver(
-      {},
-      { current_line: null, id: "runId", status: "created" },
-      context
-    );
-
-    const run = await db("runs").select("*").where({ id: "runId" }).first();
-
-    expect(run.started_at).toBeTruthy();
-  });
-
-  it("updates the run and expires the runner if run failed", async () => {
-    await updateRunResolver(
-      {},
-      { current_line: 2, id: "run2Id", status: "fail" },
-      context
-    );
-
-    const run = await db("runs").select("*").where({ id: "run2Id" }).first();
-
-    expect(run).toMatchObject({ current_line: 2, status: "fail" });
-  });
-
-  it("updates the run and expires the runner if run succeeded", async () => {
-    await updateRunResolver(
-      {},
-      { current_line: 2, id: "run2Id", status: "pass" },
-      context
-    );
-
-    const run = await db("runs").select("*").where({ id: "run2Id" }).first();
-
-    expect(run).toMatchObject({ current_line: 2, status: "pass" });
-    // TODO
-    // expect(runnerModel.resetRunner).toBeCalled();
-  });
-
-  it("retries the run if shouldRetry is true", async () => {
-    await updateRunResolver(
-      {},
-      { error: RETRY_ERRORS[0], current_line: 2, id: "run2Id", status: "fail" },
-      context
-    );
-
-    const run = await db("runs").select("*").where({ id: "run2Id" }).first();
-
-    expect(run).toMatchObject({
-      retries: 1,
-      started_at: null,
-      status: "created",
-    });
-    // TODO
-    // expect(runnerModel.resetRunner).toBeCalled();
-  });
-});
-
-describe("validateApiKey", () => {
-  const [run] = runs;
-
-  it("throws an error if api key not provided", async () => {
-    await expect(
-      validateApiKey({ api_key: null, run }, { db, logger })
-    ).rejects.toThrowError("invalid api key");
-  });
-
-  it("throws an error if api key does not match runner", async () => {
-    await expect(
-      validateApiKey({ api_key: "wrongApiKey", run }, { db, logger })
-    ).rejects.toThrowError("invalid api key");
-  });
-
-  it("does not throw an error if api key matches runner", async () => {
-    await expect(
-      validateApiKey({ api_key: "apiKey", run }, { db, logger })
-    ).resolves.not.toThrowError();
   });
 });

@@ -1,5 +1,3 @@
-import * as runnerModel from "../../../server/models/runner";
-import { findRunner } from "../../../server/models/runner";
 import * as runnerResolvers from "../../../server/resolvers/runner";
 import { prepareTestDb } from "../db";
 import {
@@ -37,10 +35,6 @@ describe("runnerResolver", () => {
   beforeAll(async () => {
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
     await db("runs").insert(buildRun({}));
-    await db("runners").insert([
-      buildRunner({ run_id: "runId" }),
-      buildRunner({ i: 2, test_id: "testId" }),
-    ]);
   });
 
   afterAll(async () => {

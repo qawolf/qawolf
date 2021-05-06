@@ -65,7 +65,7 @@ export const runFragment = gql`
 
 export const runnerFragment = gql`
   fragment RunnerFragment on Runner {
-    api_key
+    vnc_url
     ws_url
   }
 `;

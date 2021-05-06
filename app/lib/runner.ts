@@ -5,11 +5,6 @@ import { state } from "./state";
 import { RunOptions } from "./types";
 import { VersionedMap } from "./VersionedMap";
 
-type ConnectOptions = {
-  apiKey: string | null;
-  wsUrl?: string | null;
-};
-
 type SubscriptionType =
   | "code"
   | "editor"
@@ -41,7 +36,6 @@ const EVENTS = [
 ];
 
 export class RunnerClient extends EventEmitter {
-  _apiKey: string | null = null;
   _browserReady = false;
   _socket: SocketIOClient.Socket | null = null;
   _state: VersionedMap;
@@ -73,10 +67,9 @@ export class RunnerClient extends EventEmitter {
     state.setPendingRun(null);
   }
 
-  connect({ apiKey, wsUrl }: ConnectOptions): void {
-    if (apiKey === this._apiKey && wsUrl === this._wsUrl) return;
+  connect(wsUrl: string): void {
+    if (wsUrl === this._wsUrl) return;
 
-    this._apiKey = apiKey;
     this._wsUrl = wsUrl;
 
     if (this._socket) {
@@ -91,8 +84,7 @@ export class RunnerClient extends EventEmitter {
     const parsedUrl = new URL(wsUrl);
 
     this._socket = io(parsedUrl.origin, {
-      auth: { apiKey },
-      path: `${parsedUrl.pathname}/runner/socket.io`,
+      path: parsedUrl.pathname,
       transports: ["websocket"],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
