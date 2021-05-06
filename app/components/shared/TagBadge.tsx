@@ -1,34 +1,23 @@
 import { Box, Button } from "grommet";
 import styled from "styled-components";
 
-import { ShortTrigger } from "../../lib/types";
-import { copy } from "../../theme/copy";
+import { Tag as TagType } from "../../lib/types";
 import {
   borderSize,
   colors,
   edgeSize,
   transitionDuration,
 } from "../../theme/theme";
+import Tag from "./icons/Tag";
 import Text from "./Text";
-import TriggerIcon from "./TriggerIcon";
 
 type Props = {
   className?: string;
-  isLoading?: boolean;
   onClick?: () => void;
-  trigger: ShortTrigger | null;
+  tag: TagType;
 };
 
-function TriggerBadge({
-  className,
-  isLoading,
-  onClick,
-  trigger,
-}: Props): JSX.Element {
-  let label = copy.manuallyTriggered;
-  if (trigger?.name) label = trigger.name;
-  else if (isLoading) label = copy.loading;
-
+function TagBadge({ className, onClick, tag }: Props): JSX.Element {
   const innerHtml = (
     <Box
       align="center"
@@ -39,9 +28,9 @@ function TriggerBadge({
       pad={{ horizontal: "xsmall" }}
       round="xlarge"
     >
-      <TriggerIcon trigger={trigger} />
-      <Text color="gray7" size="componentSmall">
-        {label}
+      <Tag color={tag.color} size={edgeSize.small} />
+      <Text color="gray7" margin={{ left: "xxsmall" }} size="componentSmall">
+        {tag.name}
       </Text>
     </Box>
   );
@@ -49,13 +38,13 @@ function TriggerBadge({
   if (!onClick) return innerHtml;
 
   return (
-    <Button a11yTitle={`filter ${label}`} plain onClick={onClick}>
+    <Button a11yTitle={`filter ${tag.name}`} plain onClick={onClick}>
       {innerHtml}
     </Button>
   );
 }
 
-const StyledTriggerBadge = styled(TriggerBadge)`
+const StyledTagBadge = styled(TagBadge)`
   transition: background ${transitionDuration};
 
   &:hover {
@@ -67,4 +56,4 @@ const StyledTriggerBadge = styled(TriggerBadge)`
   }
 `;
 
-export default StyledTriggerBadge;
+export default StyledTagBadge;

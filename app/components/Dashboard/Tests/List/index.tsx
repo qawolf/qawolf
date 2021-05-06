@@ -2,10 +2,9 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
-import { ShortTest, TestTriggers, Trigger } from "../../../../lib/types";
+import { ShortTest, TagsForTest } from "../../../../lib/types";
 import { borderSize } from "../../../../theme/theme";
 import Spinner from "../../../shared/Spinner";
-import { noTriggerId } from "../../helpers";
 import Header from "./Header";
 import TestCard from "./TestCard";
 
@@ -13,31 +12,24 @@ type Props = {
   checkedTestIds: string[];
   setCheckedTestIds: (testIds: string[]) => void;
   testIds: string[];
+  testTags: TagsForTest[];
   tests: ShortTest[] | null;
-  testTriggers: TestTriggers[];
-  triggers: Trigger[];
 };
 
 export default function List({
   checkedTestIds,
   setCheckedTestIds,
   testIds,
+  testTags,
   tests,
-  testTriggers,
-  triggers,
 }: Props): JSX.Element {
   const { query } = useRouter();
-
-  const trigger_id =
-    query.trigger_id === noTriggerId
-      ? null
-      : (query.trigger_id as string) || null;
 
   const { data, loading } = useTestSummaries(
     {
       // tests includes only filtered tests, so do not rerun query just if search changes
       test_ids: testIds,
-      trigger_id,
+      trigger_id: null, // TODO: remove
     },
     { pollInterval: 10 * 1000 }
   );
@@ -57,9 +49,7 @@ export default function List({
   };
 
   const testsHtml = tests.map((test, i) => {
-    const triggerIds =
-      testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
-    const filteredTriggers = triggers.filter((t) => triggerIds.includes(t.id));
+    const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
     const summary = (data?.testSummaries || []).find(
       (s) => s.test_id === test.id
@@ -73,8 +63,8 @@ export default function List({
         noBorder={!i}
         onCheck={() => handleTestCheck(test.id)}
         summary={summary || null}
+        tags={tags}
         test={test}
-        triggers={filteredTriggers}
       />
     );
   });

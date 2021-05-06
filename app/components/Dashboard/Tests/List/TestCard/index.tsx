@@ -2,14 +2,14 @@ import { Box } from "grommet";
 import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
-import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
+import { ShortTest, Tag, TestSummary } from "../../../../../lib/types";
 import { border } from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
 import TestGif from "../../../../shared/TestGif";
 import Options from "./Options";
 import RunBars from "./RunBars";
+import Tags from "./Tags";
 import TestName from "./TestName";
-import Triggers from "./Triggers";
 
 type Props = {
   isChecked: boolean;
@@ -17,8 +17,8 @@ type Props = {
   noBorder?: boolean;
   onCheck: () => void;
   summary: TestSummary | null;
+  tags: Tag[];
   test: ShortTest;
-  triggers: Trigger[];
 };
 
 export default function TestCard({
@@ -27,8 +27,8 @@ export default function TestCard({
   noBorder,
   onCheck,
   summary,
+  tags,
   test,
-  triggers,
 }: Props): JSX.Element {
   const runs = summary?.last_runs || null;
   const testName = test.name || test.path;
@@ -71,7 +71,7 @@ export default function TestCard({
         </Box>
       </Box>
       <Box align="center" direction="row" flex={false}>
-        <Triggers triggers={triggers} />
+        <Tags tags={tags} />
         <RunBars runs={runs} />
         <Options test={test} />
       </Box>

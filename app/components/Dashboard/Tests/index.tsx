@@ -2,7 +2,11 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useTestTriggers, useTriggers } from "../../../hooks/queries";
+import {
+  useTagsForTests,
+  useTestTriggers,
+  useTriggers,
+} from "../../../hooks/queries";
 import { useTests } from "../../../hooks/tests";
 import { filterTests } from "../helpers";
 import Header from "./Header";
@@ -21,6 +25,11 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
   const { tests: testsData, loading } = useTests({ branch, teamId });
+
+  const { data: tagsData } = useTagsForTests({
+    test_ids: testsData.map((t) => t.id),
+  });
+  const testTags = tagsData?.tagsForTests || [];
 
   const { data: triggersData } = useTriggers({ team_id: teamId });
 
@@ -68,9 +77,8 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
         checkedTestIds={checkedTestIds}
         setCheckedTestIds={setCheckedTestIds}
         testIds={testIds}
+        testTags={testTags}
         tests={tests}
-        testTriggers={testTriggers}
-        triggers={triggers}
       />
     </Box>
   );
