@@ -52,7 +52,8 @@ const StyledCheckBox = styled(CheckBox)`
       fill: ${colors.gray0};
     }
 
-    ${(props) => props.hasError && `border-color: ${colors.danger5};`}
+    ${(props) =>
+      props.hasError && !props.checked && `border-color: ${colors.danger5};`}
   }
 
   ${(props) =>

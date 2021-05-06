@@ -101,6 +101,9 @@ export const copy = {
   delete: "Delete",
   deleted: "(Deleted)",
   deleteOk: "Yes, delete",
+  deleteTag: "Delete tag",
+  deleteTagConfirm: "Are you sure? This will permanently delete the tag",
+  deleteTagConfirm2: "but not the tests in it.",
   deleteTests: (count: number): string =>
     `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
   deleteTestsDetail:

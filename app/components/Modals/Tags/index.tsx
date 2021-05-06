@@ -5,6 +5,7 @@ import { useTags, useTagsForTests } from "../../../hooks/queries";
 import { Tag } from "../../../lib/types";
 import Modal from "../../shared/Modal";
 import { StateContext } from "../../StateContext";
+import ConfirmDelete from "./ConfirmDelete";
 import List from "./List";
 
 type Props = {
@@ -26,21 +27,35 @@ export default function Tags({ closeModal, testIds }: Props): JSX.Element {
   const testTags = testTagsData?.tagsForTests || [];
   const isTestTagsLoading = !!testIds.length && !testTagsData?.tagsForTests;
 
+  const handleCancelDelete = (): void => {
+    setDeleteTag(null);
+  };
+
   const handleDelete = (tag: Tag): void => {
     setDeleteTag(tag);
   };
 
+  const innerHtml = deleteTag ? (
+    <ConfirmDelete
+      closeModal={closeModal}
+      onClose={handleCancelDelete}
+      tag={deleteTag}
+    />
+  ) : (
+    <List
+      closeModal={closeModal}
+      isLoading={loading || isTestTagsLoading}
+      onDelete={handleDelete}
+      tags={tags}
+      testIds={testIds}
+      testTags={testTags}
+    />
+  );
+
   return (
     <Modal closeModal={closeModal}>
       <Box overflow={{ vertical: "auto" }} pad="medium">
-        <List
-          closeModal={closeModal}
-          isLoading={loading || isTestTagsLoading}
-          onDelete={handleDelete}
-          tags={tags}
-          testIds={testIds}
-          testTags={testTags}
-        />
+        {innerHtml}
       </Box>
     </Modal>
   );
