@@ -1,4 +1,9 @@
-import { Box, CheckBox as GrommetCheckBox, CheckBoxProps } from "grommet";
+import {
+  Box,
+  BoxProps,
+  CheckBox as GrommetCheckBox,
+  CheckBoxProps,
+} from "grommet";
 import styled from "styled-components";
 
 import { borderSize, colors, transitionDuration } from "../../theme/theme";
@@ -7,11 +12,19 @@ export type Props = CheckBoxProps & {
   className?: string;
   hasError?: boolean;
   onChange?: () => void;
+  pad?: BoxProps["pad"];
+  width?: BoxProps["width"];
 };
 
-function CheckBox({ className, ...props }: Props): JSX.Element {
+function CheckBox({ className, pad, width, ...props }: Props): JSX.Element {
   return (
-    <Box className={className} flex={false} round={borderSize.small}>
+    <Box
+      className={className}
+      flex={false}
+      pad={pad}
+      round={borderSize.small}
+      width={width}
+    >
       <GrommetCheckBox {...props} />
     </Box>
   );
@@ -20,8 +33,6 @@ function CheckBox({ className, ...props }: Props): JSX.Element {
 // monkey patch
 // https://github.com/grommet/grommet/blob/master/src/js/components/CheckBox/StyledCheckBox.js#L11
 const StyledCheckBox = styled(CheckBox)`
-  background: ${colors.gray0};
-
   &:hover {
     input:not([disabled]) + div,
     input:not([disabled]) + span {

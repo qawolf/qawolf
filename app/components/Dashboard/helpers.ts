@@ -8,7 +8,6 @@ import {
   SuiteSummary,
   TagsForTest,
   TestSummaryRun,
-  TestTriggers,
 } from "../../lib/types";
 import { copy } from "../../theme/copy";
 

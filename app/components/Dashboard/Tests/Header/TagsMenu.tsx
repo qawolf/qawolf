@@ -1,4 +1,5 @@
 import { DropProps } from "grommet";
+import { useRouter } from "next/router";
 
 import { Tag } from "../../../../lib/types";
 import { edgeSize } from "../../../../theme/theme";
@@ -13,6 +14,8 @@ type Props = {
   target: DropProps["target"];
 };
 
+const width = "280px";
+
 export default function TagsMenu({
   isOpen,
   onClose,
@@ -20,9 +23,24 @@ export default function TagsMenu({
   tagIds,
   target,
 }: Props): JSX.Element {
+  const { pathname, replace } = useRouter();
+
   if (!isOpen || !tags) return null;
 
-  const handleClick = (tagId: string): void => {};
+  const handleClick = (tagId: string): void => {
+    const newTagIds = [...tagIds];
+
+    if (!newTagIds.includes(tagId)) {
+      newTagIds.push(tagId);
+    } else {
+      const index = newTagIds.indexOf(tagId);
+      if (index > -1) newTagIds.splice(index, 1);
+    }
+
+    const query = newTagIds.length ? `?tags=${newTagIds.join(",")}` : "";
+
+    replace(`${pathname}${query}`);
+  };
 
   const optionsHtml = tags.map((tag) => {
     return (
@@ -41,6 +59,7 @@ export default function TagsMenu({
       onClickOutside={onClose}
       style={{ marginTop: edgeSize.xxxsmall }}
       target={target}
+      width={width}
     >
       {optionsHtml}
     </Drop>

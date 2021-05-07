@@ -1,11 +1,9 @@
 import { Box } from "grommet";
 
 import { SelectState, Tag } from "../../../lib/types";
-import { borderSize, edgeSize, overflowStyle } from "../../../theme/theme";
-import CheckBox from "../../shared/CheckBox";
+import { borderSize } from "../../../theme/theme";
 import EditDeleteButtons, { StyledBox } from "../../shared/EditDeleteButtons";
-import TagIcon from "../../shared/icons/Tag";
-import Text from "../../shared/Text";
+import TagCheckBox from "../../shared/TagCheckBox";
 import Form from "./Form";
 
 type Props = {
@@ -19,8 +17,6 @@ type Props = {
   tag: Tag;
 };
 
-const maxWidth = "320px";
-
 export default function ListItem({
   editTagId,
   noBorder,
@@ -31,25 +27,6 @@ export default function ListItem({
   selectState,
   tag,
 }: Props): JSX.Element {
-  const labelHtml = (
-    <Box
-      align="center"
-      direction="row"
-      margin={{ left: "xxsmall" }}
-      style={{ maxWidth }}
-    >
-      <TagIcon color={tag.color} size={edgeSize.small} />
-      <Text
-        color="gray9"
-        margin={{ left: "xxsmall" }}
-        size="component"
-        style={overflowStyle}
-      >
-        {tag.name}
-      </Text>
-    </Box>
-  );
-
   const innerHtml =
     tag.id === editTagId ? (
       <Box width="full">
@@ -57,17 +34,7 @@ export default function ListItem({
       </Box>
     ) : (
       <>
-        <Box align="center" direction="row">
-          <Box margin={{ right: "small" }}>
-            <CheckBox
-              a11yTitle={`assign ${tag.name}`}
-              checked={selectState === "all"}
-              indeterminate={selectState === "some"}
-              label={labelHtml}
-              onChange={onClick}
-            />
-          </Box>
-        </Box>
+        <TagCheckBox onClick={onClick} selectState={selectState} tag={tag} />
         <EditDeleteButtons
           name={tag.name}
           onDelete={onDelete}
