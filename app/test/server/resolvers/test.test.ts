@@ -250,10 +250,7 @@ describe("testSummariesResolver", () => {
 
     const summaries = await testSummariesResolver(
       {},
-      {
-        test_ids: ["testId"],
-        trigger_id: "triggerId",
-      },
+      { test_ids: ["testId"] },
       { ...testContext, db }
     );
 
@@ -276,10 +273,7 @@ describe("testSummariesResolver", () => {
 
     const summary = await testSummariesResolver(
       {},
-      {
-        test_ids: ["testId"],
-        trigger_id: "triggerId",
-      },
+      { test_ids: ["testId"] },
       { ...testContext, db }
     );
 
