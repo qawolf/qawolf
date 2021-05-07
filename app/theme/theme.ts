@@ -146,6 +146,8 @@ export const height = {
   navigation: "80px",
 };
 
+export const inputWidth = "240px";
+
 export const offset = {
   demoVideo: "-80px",
   hero: "-52px", // 80 - 28 for credit card note

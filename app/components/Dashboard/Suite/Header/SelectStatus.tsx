@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 
 import { routes } from "../../../../lib/routes";
 import { RunStatus, SuiteRun } from "../../../../lib/types";
+import { inputWidth } from "../../../../theme/theme";
 import Divider from "../../../shared/Divider";
 import Select from "../../../shared/Select";
 import { getLabelForStatus } from "../../helpers";
@@ -12,7 +13,6 @@ type Props = {
 };
 
 const statuses: RunStatus[] = ["fail", "pass", "created"];
-const width = "240px";
 
 export default function SelectStatus({ runs }: Props): JSX.Element {
   const { replace, query } = useRouter();
@@ -46,7 +46,7 @@ export default function SelectStatus({ runs }: Props): JSX.Element {
   });
 
   return (
-    <Select flex={false} label={label} width={width}>
+    <Select flex={false} label={label} width={inputWidth}>
       <StatusOption
         count={runs.length}
         isSelected={!status}

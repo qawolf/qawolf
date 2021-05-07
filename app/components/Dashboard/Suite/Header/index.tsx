@@ -14,8 +14,6 @@ type Props = {
   suite: Suite;
 };
 
-const searchWidth = "240px";
-
 export default function Header({
   search,
   setSearch,
@@ -33,7 +31,7 @@ export default function Header({
           >
             {formatSuiteName(suite)}
           </Text>
-          <Search search={search} setSearch={setSearch} width={searchWidth} />
+          <Search search={search} setSearch={setSearch} />
           <SelectStatus runs={suite.runs} />
         </Box>
         <SuiteDetails suite={suite} />

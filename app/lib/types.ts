@@ -109,6 +109,7 @@ export type SuiteRun = {
   status: RunStatus;
   test_id: string;
   test_name: string;
+  test_tags: Tag[];
 };
 
 export type SuiteSummary = ShortSuite & {

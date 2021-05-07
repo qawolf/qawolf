@@ -351,6 +351,9 @@ type SuiteRun {
 
   "Name of the test we are running"
   test_name: String!
+
+  "Tags associated with the test we are running"
+  test_tags: [Tag!]!
 }
 
 "A tag for tests"

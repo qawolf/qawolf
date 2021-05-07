@@ -6,6 +6,7 @@ import { copy } from "../../../../../theme/copy";
 import { colors, edgeSize } from "../../../../../theme/theme";
 import Timer from "../../../../shared/icons/Timer";
 import Text from "../../../../shared/Text";
+import Tags from "../../../Tests/List/TestCard/Tags";
 
 type Props = { run: SuiteRun };
 
@@ -31,8 +32,11 @@ export default function Details({ run }: Props): JSX.Element {
 
   return (
     <Box align="center" direction="row" flex={false} pad={{ left: "small" }}>
-      <Timer {...iconProps} />
-      <Text {...textProps}>{duration}</Text>
+      <Tags tags={run.test_tags} />
+      <Box align="center" direction="row" margin={{ left: "medium" }}>
+        <Timer {...iconProps} />
+        <Text {...textProps}>{duration}</Text>
+      </Box>
     </Box>
   );
 }

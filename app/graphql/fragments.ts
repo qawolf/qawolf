@@ -72,6 +72,15 @@ export const shortTriggerFragment = gql`
   }
 `;
 
+export const tagFragment = gql`
+  fragment TagFragment on Tag {
+    color
+    id
+    name
+    team_id
+  }
+`;
+
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
@@ -83,7 +92,11 @@ export const suiteRunFragment = gql`
     status
     test_id
     test_name
+    test_tags {
+      ...TagFragment
+    }
   }
+  ${tagFragment}
 `;
 
 export const suiteFragment = gql`
@@ -104,15 +117,6 @@ export const suiteFragment = gql`
   }
   ${suiteRunFragment}
   ${shortTriggerFragment}
-`;
-
-export const tagFragment = gql`
-  fragment TagFragment on Tag {
-    color
-    id
-    name
-    team_id
-  }
 `;
 
 export const tagsForTestFragment = gql`

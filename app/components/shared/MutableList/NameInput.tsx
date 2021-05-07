@@ -8,7 +8,7 @@ import {
   MutableListType,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme";
+import { borderSize } from "../../../theme/theme";
 import TextInput from "../AppTextInput";
 
 type Props = {

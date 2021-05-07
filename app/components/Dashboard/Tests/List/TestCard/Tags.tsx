@@ -6,9 +6,12 @@ import { edgeSize } from "../../../../../theme/theme";
 import TagBadge from "../../../../shared/TagBadge";
 import { buildTestsPath } from "../../../helpers";
 
-type Props = { tags: Tag[] };
+type Props = {
+  filterOnClick?: boolean;
+  tags: Tag[];
+};
 
-export default function Triggers({ tags }: Props): JSX.Element {
+export default function Tags({ filterOnClick, tags }: Props): JSX.Element {
   const { query, replace } = useRouter();
 
   const handleTriggerClick = (tagId: string): void => {
@@ -16,13 +19,11 @@ export default function Triggers({ tags }: Props): JSX.Element {
   };
 
   const tagsHtml = tags.map((tag) => {
-    return (
-      <TagBadge
-        key={tag.id}
-        onClick={() => handleTriggerClick(tag.id)}
-        tag={tag}
-      />
-    );
+    const onClick = filterOnClick
+      ? () => handleTriggerClick(tag.id)
+      : undefined;
+
+    return <TagBadge key={tag.id} onClick={onClick} tag={tag} />;
   });
 
   return (

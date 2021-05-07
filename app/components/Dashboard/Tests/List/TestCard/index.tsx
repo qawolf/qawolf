@@ -69,7 +69,7 @@ export default function TestCard({
         </Box>
       </Box>
       <Box align="center" direction="row" flex={false}>
-        <Tags tags={tags} />
+        <Tags filterOnClick tags={tags} />
         <RunBars runs={runs} />
         <Options test={test} />
       </Box>

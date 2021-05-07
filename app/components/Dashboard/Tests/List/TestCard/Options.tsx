@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { state } from "../../../../../lib/state";
 import { ShortTest } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { edgeSize } from "../../../../../theme/theme";
+import { edgeSize, inputWidth } from "../../../../../theme/theme";
 import Button from "../../../../shared/AppButton";
 import Divider from "../../../../shared/Divider";
 import Drop from "../../../../shared/Drop";
@@ -14,8 +14,6 @@ import Trash from "../../../../shared/icons/Trash";
 import Option from "../../../../shared/Select/Option";
 
 type Props = { test: ShortTest };
-
-const width = "240px";
 
 export default function Options({ test }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
@@ -51,7 +49,7 @@ export default function Options({ test }: Props): JSX.Element {
           onClickOutside={handleClose}
           style={{ marginTop: edgeSize.xxxsmall }}
           target={ref.current}
-          width={width}
+          width={inputWidth}
         >
           <Option
             IconComponent={Tag}

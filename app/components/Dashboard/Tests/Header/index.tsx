@@ -17,8 +17,6 @@ type Props = {
   tagIds: string[];
 };
 
-const searchWidth = "240px";
-
 export default function Header({
   filter,
   search,
@@ -40,7 +38,7 @@ export default function Header({
           >
             {copy.tests}
           </Text>
-          <Search search={search} setSearch={setSearch} width={searchWidth} />
+          <Search search={search} setSearch={setSearch} />
           <SelectTags filter={filter} tagIds={tagIds} />
         </Box>
         <Box align="center" direction="row">
