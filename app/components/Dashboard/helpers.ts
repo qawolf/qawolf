@@ -6,6 +6,7 @@ import {
   ShortTest,
   SuiteRun,
   SuiteSummary,
+  TagsForTest,
   TestSummaryRun,
   TestTriggers,
 } from "../../lib/types";
@@ -19,12 +20,12 @@ type FilterRuns = {
 
 type FilterTests = {
   search: string;
-  testTriggers?: TestTriggers[];
-  tests?: ShortTest[] | null;
-  trigger_id?: string | null;
+  tagIds: string[];
+  testTags: TagsForTest[] | null;
+  tests: ShortTest[] | null;
 };
 
-export const noTriggerId = "none";
+export const noTagId = "noTag";
 
 export const buildTestsPath = (triggerId: string | null): string => {
   const query = triggerId ? `?trigger_id=${triggerId}` : "";
@@ -52,15 +53,17 @@ export const filterRuns = ({
   return filteredRuns;
 };
 
+// TODO: support and not just or
 export const filterTests = ({
   search,
-  testTriggers,
+  tagIds,
+  testTags,
   tests,
-  trigger_id,
 }: FilterTests): ShortTest[] | null => {
-  if (!tests || (trigger_id && !testTriggers)) return null;
+  if (!tests || (tagIds.length && !testTags)) return null;
 
   let filteredTests = [...tests];
+  const includeNoTags = tagIds.includes(noTagId);
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
@@ -69,19 +72,12 @@ export const filterTests = ({
     });
   }
 
-  if (trigger_id === noTriggerId) {
+  if (tagIds.length) {
     filteredTests = filteredTests.filter((test) => {
-      const triggerIds =
-        testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+      const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
-      return !triggerIds.length;
-    });
-  } else if (trigger_id) {
-    filteredTests = filteredTests.filter((test) => {
-      const triggerIds =
-        testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
-
-      return triggerIds.includes(trigger_id);
+      if (includeNoTags && !tags.length) return true;
+      return tags.some((t) => tagIds.includes(t.id));
     });
   }
 

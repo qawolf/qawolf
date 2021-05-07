@@ -18,6 +18,7 @@ type Props = {
 };
 
 function TagBadge({ className, onClick, tag }: Props): JSX.Element {
+  // TODO: include max width
   const innerHtml = (
     <Box
       align="center"

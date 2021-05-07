@@ -1,6 +1,7 @@
 import { Box } from "grommet";
+import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useTagsForTests } from "../../../hooks/queries";
 import { useTests } from "../../../hooks/tests";
@@ -15,7 +16,9 @@ type Props = {
 
 export default function Tests({ branch, teamId }: Props): JSX.Element {
   const { query } = useRouter();
-  const trigger_id = query.trigger_id as string;
+
+  const tagIds = query.tags ? (query.tags as string).split(",") : [];
+  const tagIdsRef = useRef<string[]>(tagIds);
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
@@ -29,27 +32,24 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
 
   const tests = filterTests({
     search,
+    tagIds,
     tests: loading ? null : testsData,
-    // testTriggers: testTriggersData?.testTriggers,
-    trigger_id,
+    testTags: tagsData?.tagsForTests || null,
   });
 
-  // clear checked tests when selected trigger changes
+  // clear checked tests when selected tags change
   useEffect(() => {
-    setCheckedTestIds([]);
-  }, [trigger_id]);
-
-  // clear checked tests when list changes
-  // TODO: revisit
-  useEffect(() => {
-    setCheckedTestIds([]);
-  }, [testsData]);
+    if (!isEqual(tagIdsRef.current, tagIds)) {
+      tagIdsRef.current = tagIds;
+      setCheckedTestIds([]);
+    }
+  }, [tagIds]);
 
   const testIds = testsData.map((t) => t.id);
 
   return (
     <Box width="full">
-      <Header search={search} setSearch={setSearch} />
+      <Header search={search} setSearch={setSearch} tagIds={tagIds} />
       <List
         checkedTestIds={checkedTestIds}
         setCheckedTestIds={setCheckedTestIds}

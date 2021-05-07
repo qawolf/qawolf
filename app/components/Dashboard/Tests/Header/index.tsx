@@ -7,13 +7,19 @@ import Add from "../../../shared/icons/Add";
 import Search from "../../../shared/Search";
 import Text from "../../../shared/Text";
 import Branches from "./Branches";
+import SelectTags from "./SelectTags";
 
 type Props = {
   search: string;
   setSearch: (search: string) => void;
+  tagIds: string[];
 };
 
-export default function Header({ search, setSearch }: Props): JSX.Element {
+export default function Header({
+  search,
+  setSearch,
+  tagIds,
+}: Props): JSX.Element {
   const handleCreateTestClick = (): void => {
     state.setModal({ name: "createTest" });
   };
@@ -30,6 +36,7 @@ export default function Header({ search, setSearch }: Props): JSX.Element {
             {copy.tests}
           </Text>
           <Search search={search} setSearch={setSearch} />
+          <SelectTags tagIds={tagIds} />
         </Box>
         <Box align="center" direction="row">
           <Branches />

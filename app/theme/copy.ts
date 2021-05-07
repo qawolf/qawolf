@@ -162,6 +162,7 @@ export const copy = {
   environmentNew: "Create environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
+  filter: "Filter",
   frequency: "Frequency",
   frequencyDaily: "Every day",
   frequencyHourly: "Every hour",

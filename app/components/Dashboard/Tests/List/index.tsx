@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 
 import { useTestSummaries } from "../../../../hooks/queries";
 import { ShortTest, TagsForTest } from "../../../../lib/types";
@@ -22,8 +21,6 @@ export default function List({
   testTags,
   tests,
 }: Props): JSX.Element {
-  const { query } = useRouter();
-
   const { data, loading } = useTestSummaries(
     {
       // tests includes only filtered tests, so do not rerun query just if search changes

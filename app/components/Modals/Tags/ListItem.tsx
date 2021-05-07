@@ -19,6 +19,8 @@ type Props = {
   tag: Tag;
 };
 
+const maxWidth = "320px";
+
 export default function ListItem({
   editTagId,
   noBorder,
@@ -30,7 +32,12 @@ export default function ListItem({
   tag,
 }: Props): JSX.Element {
   const labelHtml = (
-    <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
+    <Box
+      align="center"
+      direction="row"
+      margin={{ left: "xxsmall" }}
+      style={{ maxWidth }}
+    >
       <TagIcon color={tag.color} size={edgeSize.small} />
       <Text
         color="gray9"
