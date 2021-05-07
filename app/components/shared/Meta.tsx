@@ -6,7 +6,8 @@ type Props = {
   title?: string;
 };
 
-const defaultDescription = copy.tagline;
+const defaultDescription =
+  "The fastest way to create end-to-end tests with your team";
 const defaultImageUrl =
   "https://qawolf-public.s3.us-east-2.amazonaws.com/logo.png";
 const defaultTitle = "QA Wolf";
