@@ -2,7 +2,7 @@ import { Box } from "grommet";
 
 import { ShortTest } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { borderSize } from "../../../../../theme/theme";
+import { border } from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
 import Text from "../../../../shared/Text";
 import Actions from "./Actions";
@@ -44,7 +44,7 @@ export default function Header({
     <Box
       align="center"
       background="gray1"
-      border={{ color: "gray3", side: "horizontal", size: borderSize.xsmall }}
+      border={{ ...border, side: "horizontal" }}
       direction="row"
       flex={false}
       justify="between"

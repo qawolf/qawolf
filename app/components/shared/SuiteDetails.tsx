@@ -13,10 +13,10 @@ type Props = {
 export default function SuiteDetails({ margin, suite }: Props): JSX.Element {
   return (
     <Box align="center" direction="row" margin={margin}>
+      <GitBranch branch={suite.branch} margin={{ right: "small" }} />
       <Text color="gray7" size="component">
         {timestampToText(suite.created_at)}
       </Text>
-      <GitBranch branch={suite.branch} />
     </Box>
   );
 }

@@ -12,23 +12,23 @@ import Details from "./Details";
 
 type Props = {
   isChecked: boolean;
-  noBorder?: boolean;
   onCheck: () => void;
   run: SuiteRun;
 };
 
+const horizontalPad = "medium";
+
 export default function RunCard({
   isChecked,
-  noBorder,
   onCheck,
   run,
 }: Props): JSX.Element {
   return (
     <Box
       align="center"
-      border={noBorder ? undefined : { ...border, side: "top" }}
+      border={{ ...border, side: "bottom" }}
       direction="row"
-      pad={{ left: "small" }}
+      pad={{ left: horizontalPad }}
     >
       <CheckBox
         a11yTitle={run.test_name}
@@ -41,7 +41,7 @@ export default function RunCard({
             align="center"
             direction="row"
             justify="between"
-            margin={{ right: "small" }}
+            margin={{ right: horizontalPad }}
             pad={{ vertical: "small" }}
           >
             <Box align="center" direction="row">
