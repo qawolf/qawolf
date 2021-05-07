@@ -20,7 +20,7 @@ export default function Meta({
     <meta
       content={description || defaultDescription}
       key="description"
-      property="description"
+      name="description"
     />,
     <meta content="website" key="type" property="og:type" />,
   ];
