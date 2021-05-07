@@ -18,8 +18,6 @@ type Props = {
   type: MutableListType;
 };
 
-const pad = `calc(${edgeSize.xxsmall} - ${borderSize.xsmall})`;
-
 export default function NameInput({
   fields,
   onCloseForm,
@@ -58,7 +56,6 @@ export default function NameInput({
         id={type}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        pad={type === "group" ? { left: pad, right: pad } : undefined}
         placeholder={copy[type]}
         ref={ref}
         value={name}
