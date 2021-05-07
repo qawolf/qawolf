@@ -11,7 +11,7 @@ import Option from "../../../shared/Select/Option";
 import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
 
-const width = "200px";
+const width = "240px";
 
 export default function Branches(): JSX.Element {
   const { branch, teamId } = useContext(StateContext);
@@ -56,7 +56,7 @@ export default function Branches(): JSX.Element {
   });
 
   return (
-    <Box align="center" direction="row" margin={{ right: "xxsmall" }}>
+    <Box align="center" direction="row" margin={{ right: "small" }}>
       <Select label={labelHtml} width={width}>
         {optionsHtml}
       </Select>

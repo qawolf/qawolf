@@ -38,6 +38,7 @@ export const copy = {
   allChangesCommitted: "All changes committed",
   allStatuses: "All statuses",
   allTriggers: "All triggers",
+  any: "Any",
   api: "API",
   apiDetail: "Trigger tests by calling the",
   apiDetail2: "QA Wolf API",
@@ -183,6 +184,8 @@ export const copy = {
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
   goBack: "Go back",
+  hasAll: "Has all",
+  hasAny: "Has any",
   headline: "Ship confidently",
   helpers: "Helpers",
   history: "History",

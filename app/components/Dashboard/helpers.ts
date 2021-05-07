@@ -6,6 +6,7 @@ import {
   ShortTest,
   SuiteRun,
   SuiteSummary,
+  TagFilter,
   TagsForTest,
   TestSummaryRun,
 } from "../../lib/types";
@@ -18,6 +19,7 @@ type FilterRuns = {
 };
 
 type FilterTests = {
+  filter: TagFilter;
   search: string;
   tagIds: string[];
   testTags: TagsForTest[] | null;
@@ -26,10 +28,18 @@ type FilterTests = {
 
 export const noTagId = "noTag";
 
-export const buildTestsPath = (tagIds: string[]): string => {
-  const query = tagIds.length ? `?tags=${tagIds.join(",")}` : "";
+export const buildTestsPath = (
+  tagIds: string[],
+  filter?: TagFilter
+): string => {
+  const queryParts: string[] = [];
 
-  return `${routes.tests}${query}`;
+  if (filter === "all") queryParts.push("filter=all");
+  if (tagIds.length) queryParts.push(`tags=${tagIds.join(",")}`);
+
+  const formattedQuery = queryParts.length ? `?${queryParts.join("&")}` : "";
+
+  return `${routes.tests}${formattedQuery}`;
 };
 
 export const filterRuns = ({
@@ -52,8 +62,8 @@ export const filterRuns = ({
   return filteredRuns;
 };
 
-// TODO: support and not just or
 export const filterTests = ({
+  filter,
   search,
   tagIds,
   testTags,
@@ -75,7 +85,13 @@ export const filterTests = ({
     filteredTests = filteredTests.filter((test) => {
       const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
-      if (includeNoTags && !tags.length) return true;
+      if (includeNoTags && !tags.length) {
+        return filter === "all" ? tagIds.length === 1 : true;
+      }
+
+      if (filter === "all") {
+        return tagIds.every((tagId) => tags.some((tag) => tag.id === tagId));
+      }
       return tags.some((t) => tagIds.includes(t.id));
     });
   }

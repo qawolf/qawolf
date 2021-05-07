@@ -669,7 +669,7 @@ export const useDeleteTag = (): MutationTuple<
   return useMutation<DeleteTagData, DeleteTagVariables>(deleteTagMutation, {
     awaitRefetchQueries: true,
     onError,
-    refetchQueries: ["tags"],
+    refetchQueries: ["tags", "tagsForTests"],
   });
 };
 

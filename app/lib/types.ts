@@ -127,6 +127,8 @@ export type Tag = {
   team_id: string;
 };
 
+export type TagFilter = "all" | "any";
+
 export type TagsForTest = {
   tags: Tag[];
   test_id: string;
