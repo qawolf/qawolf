@@ -8,7 +8,7 @@ type Props = {
 
 const defaultDescription = copy.tagline;
 const defaultImageUrl =
-  "https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png";
+  "https://qawolf-public.s3.us-east-2.amazonaws.com/logo.png";
 const defaultTitle = "QA Wolf";
 
 export default function Meta({
