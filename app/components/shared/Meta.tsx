@@ -8,7 +8,7 @@ type Props = {
 
 const defaultDescription = copy.tagline;
 const defaultImageUrl =
-  "https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png";
+  "https://qawolf-public.s3.us-east-2.amazonaws.com/logo.png";
 const defaultTitle = "QA Wolf";
 
 export default function Meta({
@@ -18,10 +18,11 @@ export default function Meta({
 }: Props): JSX.Element {
   const metaHtml: JSX.Element[] = [
     <meta
+      content={description || defaultDescription}
       key="description"
       name="description"
-      content={description || defaultDescription}
     />,
+    <meta content="website" key="type" property="og:type" />,
   ];
 
   ["og", "twitter"].forEach((platform) => {
@@ -29,21 +30,21 @@ export default function Meta({
       <meta
         content={description || defaultDescription}
         key={`${platform}:description`}
-        name={`${platform}:description`}
+        property={`${platform}:description`}
       />
     );
     metaHtml.push(
       <meta
         content={imageUrl || defaultImageUrl}
         key={`${platform}:image`}
-        name={`${platform}:image`}
+        property={`${platform}:image`}
       />
     );
     metaHtml.push(
       <meta
         content={title || defaultTitle}
         key={`${platform}:title`}
-        name={`${platform}:title`}
+        property={`${platform}:title`}
       />
     );
   });
