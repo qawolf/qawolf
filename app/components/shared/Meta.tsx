@@ -18,9 +18,9 @@ export default function Meta({
 }: Props): JSX.Element {
   const metaHtml: JSX.Element[] = [
     <meta
-      key="description"
-      name="description"
       content={description || defaultDescription}
+      key="description"
+      property="description"
     />,
   ];
 
@@ -29,21 +29,21 @@ export default function Meta({
       <meta
         content={description || defaultDescription}
         key={`${platform}:description`}
-        name={`${platform}:description`}
+        property={`${platform}:description`}
       />
     );
     metaHtml.push(
       <meta
         content={imageUrl || defaultImageUrl}
         key={`${platform}:image`}
-        name={`${platform}:image`}
+        property={`${platform}:image`}
       />
     );
     metaHtml.push(
       <meta
         content={title || defaultTitle}
         key={`${platform}:title`}
-        name={`${platform}:title`}
+        property={`${platform}:title`}
       />
     );
   });
