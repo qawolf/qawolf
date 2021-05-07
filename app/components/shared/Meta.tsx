@@ -22,6 +22,7 @@ export default function Meta({
       key="description"
       property="description"
     />,
+    <meta content="website" key="type" property="og:type" />,
   ];
 
   ["og", "twitter"].forEach((platform) => {
