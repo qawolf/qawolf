@@ -108,7 +108,7 @@ export const deleteTestsResolver = async (
 
 export const testSummariesResolver = async (
   _: Record<string, unknown>,
-  { test_ids, trigger_id }: TestSummariesQuery,
+  { test_ids }: TestSummariesQuery,
   { db, logger, teams }: Context
 ): Promise<TestSummary[]> => {
   const log = logger.prefix("testSummariesResolver");
@@ -122,10 +122,7 @@ export const testSummariesResolver = async (
 
   return Promise.all(
     test_ids.map(async (test_id) => {
-      const runs = await findLatestRuns(
-        { test_id, trigger_id },
-        { db, logger }
-      );
+      const runs = await findLatestRuns(test_id, { db, logger });
 
       const lastRun = runs[0] || null;
       const gif_url = lastRun?.gif_url;

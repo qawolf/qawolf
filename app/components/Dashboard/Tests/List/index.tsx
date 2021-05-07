@@ -25,7 +25,6 @@ export default function List({
     {
       // tests includes only filtered tests, so do not rerun query just if search changes
       test_ids: testIds,
-      trigger_id: null, // TODO: remove
     },
     { pollInterval: 10 * 1000 }
   );

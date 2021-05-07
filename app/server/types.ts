@@ -680,7 +680,6 @@ export type TestIdsQuery = {
 
 export type TestSummariesQuery = {
   test_ids: string[];
-  trigger_id: string | null;
 };
 
 export type TestSummary = {

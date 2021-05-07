@@ -202,30 +202,8 @@ describe("run model", () => {
       return db("suites").where({ id: "suite10Id" }).del();
     });
 
-    it("returns the latest runs for a test and trigger", async () => {
-      const runs = await findLatestRuns(
-        {
-          test_id: "test2Id",
-          trigger_id: "triggerId",
-        },
-        options
-      );
-
-      expect(runs).toMatchObject([
-        { id: "run3Id" },
-        { id: "run4Id" },
-        { id: "run7Id" },
-      ]);
-    });
-
-    it("does not filter by trigger if trigger not specified", async () => {
-      const runs = await findLatestRuns(
-        {
-          test_id: "test2Id",
-          trigger_id: null,
-        },
-        options
-      );
+    it("returns the latest runs for a test", async () => {
+      const runs = await findLatestRuns("test2Id", options);
 
       expect(runs).toMatchObject([
         { id: "run10Id" },

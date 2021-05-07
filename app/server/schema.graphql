@@ -1473,17 +1473,11 @@ type Query {
   team("The team ID" id: ID!): Team!
 
   """
-  Returns a test summary for each test ID. If 'trigger_id' is provided,
-  then the 'TestSummary.last_runs' will be filtered by that trigger.
+  Returns a test summary for each test ID.
 
   Requires that one of the teams you are on owns the tests.
   """
-  testSummaries(
-    "The test IDs"
-    test_ids: [ID!]!
-    "The trigger ID"
-    trigger_id: ID
-  ): [TestSummary!]!
+  testSummaries("The test IDs" test_ids: [ID!]!): [TestSummary!]!
 
   """
   Returns a test trigger for each test ID.

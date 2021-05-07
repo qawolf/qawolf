@@ -218,8 +218,8 @@ export const testHistoryQuery = gql`
 `;
 
 export const testSummariesQuery = gql`
-  query testSummaries($test_ids: [ID!]!, $trigger_id: ID) {
-    testSummaries(test_ids: $test_ids, trigger_id: $trigger_id) {
+  query testSummaries($test_ids: [ID!]!) {
+    testSummaries(test_ids: $test_ids) {
       gif_url
       last_runs {
         created_at

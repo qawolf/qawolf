@@ -28,11 +28,6 @@ type CreateRunsForTests = {
   tests: Test[];
 };
 
-type FindLatestRuns = {
-  test_id: string;
-  trigger_id: string | null;
-};
-
 export type UpdateRun = {
   code?: string;
   current_line?: number;
@@ -119,21 +114,19 @@ export const createRunsForTests = async (
 };
 
 export const findLatestRuns = async (
-  { test_id, trigger_id }: FindLatestRuns,
+  test_id: string,
   { db, logger }: ModelOptions
 ): Promise<RunWithGif[]> => {
   const log = logger.prefix("findLatestRuns");
 
-  log.debug("test", test_id, "trigger", trigger_id);
+  log.debug("test", test_id);
 
-  const query = db("runs")
+  const runs = await db("runs")
     .select("runs.*" as "*")
     .where({ test_id })
-    .innerJoin("suites", "runs.suite_id", "suites.id");
-
-  if (trigger_id) query.andWhere({ trigger_id });
-
-  const runs = await query.orderBy("created_at", "desc").limit(5);
+    .innerJoin("suites", "runs.suite_id", "suites.id")
+    .orderBy("created_at", "desc")
+    .limit(5);
 
   log.debug(`found ${runs.length} runs`);
 

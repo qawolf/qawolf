@@ -182,7 +182,6 @@ type TestSummariesData = {
 
 type TestSummariesVariables = {
   test_ids: string[];
-  trigger_id: string | null;
 };
 
 type TestTriggersData = {
