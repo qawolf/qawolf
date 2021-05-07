@@ -141,7 +141,7 @@ const StyledAppButton = styled(AppButton)`
     };
 
     border-color: ${
-      hoverBorderColor[props.type] ||
+      hoverBorderColor[props.hoverType || props.type] ||
       hoverSecondaryBackground[props.hoverType] ||
       hoverBackground[props.type]
     };

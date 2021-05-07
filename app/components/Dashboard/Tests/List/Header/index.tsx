@@ -60,7 +60,7 @@ export default function Header({
           {label}
         </Text>
       </Box>
-      <Actions testIds={testIds} />
+      <Actions hasCheckedTests={checkedTestIds.length > 0} testIds={testIds} />
     </Box>
   );
 }
