@@ -9,12 +9,10 @@ import { buildTestsPath } from "../../../helpers";
 type Props = { tags: Tag[] };
 
 export default function Triggers({ tags }: Props): JSX.Element {
-  const { replace, query } = useRouter();
-  const groupId = (query.group_id as string) || null;
+  const { replace } = useRouter();
 
   const handleTriggerClick = (tagId: string): void => {
-    // TODO: handle
-    // replace(buildTestsPath(groupId, triggerId));
+    replace(buildTestsPath([tagId]));
   };
 
   const tagsHtml = tags.map((tag) => {

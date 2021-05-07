@@ -1,6 +1,7 @@
 import { Box, BoxProps } from "grommet";
 
 import { SelectState, Tag as TagType } from "../../lib/types";
+import { copy } from "../../theme/copy";
 import { edgeSize, overflowStyle } from "../../theme/theme";
 import CheckBox from "./CheckBox";
 import Tag from "./icons/Tag";
@@ -9,7 +10,7 @@ import Text from "./Text";
 type Props = {
   onClick?: () => void;
   selectState: SelectState;
-  tag: TagType;
+  tag?: TagType;
   pad?: BoxProps["pad"];
   width?: BoxProps["width"];
 };
@@ -23,6 +24,8 @@ export default function TagCheckBox({
   tag,
   width,
 }: Props): JSX.Element {
+  const tagName = tag?.name || copy.noTags;
+
   const labelHtml = (
     <Box
       align="center"
@@ -31,21 +34,21 @@ export default function TagCheckBox({
       style={{ maxWidth }}
       width={width}
     >
-      <Tag color={tag.color} size={edgeSize.small} />
+      {!!tag && <Tag color={tag.color} size={edgeSize.small} />}
       <Text
         color="gray9"
-        margin={{ left: "xxsmall" }}
+        margin={tag ? { left: "xxsmall" } : undefined}
         size="component"
         style={overflowStyle}
       >
-        {tag.name}
+        {tagName}
       </Text>
     </Box>
   );
 
   return (
     <CheckBox
-      a11yTitle={`assign ${tag.name}`}
+      a11yTitle={`assign ${tagName}`}
       checked={selectState === "all"}
       indeterminate={selectState === "some"}
       label={labelHtml}

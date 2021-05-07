@@ -1,7 +1,6 @@
 import { Box } from "grommet";
-import isEqual from "lodash/isEqual";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTagsForTests } from "../../../hooks/queries";
 import { useTests } from "../../../hooks/tests";
@@ -17,8 +16,9 @@ type Props = {
 export default function Tests({ branch, teamId }: Props): JSX.Element {
   const { query } = useRouter();
 
-  const tagIds = query.tags ? (query.tags as string).split(",") : [];
-  const tagIdsRef = useRef<string[]>(tagIds);
+  const tagIds = useMemo(() => {
+    return query.tags ? (query.tags as string).split(",") : [];
+  }, [query]);
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
@@ -39,10 +39,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
 
   // clear checked tests when selected tags change
   useEffect(() => {
-    if (!isEqual(tagIdsRef.current, tagIds)) {
-      tagIdsRef.current = tagIds;
-      setCheckedTestIds([]);
-    }
+    setCheckedTestIds([]);
   }, [tagIds]);
 
   const testIds = testsData.map((t) => t.id);

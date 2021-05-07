@@ -34,7 +34,7 @@ export default function Actions({
         <Box align="center" direction="row">
           <Button
             IconComponent={Tag}
-            margin={{ horizontal: "xxsmall" }}
+            margin={{ horizontal: "small" }}
             label={copy.editTags}
             onClick={handleTagsClick}
             type={buttonType}

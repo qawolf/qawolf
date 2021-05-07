@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 
 import { Tag } from "../../../../lib/types";
 import { edgeSize } from "../../../../theme/theme";
+import Divider from "../../../shared/Divider";
 import Drop from "../../../shared/Drop";
+import { buildTestsPath, noTagId } from "../../helpers";
 import TagOption from "./TagOption";
 
 type Props = {
@@ -14,6 +16,7 @@ type Props = {
   target: DropProps["target"];
 };
 
+const dividerProps = { margin: { vertical: "xxxsmall" } };
 const width = "280px";
 
 export default function TagsMenu({
@@ -23,7 +26,7 @@ export default function TagsMenu({
   tagIds,
   target,
 }: Props): JSX.Element {
-  const { pathname, replace } = useRouter();
+  const { replace } = useRouter();
 
   if (!isOpen || !tags) return null;
 
@@ -37,9 +40,7 @@ export default function TagsMenu({
       if (index > -1) newTagIds.splice(index, 1);
     }
 
-    const query = newTagIds.length ? `?tags=${newTagIds.join(",")}` : "";
-
-    replace(`${pathname}${query}`);
+    replace(buildTestsPath(newTagIds));
   };
 
   const optionsHtml = tags.map((tag) => {
@@ -62,6 +63,12 @@ export default function TagsMenu({
       width={width}
     >
       {optionsHtml}
+      {!!tags?.length && <Divider {...dividerProps} />}
+      <TagOption
+        isChecked={tagIds.includes(noTagId)}
+        key={noTagId}
+        onClick={() => handleClick(noTagId)}
+      />
     </Drop>
   );
 }

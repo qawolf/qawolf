@@ -26,8 +26,8 @@ type FilterTests = {
 
 export const noTagId = "noTag";
 
-export const buildTestsPath = (triggerId: string | null): string => {
-  const query = triggerId ? `?trigger_id=${triggerId}` : "";
+export const buildTestsPath = (tagIds: string[]): string => {
+  const query = tagIds.length ? `?tags=${tagIds.join(",")}` : "";
 
   return `${routes.tests}${query}`;
 };

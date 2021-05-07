@@ -2,13 +2,14 @@ import { Box, Button } from "grommet";
 import styled from "styled-components";
 
 import { Tag } from "../../../../lib/types";
+import { copy } from "../../../../theme/copy";
 import { colors, transitionDuration } from "../../../../theme/theme";
 import TagCheckBox from "../../../shared/TagCheckBox";
 
 type Props = {
   isChecked: boolean;
   onClick: () => void;
-  tag: Tag;
+  tag?: Tag;
 };
 
 const StyledBox = styled(Box)`
@@ -29,7 +30,11 @@ export default function TagOption({
   tag,
 }: Props): JSX.Element {
   return (
-    <Button a11yTitle={`filter ${tag.name}`} onClick={onClick} plain>
+    <Button
+      a11yTitle={`filter ${tag?.name || copy.noTags}`}
+      onClick={onClick}
+      plain
+    >
       <StyledBox align="center" direction="row" justify="between" width="full">
         <TagCheckBox
           pad={{ horizontal: "xsmall", vertical: "xxsmall" }}

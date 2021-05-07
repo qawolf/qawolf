@@ -243,7 +243,7 @@ export const copy = {
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
   noRuns: "No runs",
   noPassword: "Please provide your password",
-  noTrigger: "No trigger",
+  noTags: "No tags",
   none: "None",
   notAvailable: "Not available",
   notFound: "(404. Page not found.)",
