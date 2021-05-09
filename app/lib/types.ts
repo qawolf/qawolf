@@ -80,7 +80,7 @@ export type Run = {
 };
 
 export type Runner = {
-  api_key: string | null;
+  vnc_url: string | null;
   ws_url: string | null;
 };
 

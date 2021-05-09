@@ -6,8 +6,8 @@ import { RunnerClient } from "../../../lib/runner";
 import { StateContext } from "../../StateContext";
 
 export type ConnectRunnerHook = {
-  apiKey: string | null;
   isRunnerLoading: boolean;
+  vncUrl: string | null;
   wsUrl: string | null;
 };
 
@@ -25,8 +25,6 @@ export const useConnectRunner = ({
   const { query } = useRouter();
   const { branch } = useContext(StateContext);
 
-  const useLocalRunner = query.local === "1";
-
   const { data: runnerResult, loading, startPolling, stopPolling } = useRunner(
     query.run_id
       ? { run_id: query.run_id as string }
@@ -34,8 +32,7 @@ export const useConnectRunner = ({
           request_test_runner: requestTestRunner,
           test_branch: branch,
           test_id: query.test_id as string,
-        },
-    { skip: useLocalRunner }
+        }
   );
 
   // manually poll instead of passing pollInterval
@@ -48,22 +45,15 @@ export const useConnectRunner = ({
     return () => stopPolling();
   }, [isRunnerConnected, loading, startPolling, stopPolling]);
 
-  let apiKey: string = null;
-  let wsUrl: string = null;
-
-  if (useLocalRunner) {
-    wsUrl = "ws://localhost:26367/.qawolf";
-  } else if (runnerResult) {
-    apiKey = runnerResult?.runner?.api_key || null;
-    wsUrl = runnerResult?.runner?.ws_url || null;
-  }
+  const vncUrl = runnerResult?.runner?.vnc_url || null;
+  const wsUrl = runnerResult?.runner?.ws_url || null;
 
   // connect the runner to the ws url
   useEffect(() => {
     if (loading) return;
 
-    runnerClient?.connect({ apiKey, wsUrl });
-  }, [apiKey, loading, runnerClient, wsUrl]);
+    runnerClient?.connect(wsUrl);
+  }, [loading, runnerClient, wsUrl]);
 
-  return { apiKey, isRunnerLoading: loading, wsUrl };
+  return { isRunnerLoading: loading, vncUrl, wsUrl };
 };

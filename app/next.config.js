@@ -11,7 +11,7 @@ const config = withMDX({
       loader: "@graphql-tools/webpack-loader",
     });
 
-    if (process.env.NETLIFY) {
+    if (process.env.NETLIFY || process.env.WEBPACK_IGNORE_KNEX_PLUGINS) {
       // https://github.com/knex/knex/issues/1446#issuecomment-253245823
       config.plugins.push(
         ...[

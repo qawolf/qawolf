@@ -5,8 +5,6 @@ import path from "path";
 import config from "./config";
 import { launch } from "./environment/launch";
 import { RunnerServer } from "./server/RunnerServer";
-import { StatusReporter } from "./services/StatusReporter";
-import { setVncPassword } from "./vnc";
 
 const debug = Debug("qawolf:index");
 
@@ -46,17 +44,13 @@ export const verifyRecorderScriptExists = async (): Promise<void> => {
 export const start = async (): Promise<RunnerServer> => {
   await verifyRecorderScriptExists();
 
-  await setVncPassword(config.RUNNER_API_KEY || "local");
-
   // warm up the session before starting the server or
   // notifying that the session is ready
   await warmUp();
 
   const server = await RunnerServer.start();
-  const reporter = new StatusReporter(server._runner);
 
   process.on("SIGTERM", () => {
-    reporter.close();
     server.close();
   });
 

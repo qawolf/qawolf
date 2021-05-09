@@ -22,7 +22,6 @@ type RunnerContext = ConnectRunnerHook &
   };
 
 export const RunnerContext = createContext<RunnerContext>({
-  apiKey: null,
   elementChooserValue: { isActive: false },
   env: null,
   isRunnerConnected: false,
@@ -37,6 +36,7 @@ export const RunnerContext = createContext<RunnerContext>({
   startElementChooser: () => null,
   stopElementChooser: () => null,
   stopTest: () => null,
+  vncUrl: null,
   wsUrl: null,
 });
 
@@ -66,7 +66,7 @@ export const RunnerProvider: FC = ({ children }) => {
     runner,
   });
 
-  const { apiKey, isRunnerLoading, wsUrl } = useConnectRunner({
+  const { isRunnerLoading, vncUrl, wsUrl } = useConnectRunner({
     isRunnerConnected,
     requestTestRunner,
     runner,
@@ -79,7 +79,6 @@ export const RunnerProvider: FC = ({ children }) => {
   }, [controller, runner]);
 
   const value = {
-    apiKey,
     elementChooserValue,
     env,
     isRunnerConnected,
@@ -94,6 +93,7 @@ export const RunnerProvider: FC = ({ children }) => {
     startElementChooser,
     stopElementChooser,
     stopTest,
+    vncUrl,
     wsUrl,
   };
 

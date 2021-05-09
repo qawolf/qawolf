@@ -359,14 +359,13 @@ export const useRunCount = (
 };
 
 export const useRunner = (
-  variables: RunnerVariables,
-  { skip }: { skip?: boolean }
+  variables: RunnerVariables
 ): QueryResult<RunnerData, RunnerVariables> => {
   return useQuery<RunnerData, RunnerVariables>(runnerQuery, {
     fetchPolicy,
     nextFetchPolicy,
     onError,
-    skip: (!variables.run_id && !variables.test_id) || skip,
+    skip: !variables.run_id && !variables.test_id,
     variables,
   });
 };

@@ -1,26 +1,17 @@
-import { encrypt } from "../../../server/models/encrypt";
 import {
-  countIncompleteRuns,
   countRunsForTeam,
   createRunsForTests,
   findLatestRuns,
-  findPendingRun,
   findRun,
   findRunsForSuite,
   findStatusCountsForSuite,
-  findSuiteRunForRunner,
   findTestHistory,
   updateRun,
 } from "../../../server/models/run";
-import * as storageService from "../../../server/services/aws/storage";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
-  buildArtifacts,
-  buildEnvironment,
-  buildEnvironmentVariable,
   buildRun,
-  buildRunner,
   buildSuite,
   buildTeam,
   buildTest,
@@ -29,7 +20,6 @@ import {
   logger,
 } from "../utils";
 
-const artifacts = buildArtifacts();
 const test = buildTest({});
 const test2 = buildTest({ i: 2, name: "testName" });
 
@@ -38,8 +28,6 @@ const options = { db, logger };
 
 describe("run model", () => {
   beforeAll(async () => {
-    await db("runners").insert(buildRunner({}));
-
     await db("users").insert(buildUser({}));
     await db("teams").insert([
       buildTeam({}),
@@ -142,13 +130,6 @@ describe("run model", () => {
       const result = await countRunsForTeam(team, options);
 
       expect(result).toBe(6);
-    });
-  });
-
-  describe("countIncompleteRuns", () => {
-    it("counts the runs that have not completed", async () => {
-      const result = await countIncompleteRuns(options);
-      expect(result).toEqual(5);
     });
   });
 
@@ -262,24 +243,6 @@ describe("run model", () => {
     });
   });
 
-  describe("findPendingRun", () => {
-    it("finds the oldest uncompleted run", async () => {
-      const pending = await findPendingRun({}, options);
-      expect(pending).toMatchObject({
-        created_at: expect.any(Date),
-        id: "run5Id",
-      });
-    });
-
-    it("finds a run that needs a runner", async () => {
-      const pending = await findPendingRun({ needs_runner: true }, options);
-      expect(pending).toMatchObject({
-        created_at: expect.any(Date),
-        id: "runId",
-      });
-    });
-  });
-
   describe("findRunsForSuite", () => {
     beforeAll(async () => {
       return db("tests")
@@ -338,119 +301,6 @@ describe("run model", () => {
         fail: 0,
         pass: 1,
       });
-    });
-  });
-
-  describe("findSuiteRunForRunner", () => {
-    beforeAll(async () => {
-      await db("suites").update({ helpers: "helpers" });
-
-      await db("environments").insert(buildEnvironment({ team_id: "team3Id" }));
-
-      return db("environment_variables").insert(
-        buildEnvironmentVariable({
-          environment_id: "environmentId",
-          team_id: "team3Id",
-        })
-      );
-    });
-
-    afterAll(async () => {
-      await db("suites").update({ helpers: "" });
-
-      await db("environment_variables").del();
-      return db("environments").del();
-    });
-
-    it("returns a run", async () => {
-      await db("suites").update({
-        environment_id: "environmentId",
-        environment_variables: encrypt(
-          JSON.stringify({ SUITE_VARIABLE: "suite_value" })
-        ),
-      });
-
-      jest
-        .spyOn(storageService, "getArtifactsOptions")
-        .mockResolvedValue(artifacts);
-
-      const run = await findSuiteRunForRunner("run6Id", options);
-
-      expect(run).toEqual({
-        artifacts,
-        code: 'const x = "hello"',
-        env: JSON.stringify({
-          ENV_VARIABLE: "secret",
-          SUITE_VARIABLE: "suite_value",
-          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
-          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
-        }),
-        helpers: "helpers",
-        id: "run6Id",
-        test_id: "test4Id",
-      });
-
-      await db("suites").update({
-        environment_id: null,
-        environment_variables: null,
-      });
-    });
-
-    it("does not include suite variables if none specified", async () => {
-      await db("suites").update({ environment_id: "environmentId" });
-
-      jest
-        .spyOn(storageService, "getArtifactsOptions")
-        .mockResolvedValue(artifacts);
-
-      const run = await findSuiteRunForRunner("run6Id", options);
-
-      expect(run).toEqual({
-        artifacts,
-        code: 'const x = "hello"',
-        env: JSON.stringify({
-          ENV_VARIABLE: "secret",
-          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
-          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
-        }),
-        helpers: "helpers",
-        id: "run6Id",
-        test_id: "test4Id",
-      });
-
-      await db("suites").update({ environment_id: null });
-    });
-
-    it("does not include environment variables if none specified", async () => {
-      jest
-        .spyOn(storageService, "getArtifactsOptions")
-        .mockResolvedValue(artifacts);
-
-      const run = await findSuiteRunForRunner("run6Id", options);
-
-      expect(run).toEqual({
-        artifacts,
-        code: 'const x = "hello"',
-        env: JSON.stringify({
-          QAWOLF_TEAM_API_KEY: "qawolf_testapikey",
-          QAWOLF_TEAM_INBOX: "test@dev.qawolf.email",
-        }),
-        helpers: "helpers",
-        id: "run6Id",
-        test_id: "test4Id",
-      });
-    });
-
-    it("returns null if run is not found", async () => {
-      const run = await findSuiteRunForRunner("fakeId", options);
-
-      expect(run).toBeNull();
-    });
-
-    it("returns null if run does not have a suite", async () => {
-      const run = await findSuiteRunForRunner("run8Id", options);
-
-      expect(run).toBeNull();
     });
   });
 

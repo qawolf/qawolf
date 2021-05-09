@@ -1,15 +1,16 @@
 import axios from "axios";
 
+import config from "../../src/config";
 import { RunnerServer } from "../../src/server/RunnerServer";
 
-const port = 3998;
-const serverUrl = `http://localhost:${port}`;
+config.SERVER_PORT = 3998;
+const serverUrl = `http://localhost:${config.SERVER_PORT}`;
 
 describe("RunnerServer", () => {
   let server: RunnerServer;
 
   beforeAll(async () => {
-    server = await RunnerServer.start(port);
+    server = await RunnerServer.start();
   });
 
   afterAll(async () => {

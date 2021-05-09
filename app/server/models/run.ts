@@ -1,13 +1,9 @@
 import { minutesFromNow } from "../../shared/utils";
-import {
-  createStorageReadAccessUrl,
-  getArtifactsOptions,
-} from "../services/aws/storage";
+import { createStorageReadAccessUrl } from "../services/aws/storage";
 import { trackSegmentEvent } from "../services/segment";
 import {
   ModelOptions,
   Run,
-  RunnerRun,
   RunResult,
   RunStatus,
   RunWithGif,
@@ -17,9 +13,7 @@ import {
   Test,
 } from "../types";
 import { cuid } from "../utils";
-import { decrypt } from "./encrypt";
 import { findEnvironmentIdForRun } from "./environment";
-import { buildEnvironmentVariables } from "./environment_variable";
 import { createJobsForSuite } from "./job";
 import { findTest } from "./test";
 
@@ -51,23 +45,6 @@ const formatCountForStatus = (
   if (count) return Number(count.count);
 
   return 0;
-};
-
-export const countIncompleteRuns = async ({
-  db,
-  logger,
-}: ModelOptions): Promise<number> => {
-  const log = logger.prefix("countIncompleteRuns");
-
-  const result = await db("runs")
-    .count("*", { as: "count" })
-    .from("runs")
-    .where({ completed_at: null })
-    .first();
-
-  log.debug(result);
-
-  return Number(result.count);
 };
 
 export const countRunsForTeam = async (
@@ -146,27 +123,6 @@ export const findLatestRuns = async (
   });
 };
 
-export const findPendingRun = async (
-  { needs_runner }: { needs_runner?: true },
-  { db }: ModelOptions
-): Promise<Pick<Run, "created_at" | "id"> | null> => {
-  let query = db
-    .select("runs.id" as "*")
-    .select("runs.created_at" as "*")
-    .from("runs")
-    .where({ completed_at: null });
-
-  if (needs_runner) {
-    query = query
-      .leftJoin("runners", "runners.run_id", "runs.id")
-      .where({ "runners.id": null, started_at: null });
-  }
-
-  const result = await query.orderBy("runs.created_at", "asc").first();
-
-  return result || null;
-};
-
 export const findRun = async (
   id: string,
   { db }: ModelOptions
@@ -242,55 +198,6 @@ export const findStatusCountsForSuite = async (
     fail: formatCountForStatus(counts, "fail"),
     pass: formatCountForStatus(counts, "pass"),
   };
-};
-
-export const findSuiteRunForRunner = async (
-  run_id: string,
-  { db, logger }: ModelOptions
-): Promise<RunnerRun | null> => {
-  return db.transaction(async (trx) => {
-    const row = await trx
-      .select("runs.*")
-      .select("suites.environment_id AS environment_id")
-      .select("suites.environment_variables AS environment_variables")
-      .select("suites.helpers AS helpers")
-      .select("suites.team_id AS team_id")
-      .select("teams.api_key AS api_key")
-      .select("teams.inbox AS inbox")
-      .from("runs")
-      .innerJoin("suites", "runs.suite_id", "suites.id")
-      .innerJoin("teams", "suites.team_id", "teams.id")
-      .andWhere({ "runs.id": run_id })
-      .first();
-
-    if (!row) return null;
-
-    const custom_variables = row.environment_variables
-      ? JSON.parse(decrypt(row.environment_variables))
-      : {};
-
-    const { env } = await buildEnvironmentVariables(
-      {
-        custom_variables: {
-          ...custom_variables,
-          QAWOLF_TEAM_API_KEY: decrypt(row.api_key),
-          QAWOLF_TEAM_INBOX: row.inbox,
-        },
-        environment_id: row.environment_id,
-      },
-      { db, logger }
-    );
-
-    return {
-      artifacts: await getArtifactsOptions({ name: row.id }),
-      code: row.code,
-      env,
-      helpers: row.helpers,
-      id: row.id,
-      test_id: row.test_id,
-      version: row.test_version,
-    };
-  });
 };
 
 export const findTestHistory = async (

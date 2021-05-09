@@ -1,4 +1,3 @@
-import { notifyRunFinished, notifyRunStarted } from "../services/api";
 import { RunHook, RunProgress } from "../types";
 import { VideoArtifactsHook } from "./VideoArtifactsHook";
 
@@ -17,16 +16,13 @@ export class StatusReporterHook implements RunHook {
         await this._videoCaptureHook.waitForUpload();
       }
 
-      await notifyRunFinished({
-        current_line: result.current_line,
-        error: result.error,
-        pass: result.status === "pass",
-        run_id: this._runId,
-      });
+      // TODO notifyRunFinished
+      console.log("run finished", result);
     })();
   }
 
   async before(): Promise<void> {
-    notifyRunStarted({ run_id: this._runId });
+    // TODO notifyRunStarted
+    console.log("run started");
   }
 }

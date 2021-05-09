@@ -10,12 +10,7 @@ import {
   SubscriptionTracker,
 } from "./SubscriptionTracker";
 
-type Auth = {
-  apiKey: string;
-};
-
 type ConstructorOptions = {
-  apiKey?: string;
   httpServer: HttpServer;
   runner: Runner;
 };
@@ -23,13 +18,11 @@ type ConstructorOptions = {
 const debug = Debug("qawolf:SocketServer");
 
 export class SocketServer {
-  readonly _apiKey?: string;
   readonly _io: SocketIoServer;
   readonly _runner: Runner;
   readonly _subscriptions = new SubscriptionTracker();
 
-  constructor({ apiKey, httpServer, runner }: ConstructorOptions) {
-    this._apiKey = apiKey;
+  constructor({ httpServer, runner }: ConstructorOptions) {
     this._runner = runner;
     this._io = new SocketIoServer(httpServer, { transports: ["websocket"] });
     this._io.on("connect", this._onConnect.bind(this));
@@ -44,25 +37,12 @@ export class SocketServer {
     this._publish(this._runner, { event: "runprogress", to: "run" });
   }
 
-  _authenticate(socket: Socket): boolean {
-    return (
-      this._apiKey === undefined ||
-      this._apiKey === (socket.handshake.auth as Auth)?.apiKey
-    );
-  }
-
   _emitUsers(): void {
     const data = this._subscriptions.data("users");
     this._subscriptions.emit("users", { data, event: "users" });
   }
 
   _onConnect(socket: Socket): void {
-    if (!this._authenticate(socket)) {
-      debug(`socket unauthorized ${socket.id}`);
-      socket.disconnect();
-      return;
-    }
-
     debug(`socket connected ${socket.id}`);
     socket.on("disconnect", () => this._onDisconnect(socket));
     socket.on("keychanged", (message) => this._runner._editor.receive(message));
