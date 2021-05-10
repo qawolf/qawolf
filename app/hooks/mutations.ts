@@ -2,6 +2,7 @@ import { MutationTuple, useMutation } from "@apollo/client";
 import noop from "lodash/noop";
 import { NextRouter, useRouter } from "next/router";
 
+import { buildTestsPath } from "../components/Dashboard/helpers";
 import {
   acceptInviteMutation,
   createEnvironmentMutation,
@@ -59,6 +60,7 @@ import {
   Wolf,
 } from "../lib/types";
 import { buildTestCode } from "../shared/utils";
+import { useTagQuery } from "./tagQuery";
 
 type AcceptInviteData = {
   acceptInvite: Invite;
@@ -661,13 +663,26 @@ export const useDeleteEnvironmentVariable = (): MutationTuple<
   });
 };
 
-// TODO: handle case where they delete a tag that's filtered
 export const useDeleteTag = (): MutationTuple<
   DeleteTagData,
   DeleteTagVariables
 > => {
+  const { replace } = useRouter();
+  const { filter, tagIds } = useTagQuery();
+
   return useMutation<DeleteTagData, DeleteTagVariables>(deleteTagMutation, {
     awaitRefetchQueries: true,
+    // remove deleted tag from filter if needed
+    onCompleted: (response) => {
+      const tagId = response?.deleteTag?.id;
+      if (!tagId || !tagIds.includes(tagId)) return;
+
+      const newTagIds = [...tagIds];
+      const index = newTagIds.indexOf(tagId);
+      if (index > -1) newTagIds.splice(index, 1);
+
+      replace(buildTestsPath(newTagIds, filter));
+    },
     onError,
     refetchQueries: ["tags", "tagsForTests"],
   });

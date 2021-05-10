@@ -1,10 +1,9 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useTagsForTests } from "../../../hooks/queries";
+import { useTagQuery } from "../../../hooks/tagQuery";
 import { useTests } from "../../../hooks/tests";
-import { TagFilter } from "../../../lib/types";
 import { filterTests } from "../helpers";
 import Header from "./Header";
 import List from "./List";
@@ -15,14 +14,7 @@ type Props = {
 };
 
 export default function Tests({ branch, teamId }: Props): JSX.Element {
-  const { query } = useRouter();
-
-  const { filter, tagIds } = useMemo(() => {
-    const filter = query.filter === "all" ? "all" : "any";
-    const tagIds = query.tags ? (query.tags as string).split(",") : [];
-
-    return { filter: filter as TagFilter, tagIds };
-  }, [query]);
+  const { filter, tagIds } = useTagQuery();
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
