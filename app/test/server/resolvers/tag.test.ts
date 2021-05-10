@@ -2,6 +2,7 @@ import {
   createTagResolver,
   deleteTagResolver,
   tagsForTestsResolver,
+  tagsForTriggerResolver,
   tagsResolver,
   updateTagResolver,
 } from "../../../server/resolvers/tag";
@@ -9,9 +10,11 @@ import { prepareTestDb } from "../db";
 import {
   buildTag,
   buildTagTest,
+  buildTagTrigger,
   buildTeam,
   buildTeamUser,
   buildTest,
+  buildTrigger,
   buildUser,
   testContext,
 } from "../utils";
@@ -103,6 +106,28 @@ describe("tagsForTestsResolver", () => {
       { tags: [{ id: "tagId" }, { id: "tag2Id" }], test_id: "testId" },
       { tags: [{ id: "tagId" }], test_id: "test2Id" },
     ]);
+  });
+});
+
+describe("tagsForTriggerResolver", () => {
+  const trigger = buildTrigger({});
+
+  beforeAll(async () => {
+    await db("tags").insert([buildTag({}), buildTag({ i: 2 })]);
+    await db("triggers").insert(trigger);
+
+    await db("tag_triggers").insert([buildTagTrigger({})]);
+  });
+
+  afterAll(async () => {
+    await db("tags").del();
+    await db("triggers").del();
+  });
+
+  it("finds tags for a trigger", async () => {
+    const tags = await tagsForTriggerResolver(trigger, {}, context);
+
+    expect(tags).toMatchObject([{ id: "tagId" }]);
   });
 });
 

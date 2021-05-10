@@ -4,6 +4,7 @@ import {
   findTag,
   findTagsForTeam,
   findTagsForTests,
+  findTagsForTrigger,
   updateTag,
 } from "../../../server/models/tag";
 import { Tag } from "../../../server/types";
@@ -11,8 +12,10 @@ import { prepareTestDb } from "../db";
 import {
   buildTag,
   buildTagTest,
+  buildTagTrigger,
   buildTeam,
   buildTest,
+  buildTrigger,
   buildUser,
   logger,
 } from "../utils";
@@ -153,6 +156,34 @@ describe("findTagsForTests", () => {
       { tags: [{ id: "tag2Id" }], test_id: "test2Id" },
       { tags: [{ id: "tagId" }, { id: "tag2Id" }], test_id: "test3Id" },
     ]);
+  });
+});
+
+describe("findTagsForTrigger", () => {
+  beforeAll(async () => {
+    await db("triggers").insert(buildTrigger({}));
+
+    await db("tags").insert([
+      buildTag({}),
+      buildTag({ i: 2 }),
+      buildTag({ i: 3 }),
+    ]);
+
+    await db("tag_triggers").insert([
+      buildTagTrigger({}),
+      buildTagTrigger({ i: 2, tag_id: "tag2Id" }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("triggers").del();
+    await db("tags").del();
+  });
+
+  it("returns tags for a trigger", async () => {
+    const tags = await findTagsForTrigger("triggerId", options);
+
+    expect(tags).toMatchObject([{ id: "tagId" }, { id: "tag2Id" }]);
   });
 });
 

@@ -156,16 +156,13 @@ export const deleteTests = async (
 
   log.debug(ids);
 
-  const tests = await db.transaction(async (trx) => {
-    const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
-    await trx("tests").update(updates).whereIn("id", ids);
-    return tests.map((test: Test) => ({ ...test, ...updates }));
-  });
+  const tests = await db("tests").whereIn("id", ids);
+  const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
 
+  await db("tests").update(updates).whereIn("id", ids);
   log.debug("deleted", ids);
 
-  return tests;
+  return tests.map((test: Test) => ({ ...test, ...updates }));
 };
 
 export const findEnabledTests = async (

@@ -83,7 +83,6 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "vercel",
           environment_id: "environmentId",
-          id: "deployTriggerId",
           name: "Deployment",
           repeat_minutes: 60,
           team_id: "teamId",
@@ -102,7 +101,7 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "vercel",
           environment_id: "environmentId",
-          id: "deployTriggerId",
+          id: expect.any(String),
           name: "Deployment",
           repeat_minutes: 60,
         },
@@ -116,7 +115,6 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "netlify",
           environment_id: "environmentId",
-          id: "deployTrigger2Id",
           name: "Deployment (Netlify)",
           repeat_minutes: 60,
           team_id: "teamId",
@@ -135,7 +133,6 @@ describe("trigger model", () => {
         deployment_environment: "preview",
         deployment_integration_id: "integrationId",
         deployment_provider: "netlify",
-        id: "deployTrigger2Id",
         name: "Deployment (Netlify)",
       });
     });

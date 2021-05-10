@@ -7,7 +7,6 @@ import {
   findTests,
   findTestsForTeam,
 } from "../models/test";
-import { deleteTestTriggersForTests } from "../models/test_trigger";
 import { createFileForTest } from "../services/gitHub/file";
 import { trackSegmentEvent } from "../services/segment";
 import {
@@ -100,10 +99,7 @@ export const deleteTestsResolver = async (
 
   log.debug("soft delete from database");
 
-  return db.transaction(async (trx) => {
-    await deleteTestTriggersForTests(ids, { db: trx, logger });
-    return deleteTests(ids, { db: trx, logger });
-  });
+  return deleteTests(ids, { db, logger });
 };
 
 export const testSummariesResolver = async (

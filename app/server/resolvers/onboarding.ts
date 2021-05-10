@@ -1,9 +1,10 @@
 import { hasInvitedUser } from "../models/invite";
+import { hasTestTrigger } from "../models/tag_trigger";
 import { hasIntroGuide, hasTest } from "../models/test";
-import { hasTestTrigger } from "../models/test_trigger";
 import { Context, Onboarding, TeamIdQuery } from "../types";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
+// TODO: update
 export const onboardingResolver = async (
   _: Record<string, unknown>,
   { team_id }: TeamIdQuery,

@@ -126,6 +126,25 @@ export const findTagsForTests = async (
   return result;
 };
 
+export const findTagsForTrigger = async (
+  trigger_id: string,
+  { db, logger }: ModelOptions
+): Promise<Tag[]> => {
+  const log = logger.prefix("findTagsForTrigger");
+  log.debug("trigger", trigger_id);
+
+  const tags = await db
+    .select("tags.*" as "*")
+    .from("tags")
+    .innerJoin("tag_triggers", "tags.id", "tag_triggers.tag_id")
+    .where({ "tag_triggers.trigger_id": trigger_id })
+    .orderBy("tags.name", "asc");
+
+  log.debug(`found ${tags.length} tags`);
+
+  return tags;
+};
+
 export const updateTag = async (
   { id, name }: UpdateTag,
   { db, logger }: ModelOptions

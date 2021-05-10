@@ -51,10 +51,12 @@ import {
   createTagResolver,
   deleteTagResolver,
   tagsForTestsResolver,
+  tagsForTriggerResolver,
   tagsResolver,
   updateTagResolver,
 } from "./resolvers/tag";
 import { updateTagTestsResolver } from "./resolvers/tag_test";
+import { updateTagTriggersResolver } from "./resolvers/tag_trigger";
 import { teamResolver, updateTeamResolver } from "./resolvers/team";
 import {
   createTestResolver,
@@ -62,10 +64,6 @@ import {
   testsResolver,
   testSummariesResolver,
 } from "./resolvers/test";
-import {
-  testTriggersResolver,
-  updateTestTriggersResolver,
-} from "./resolvers/test_trigger";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
@@ -86,6 +84,9 @@ export const resolvers = {
   Team: {
     invites: teamInvitesResolver,
     users: teamUsersResolver,
+  },
+  Trigger: {
+    tags: tagsForTriggerResolver,
   },
   Suite: {
     runs: suiteRunsResolver,
@@ -124,8 +125,8 @@ export const resolvers = {
     updateRunner: updateRunnerResolver,
     updateTag: updateTagResolver,
     updateTagTests: updateTagTestsResolver,
+    updateTagTriggers: updateTagTriggersResolver,
     updateTeam: updateTeamResolver,
-    updateTestTriggers: updateTestTriggersResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
     updateWolf: updateWolfResolver,
@@ -148,7 +149,6 @@ export const resolvers = {
     team: teamResolver,
     testHistory: testHistoryResolver,
     testSummaries: testSummariesResolver,
-    testTriggers: testTriggersResolver,
     tests: testsResolver,
     triggers: triggersResolver,
     wolf: wolfResolver,

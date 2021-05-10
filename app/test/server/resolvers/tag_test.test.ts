@@ -60,7 +60,7 @@ describe("updateTagTestsResolver", () => {
     expect(tags).toMatchObject([{ tags: [], test_id: "testId" }]);
   });
 
-  it("throws an error if trying to add tests to tag on differen team", async () => {
+  it("throws an error if trying to add tests to tag on different team", async () => {
     await expect(
       (): Promise<TagsForTest[]> => {
         return updateTagTestsResolver(

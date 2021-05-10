@@ -21,7 +21,6 @@ type CreateTrigger = GetNextAt & {
   deployment_integration_id?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string;
-  id?: string;
   name: string;
   start_at?: Date;
   timezone_id?: string;
@@ -57,7 +56,6 @@ export const createTrigger = async (
     deployment_integration_id,
     deployment_provider,
     environment_id,
-    id,
     name,
     repeat_minutes,
     start_at,
@@ -81,7 +79,7 @@ export const createTrigger = async (
     deployment_integration_id: deployment_integration_id || null,
     deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
-    id: id || cuid(),
+    id: cuid(),
     name,
     next_at: getNextAt({ repeat_minutes, start_at, timezone_id }),
     repeat_minutes: repeat_minutes || null,

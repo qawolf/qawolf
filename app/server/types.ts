@@ -291,6 +291,12 @@ export type TagTest = {
   updated_at?: string;
 };
 
+export type TagTrigger = {
+  id: string;
+  tag_id: string;
+  trigger_id: string;
+};
+
 export type TeamPlan = "business" | "custom" | "free";
 
 export type Team = {
@@ -310,7 +316,6 @@ export type Team = {
   last_synced_at: string | null;
   limit_reached_at: string | null;
   name: string;
-  next_trigger_id: string;
   plan: TeamPlan;
   renewed_at: string;
   stripe_customer_id: string | null;
@@ -344,12 +349,6 @@ export type Test = {
   team_id: string;
   updated_at: string;
   url?: string;
-};
-
-export type TestTrigger = {
-  id: string;
-  test_id: string;
-  trigger_id: string;
 };
 
 export type Trigger = {
@@ -470,7 +469,6 @@ export type CreateTriggerMutation = {
   name: string;
   repeat_minutes: number | null;
   team_id: string;
-  test_ids: string[] | null;
 };
 
 export type CreateUrlMutation = {
@@ -544,12 +542,6 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
-export type UpdateTestTriggersMutation = {
-  add_trigger_id: string | null;
-  remove_trigger_id: string | null;
-  test_ids: string[];
-};
-
 export type UpdateRunMutation = {
   error?: string;
   current_line: number | null;
@@ -578,6 +570,11 @@ export type UpdateTagTestsMutation = {
   add_tag_id?: string | null;
   remove_tag_id?: string | null;
   test_ids: string[];
+};
+
+export type UpdateTagTriggersMutation = {
+  tag_ids: string[];
+  trigger_id: string;
 };
 
 export type UpdateTeamMutation = {
@@ -687,11 +684,6 @@ export type TestSummary = {
   gif_url: string | null;
   last_runs: RunWithGif[];
   test_id: string;
-};
-
-export type TestTriggers = {
-  test_id: string;
-  trigger_ids: string[];
 };
 
 export type TestsQuery = {

@@ -21,11 +21,11 @@ import {
   Suite,
   Tag,
   TagTest,
+  TagTrigger,
   Team,
   TeamPlan,
   TeamUser,
   Test,
-  TestTrigger,
   Trigger,
   User,
 } from "../../server/types";
@@ -132,6 +132,12 @@ type BuildTagTest = {
   i?: number;
   tag_id?: string;
   test_id?: string;
+};
+
+type BuildTagTrigger = {
+  i?: number;
+  tag_id?: string;
+  trigger_id?: string;
 };
 
 type BuildTeam = {
@@ -475,7 +481,6 @@ export const buildTeam = ({
     last_synced_at: last_synced_at || null,
     limit_reached_at: limit_reached_at || null,
     name: name || "Awesome Company",
-    next_trigger_id: cuid(),
     plan: plan || "free",
     renewed_at: renewed_at || new Date().toISOString(),
     stripe_customer_id: null,
@@ -536,8 +541,18 @@ export const buildTest = ({
   };
 };
 
-export const buildTestTrigger = (): TestTrigger => {
-  return { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" };
+export const buildTagTrigger = ({
+  i,
+  tag_id,
+  trigger_id,
+}: BuildTagTrigger): TagTrigger => {
+  const finalI = i || 1;
+
+  return {
+    id: `tagTrigger${finalI === 1 ? "" : i}Id`,
+    tag_id: tag_id || "tagId",
+    trigger_id: trigger_id || "triggerId",
+  };
 };
 
 export const buildTrigger = ({

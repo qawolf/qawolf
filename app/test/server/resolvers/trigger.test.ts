@@ -28,10 +28,7 @@ beforeAll(async () => {
 describe("createTriggerResolver", () => {
   beforeAll(() => db("tests").insert(buildTest({})));
 
-  afterEach(async () => {
-    await db("test_triggers").del();
-    return db("triggers").del();
-  });
+  afterEach(() => db("triggers").del());
 
   afterAll(() => db("tests").del());
 
@@ -47,7 +44,6 @@ describe("createTriggerResolver", () => {
         name: "Daily",
         repeat_minutes: 1440,
         team_id: "teamId",
-        test_ids: null,
       },
       context
     );
@@ -59,46 +55,10 @@ describe("createTriggerResolver", () => {
       deployment_integration_id: null,
       deployment_provider: null,
       environment_id: "environmentId",
-      id: team.next_trigger_id,
       name: "Daily",
       repeat_minutes: 1440,
       team_id: "teamId",
     });
-
-    const testTriggers = await db("test_triggers").select("*");
-
-    expect(testTriggers).toEqual([]);
-
-    const updatedTeam = await db("teams")
-      .select("*")
-      .where({ id: "teamId" })
-      .first();
-
-    expect(updatedTeam.next_trigger_id).not.toBe(team.next_trigger_id);
-  });
-
-  it("creates test triggers if specified", async () => {
-    const trigger = await createTriggerResolver(
-      {},
-      {
-        deployment_branches: null,
-        deployment_environment: null,
-        deployment_integration_id: null,
-        deployment_provider: null,
-        environment_id: "environmentId",
-        name: "Daily",
-        repeat_minutes: 1440,
-        team_id: "teamId",
-        test_ids: ["testId"],
-      },
-      context
-    );
-
-    const testTriggers = await db("test_triggers").select("*");
-
-    expect(testTriggers).toMatchObject([
-      { test_id: "testId", trigger_id: trigger.id },
-    ]);
   });
 });
 
@@ -106,21 +66,14 @@ describe("deleteTriggerResolver", () => {
   beforeAll(async () => {
     await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
-
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "test2Id", trigger_id: "triggerId" },
-      { id: "testTrigger3Id", test_id: "testId", trigger_id: "trigger2Id" },
-    ]);
   });
 
   afterAll(async () => {
-    await db("test_triggers").del();
     await db("triggers").del();
     return db("tests").del();
   });
 
-  it("deletes a trigger and associated test triggers", async () => {
+  it("deletes a trigger", async () => {
     const trigger = await deleteTriggerResolver(
       {},
       { id: "triggerId" },
@@ -135,9 +88,6 @@ describe("deleteTriggerResolver", () => {
       .where({ id: "triggerId" })
       .first();
     expect(dbTrigger.deleted_at).toBeTruthy();
-
-    const testTriggers = await db.select("*").from("test_triggers");
-    expect(testTriggers).toMatchObject([{ id: "testTrigger3Id" }]);
   });
 });
 

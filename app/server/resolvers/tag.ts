@@ -3,6 +3,7 @@ import {
   deleteTag,
   findTagsForTeam,
   findTagsForTests,
+  findTagsForTrigger,
   updateTag,
 } from "../models/tag";
 import {
@@ -13,6 +14,7 @@ import {
   TagsForTest,
   TeamIdQuery,
   TestIdsQuery,
+  Trigger,
   UpdateTagMutation,
 } from "../types";
 import { ensureTagAccess, ensureTeamAccess, ensureTestAccess } from "./utils";
@@ -71,6 +73,19 @@ export const tagsForTestsResolver = async (
   );
 
   return findTagsForTests(test_ids, { db, logger });
+};
+
+export const tagsForTriggerResolver = async (
+  { id, team_id }: Trigger,
+  _: Record<string, unknown>,
+  { db, logger, teams }: Context
+): Promise<Tag[]> => {
+  const log = logger.prefix("tagsForTriggerResolver");
+  log.debug("trigger", id);
+
+  ensureTeamAccess({ logger, team_id, teams });
+
+  return findTagsForTrigger(id, { db, logger });
 };
 
 export const updateTagResolver = async (
