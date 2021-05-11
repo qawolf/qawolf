@@ -16,10 +16,13 @@ export const buildTestCommand = (): program.Command => {
       "environment name to use when running your tests"
     )
     .option("-s, --no-wait", "do not wait for the tests finish running")
+    .option("-b, --branch <branch>", "the branch of tests to run")
     .option("-r, --trigger <id>", "deprecated: id of the trigger to run")
-    .action(async ({ env, envName, tags, trigger: triggerId, wait }) => {
-      await runTests({ env, envName, tags, triggerId, wait });
-    });
+    .action(
+      async ({ branch, env, envName, tags, trigger: triggerId, wait }) => {
+        await runTests({ branch, env, envName, tags, triggerId, wait });
+      }
+    );
 
   return command;
 };

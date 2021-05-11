@@ -11,6 +11,8 @@ import { state } from "./state";
 export const JWT_KEY = "qaw_token";
 const VERSION_KEY = "qaw_version";
 
+// do not show authentication errors to users caused by expired tokens
+const ERROR_MESSAGE_DENYLIST = ["no teams", "no user"];
 // these errors we handle with custom ui
 const ERROR_OPERATION_DENYLIST = ["sendLoginCode", "signInWithEmail"];
 
@@ -47,12 +49,15 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
       const formattedMessage = message.replace("Context creation failed: ", "");
 
       const error = isDevelopment
-        ? `Error (${operation.operationName}): ${formattedMessage}`
-        : `Error: ${formattedMessage}`;
+        ? `${operation.operationName}: ${formattedMessage}`
+        : formattedMessage;
 
       console.warn("qawolf:", error);
 
-      if (!ERROR_OPERATION_DENYLIST.includes(operation.operationName)) {
+      if (
+        !ERROR_MESSAGE_DENYLIST.find((msg) => message.includes(msg)) &&
+        !ERROR_OPERATION_DENYLIST.includes(operation.operationName)
+      ) {
         state.setToast({ error: true, message: error });
       }
     });
