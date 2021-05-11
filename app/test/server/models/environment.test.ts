@@ -1,12 +1,15 @@
 import {
   createEnvironment,
   deleteEnvironment,
+  findDefaultEnvironmentForTeam,
   findEnvironment,
+  findEnvironmentForName,
   findEnvironmentIdForRun,
   findEnvironmentOrNull,
   findEnvironmentsForTeam,
   updateEnvironment,
 } from "../../../server/models/environment";
+import { Environment } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
@@ -108,6 +111,37 @@ describe("deleteEnvironment", () => {
   });
 });
 
+describe("findDefaultEnvironmentForTeam", () => {
+  afterEach(() => db("environments").del());
+
+  it("returns null if team has no environment", async () => {
+    const environment = await findDefaultEnvironmentForTeam("teamId", options);
+
+    expect(environment).toBeNull();
+  });
+
+  it("returns single environment for team", async () => {
+    await db("environments").insert(buildEnvironment({}));
+
+    const environment = await findDefaultEnvironmentForTeam("teamId", options);
+
+    expect(environment).toMatchObject({ id: "environmentId" });
+  });
+
+  it("throws an error if multiple environments", async () => {
+    await db("environments").insert([
+      buildEnvironment({}),
+      buildEnvironment({ i: 2, name: "Production" }),
+    ]);
+
+    await expect(
+      async (): Promise<Environment | null> => {
+        return findDefaultEnvironmentForTeam("teamId", options);
+      }
+    ).rejects.toThrowError("Must provide environment name");
+  });
+});
+
 describe("findEnvironment", () => {
   beforeAll(() => {
     return db("environments").insert(buildEnvironment({}));
@@ -125,6 +159,42 @@ describe("findEnvironment", () => {
     await expect(findEnvironment("fakeId", options)).rejects.toThrowError(
       "not found"
     );
+  });
+});
+
+describe("findEnvironmentForName", () => {
+  const environment = buildEnvironment({});
+
+  beforeAll(() => {
+    return db("environments").insert(environment);
+  });
+
+  afterAll(() => db("environments").del());
+
+  it("finds an environment by name", async () => {
+    const environment = await findEnvironmentForName(
+      { name: "Staging", team_id: "teamId" },
+      options
+    );
+
+    expect(environment).toMatchObject({
+      id: environment.id,
+      name: "Staging",
+      team_id: "teamId",
+    });
+  });
+
+  it("throws an error if environment not found", async () => {
+    await expect(
+      findEnvironmentForName({ name: "fake name", team_id: "teamId" }, options)
+    ).rejects.toThrowError("not found");
+
+    await expect(
+      findEnvironmentForName(
+        { name: environment.id, team_id: "otherTeamId" },
+        options
+      )
+    ).rejects.toThrowError("not found");
   });
 });
 

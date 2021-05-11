@@ -9,6 +9,11 @@ type CreateTag = {
   team_id: string;
 };
 
+type FindTagIdsForNames = {
+  names: string;
+  team_id: string;
+};
+
 type UpdateTag = {
   id: string;
   name: string;
@@ -35,7 +40,7 @@ export const createTag = async (
     const tag = {
       color: buildColor(teamTags.map((t) => t.color)),
       id: cuid(),
-      name,
+      name: name.trimStart(),
       team_id,
     };
 
@@ -83,6 +88,33 @@ export const findTag = async (
 
   log.debug("found");
   return tag;
+};
+
+export const findTagIdsForNames = async (
+  { names, team_id }: FindTagIdsForNames,
+  { db, logger }: ModelOptions
+): Promise<string[]> => {
+  const log = logger.prefix("findTagIdsForNames");
+  log.debug("team", team_id, "names", names);
+  // split on commas, allowing whitespace after comma
+  const tagNames = names.split(/,\s*/);
+
+  const tags = await db("tags")
+    .whereIn("name", tagNames)
+    .andWhere({ team_id })
+    .orderBy("name", "asc");
+
+  const missingTagName = tagNames.find(
+    (n) => !tags.some((tag) => tag.name === n)
+  );
+  if (missingTagName) {
+    log.error("not found", missingTagName);
+    throw new Error(`Tag ${missingTagName} not found`);
+  }
+
+  log.debug(`found ${tags.length} tags`);
+
+  return tags.map((tag) => tag.id);
 };
 
 export const findTagsForTeam = async (

@@ -1,7 +1,6 @@
 import { Box } from "grommet";
 import { ReactNode } from "react";
 
-import { useUpdateTestTriggers } from "../../../hooks/mutations";
 import { useOnHotKey } from "../../../hooks/onHotKey";
 import { TestTriggers, Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
@@ -34,8 +33,6 @@ export default function EditTriggers({
   testTriggers,
   triggers,
 }: Props): JSX.Element {
-  const [updateTestTriggers, { loading }] = useUpdateTestTriggers();
-
   useOnHotKey({ hotKey: "Enter", onHotKey: closeModal });
 
   const handleClick = (triggerId: string): void => {
@@ -98,7 +95,7 @@ export default function EditTriggers({
 
   return (
     <Box flex={false}>
-      <Header closeModal={closeModal} testCount={testIds.length} />
+      <Header closeModal={closeModal} />
       <Divider />
       {innerHtml}
       <Buttons

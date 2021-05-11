@@ -2,6 +2,7 @@ import {
   createTag,
   deleteTag,
   findTag,
+  findTagIdsForNames,
   findTagsForTeam,
   findTagsForTests,
   findTagsForTrigger,
@@ -36,6 +37,18 @@ describe("createTag", () => {
   it("creates a new tag", async () => {
     const tag = await createTag(
       { name: "tag name", team_id: "teamId" },
+      options
+    );
+
+    const dbTag = await db("tags").first();
+
+    expect(tag).toMatchObject({ color: "#4545E5", name: "tag name" });
+    expect(dbTag).toMatchObject(tag);
+  });
+
+  it("removes leading whitespace from name", async () => {
+    const tag = await createTag(
+      { name: "  tag name", team_id: "teamId" },
       options
     );
 
@@ -99,6 +112,48 @@ describe("findTag", () => {
       (async () => {
         return findTag("fakeId", { db, logger });
       })()
+    ).rejects.toThrowError("not found");
+  });
+});
+
+describe("findTagIdsForNames", () => {
+  beforeAll(() => {
+    return db("tags").insert([
+      buildTag({ name: "B Tag" }),
+      buildTag({ i: 2, name: "A Tag" }),
+      buildTag({ i: 3, name: "C Tag" }),
+      buildTag({ i: 4, name: "A Tag", team_id: "team2Id" }),
+    ]);
+  });
+
+  afterAll(() => db("tags").del());
+
+  it("finds tag ids for names", async () => {
+    const tagIds = await findTagIdsForNames(
+      { names: "B Tag,A Tag", team_id: "teamId" },
+      options
+    );
+
+    expect(tagIds).toEqual(["tag2Id", "tagId"]);
+  });
+
+  it("tolerates extra whitespace", async () => {
+    const tagIds = await findTagIdsForNames(
+      { names: "B Tag, A Tag", team_id: "teamId" },
+      options
+    );
+
+    expect(tagIds).toEqual(["tag2Id", "tagId"]);
+  });
+
+  it("throws an error if tag not found", async () => {
+    await expect(
+      async (): Promise<string[]> => {
+        return findTagIdsForNames(
+          { names: "A Tag, Missing Tag", team_id: "teamId" },
+          options
+        );
+      }
     ).rejects.toThrowError("not found");
   });
 });

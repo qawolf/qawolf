@@ -133,10 +133,6 @@ export const copy = {
     `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,
   editTest: "Edit test",
   editTrigger: "Edit trigger",
-  editTriggers: "Edit triggers",
-  editTriggersDetail: "Choose which triggers you want to assign",
-  editTriggersForTests: (count: number): string =>
-    `Edit triggers${count === 1 ? "" : ` for ${count} tests`}`,
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTestsSearch: "No tests found",

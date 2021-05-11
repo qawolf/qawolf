@@ -1,5 +1,4 @@
 import { hasInvitedUser } from "../models/invite";
-import { hasTestTrigger } from "../models/tag_trigger";
 import { hasIntroGuide, hasTest } from "../models/test";
 import { Context, Onboarding, TeamIdQuery } from "../types";
 import { ensureTeamAccess, ensureUser } from "./utils";

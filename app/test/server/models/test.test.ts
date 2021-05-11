@@ -1,14 +1,12 @@
 import * as testModel from "../../../server/models/test";
-import {
-  countTestsForTeam,
-  updateTestToPending,
-} from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
   buildRunner,
+  buildTag,
+  buildTagTest,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -18,10 +16,13 @@ import {
 
 const {
   buildTestName,
+  countTestsForTeam,
   createTest,
   countIncompleteTests,
   deleteTests,
   findEnabledTests,
+  findEnabledTestsForTags,
+  findEnabledTestsForTeam,
   findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
@@ -30,6 +31,7 @@ const {
   hasIntroGuide,
   hasTest,
   updateTest,
+  updateTestToPending,
 } = testModel;
 
 const db = prepareTestDb();
@@ -37,7 +39,7 @@ const options = { db, logger };
 
 beforeAll(async () => {
   await db("users").insert([buildUser({}), buildUser({ i: 2 })]);
-  await db("teams").insert(buildTeam({}));
+  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
   await db("triggers").insert(buildTrigger({}));
 });
 
@@ -293,6 +295,92 @@ describe("findEnabledTests", () => {
     });
 
     expect(tests).toMatchObject([{ id: "testId" }, { id: "test3Id" }]);
+  });
+});
+
+describe("findEnabledTestsForTags", () => {
+  beforeAll(async () => {
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ i: 3, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 4 }),
+      buildTest({ i: 5, team_id: "team2Id" }),
+      buildTest({ i: 6 }),
+    ]);
+
+    await db("tags").insert([buildTag({}), buildTag({ i: 2 })]);
+
+    await db("tag_tests").insert([
+      buildTagTest({}),
+      buildTagTest({ i: 2, tag_id: "tag2Id" }),
+      buildTagTest({ i: 3, test_id: "test3Id" }),
+      buildTagTest({ i: 4, test_id: "test4Id" }),
+      buildTagTest({ i: 5, tag_id: "tag2Id", test_id: "test6Id" }),
+    ]);
+  });
+
+  afterAll(async () => {
+    await db("tags").del();
+    await db("tests").del();
+  });
+
+  it("returns enabled tests for tag ids", async () => {
+    const tests = await findEnabledTestsForTags(
+      { tag_ids: ["tagId"], team_id: "teamId" },
+      options
+    );
+
+    expect(tests).toMatchObject([{ id: "testId" }]);
+
+    const tests2 = await findEnabledTestsForTags(
+      { tag_ids: ["tagId", "tag2Id"], team_id: "teamId" },
+      options
+    );
+
+    expect(tests2).toMatchObject([{ id: "testId" }, { id: "test6Id" }]);
+  });
+
+  it("returns enabled tests for tag names", async () => {
+    const tests = await findEnabledTestsForTags(
+      { tag_names: "tag1", team_id: "teamId" },
+      options
+    );
+
+    expect(tests).toMatchObject([{ id: "testId" }]);
+
+    const tests2 = await findEnabledTestsForTags(
+      { tag_names: "tag1,tag2", team_id: "teamId" },
+      options
+    );
+
+    expect(tests2).toMatchObject([{ id: "testId" }, { id: "test6Id" }]);
+  });
+
+  it("returns enabled tests for team if no tags provided", async () => {
+    const tests = await findEnabledTestsForTags({ team_id: "teamId" }, options);
+
+    expect(tests).toMatchObject([{ id: "testId" }, { id: "test2Id" }]);
+  });
+});
+
+describe("findEnabledTestsForTeam", () => {
+  beforeAll(async () => {
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ i: 3, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 4 }),
+      buildTest({ i: 5, team_id: "team2Id" }),
+    ]);
+  });
+
+  afterAll(() => db("tests").del());
+
+  it("finds enabled tests for a team", async () => {
+    const tests = await findEnabledTestsForTeam("teamId", options);
+
+    expect(tests).toMatchObject([{ id: "testId" }, { id: "test2Id" }]);
   });
 });
 

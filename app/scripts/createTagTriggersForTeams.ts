@@ -1,5 +1,6 @@
 import { connectDb } from "../server/db";
 import { cuid } from "../server/utils";
+import { minutesFromNow } from "../shared/utils";
 
 (async () => {
   const db = connectDb();
@@ -40,6 +41,13 @@ import { cuid } from "../server/utils";
         });
 
         await trx("tag_tests").insert(tagTests);
+
+        // soft delete if API trigger
+        if (!trigger.deployment_provider && !trigger.repeat_minutes) {
+          await trx("triggers")
+            .where({ id: trigger.id })
+            .update({ deleted_at: minutesFromNow() });
+        }
       })
     );
   });

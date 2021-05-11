@@ -2,25 +2,24 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import environment from "../../environment";
 import { ApiAuthenticationError } from "../../errors";
-import { createSuiteForTrigger } from "../../models/suite";
 import {
-  ensureTeamCanCreateSuite,
-  findTeam,
-  validateApiKeyForTeam,
-} from "../../models/team";
-import { findTrigger } from "../../models/trigger";
-import { ModelOptions, Trigger } from "../../types";
+  findDefaultEnvironmentForTeam,
+  findEnvironmentForName,
+} from "../../models/environment";
+import { createSuiteForTests } from "../../models/suite";
+import { ensureTeamCanCreateSuite, findTeamForApiKey } from "../../models/team";
+import { findEnabledTestsForTags } from "../../models/test";
+import { findTriggerOrNull } from "../../models/trigger";
+import { CreatedSuite, ModelOptions, Team, Test } from "../../types";
 import { parseVariables } from "../../utils";
 
 // errors example: https://stripe.com/docs/api/errors
-const ensureTriggerAccess = async (
+const findTeamForRequest = async (
   req: NextApiRequest,
   options: ModelOptions
-): Promise<Trigger> => {
-  const log = options.logger.prefix("ensureTriggerAccess");
-
+): Promise<Team> => {
+  const log = options.logger.prefix("findTeamForRequest");
   const api_key = req.headers.authorization;
-  const { trigger_id } = req.body;
 
   if (!api_key) {
     log.error("no api key provided");
@@ -30,33 +29,16 @@ const ensureTriggerAccess = async (
     });
   }
 
-  if (!trigger_id) {
-    log.error("no trigger id provided");
-    throw new ApiAuthenticationError({
-      code: 400,
-      message: "No trigger id provided",
-    });
-  }
-
   try {
-    const trigger = await findTrigger(trigger_id, options);
-    await validateApiKeyForTeam({ api_key, team_id: trigger.team_id }, options);
+    const team = await findTeamForApiKey(api_key, options);
+    if (!team) throw new Error("team not found");
 
-    const team = await findTeam(trigger.team_id, options);
     ensureTeamCanCreateSuite(team, options.logger);
 
-    log.debug("no errors for trigger", trigger.id);
+    log.debug("no errors for team", team.id);
 
-    return trigger;
+    return team;
   } catch (error) {
-    if (error.message.includes("not found")) {
-      log.error("trigger not found");
-      throw new ApiAuthenticationError({
-        code: 404,
-        message: "Invalid trigger id",
-      });
-    }
-
     if (error.message.includes("limit reached")) {
       log.error("limit reached");
       throw new ApiAuthenticationError({
@@ -73,6 +55,60 @@ const ensureTriggerAccess = async (
   }
 };
 
+const createSuiteForRequest = async (
+  req: NextApiRequest,
+  options: ModelOptions
+): Promise<CreatedSuite> => {
+  const log = options.logger.prefix("createSuiteForRequest");
+  const team = await findTeamForRequest(req, options);
+
+  const { branch, env, env_name, tags, trigger_id } = req.body;
+  const environment_variables = env ? parseVariables(env) : null;
+
+  let environment_id: string | null = null;
+  let tests: Test[] = [];
+
+  if (trigger_id) {
+    const trigger = await findTriggerOrNull(trigger_id, options);
+    environment_id = trigger?.environment_id || null;
+
+    tests = await findEnabledTestsForTags(
+      { tag_ids: [trigger_id], team_id: team.id },
+      options
+    );
+  } else {
+    const environment = env_name
+      ? await findEnvironmentForName(
+          { name: env_name, team_id: team.id },
+          options
+        )
+      : await findDefaultEnvironmentForTeam(team.id, options);
+    if (environment) environment_id = environment.id;
+
+    tests = await findEnabledTestsForTags(
+      { tag_names: tags, team_id: team.id },
+      options
+    );
+  }
+
+  if (!tests.length) {
+    log.error("no tests found");
+    throw new Error("No tests found");
+  }
+
+  return createSuiteForTests(
+    {
+      branch,
+      environment_id,
+      environment_variables,
+      is_api: true,
+      team_id: team.id,
+      tests,
+    },
+    options
+  );
+};
+
 export const handleSuitesRequest = async (
   req: NextApiRequest,
   res: NextApiResponse,
@@ -82,21 +118,8 @@ export const handleSuitesRequest = async (
 
   try {
     log.debug("body", req.body);
-    const { id, team_id } = await ensureTriggerAccess(req, options);
 
-    const environment_variables = req.body.env
-      ? parseVariables(req.body.env)
-      : null;
-
-    const result = await createSuiteForTrigger(
-      { environment_variables, team_id, trigger_id: id },
-      options
-    );
-
-    if (!result) {
-      log.error("no tests for trigger", id);
-      throw new Error("No tests for trigger");
-    }
+    const result = await createSuiteForRequest(req, options);
 
     const suiteId = result.suite.id;
     const url = `${environment.APP_URL}/suites/${suiteId}`;

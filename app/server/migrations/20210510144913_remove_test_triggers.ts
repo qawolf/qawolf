@@ -5,6 +5,10 @@ export async function up(knex: Knex): Promise<void> {
     table.dropColumn("next_trigger_id");
   });
 
+  await knex.schema.alterTable("suites", (table) => {
+    table.boolean("is_api").notNullable().defaultTo(false);
+  });
+
   const exists = await knex.schema.hasTable("test_triggers");
   if (!exists) return;
 
@@ -14,6 +18,10 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.alterTable("teams", (table) => {
     table.string("next_trigger_id").unique();
+  });
+
+  await knex.schema.alterTable("suites", (table) => {
+    table.dropColumn("is_api");
   });
 
   const exists = await knex.schema.hasTable("test_triggers");

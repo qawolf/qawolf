@@ -428,6 +428,7 @@ export const buildSuite = ({
     environment_variables: null,
     helpers: helpers || "",
     id: `suite${finalI === 1 ? "" : i}Id`,
+    is_api: false,
     team_id: team_id || "teamId",
     trigger_id: trigger_id || "triggerId",
   };

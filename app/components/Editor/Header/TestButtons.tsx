@@ -9,15 +9,10 @@ import { TestContext } from "../contexts/TestContext";
 
 type Props = {
   branch: string | null;
-  hasTriggers: boolean;
   testId: string;
 };
 
-export default function TestButtons({
-  branch,
-  hasTriggers,
-  testId,
-}: Props): JSX.Element {
+export default function TestButtons({ branch, testId }: Props): JSX.Element {
   const { hasChanges, controller } = useContext(TestContext);
   const [loading, setLoading] = useState(false);
 
@@ -27,17 +22,17 @@ export default function TestButtons({
     setLoading(false);
   };
 
-  const handleTriggerClick = (): void => {
-    state.setModal({ name: "triggers", testIds: [testId] });
+  const handleTagsClick = (): void => {
+    state.setModal({ name: "tags", testIds: [testId] });
   };
 
   return (
     <>
       <Button
         IconComponent={Lightning}
-        label={hasTriggers ? copy.editTriggers : copy.addTrigger}
-        onClick={handleTriggerClick}
-        type={branch ? "secondary" : "primary"}
+        label={copy.editTags}
+        onClick={handleTagsClick}
+        type="secondary"
       />
       {!!branch && (
         <Button

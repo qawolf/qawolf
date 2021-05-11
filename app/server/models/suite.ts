@@ -5,10 +5,10 @@ import {
   findFilesForBranch,
 } from "../services/gitHub/tree";
 import {
+  CreatedSuite,
   FormattedVariables,
   GitHubFile,
   ModelOptions,
-  Run,
   Suite,
   SuiteResult,
   Test,
@@ -48,6 +48,7 @@ type CreateSuite = {
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
   helpers: string;
+  is_api?: boolean;
   team_id: string;
   trigger_id: string;
 };
@@ -57,6 +58,7 @@ type CreateSuiteForTests = {
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
+  is_api?: boolean;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
@@ -66,11 +68,6 @@ type CreateSuiteForTrigger = {
   environment_variables?: FormattedVariables | null;
   team_id: string;
   trigger_id: string;
-};
-
-type CreatedSuite = {
-  runs: Run[];
-  suite: Suite;
 };
 
 type FindSuitesForTeam = {
@@ -130,6 +127,7 @@ export const createSuite = async (
     environment_id,
     environment_variables,
     helpers,
+    is_api,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -152,6 +150,7 @@ export const createSuite = async (
     environment_variables: formattedVariables,
     helpers,
     id: cuid(),
+    is_api: is_api || false,
     team_id,
     trigger_id,
     updated_at: timestamp,
@@ -171,10 +170,7 @@ export const createSuiteForTrigger = async (
   const log = logger.prefix("createSuiteForTrigger");
   log.debug("trigger", trigger_id, "team", team_id);
 
-  const tests = await findEnabledTestsForTrigger(
-    { trigger_id },
-    { db, logger }
-  );
+  const tests = await findEnabledTestsForTrigger(trigger_id, { db, logger });
 
   if (tests.length) {
     const result = await createSuiteForTests(
@@ -195,6 +191,7 @@ export const createSuiteForTests = async (
     creator_id,
     environment_id,
     environment_variables,
+    is_api,
     team_id,
     tests,
     trigger_id,
@@ -224,6 +221,7 @@ export const createSuiteForTests = async (
       environment_id,
       environment_variables,
       helpers,
+      is_api,
       team_id,
       trigger_id,
     },

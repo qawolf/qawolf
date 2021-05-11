@@ -80,6 +80,11 @@ export type CreateUserWithEmail = WolfFields & {
 
 export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
+export type CreatedSuite = {
+  runs: Run[];
+  suite: Suite;
+};
+
 export type DeploymentProvider = "netlify" | "vercel";
 
 export type Email = {
@@ -254,6 +259,7 @@ export type Suite = {
   environment_variables: string | null;
   helpers: string;
   id: string;
+  is_api: boolean;
   team_id: string;
   trigger_id: string;
   updated_at?: string;

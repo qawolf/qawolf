@@ -7,9 +7,10 @@ import { prepareTestDb } from "../../db";
 import {
   buildEnvironment,
   buildEnvironmentVariable,
+  buildTag,
+  buildTagTest,
   buildTeam,
   buildTest,
-  buildTestTrigger,
   buildTrigger,
   buildUser,
   logger,
@@ -29,10 +30,23 @@ describe("handleSuitesRequest", () => {
     await db("environments").insert(buildEnvironment({}));
     await db("environment_variables").insert(buildEnvironmentVariable({}));
 
-    await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
-    await db("tests").insert(buildTest({}));
+    await db("triggers").insert({
+      ...buildTrigger({ environment_id: "environmentId" }),
+      id: "tagId",
+    });
 
-    return db("test_triggers").insert(buildTestTrigger());
+    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+
+    await db("tags").insert([
+      buildTag({}),
+      buildTag({ i: 2 }),
+      buildTag({ i: 3 }),
+    ]);
+
+    await db("tag_tests").insert([
+      buildTagTest({}),
+      buildTagTest({ i: 2, tag_id: "tag2Id", test_id: "test2Id" }),
+    ]);
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -54,38 +68,10 @@ describe("handleSuitesRequest", () => {
     expect(send).toBeCalledWith("No API key provided");
   });
 
-  it("returns 400 if trigger id not provided", async () => {
-    await handleSuitesRequest(
-      {
-        body: {},
-        headers: { authorization: "token" },
-      } as NextApiRequest,
-      res as any,
-      { db, logger }
-    );
-
-    expect(status).toBeCalledWith(400);
-    expect(send).toBeCalledWith("No trigger id provided");
-  });
-
-  it("returns 404 if triggger id invalid", async () => {
-    await handleSuitesRequest(
-      {
-        body: { trigger_id: "fakeId" },
-        headers: { authorization: "token" },
-      } as NextApiRequest,
-      res as any,
-      { db, logger }
-    );
-
-    expect(status).toBeCalledWith(404);
-    expect(send).toBeCalledWith("Invalid trigger id");
-  });
-
   it("returns 403 if invalid api key", async () => {
     await handleSuitesRequest(
       {
-        body: { trigger_id: "triggerId" },
+        body: {},
         headers: { authorization: "invalid" },
       } as NextApiRequest,
       res as any,
@@ -101,7 +87,7 @@ describe("handleSuitesRequest", () => {
 
     await handleSuitesRequest(
       {
-        body: { trigger_id: "triggerId" },
+        body: {},
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
@@ -114,10 +100,10 @@ describe("handleSuitesRequest", () => {
     await db("teams").update({ limit_reached_at: null });
   });
 
-  it("returns 500 if no tests for trigger", async () => {
+  it("returns 500 if no tests found for tags", async () => {
     await handleSuitesRequest(
       {
-        body: { trigger_id: "trigger2Id" },
+        body: { tags: "tag3" },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
@@ -125,13 +111,47 @@ describe("handleSuitesRequest", () => {
     );
 
     expect(status).toBeCalledWith(500);
-    expect(send).toBeCalledWith("No tests for trigger");
+    expect(send).toBeCalledWith("No tests found");
+  });
+
+  it("returns 500 if no tests found for trigger", async () => {
+    await handleSuitesRequest(
+      {
+        body: { trigger_id: "tag3Id" },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(500);
+    expect(send).toBeCalledWith("No tests found");
+  });
+
+  it("returns 500 if environment ambiguous", async () => {
+    await db("environments").insert(
+      buildEnvironment({ i: 2, name: "Production" })
+    );
+
+    await handleSuitesRequest(
+      {
+        body: { tags: "tag1" },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(500);
+    expect(send).toBeCalledWith("Must provide environment name");
+
+    await db("environments").where({ id: "environment2Id" }).del();
   });
 
   it("creates a suite and returns url if env variables passed as JSON", async () => {
     await handleSuitesRequest(
       {
-        body: { env: { secret: "shh" }, trigger_id: "triggerId" },
+        body: { env: { secret: "shh" } },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
       res as any,
@@ -140,6 +160,11 @@ describe("handleSuitesRequest", () => {
 
     expect(status).toBeCalledWith(200);
     const suite = await db.select("*").from("suites").first();
+    expect(suite).toMatchObject({
+      environment_id: "environmentId",
+      is_api: true,
+      trigger_id: null,
+    });
 
     expect(send).toBeCalledWith({ id: suite.id, url: expect.any(String) });
 
@@ -147,6 +172,9 @@ describe("handleSuitesRequest", () => {
     expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
       secret: "shh",
     });
+
+    const runs = await db("runs").where({ suite_id: suite.id });
+    expect(runs).toMatchObject([{ test_id: "testId" }, { test_id: "test2Id" }]);
 
     await db("runs").del();
     await db("suites").del();
@@ -157,7 +185,7 @@ describe("handleSuitesRequest", () => {
       {
         body: {
           env: JSON.stringify({ secret: "shh" }),
-          trigger_id: "triggerId",
+          trigger_id: "tagId",
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
@@ -168,10 +196,85 @@ describe("handleSuitesRequest", () => {
     expect(status).toBeCalledWith(200);
 
     const suite = await db.select("*").from("suites").first();
+    expect(suite).toMatchObject({
+      environment_id: "environmentId",
+      is_api: true,
+      trigger_id: null,
+    });
 
     expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
       secret: "shh",
     });
+
+    const runs = await db("runs").where({ suite_id: suite.id });
+    expect(runs).toMatchObject([{ test_id: "testId" }]);
+
+    await db("runs").del();
+    await db("suites").del();
+  });
+
+  it("creates a suite and returns url for tag names", async () => {
+    await handleSuitesRequest(
+      {
+        body: {
+          env: JSON.stringify({ secret: "shh" }),
+          env_name: "Staging",
+          tags: "tag1",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    const suite = await db.select("*").from("suites").first();
+    expect(suite).toMatchObject({
+      environment_id: "environmentId",
+      is_api: true,
+      trigger_id: null,
+    });
+
+    expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
+      secret: "shh",
+    });
+
+    const runs = await db("runs").where({ suite_id: suite.id });
+    expect(runs).toMatchObject([{ test_id: "testId" }]);
+
+    await db("runs").del();
+    await db("suites").del();
+  });
+
+  it("creates a suite and returns url with default environment", async () => {
+    await handleSuitesRequest(
+      {
+        body: {
+          env: JSON.stringify({ secret: "shh" }),
+          tags: "tag1",
+        },
+        headers: { authorization: "qawolf_api_key" },
+      } as NextApiRequest,
+      res as any,
+      { db, logger }
+    );
+
+    expect(status).toBeCalledWith(200);
+
+    const suite = await db.select("*").from("suites").first();
+    expect(suite).toMatchObject({
+      environment_id: "environmentId",
+      is_api: true,
+      trigger_id: null,
+    });
+
+    expect(JSON.parse(decrypt(suite.environment_variables))).toEqual({
+      secret: "shh",
+    });
+
+    const runs = await db("runs").where({ suite_id: suite.id });
+    expect(runs).toMatchObject([{ test_id: "testId" }]);
 
     await db("runs").del();
     await db("suites").del();
