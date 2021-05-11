@@ -9,7 +9,6 @@ import {
   tagsForTestFragment,
   teamFragment,
   testFragment,
-  testTriggersFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -188,7 +187,7 @@ export const createTriggerMutation = gql`
     $name: String!
     $repeat_minutes: Int
     $team_id: ID!
-    $test_ids: [ID!]
+    $tag_ids: [ID!]
   ) {
     createTrigger(
       deployment_branches: $deployment_branches
@@ -199,7 +198,7 @@ export const createTriggerMutation = gql`
       name: $name
       repeat_minutes: $repeat_minutes
       team_id: $team_id
-      test_ids: $test_ids
+      tag_ids: $tag_ids
     ) {
       ...TriggerFragment
     }
@@ -382,23 +381,6 @@ export const updateTagTestsMutation = gql`
   ${tagsForTestFragment}
 `;
 
-export const updateTestTriggersMutation = gql`
-  mutation updateTestTriggers(
-    $add_trigger_id: ID
-    $remove_trigger_id: ID
-    $test_ids: [ID!]
-  ) {
-    updateTestTriggers(
-      add_trigger_id: $add_trigger_id
-      remove_trigger_id: $remove_trigger_id
-      test_ids: $test_ids
-    ) {
-      ...TestTriggersFragment
-    }
-  }
-  ${testTriggersFragment}
-`;
-
 export const updateTeamMutation = gql`
   mutation updateTeam(
     $alert_integration_id: String
@@ -432,6 +414,7 @@ export const updateTriggerMutation = gql`
     $id: ID!
     $name: String
     $repeat_minutes: Int
+    $tag_ids: [ID!]
   ) {
     updateTrigger(
       deployment_branches: $deployment_branches
@@ -442,6 +425,7 @@ export const updateTriggerMutation = gql`
       id: $id
       name: $name
       repeat_minutes: $repeat_minutes
+      tag_ids: $tag_ids
     ) {
       ...TriggerFragment
     }

@@ -143,7 +143,6 @@ export const teamFragment = gql`
     is_email_alert_enabled
     is_enabled
     name
-    next_trigger_id
     plan
     renewed_at
   }
@@ -163,13 +162,6 @@ export const testFragment = gql`
   }
 `;
 
-export const testTriggersFragment = gql`
-  fragment TestTriggersFragment on TestTriggers {
-    test_id
-    trigger_ids
-  }
-`;
-
 export const triggerFragment = gql`
   fragment TriggerFragment on Trigger {
     color
@@ -182,7 +174,11 @@ export const triggerFragment = gql`
     name
     next_at
     repeat_minutes
+    tags {
+      ...TagFragment
+    }
   }
+  ${tagFragment}
 `;
 
 export const userFragment = gql`

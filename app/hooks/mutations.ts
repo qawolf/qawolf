@@ -33,7 +33,6 @@ import {
   updateTagMutation,
   updateTagTestsMutation,
   updateTeamMutation,
-  updateTestTriggersMutation,
   updateTriggerMutation,
   updateUserMutation,
   updateWolfMutation,
@@ -53,7 +52,6 @@ import {
   TagsForTest,
   Team,
   Test,
-  TestTriggers,
   Trigger,
   TriggerFields,
   User,
@@ -343,16 +341,6 @@ type UpdateTeamVariables = {
   name?: string;
 };
 
-type UpdateTestTriggersData = {
-  updateTestTriggers: TestTriggers[];
-};
-
-export type UpdateTestTriggersVariables = {
-  add_trigger_id: string | null;
-  remove_trigger_id: string | null;
-  test_ids: string[];
-};
-
 type UpdateTriggerData = {
   updateTrigger: Trigger;
 };
@@ -623,7 +611,7 @@ export const useCreateTrigger = (): MutationTuple<
       // cannot redirect to new trigger until trigger list loads
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["testTriggers", "triggers"],
+      refetchQueries: ["triggers"],
     }
   );
 };
@@ -853,16 +841,6 @@ export const useUpdateTeam = (): MutationTuple<
   return useMutation<UpdateTeamData, UpdateTeamVariables>(updateTeamMutation, {
     onError,
   });
-};
-
-export const useUpdateTestTriggers = (): MutationTuple<
-  UpdateTestTriggersData,
-  UpdateTestTriggersVariables
-> => {
-  return useMutation<UpdateTestTriggersData, UpdateTestTriggersVariables>(
-    updateTestTriggersMutation,
-    { onError }
-  );
 };
 
 export const useUpdateTrigger = (): MutationTuple<

@@ -468,6 +468,7 @@ export type CreateTriggerMutation = {
   environment_id: string | null;
   name: string;
   repeat_minutes: number | null;
+  tag_ids: string[] | null;
   team_id: string;
 };
 
@@ -572,11 +573,6 @@ export type UpdateTagTestsMutation = {
   test_ids: string[];
 };
 
-export type UpdateTagTriggersMutation = {
-  tag_ids: string[];
-  trigger_id: string;
-};
-
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
@@ -595,6 +591,7 @@ export type UpdateTriggerMutation = {
   id: string;
   name?: string;
   repeat_minutes?: number | null;
+  tag_ids?: string[] | null;
 };
 
 export type UpdateUserMutation = {

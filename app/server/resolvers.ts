@@ -56,7 +56,6 @@ import {
   updateTagResolver,
 } from "./resolvers/tag";
 import { updateTagTestsResolver } from "./resolvers/tag_test";
-import { updateTagTriggersResolver } from "./resolvers/tag_trigger";
 import { teamResolver, updateTeamResolver } from "./resolvers/team";
 import {
   createTestResolver,
@@ -125,7 +124,6 @@ export const resolvers = {
     updateRunner: updateRunnerResolver,
     updateTag: updateTagResolver,
     updateTagTests: updateTagTestsResolver,
-    updateTagTriggers: updateTagTriggersResolver,
     updateTeam: updateTeamResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,

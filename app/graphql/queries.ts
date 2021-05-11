@@ -13,7 +13,6 @@ import {
   tagsForTestFragment,
   teamFragment,
   testFragment,
-  testTriggersFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -230,15 +229,6 @@ export const testSummariesQuery = gql`
       test_id
     }
   }
-`;
-
-export const testTriggersQuery = gql`
-  query testTriggers($test_ids: [ID!]!) {
-    testTriggers(test_ids: $test_ids) {
-      ...TestTriggersFragment
-    }
-  }
-  ${testTriggersFragment}
 `;
 
 export const testsQuery = gql`

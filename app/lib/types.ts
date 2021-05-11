@@ -203,6 +203,7 @@ export type Trigger = ShortTrigger & {
   deployment_integration_id: string | null;
   environment_id: string | null;
   next_at: string | null;
+  tags: Tag[];
 };
 
 export type User = {
@@ -262,11 +263,6 @@ export type SelectedTest = {
 
 export type Side = "left" | "right";
 
-export type TestTriggers = {
-  test_id: string;
-  trigger_ids: string[];
-};
-
 export type TriggerFields = {
   deployment_branches: string | null;
   deployment_environment: string | null;
@@ -275,6 +271,7 @@ export type TriggerFields = {
   environment_id: string | null;
   name: string;
   repeat_minutes: number | null;
+  tag_ids: string[] | null;
 };
 
 export type ValueProp = {

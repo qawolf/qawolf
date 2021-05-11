@@ -863,6 +863,9 @@ type Mutation {
     "Interval to run the trigger on"
     repeat_minutes: Int
 
+    "IDs of associated tags"
+    tag_ids: [ID!]
+
     "ID of the team that should own the trigger"
     team_id: ID!
   ): Trigger!
@@ -1186,20 +1189,6 @@ type Mutation {
   ): [TagsForTest!]!
 
   """
-  Update the list of tags associated with a trigger. Returns the updated tag
-  for triggers relationships.
-
-  Requires that you have access to the team that owns the tag and trigger.
-  """
-  updateTagTriggers(
-    "The list of tag IDs for the trigger"
-    tag_ids: [ID!]!
-
-    "The trigger ID"
-    trigger_id: ID!
-  ): [TagTrigger!]!
-
-  """
   Updates a team by ID.
 
   Requires that you have access to the team.
@@ -1286,6 +1275,12 @@ type Mutation {
     value, the next upcoming run is also immediately rescheduled.
     """
     repeat_minutes: Int
+
+    """
+    Updated IDs of associated tags for the trigger.
+    If this field is omitted, it will not be changed.
+    """
+    tag_ids: [ID!]
   ): Trigger!
 
   """

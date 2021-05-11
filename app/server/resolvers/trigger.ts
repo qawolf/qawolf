@@ -1,3 +1,4 @@
+import { updateTagTriggersForTrigger } from "../models/tag_trigger";
 import {
   createTrigger,
   deleteTrigger,
@@ -9,29 +10,68 @@ import {
   Context,
   CreateTriggerMutation,
   IdQuery,
+  ModelOptions,
+  Team,
   TeamIdQuery,
   Trigger,
   UpdateTriggerMutation,
 } from "../types";
-import { ensureTeamAccess, ensureTriggerAccess, ensureUser } from "./utils";
+import {
+  ensureTagAccess,
+  ensureTeamAccess,
+  ensureTriggerAccess,
+  ensureUser,
+} from "./utils";
+
+type UpdateTagTriggers = {
+  tag_ids?: string[] | null;
+  team: Team;
+  trigger_id: string;
+};
+
+const updateTagTriggers = async (
+  { tag_ids, team, trigger_id }: UpdateTagTriggers,
+  { db, logger }: ModelOptions
+): Promise<void> => {
+  const log = logger.prefix("updateTagTriggers");
+  if (!tag_ids?.length) {
+    log.debug("skip, no tag ids");
+    return;
+  }
+
+  log.debug("tags", tag_ids);
+
+  await Promise.all(
+    tag_ids.map((tag_id) => {
+      return ensureTagAccess({ tag_id, teams: [team] }, { db, logger });
+    })
+  );
+
+  await updateTagTriggersForTrigger({ tag_ids, trigger_id }, { db, logger });
+};
 
 /**
  * @returns The new trigger object
  */
 export const createTriggerResolver = async (
   _: Record<string, unknown>,
-  { team_id, ...args }: CreateTriggerMutation,
+  { tag_ids, team_id, ...args }: CreateTriggerMutation,
   { db, logger, teams, user: contextUser }: Context
 ): Promise<Trigger> => {
   const log = logger.prefix("createTriggerResolver");
 
   const user = ensureUser({ logger, user: contextUser });
-  ensureTeamAccess({ logger, team_id: team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id: team_id, teams });
 
   log.debug(`user ${user.id} for team ${team_id}`);
 
   const trigger = await createTrigger(
     { ...args, creator_id: user.id, team_id },
+    { db, logger }
+  );
+
+  await updateTagTriggers(
+    { tag_ids, team, trigger_id: trigger.id },
     { db, logger }
   );
 
@@ -84,11 +124,22 @@ export const triggersResolver = async (
  */
 export const updateTriggerResolver = async (
   _: Record<string, unknown>,
-  args: UpdateTriggerMutation,
+  { tag_ids, ...args }: UpdateTriggerMutation,
   { db, logger, teams }: Context
 ): Promise<Trigger> => {
   logger.debug("updateTriggerResolver", args.id);
-  await ensureTriggerAccess({ teams, trigger_id: args.id }, { db, logger });
 
-  return updateTrigger(args, { db, logger });
+  const team = await ensureTriggerAccess(
+    { teams, trigger_id: args.id },
+    { db, logger }
+  );
+
+  const trigger = await updateTrigger(args, { db, logger });
+
+  await updateTagTriggers(
+    { tag_ids, team, trigger_id: trigger.id },
+    { db, logger }
+  );
+
+  return trigger;
 };

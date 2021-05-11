@@ -92,9 +92,6 @@ export const client = new ApolloClient({
       TestSummary: {
         keyFields: ["test_id"],
       },
-      TestTriggers: {
-        keyFields: ["test_id"],
-      },
       Wolf: {
         keyFields: ["number"],
       },
