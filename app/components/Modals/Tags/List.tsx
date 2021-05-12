@@ -44,6 +44,7 @@ export default function List({
   };
 
   const handleEdit = (tag: Tag): void => {
+    setIsCreate(false); // clear existing form
     setEditTagId(tag.id);
   };
 

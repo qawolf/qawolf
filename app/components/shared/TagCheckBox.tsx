@@ -48,7 +48,7 @@ export default function TagCheckBox({
 
   return (
     <CheckBox
-      a11yTitle={`assign ${tagName}`}
+      a11yTitle={`toggle ${tagName}`}
       checked={selectState === "all"}
       indeterminate={selectState === "some"}
       label={labelHtml}

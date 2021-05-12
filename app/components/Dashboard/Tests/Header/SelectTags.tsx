@@ -36,13 +36,10 @@ export default function SelectTags({ filter, tagIds }: Props): JSX.Element {
 
   const handleTagClick = (tagId: string): void => {
     const newTagIds = [...tagIds];
+    const index = newTagIds.indexOf(tagId);
 
-    if (!newTagIds.includes(tagId)) {
-      newTagIds.push(tagId);
-    } else {
-      const index = newTagIds.indexOf(tagId);
-      if (index > -1) newTagIds.splice(index, 1);
-    }
+    if (index > -1) newTagIds.splice(index, 1);
+    else newTagIds.push(tagId);
 
     replace(buildTestsPath(newTagIds, filter));
   };
