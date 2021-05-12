@@ -15,7 +15,7 @@ export const copy = {
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
-  addTriggerToTest: "Add a trigger to your test",
+  addTriggerToTest: "Trigger your tests to run",
   addTriggerToTestDetail:
     "Make sure your site works by running tests on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
