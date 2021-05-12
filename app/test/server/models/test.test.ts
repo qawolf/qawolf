@@ -106,31 +106,18 @@ describe("countTestsForTeam", () => {
       buildTest({}),
       buildTest({ i: 2 }),
       buildTest({ i: 3, guide: "Guide" }),
-    ]);
-
-    await db("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "testId",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "test2Id",
-        trigger_id: "triggerId",
-      },
+      buildTest({ i: 4, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 5 }),
     ]);
   });
 
   afterAll(async () => {
-    await db("test_triggers").del();
     await db("tests").del();
   });
 
-  it("counts enabled and scheduled tests", async () => {
+  it("counts enabled tests", async () => {
     expect(await countTestsForTeam("teamId", options)).toEqual({
       test_enabled_count: 2,
-      test_with_trigger_count: 2,
     });
   });
 });
@@ -360,7 +347,11 @@ describe("findEnabledTestsForTags", () => {
   it("returns enabled tests for team if no tags provided", async () => {
     const tests = await findEnabledTestsForTags({ team_id: "teamId" }, options);
 
-    expect(tests).toMatchObject([{ id: "testId" }, { id: "test2Id" }]);
+    expect(tests).toMatchObject([
+      { id: "testId" },
+      { id: "test2Id" },
+      { id: "test6Id" },
+    ]);
   });
 });
 

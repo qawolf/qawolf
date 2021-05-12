@@ -12,7 +12,6 @@ import {
   buildSuite,
   buildTeam,
   buildTest,
-  buildTestTrigger,
   buildTrigger,
   buildUser,
   logger,
@@ -54,8 +53,6 @@ describe("handleSuiteRequest", () => {
 
     await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert(buildTest({}));
-
-    await db("test_triggers").insert(buildTestTrigger());
 
     await db("suites").insert(buildSuite({}));
     await createRunsForTests(

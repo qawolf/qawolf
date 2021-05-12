@@ -32,7 +32,13 @@ const createSuite = async ({
       data: { id, url },
     } = await axios.post(
       suitesUrl,
-      { branch: branch || null, env, env_name: envName, tags, trigger_id: triggerId },
+      {
+        branch: branch || null,
+        env,
+        env_name: envName,
+        tags,
+        trigger_id: triggerId,
+      },
       { headers: { authorization: process.env.QAWOLF_API_KEY } }
     );
 
@@ -103,16 +109,13 @@ export default async function runTests({
   console.log(bold(`\n🐺 Run QA Wolf tests for trigger ${triggerId}`));
 
   ensureApiKey();
-<<<<<<< HEAD
   const { id: suiteId, url } = await createSuite({
+    branch,
     env,
     envName,
     tags,
     triggerId,
   });
-=======
-  const { id: suiteId, url } = await createSuite({ branch, env, triggerId });
->>>>>>> develop
 
   if (!wait) return;
 
