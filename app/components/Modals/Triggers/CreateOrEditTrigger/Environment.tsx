@@ -1,11 +1,11 @@
 import { Box } from "grommet";
 import { ChangeEvent, useContext } from "react";
 
-import { useEnvironments } from "../../../hooks/queries";
-import { copy } from "../../../theme/copy";
-import RadioButtonGroup from "../../shared/RadioButtonGroup";
-import Text from "../../shared/Text";
-import { StateContext } from "../../StateContext";
+import { useEnvironments } from "../../../../hooks/queries";
+import { copy } from "../../../../theme/copy";
+import RadioButtonGroup from "../../../shared/RadioButtonGroup";
+import Text from "../../../shared/Text";
+import { StateContext } from "../../../StateContext";
 
 type Props = {
   environmentId: string;

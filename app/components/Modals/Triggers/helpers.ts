@@ -14,6 +14,7 @@ type BuildTriggerFields = {
   mode: TriggerMode;
   name: string;
   repeatMinutes: number;
+  tagIds: string[];
 };
 
 type GetDefaultName = {
@@ -41,6 +42,7 @@ export const buildTriggerFields = ({
   mode,
   name,
   repeatMinutes,
+  tagIds,
 }: BuildTriggerFields): TriggerFields => {
   const constantFields = { environment_id: environmentId || null, name };
 
@@ -49,6 +51,7 @@ export const buildTriggerFields = ({
       ...constantFields,
       ...nullDeploymentFields,
       repeat_minutes: repeatMinutes,
+      tag_ids: tagIds,
     };
   }
 
@@ -60,6 +63,7 @@ export const buildTriggerFields = ({
     deployment_integration_id: deployIntegrationId || null,
     deployment_provider: deployProvider,
     repeat_minutes: null,
+    tag_ids: tagIds,
   };
 };
 

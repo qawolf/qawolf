@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 import { useContext, useState } from "react";
 
-import { useTriggers } from "../../../hooks/queries";
+import { useTags, useTriggers } from "../../../hooks/queries";
 import { Trigger } from "../../../lib/types";
 import Modal from "../../shared/Modal";
 import { StateContext } from "../../StateContext";
@@ -18,8 +18,10 @@ export default function Triggers({ closeModal }: Props): JSX.Element {
   const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
   const [isCreate, setIsCreate] = useState(false);
 
+  const { data: tagsData } = useTags({ team_id: teamId });
   const { data, loading } = useTriggers({ team_id: teamId });
 
+  const tags = tagsData?.tags || [];
   const triggers = data?.triggers || null;
 
   const handleBack = (): void => {
@@ -47,6 +49,7 @@ export default function Triggers({ closeModal }: Props): JSX.Element {
             closeModal={closeModal}
             editTrigger={editTrigger}
             onBack={handleBack}
+            tags={tags}
             triggers={triggers || []}
           />
         )}

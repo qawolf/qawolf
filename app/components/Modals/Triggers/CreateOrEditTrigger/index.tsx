@@ -5,7 +5,7 @@ import {
   useCreateTrigger,
   useUpdateTrigger,
 } from "../../../../hooks/mutations";
-import { Trigger, TriggerFields } from "../../../../lib/types";
+import { Tag, Trigger, TriggerFields } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Header from "../../../shared/Modal/Header";
 import { StateContext } from "../../../StateContext";
@@ -15,6 +15,7 @@ type Props = {
   closeModal: () => void;
   editTrigger: Trigger | null;
   onBack: () => void;
+  tags: Tag[];
   triggers: Trigger[];
 };
 
@@ -22,6 +23,7 @@ export default function CreateOrEditTrigger({
   closeModal,
   editTrigger,
   onBack,
+  tags,
   triggers,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
@@ -62,6 +64,7 @@ export default function CreateOrEditTrigger({
           isLoading={createLoading || updateLoading}
           onBack={onBack}
           onSave={handleSave}
+          tags={tags}
           triggers={triggers}
         />
       )}

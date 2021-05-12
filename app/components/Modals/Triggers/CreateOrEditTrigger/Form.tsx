@@ -4,6 +4,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useOnHotKey } from "../../../../hooks/onHotKey";
 import {
   DeploymentProvider,
+  Tag,
   Trigger,
   TriggerFields,
 } from "../../../../lib/types";
@@ -12,7 +13,6 @@ import TextInput from "../../../shared/AppTextInput";
 import Buttons from "../../../shared/Modal/Buttons";
 import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
-import Environment from "../Environment";
 import {
   buildTriggerFields,
   defaultRepeatMinutes,
@@ -22,14 +22,17 @@ import {
   TriggerMode,
 } from "../helpers";
 import DeployFields from "./DeployFields";
+import Environment from "./Environment";
 import ModeTabs from "./ModeTabs";
 import ScheduleFields from "./ScheduleFields";
+import Tags from "./Tags";
 
 type Props = {
   editTrigger: Trigger | null;
   isLoading: boolean;
   onBack: () => void;
   onSave: (fields: TriggerFields) => void;
+  tags: Tag[];
   triggers: Trigger[];
 };
 
@@ -38,6 +41,7 @@ export default function Form({
   isLoading,
   onBack,
   onSave,
+  tags,
   triggers,
 }: Props): JSX.Element {
   const { environmentId: stateEnvironmentId } = useContext(StateContext);
@@ -65,6 +69,11 @@ export default function Form({
     editTrigger?.deployment_provider || "vercel"
   );
   const [hasDeployError, setHasDeployError] = useState(false);
+
+  // tags
+  const [tagIds, setTagIds] = useState<string[]>(
+    editTrigger ? editTrigger.tags.map((t) => t.id) : []
+  );
 
   // environment
   const [environmentId, setEnvironmentId] = useState<string>(
@@ -110,6 +119,7 @@ export default function Form({
         mode,
         name,
         repeatMinutes,
+        tagIds,
       })
     );
   };
@@ -148,6 +158,7 @@ export default function Form({
             setDeployProvider={setDeployProvider}
           />
         )}
+        <Tags setTagIds={setTagIds} tagIds={tagIds} tags={tags} />
         <Environment
           environmentId={environmentId}
           setEnvironmentId={setEnvironmentId}
