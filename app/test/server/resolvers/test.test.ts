@@ -64,19 +64,6 @@ beforeAll(async () => {
     }),
   ]);
 
-  await db("test_triggers").insert([
-    {
-      id: "testTriggerId",
-      test_id: "testId",
-      trigger_id: "triggerId",
-    },
-    {
-      id: "testTrigger2Id",
-      test_id: "deleteMe",
-      trigger_id: "triggerId",
-    },
-  ]);
-
   return db("runs").insert(run);
 });
 
@@ -196,13 +183,6 @@ describe("deleteTestsResolver", () => {
 
     const test = await testModel.findTest("deleteMe", options);
     expect(test.deleted_at).toBeTruthy();
-
-    const testTrigger = await db
-      .select("*")
-      .from("test_triggers")
-      .where("test_id", "deleteMe")
-      .first();
-    expect(testTrigger).toBeFalsy();
 
     expect(gitHubTests.deleteGitHubTests).not.toBeCalled();
 

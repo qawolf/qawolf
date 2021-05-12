@@ -25,10 +25,10 @@ describe("onboardingResolver", () => {
     );
 
     expect(onboarding).toEqual({
-      has_added_trigger_to_test: false,
       has_completed_tutorial: false,
       has_created_test: false,
       has_invited_user: false,
+      has_trigger: false,
     });
   });
 });

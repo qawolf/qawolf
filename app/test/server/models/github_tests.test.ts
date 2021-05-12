@@ -53,12 +53,6 @@ beforeAll(async () => {
     }),
   ]);
 
-  await db("test_triggers").insert({
-    id: "testTriggerId",
-    test_id: "testId",
-    trigger_id: "triggerId",
-  });
-
   return db("runs").insert(run);
 });
 
