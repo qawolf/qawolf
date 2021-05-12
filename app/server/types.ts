@@ -645,10 +645,10 @@ export type IdQuery = {
 };
 
 export type Onboarding = {
-  has_added_trigger_to_test: boolean;
   has_completed_tutorial: boolean;
   has_created_test: boolean;
   has_invited_user: boolean;
+  has_trigger: boolean;
 };
 
 export type RunResult = Run & {

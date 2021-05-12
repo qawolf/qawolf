@@ -292,6 +292,32 @@ export const getNextAt = ({
     .toISOString();
 };
 
+export const hasTrigger = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasTrigger");
+
+  const trigger = await db("triggers")
+    .where({ deleted_at: null, team_id })
+    .first();
+
+  if (trigger) {
+    log.debug("found trigger", trigger.id);
+    return true;
+  }
+
+  const apiSuite = await db("suites")
+    .where({
+      is_api: true,
+      team_id,
+    })
+    .first();
+  log.debug("has created suite with api?", !!apiSuite);
+
+  return !!apiSuite;
+};
+
 export const updateTrigger = async (
   {
     deployment_branches,

@@ -86,10 +86,10 @@ export const integrationsQuery = gql`
 export const onboardingQuery = gql`
   query onboarding($team_id: ID!) {
     onboarding(team_id: $team_id) {
-      has_added_trigger_to_test
       has_completed_tutorial
       has_created_test
       has_invited_user
+      has_trigger
     }
   }
 `;

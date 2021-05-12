@@ -172,9 +172,6 @@ type Invite {
 
 "Status of a user's onboarding in context of a team"
 type Onboarding {
-  "Whether the current team has assigned a trigger to a test"
-  has_added_trigger_to_test: Boolean!
-
   "Whether the current user has completed the interactive tutorial"
   has_completed_tutorial: Boolean!
 
@@ -183,6 +180,9 @@ type Onboarding {
 
   "Whether the current team has at least one other user or invite"
   has_invited_user: Boolean!
+
+  "Whether the current team has created a trigger or run tests with API"
+  has_trigger: Boolean!
 }
 
 "Status of a test run"

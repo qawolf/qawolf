@@ -70,19 +70,6 @@ describe("run model", () => {
       buildTest({ i: 4 }),
     ]);
 
-    await db("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "test2Id",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "test4Id",
-        trigger_id: "triggerId",
-      },
-    ]);
-
     await db("runs").insert([
       buildRun({}),
       buildRun({ i: 2, test_id: "test2Id" }),

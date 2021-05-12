@@ -118,6 +118,7 @@ type BuildSuite = {
   environment_id?: string;
   helpers?: string;
   i?: number;
+  is_api?: boolean;
   team_id?: string;
   trigger_id?: string;
 };
@@ -414,9 +415,10 @@ export const buildSuite = ({
   creator_id,
   environment_id,
   helpers,
+  i,
+  is_api,
   team_id,
   trigger_id,
-  i,
 }: BuildSuite): Suite => {
   const finalI = i || 1;
 
@@ -428,9 +430,9 @@ export const buildSuite = ({
     environment_variables: null,
     helpers: helpers || "",
     id: `suite${finalI === 1 ? "" : i}Id`,
-    is_api: false,
+    is_api: is_api || false,
     team_id: team_id || "teamId",
-    trigger_id: trigger_id || "triggerId",
+    trigger_id: trigger_id === undefined ? "triggerId" : trigger_id,
   };
 };
 

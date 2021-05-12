@@ -7,6 +7,7 @@ import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildIntegration,
+  buildSuite,
   buildTeam,
   buildTrigger,
   buildUser,
@@ -23,6 +24,7 @@ const {
   findTriggersForTeam,
   findPendingTriggers,
   getNextAt,
+  hasTrigger,
   updateTrigger,
 } = triggerModel;
 
@@ -462,6 +464,26 @@ describe("trigger model", () => {
       expect(
         getNextAt({ repeat_minutes: 60 * 24, timezone_id: "America/New_York" })
       ).toBe("2021-03-16T13:00:00.000Z");
+    });
+  });
+
+  describe("hasTrigger", () => {
+    it("returns false if team does not have trigger", async () => {
+      expect(await hasTrigger("teamId", options)).toBe(false);
+    });
+
+    it("returns true if team has trigger", async () => {
+      await db("triggers").insert(buildTrigger({}));
+
+      expect(await hasTrigger("teamId", options)).toBe(true);
+
+      await db("triggers").del();
+    });
+
+    it("returns true if team has created suite with api", async () => {
+      await db("suites").insert(buildSuite({ is_api: true, trigger_id: null }));
+
+      expect(await hasTrigger("teamId", options)).toBe(true);
     });
   });
 
