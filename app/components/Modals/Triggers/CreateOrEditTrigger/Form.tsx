@@ -21,7 +21,6 @@ import {
   labelTextProps,
   TriggerMode,
 } from "../helpers";
-import ApiFields from "./ApiFields";
 import DeployFields from "./DeployFields";
 import ModeTabs from "./ModeTabs";
 import ScheduleFields from "./ScheduleFields";
@@ -149,7 +148,6 @@ export default function Form({
             setDeployProvider={setDeployProvider}
           />
         )}
-        {mode === "api" && <ApiFields editTriggerId={editTrigger?.id} />}
         <Environment
           environmentId={environmentId}
           setEnvironmentId={setEnvironmentId}

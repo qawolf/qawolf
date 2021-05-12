@@ -310,6 +310,9 @@ type Suite {
   "Suite ID"
   id: ID!
 
+  "Whether suite was created via API"
+  is_api: Boolean!
+
   "Associated test runs"
   runs: [SuiteRun!]!
 

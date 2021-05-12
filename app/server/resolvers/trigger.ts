@@ -34,7 +34,7 @@ const updateTagTriggers = async (
   { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("updateTagTriggers");
-  if (!tag_ids?.length) {
+  if (!tag_ids) {
     log.debug("skip, no tag ids");
     return;
   }
@@ -65,15 +65,19 @@ export const createTriggerResolver = async (
 
   log.debug(`user ${user.id} for team ${team_id}`);
 
-  const trigger = await createTrigger(
-    { ...args, creator_id: user.id, team_id },
-    { db, logger }
-  );
+  const trigger = await db.transaction(async (trx) => {
+    const trigger = await createTrigger(
+      { ...args, creator_id: user.id, team_id },
+      { db: trx, logger }
+    );
 
-  await updateTagTriggers(
-    { tag_ids, team, trigger_id: trigger.id },
-    { db, logger }
-  );
+    await updateTagTriggers(
+      { tag_ids, team, trigger_id: trigger.id },
+      { db: trx, logger }
+    );
+
+    return trigger;
+  });
 
   trackSegmentEvent({
     active: true,
@@ -134,12 +138,14 @@ export const updateTriggerResolver = async (
     { db, logger }
   );
 
-  const trigger = await updateTrigger(args, { db, logger });
+  return db.transaction(async (trx) => {
+    const trigger = await updateTrigger(args, { db: trx, logger });
 
-  await updateTagTriggers(
-    { tag_ids, team, trigger_id: trigger.id },
-    { db, logger }
-  );
+    await updateTagTriggers(
+      { tag_ids, team, trigger_id: trigger.id },
+      { db: trx, logger }
+    );
 
-  return trigger;
+    return trigger;
+  });
 };

@@ -85,6 +85,7 @@ export type ShortSuite = {
   environment_name: string | null;
   environment_variables: string | null;
   id: string;
+  is_api: boolean;
   team_id: string;
   trigger: ShortTrigger | null;
 };

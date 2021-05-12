@@ -15,7 +15,6 @@ type Props = {
   closeModal: () => void;
   editTrigger: Trigger | null;
   onBack: () => void;
-  testIds: string[];
   triggers: Trigger[];
 };
 
@@ -23,7 +22,6 @@ export default function CreateOrEditTrigger({
   closeModal,
   editTrigger,
   onBack,
-  testIds,
   triggers,
 }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
@@ -47,7 +45,6 @@ export default function CreateOrEditTrigger({
         variables: {
           ...fields,
           team_id: teamId,
-          test_ids: testIds,
         },
       }).then(onBack);
     }

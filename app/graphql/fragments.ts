@@ -107,6 +107,7 @@ export const suiteFragment = gql`
     environment_name
     environment_variables
     id
+    is_api
     runs {
       ...SuiteRunFragment
     }

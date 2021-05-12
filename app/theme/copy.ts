@@ -15,7 +15,6 @@ export const copy = {
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
-  addTrigger: "Add trigger",
   addTriggerToTest: "Add a trigger to your test",
   addTriggerToTestDetail:
     "Make sure your site works by running tests on a schedule, on deployment, or with an API call.",
@@ -40,8 +39,7 @@ export const copy = {
   allTriggers: "All triggers",
   any: "Any",
   api: "API",
-  apiDetail: "Trigger tests by calling the",
-  apiDetail2: "QA Wolf API",
+  apiDetail: "You can also run your tests with the QA Wolf",
   apiKeyHere: "API_KEY_HERE",
   back: "Back",
   backConfirm:
@@ -59,8 +57,7 @@ export const copy = {
     "Select an element, then add a snippet with your chosen action and selector.",
   chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
-  cliDetail: "Trigger tests with the",
-  cliDetail2: "QA Wolf CLI",
+  cli: "CLI",
   clickMe: "Click me",
   clickMeClicked: "Clicked!",
   close: "Close",
@@ -371,7 +368,7 @@ export const copy = {
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
   triggersDetail:
-    "Use triggers to run your tests on a schedule, on deployment, or with an API call",
+    "Use triggers to run your tests on a schedule or on deployment",
   triggersEmpty: "No triggers created",
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",

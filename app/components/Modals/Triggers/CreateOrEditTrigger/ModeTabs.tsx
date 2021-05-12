@@ -3,7 +3,7 @@ import Tabs from "../../../shared/Tabs";
 import Tab from "../../../shared/Tabs/Tab";
 import { TriggerMode } from "../helpers";
 
-const options: TriggerMode[] = ["schedule", "deployment", "api"];
+const options: TriggerMode[] = ["schedule", "deployment"];
 
 type Props = {
   mode: TriggerMode;
@@ -18,7 +18,7 @@ export default function ModeTabs({ mode, setMode }: Props): JSX.Element {
         key={option}
         label={copy[option]}
         onClick={() => setMode(option)}
-        style={{ width: "33.3333%" }}
+        style={{ width: "50%" }}
         type="light"
       />
     );

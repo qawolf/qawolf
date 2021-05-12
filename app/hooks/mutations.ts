@@ -197,7 +197,6 @@ type CreateTriggerData = {
 
 export type CreateTriggerVariables = TriggerFields & {
   team_id: string;
-  test_ids?: string[] | null;
 };
 
 type DeleteEnvironmentData = {

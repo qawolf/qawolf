@@ -53,8 +53,8 @@ export default function Modals(): JSX.Element {
     return <Tags closeModal={closeModal} testIds={testIds} />;
   }
 
-  if ((isDashboard || isTest) && name === "triggers" && testIds) {
-    return <Triggers closeModal={closeModal} testIds={testIds} />;
+  if ((isDashboard || isTest) && name === "triggers") {
+    return <Triggers closeModal={closeModal} />;
   }
 
   return null;

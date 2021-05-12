@@ -153,6 +153,7 @@ export const suitesQuery = gql`
       environment_id
       environment_name
       id
+      is_api
       status_counts {
         created
         fail
