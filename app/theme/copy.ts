@@ -42,6 +42,7 @@ export const copy = {
   api: "API",
   apiDetail: "You can also run your tests with the QA Wolf",
   apiKeyHere: "API_KEY_HERE",
+  apiTriggered: "API triggered",
   back: "Back",
   backConfirm:
     "You have not committed your changes. If you go back now, your changes will be lost.",

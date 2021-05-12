@@ -23,7 +23,7 @@ export default function Header({
     <Box flex={false} pad="medium">
       <Box align="center" direction="row" justify="between">
         <Box align="center" direction="row">
-          <TriggerIcon trigger={suite.trigger} />
+          <TriggerIcon isApi={suite.is_api} trigger={suite.trigger} />
           <Text
             color="gray9"
             margin={{ right: "small" }}

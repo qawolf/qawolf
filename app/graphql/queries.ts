@@ -127,6 +127,7 @@ export const shortSuiteQuery = gql`
       environment_name
       environment_variables
       id
+      is_api
       team_id
       trigger {
         ...ShortTriggerFragment

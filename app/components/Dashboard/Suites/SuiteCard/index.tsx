@@ -32,7 +32,7 @@ export default function SuiteCard({ suite }: Props): JSX.Element {
             <StatusIcon status={status} width={edgeSize.large} />
             <Box margin={{ left: "small" }}>
               <Box align="center" direction="row">
-                <TriggerIcon trigger={suite.trigger} />
+                <TriggerIcon isApi={suite.is_api} trigger={suite.trigger} />
                 <Text color="gray9" size="componentBold">
                   {label}
                 </Text>

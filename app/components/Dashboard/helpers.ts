@@ -101,9 +101,13 @@ export const filterTests = ({
 
 export const formatSuiteName = (suite: ShortSuite): string => {
   if (suite.trigger?.name) return suite.trigger.name;
-  if (!suite.environment_name) return copy.manuallyTriggered;
 
-  return `${copy.manuallyTriggered}: ${suite.environment_name}`;
+  const label = suite.is_api ? copy.apiTriggered : copy.manuallyTriggered;
+  const environment = suite.environment_name
+    ? `: ${suite.environment_name}`
+    : "";
+
+  return `${label}${environment}`;
 };
 
 export const getLabelForRun = (run: TestSummaryRun): string => {

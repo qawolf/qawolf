@@ -37,7 +37,7 @@ export default function RunSummary({ run, suite }: Props): JSX.Element {
       pad="small"
     >
       <LabeledBox label={copy.trigger} margin={rightMargin}>
-        <TriggerBadge isLoading={!suite} trigger={suite?.trigger || null} />
+        <TriggerBadge suite={suite} />
       </LabeledBox>
       <LabeledBox label={copy.status} margin={rightMargin}>
         <StatusBadge status={run.status} />
