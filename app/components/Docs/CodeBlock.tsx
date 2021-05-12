@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
+import { CSSProperties } from "react";
 import styled from "styled-components";
 
 import { theme } from "../../theme/prismCodeBlock";
@@ -8,6 +9,7 @@ import { edgeSize, width } from "../../theme/theme";
 type PropsTypes = {
   children: string;
   className: string;
+  style?: CSSProperties;
 };
 
 const StyledPre = styled.pre`
@@ -32,6 +34,7 @@ const StyledPre = styled.pre`
 export default function CodeBlock({
   children,
   className,
+  style: styleProps,
 }: PropsTypes): JSX.Element {
   const language = className.replace(/language-/, "") as Language;
 
@@ -44,7 +47,10 @@ export default function CodeBlock({
         theme={theme}
       >
         {({ className, getLineProps, getTokenProps, style, tokens }) => (
-          <StyledPre className={className} style={style}>
+          <StyledPre
+            className={className}
+            style={{ ...style, ...(styleProps || {}) }}
+          >
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line, key: i })}>
                 {line.map((token, key) => (
