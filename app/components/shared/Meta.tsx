@@ -1,5 +1,3 @@
-import { copy } from "../../theme/copy";
-
 type Props = {
   description?: string;
   imageUrl?: string;

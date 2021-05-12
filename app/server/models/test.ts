@@ -2,9 +2,9 @@ import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import { ModelOptions, Test } from "../types";
+import { ModelOptions, Test, Trigger } from "../types";
 import { cuid } from "../utils";
-import { findTagIdsForNames } from "./tag";
+import { findTagIdsForNames, findTagsForTrigger } from "./tag";
 
 type BuildTestName = {
   guide?: string | null;
@@ -235,22 +235,19 @@ export const findEnabledTestsForTeam = async (
 };
 
 export const findEnabledTestsForTrigger = async (
-  trigger_id: string,
+  trigger: Trigger,
   { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("findEnabledTestsForTrigger");
-  log.debug(trigger_id);
+  log.debug("trigger", trigger.id);
 
-  const tests = await db
-    .select("tests.*" as "*")
-    .from("tests")
-    .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
-    .where({ deleted_at: null, trigger_id, is_enabled: true })
-    .orderBy("created_at", "asc");
+  const tags = await findTagsForTrigger(trigger.id, { db, logger });
+  const tag_ids = tags.length ? tags.map((t) => t.id) : null;
 
-  log.debug(`found ${tests.length} enabled tests for trigger ${trigger_id}`);
-
-  return tests;
+  return findEnabledTestsForTags(
+    { tag_ids, team_id: trigger.team_id },
+    { db, logger }
+  );
 };
 
 export const findPendingTest = async (

@@ -387,45 +387,15 @@ describe("findEnabledTestsForTeam", () => {
 describe("findEnabledTestsForTrigger", () => {
   beforeAll(async () => {
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
-
-    await db("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "testId",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "test2Id",
-        trigger_id: "triggerId",
-      },
-    ]);
   });
 
-  afterAll(async () => {
-    await db("test_triggers").del();
-    await db("tests").del();
-  });
+  afterAll(() => db("tests").del());
 
   it("finds the enabled tests for a trigger", async () => {
-    const tests = await findEnabledTestsForTrigger(
-      { trigger_id: "triggerId" },
-      options
-    );
+    const tests = await findEnabledTestsForTrigger(buildTrigger({}), options);
 
     expect(tests).toMatchObject([
       { id: "testId", is_enabled: true, team_id: "teamId" },
-      { id: "test2Id", is_enabled: true, team_id: "teamId" },
-    ]);
-  });
-
-  it("filters by test id if specified", async () => {
-    const tests = await findEnabledTestsForTrigger(
-      { trigger_id: "triggerId", test_ids: ["test2Id"] },
-      options
-    );
-
-    expect(tests).toMatchObject([
       { id: "test2Id", is_enabled: true, team_id: "teamId" },
     ]);
   });

@@ -120,10 +120,7 @@ const createSuiteForDeployment = async (
     return;
   }
 
-  const tests = await findEnabledTestsForTrigger(
-    { trigger_id: trigger.id },
-    options
-  );
+  const tests = await findEnabledTestsForTrigger(trigger, options);
 
   if (!tests.length) {
     log.debug("skip, no enabled tests for trigger", trigger.id);

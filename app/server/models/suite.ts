@@ -12,6 +12,7 @@ import {
   Suite,
   SuiteResult,
   Test,
+  Trigger,
 } from "../types";
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
@@ -67,8 +68,7 @@ type CreateSuiteForTests = {
 type CreateSuiteForTrigger = {
   branch?: string | null;
   environment_variables?: FormattedVariables | null;
-  team_id: string;
-  trigger_id: string;
+  trigger: Trigger;
 };
 
 type FindSuitesForTeam = {
@@ -165,17 +165,23 @@ export const createSuite = async (
 };
 
 export const createSuiteForTrigger = async (
-  { branch, environment_variables, team_id, trigger_id }: CreateSuiteForTrigger,
+  { branch, environment_variables, trigger }: CreateSuiteForTrigger,
   { db, logger }: ModelOptions
 ): Promise<CreatedSuite | null> => {
   const log = logger.prefix("createSuiteForTrigger");
-  log.debug("trigger", trigger_id, "team", team_id);
+  log.debug("trigger", trigger.id);
 
-  const tests = await findEnabledTestsForTrigger(trigger_id, { db, logger });
+  const tests = await findEnabledTestsForTrigger(trigger, { db, logger });
 
   if (tests.length) {
     const result = await createSuiteForTests(
-      { branch, environment_variables, team_id, trigger_id, tests },
+      {
+        branch,
+        environment_variables,
+        team_id: trigger.team_id,
+        trigger_id: trigger.id,
+        tests,
+      },
       { db, logger }
     );
 

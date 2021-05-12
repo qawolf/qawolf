@@ -4,6 +4,7 @@ import {
   buildTestsForSuite,
   createSuite,
   createSuiteForTests,
+  createSuiteForTrigger,
   findSuite,
   findSuitesForTeam,
 } from "../../../server/models/suite";
@@ -13,6 +14,8 @@ import {
   buildEnvironment,
   buildIntegration,
   buildSuite,
+  buildTag,
+  buildTagTrigger,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -23,6 +26,7 @@ import {
 const environment_variables = { secret: "shh" };
 
 const trigger = buildTrigger({ environment_id: "environmentId" });
+const trigger2 = buildTrigger({ i: 2 });
 
 const test = buildTest({});
 const test2 = buildTest({ i: 2 });
@@ -39,7 +43,10 @@ beforeAll(async () => {
 
   await db("integrations").insert(buildIntegration({}));
   await db("environments").insert(buildEnvironment({}));
-  await db("triggers").insert([trigger, buildTrigger({ i: 2 })]);
+  await db("triggers").insert([trigger, trigger2]);
+
+  await db("tags").insert(buildTag({}));
+  await db("tag_triggers").insert(buildTagTrigger({ trigger_id: trigger2.id }));
 
   await db("tests").insert([test, test2]);
 });
@@ -295,6 +302,29 @@ describe("suite model", () => {
           trigger_id: null,
         },
       ]);
+    });
+  });
+
+  describe("createSuiteForTrigger", () => {
+    afterEach(async () => {
+      await db("runs").del();
+      await db("suites").del();
+    });
+
+    it("creates a suite for a trigger", async () => {
+      const { runs, suite } = await createSuiteForTrigger({ trigger }, options);
+
+      expect(runs).toHaveLength(2);
+      expect(suite).toMatchObject({ is_api: false, trigger_id: trigger.id });
+    });
+
+    it("returns null if no enabled tests", async () => {
+      const result = await createSuiteForTrigger(
+        { trigger: trigger2 },
+        options
+      );
+
+      expect(result).toBeNull();
     });
   });
 

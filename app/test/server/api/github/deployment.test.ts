@@ -7,9 +7,10 @@ import * as gitHubService from "../../../../server/services/gitHub/commitStatus"
 import { prepareTestDb } from "../../db";
 import {
   buildIntegration,
+  buildTag,
+  buildTagTrigger,
   buildTeam,
   buildTest,
-  buildTestTrigger,
   buildTrigger,
   buildUser,
   logger,
@@ -104,7 +105,11 @@ describe("createSuitesForDeployment", () => {
     ]);
 
     await db("tests").insert(buildTest({}));
-    await db("test_triggers").insert(buildTestTrigger());
+
+    await db("tags").insert(buildTag({}));
+    await db("tag_triggers").insert(
+      buildTagTrigger({ trigger_id: "trigger2Id" })
+    );
   });
 
   afterAll(async () => {
