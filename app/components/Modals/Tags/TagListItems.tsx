@@ -5,7 +5,7 @@ import ListItem from "./ListItem";
 
 type Props = {
   editTagId: string | null;
-  onCancel: () => void;
+  onClose: () => void;
   onDelete: (tag: Tag) => void;
   onEdit: (tag: Tag) => void;
   tags: Tag[];
@@ -15,7 +15,7 @@ type Props = {
 
 export default function TagListItems({
   editTagId,
-  onCancel,
+  onClose,
   onDelete,
   onEdit,
   tags,
@@ -53,7 +53,7 @@ export default function TagListItems({
         editTagId={editTagId}
         key={tag.id}
         noBorder={i === tags.length - 1}
-        onCancel={onCancel}
+        onClose={onClose}
         onClick={() => handleClick(tag.id)}
         onDelete={() => onDelete(tag)}
         onEdit={() => onEdit(tag)}

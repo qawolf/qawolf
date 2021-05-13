@@ -8,13 +8,13 @@ import ListItemForm from "../../shared/ListItemForm";
 import { StateContext } from "../../StateContext";
 
 type Props = {
-  onCancel: () => void;
+  onClose: () => void;
   tag?: Tag;
 };
 
 export const id = "tag";
 
-export default function Form({ tag, onCancel }: Props): JSX.Element {
+export default function Form({ tag, onClose }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const [name, setName] = useState(tag?.name || "");
@@ -38,16 +38,16 @@ export default function Form({ tag, onCancel }: Props): JSX.Element {
     if (tag) {
       updateTag({
         variables: { id: tag.id, name },
-      }).then(onCancel);
+      }).then(onClose);
     } else {
-      createTag({ variables: { name, team_id: teamId } }).then(onCancel);
+      createTag({ variables: { name, team_id: teamId } }).then(onClose);
     }
   };
 
   return (
     <ListItemForm
       isSaveDisabled={isCreateLoading || isEditLoading}
-      onCancel={onCancel}
+      onCancel={onClose}
       onSave={handleSave}
     >
       <TextInput

@@ -29,13 +29,13 @@ export default function List({
 
   const { data } = useEnvironmentVariables({ environment_id: environmentId });
 
-  const handleCancel = (): void => {
+  const handleClose = (): void => {
     setEditEnvironmentVariableId(null);
     setIsCreate(false);
   };
 
   // reset forms if selected environment changes
-  useEffect(handleCancel, [environmentId]);
+  useEffect(handleClose, [environmentId]);
 
   const handleCreate = (): void => {
     setEditEnvironmentVariableId(null); // clear existing forms
@@ -79,7 +79,7 @@ export default function List({
           editEnvironmentVariableId={editEnvironmentVariableId}
           environmentVariable={environmentVariable}
           key={environmentVariable.id}
-          onCancel={handleCancel}
+          onClose={handleClose}
           onDelete={() => onDelete(environmentVariable)}
           onEdit={handleEdit}
         />
@@ -113,7 +113,7 @@ export default function List({
       {isCreate && (
         <>
           <Divider />
-          <Form environmentId={environmentId} onCancel={handleCancel} />
+          <Form environmentId={environmentId} onClose={handleClose} />
         </>
       )}
       <Divider />

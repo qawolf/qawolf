@@ -13,7 +13,7 @@ import ListItemForm from "../../../shared/ListItemForm";
 type Props = {
   environmentId: string;
   environmentVariable?: EnvironmentVariable;
-  onCancel: () => void;
+  onClose: () => void;
 };
 
 export const id = "environment-variable";
@@ -23,7 +23,7 @@ const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 export default function Form({
   environmentId,
   environmentVariable,
-  onCancel,
+  onClose,
 }: Props): JSX.Element {
   const [nameError, setNameError] = useState("");
   const [valueError, setValueError] = useState("");
@@ -62,7 +62,7 @@ export default function Form({
       updateEnvironmentVariable({
         variables: { id: environmentVariable.id, name, value },
         // close form after environment variable is updated
-      }).then(onCancel);
+      }).then(onClose);
     } else {
       createEnvironmentVariable({
         variables: {
@@ -70,14 +70,14 @@ export default function Form({
           name,
           value,
         },
-      }).then(onCancel);
+      }).then(onClose);
     }
   };
 
   return (
     <ListItemForm
       isSaveDisabled={isCreateLoading || isEditLoading}
-      onCancel={onCancel}
+      onCancel={onClose}
       onSave={handleSave}
     >
       <TextInput

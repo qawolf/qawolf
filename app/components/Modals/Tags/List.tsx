@@ -31,7 +31,7 @@ export default function List({
   const [isCreate, setIsCreate] = useState(false);
   const [editTagId, setEditTagId] = useState<string | null>(null);
 
-  const handleCancel = (): void => {
+  const handleClose = (): void => {
     setEditTagId(null);
     setIsCreate(false);
   };
@@ -54,7 +54,7 @@ export default function List({
     innerHtml = (
       <TagListItems
         editTagId={editTagId}
-        onCancel={handleCancel}
+        onClose={handleClose}
         onDelete={onDelete}
         onEdit={handleEdit}
         tags={tags}
@@ -83,7 +83,7 @@ export default function List({
       {isCreate && (
         <>
           <Divider />
-          <Form onCancel={handleCancel} />
+          <Form onClose={handleClose} />
         </>
       )}
       <Buttons
