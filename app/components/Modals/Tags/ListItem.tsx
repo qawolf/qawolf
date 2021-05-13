@@ -9,8 +9,8 @@ import Form from "./Form";
 type Props = {
   editTagId: string | null;
   noBorder: boolean;
-  onCancel: () => void;
   onClick: () => void;
+  onClose: () => void;
   onDelete: () => void;
   onEdit: () => void;
   selectState: SelectState;
@@ -20,8 +20,8 @@ type Props = {
 export default function ListItem({
   editTagId,
   noBorder,
-  onCancel,
   onClick,
+  onClose,
   onDelete,
   onEdit,
   selectState,
@@ -30,7 +30,7 @@ export default function ListItem({
   const innerHtml =
     tag.id === editTagId ? (
       <Box width="full">
-        <Form key={tag.id} onCancel={onCancel} tag={tag} />
+        <Form key={tag.id} onClose={onClose} tag={tag} />
       </Box>
     ) : (
       <>

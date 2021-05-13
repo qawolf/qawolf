@@ -184,8 +184,8 @@ describe("handleSuitesRequest", () => {
     await handleSuitesRequest(
       {
         body: {
-          env: JSON.stringify({ secret: "shh" }),
           trigger_id: "tagId",
+          variables: JSON.stringify({ secret: "shh" }),
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
@@ -217,9 +217,9 @@ describe("handleSuitesRequest", () => {
     await handleSuitesRequest(
       {
         body: {
-          env: JSON.stringify({ secret: "shh" }),
-          env_name: "Staging",
+          environment: "Staging",
           tags: "tag1",
+          variables: JSON.stringify({ secret: "shh" }),
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,
@@ -251,8 +251,8 @@ describe("handleSuitesRequest", () => {
     await handleSuitesRequest(
       {
         body: {
-          env: JSON.stringify({ secret: "shh" }),
           tags: "tag1",
+          variables: JSON.stringify({ secret: "shh" }),
         },
         headers: { authorization: "qawolf_api_key" },
       } as NextApiRequest,

@@ -12,21 +12,21 @@ export default function CliExample(): JSX.Element {
   return (
     <>
       <p>
-        You can run your tests with the QA Wolf CLI. Use the command below to
-        run all of your tests:
+        The command runs all of your tests with the QA Wolf CLI. If you are
+        logged in, your team's API key is included in the example:
       </p>
       <CodeBlock
         className="language-bash"
         style={{ whiteSpace: "break-spaces" }}
       >{`QAWOLF_API_KEY=${apiKey} npx qawolf test`}</CodeBlock>
       <p>
-        You can also optionally specify environment variables, an environment
-        name, and test tags:
+        You can optionally filter tests by tags, choose the environment, and
+        provide additional environment variables:
       </p>
       <CodeBlock
         className="language-bash"
         style={{ whiteSpace: "break-spaces" }}
-      >{`QAWOLF_API_KEY=${apiKey} npx qawolf test --env '{ "MY_VARIABLE": "secret" }' --env_name 'Staging' --tags 'Sign up,Checkout'`}</CodeBlock>
+      >{`QAWOLF_API_KEY=${apiKey} npx qawolf test --tags 'Sign up,Checkout' --environment 'Staging'  --variables '{ "MY_VARIABLE": "secret" }'`}</CodeBlock>
     </>
   );
 }

@@ -27,9 +27,9 @@ export default function TagListItems({
   const handleClick = (tagId: string): void => {
     if (loading) return;
 
-    const state = getSelectState({ tagId, testIds, testTags });
-    const add_tag_id = state === "all" ? null : tagId;
-    const remove_tag_id = state === "all" ? tagId : null;
+    const isChecked = getSelectState({ tagId, testIds, testTags }) === "all";
+    const add_tag_id = isChecked ? null : tagId;
+    const remove_tag_id = isChecked ? tagId : null;
 
     updateTagTests({
       optimisticResponse: {

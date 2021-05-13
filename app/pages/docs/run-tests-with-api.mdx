@@ -4,7 +4,6 @@ import ApiExample from "../../components/Docs/ApiExample";
 import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
-import SuiteApiExample from "../../components/Docs/SuiteApiExample";
 import SubHeader from "../../components/Docs/SubHeader";
 import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
@@ -20,10 +19,10 @@ In this tutorial, we'll run our tests by calling the QA Wolf API.
 
 The API call makes a `POST` request to the `/suites` endpoint. It includes a few parts:
 
-- The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: API_KEY_HERE"`.
-- The optional `env` object in the request body passes additional environment variables to your tests: `"env": { "MY_VARIABLE": "secret" }`.
-- The optional `env_name` string in the request body specifies which <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests: `"env_name": "Staging"`. If you have multiple environments and do not provide an `env_name`, QA Wolf will error and ask you to specify an environment.
+- The required <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: API_KEY_HERE"`.
 - The optional `tags` string is a comma separated list of test tag names: `"tags": "Checkout,Sign up"`. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
+- The optional `environment` string in the request body specifies which <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests: `"environment": "Staging"`. If you have multiple environments and do not provide an `env_name`, QA Wolf will error and ask you to specify an environment.
+- The optional `variables` object in the request body passes additional <Link href="use-environment-variables">environment variables</Link> to your tests: `"variables": { "MY_VARIABLE": "secret" }`.
 
 If you paste this command into your terminal and run it, you'll get a response that looks like:
 
@@ -35,31 +34,6 @@ If you paste this command into your terminal and run it, you'll get a response t
 ```
 
 The `id` returned is the id of your new suite. The `url` links to the results page for your tests.
-
-<SubHeader>Get Suite Details by Calling QA Wolf API</SubHeader>
-
-If you want to check the status of your suite via API, you can make a `GET` request to the `/suites/:id` endpoint. This is useful if you want to take other actions after your suite finishes running.
-
-Include your API key as an <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink>, and the id of the suite in the URL (`suiteId` in the example below).
-
-<SuiteApiExample />
-
-If you call this endpoint, the response will look like this:
-
-```json
-{
-  "id": "suiteId",
-  "is_complete": false,
-  "runs": [
-    {
-      "id": "runId",
-      "status": "created", // can also be 'fail' or 'pass'
-      "test_name": "My Test"
-    }
-  ],
-  "status": "created" // can also be 'fail' or 'pass'
-}
-```
 
 <ViewRunHistory description="when you call the QA Wolf API" />
 

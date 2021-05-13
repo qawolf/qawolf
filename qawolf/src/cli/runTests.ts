@@ -4,10 +4,10 @@ import { bold, green, red } from "kleur";
 
 type CreateSuite = {
   branch?: string;
-  env?: string;
-  envName?: string;
+  environment?: string;
   tags?: string;
   triggerId?: string;
+  variables?: string;
 };
 
 type RunTests = CreateSuite & {
@@ -20,10 +20,10 @@ const qaWolfUrl = process.env.QAWOLF_URL || "https://www.qawolf.com";
 
 const createSuite = async ({
   branch,
-  env,
-  envName,
+  environment,
   tags,
   triggerId,
+  variables,
 }: CreateSuite): Promise<{ id: string; url: string }> => {
   const suitesUrl = new URL("/api/suites", qaWolfUrl).href;
 
@@ -34,10 +34,10 @@ const createSuite = async ({
       suitesUrl,
       {
         branch: branch || null,
-        env,
-        env_name: envName,
+        environment,
         tags,
         trigger_id: triggerId,
+        variables,
       },
       { headers: { authorization: process.env.QAWOLF_API_KEY } }
     );
@@ -100,21 +100,22 @@ const waitForSuite = async (suiteId: string): Promise<Status> => {
 
 export default async function runTests({
   branch,
-  env,
-  envName,
+  environment,
   tags,
   triggerId,
+  variables,
   wait,
 }: RunTests): Promise<void> {
-  console.log(bold(`\n🐺 Run QA Wolf tests for trigger ${triggerId}`));
+  const tagsMessage = tags ? ` for tags ${tags}` : "";
+  console.log(bold(`\n🐺 Run QA Wolf tests${tagsMessage}`));
 
   ensureApiKey();
   const { id: suiteId, url } = await createSuite({
     branch,
-    env,
-    envName,
+    environment,
     tags,
     triggerId,
+    variables,
   });
 
   if (!wait) return;

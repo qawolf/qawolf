@@ -15,21 +15,21 @@ export default function ApiExample(): JSX.Element {
   return (
     <>
       <p>
-        You can run your tests by calling the QA Wolf API. Use the command below
-        to run all of your tests:
+        The API call below runs all of your tests. If you are logged in, your
+        team's API key is included in the example:
       </p>
       <CodeBlock
         className="language-bash"
         style={{ whiteSpace: "break-spaces" }}
       >{`curl -H "Authorization: ${apiKey}" -H "Content-Type: application/json" ${apiUrl}`}</CodeBlock>
       <p>
-        You can also optionally specify environment variables, an environment
-        name, and test tags:
+        You can optionally filter tests by tags, choose the environment, and
+        provide additional environment variables:
       </p>
       <CodeBlock
         className="language-bash"
         style={{ whiteSpace: "break-spaces" }}
-      >{`curl -H "Authorization: ${apiKey}" -H "Content-Type: application/json" ${apiUrl} -d '{"env": { "MY_VARIABLE": "secret" }, "env_name": "Staging", "tags": "Checkout,Sign up"}'`}</CodeBlock>
+      >{`curl -H "Authorization: ${apiKey}" -H "Content-Type: application/json" ${apiUrl} -d '{"tags": "Checkout,Sign up", "environment": "Staging", "variables": { "MY_VARIABLE": "secret" }}'`}</CodeBlock>
     </>
   );
 }

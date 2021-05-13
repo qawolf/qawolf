@@ -62,8 +62,16 @@ const createSuiteForRequest = async (
   const log = options.logger.prefix("createSuiteForRequest");
   const team = await findTeamForRequest(req, options);
 
-  const { branch, env, env_name, tags, trigger_id } = req.body;
-  const environment_variables = env ? parseVariables(env) : null;
+  const {
+    branch,
+    env,
+    environment: envName,
+    tags,
+    trigger_id,
+    variables,
+  } = req.body;
+  const environment_variables =
+    variables || env ? parseVariables(variables || env) : null;
 
   let environment_id: string | null = null;
   let tests: Test[] = [];
@@ -77,9 +85,9 @@ const createSuiteForRequest = async (
       options
     );
   } else {
-    const environment = env_name
+    const environment = envName
       ? await findEnvironmentForName(
-          { name: env_name, team_id: team.id },
+          { name: envName, team_id: team.id },
           options
         )
       : await findDefaultEnvironmentForTeam(team.id, options);

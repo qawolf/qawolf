@@ -20,11 +20,11 @@ In this tutorial, we'll trigger our tests with the QA Wolf CLI. This is useful i
 
 Below are the available options:
 
-- `--env` (optional): JSON string of environment variables to pass to your tests.
-- `--env-name` (optional): Name of <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests.
-- `--no-wait` (optional): do not wait for tests to run before exiting.
-- `--tags` (optional): comma separated list of test tag names. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
-- `--branch` (optional): git branch of tests to run. You must have the sync to GitHub add-on to use this feature.
+- `--tags` (optional): Comma separated list of test tag names. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
+- `--environment` (optional): Name of <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests.
+- `--variables` (optional): JSON string of <Link href="use-environment-variables">environment variables</Link> to pass to your tests.
+- `--no-wait` (optional): Do not wait for tests to run before exiting.
+- `--branch` (optional): Git branch of tests to run. You must have the sync to GitHub add-on to use this feature.
 
 <CliApiKeyExample />
 

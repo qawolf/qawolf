@@ -10,17 +10,35 @@ export const buildTestCommand = (): program.Command => {
       "-t, --tags <tags>",
       "comma separated list of tag names (example: Account,Checkout)"
     )
-    .option("-e, --env <env>", "environment variables to pass to your tests")
     .option(
-      "-n, --env-name <envName>",
+      "-e, --environment <environment>",
       "environment name to use when running your tests (example: Staging)"
     )
+    .option(
+      "-v, --variables <variables>",
+      "environment variables to pass to your tests"
+    )
+
     .option("-s, --no-wait", "do not wait for the tests finish running")
     .option("-b, --branch <branch>", "git branch of tests to run")
-    .option("-r, --trigger <id>", "deprecated: id of the trigger to run")
+    .option("--trigger <id>", "deprecated: id of the trigger to run")
     .action(
-      async ({ branch, env, envName, tags, trigger: triggerId, wait }) => {
-        await runTests({ branch, env, envName, tags, triggerId, wait });
+      async ({
+        branch,
+        environment,
+        tags,
+        trigger: triggerId,
+        variables,
+        wait,
+      }) => {
+        await runTests({
+          branch,
+          environment,
+          tags,
+          triggerId,
+          variables,
+          wait,
+        });
       }
     );
 

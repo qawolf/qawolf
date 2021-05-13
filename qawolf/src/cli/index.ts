@@ -25,3 +25,5 @@ program.allowUnknownOption(false);
 export const runCli = (
   argv: string[] = process.argv
 ): Promise<program.CommanderStatic> => program.parseAsync(argv);
+
+runCli();
