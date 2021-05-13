@@ -22,21 +22,26 @@ Confirm you are on the "Schedule" tab.
 
 <Image
   alt="Create trigger"
-  height={458}
+  height={531}
   src="/docs/run-tests-on-a-schedule/create-trigger.png"
+  width={486}
+/>
+
+You can rename your trigger, or keep the default name ("Daily" in our example). Next choose whether you want your tests to run every day or every hour.
+
+You can choose to run all your tests on a schedule, or only tests with specific tags.
+
+<Image
+  alt="Choose tags"
+  height={126}
+  src="/docs/run-tests-on-a-schedule/choose-tags.png"
   width={488}
 />
 
-You can rename your trigger, or keep the default name ("Daily" in our example).
-
-Next choose whether you want your tests to run every day or every hour. If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
+If you have any <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
 
 Once you are done, click the "Create trigger" button to save your trigger.
 
-<SubHeader>Assign Schedule Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-on-a-schedule" />
-
-<ViewRunHistory description="every day" />
+<ViewRunHistory description="on a schedule" />
 
 </Layout>
