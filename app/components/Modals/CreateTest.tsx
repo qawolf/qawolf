@@ -15,9 +15,7 @@ import { StateContext } from "../StateContext";
 type Props = { closeModal: () => void };
 
 export default function CreateTest({ closeModal }: Props): JSX.Element {
-  const { push, query } = useRouter();
-  const groupId = query.group_id as string;
-
+  const { push } = useRouter();
   const { branch, teamId } = useContext(StateContext);
 
   const [error, setError] = useState("");
@@ -57,7 +55,6 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
     createTest({
       variables: {
         branch,
-        group_id: groupId || null,
         team_id: teamId,
         url: parsedUrl,
       },

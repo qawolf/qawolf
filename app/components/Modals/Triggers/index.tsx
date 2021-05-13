@@ -1,43 +1,28 @@
 import { Box } from "grommet";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 
-import { useTestTriggers, useTriggers } from "../../../hooks/queries";
+import { useTags, useTriggers } from "../../../hooks/queries";
 import { Trigger } from "../../../lib/types";
 import Modal from "../../shared/Modal";
 import { StateContext } from "../../StateContext";
 import ConfirmDelete from "./ConfirmDelete";
 import CreateOrEditTrigger from "./CreateOrEditTrigger";
-import EditTriggers from "./EditTriggers";
+import TriggersList from "./TriggersList";
 
-type Props = {
-  closeModal: () => void;
-  testIds: string[];
-};
+type Props = { closeModal: () => void };
 
-export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
+export default function Triggers({ closeModal }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const [deleteTrigger, setDeleteTrigger] = useState<Trigger | null>(null);
   const [editTrigger, setEditTrigger] = useState<Trigger | null>(null);
   const [isCreate, setIsCreate] = useState(false);
 
-  const isRendered = useRef(false);
-
+  const { data: tagsData } = useTags({ team_id: teamId });
   const { data, loading } = useTriggers({ team_id: teamId });
 
-  const { data: testTriggersData } = useTestTriggers({ test_ids: testIds });
-  const testTriggers = testTriggersData?.testTriggers || [];
-  const isTestTriggersLoading =
-    !!testIds.length && !testTriggersData?.testTriggers;
-
+  const tags = tagsData?.tags || [];
   const triggers = data?.triggers || null;
-
-  useEffect(() => {
-    if (!data?.triggers || isRendered.current) return;
-    isRendered.current = true;
-    // enter create mode if there are no non-default triggers
-    if (!triggers.length) setIsCreate(true);
-  }, [data?.triggers, triggers]);
 
   const handleBack = (): void => {
     setDeleteTrigger(null);
@@ -64,19 +49,17 @@ export default function Triggers({ closeModal, testIds }: Props): JSX.Element {
             closeModal={closeModal}
             editTrigger={editTrigger}
             onBack={handleBack}
-            testIds={testIds}
+            tags={tags}
             triggers={triggers || []}
           />
         )}
         {!deleteTrigger && !editTrigger && !isCreate && (
-          <EditTriggers
+          <TriggersList
             closeModal={closeModal}
-            isLoading={loading || isTestTriggersLoading}
+            isLoading={loading}
             onCreate={handleCreate}
             onDelete={handleDelete}
             onEdit={handleEdit}
-            testIds={testIds}
-            testTriggers={testTriggers}
             triggers={triggers}
           />
         )}

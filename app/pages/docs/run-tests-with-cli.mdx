@@ -1,10 +1,9 @@
 import Link from "next/link";
 
-import AssignTrigger from "../../components/Docs/AssignTrigger";
-import CreateTrigger from "../../components/Docs/CreateTrigger";
+import CliApiKeyExample from "../../components/Docs/CliApiKeyExample";
+import CliExample from "../../components/Docs/CliExample";
 import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
-import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
 import ViewRunHistory from "../../components/Docs/ViewRunHistory";
@@ -15,69 +14,19 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 In this tutorial, we'll trigger our tests with the QA Wolf CLI. This is useful if you want to run your tests in a CI provider like <ExternalLink href="https://github.com/features/actions">GitHub Actions</ExternalLink>, <ExternalLink href="https://docs.gitlab.com/ee/ci/">GitLab CI/CD</ExternalLink>, or <ExternalLink href="https://circleci.com">CircleCI</ExternalLink>.
 
-<SubHeader>Create API Trigger</SubHeader>
+<SubHeader>Run Tests with QA Wolf CLI</SubHeader>
 
-<CreateTrigger description="when we call the QA Wolf CLI" />
+<CliExample />
 
-Select the "API" tab on the right.
+Below are the available options:
 
-<Image
-  alt="Create trigger"
-  height={645}
-  src="/docs/run-tests-with-cli/create-trigger.png"
-  width={486}
-/>
+- `--tags` (optional): Comma separated list of test tag names. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
+- `--environment` (optional): Name of <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests.
+- `--variables` (optional): JSON string of <Link href="use-environment-variables">environment variables</Link> to pass to your tests.
+- `--no-wait` (optional): Do not wait for tests to run before exiting.
+- `--branch` (optional): Git branch of tests to run. You must have the sync to GitHub add-on to use this feature.
 
-You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you need to select one.
-
-<Image
-  alt="Choose environment"
-  height={159}
-  src="/docs/run-tests-with-api/choose-environment.png"
-  width={486}
-/>
-
-You'll notice the second set of gray boxes provides an example of how to use the QA Wolf CLI. Copy this example as we'll use it later. Don't worry, you can always access it by editing the trigger.
-
-<Image
-  alt="Create trigger example"
-  height={217}
-  src="/docs/run-tests-with-cli/create-trigger-example.png"
-  width={486}
-/>
-
-Once you are done, click the "Create trigger" button to save your trigger.
-
-<SubHeader>Assign API Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-with-api" />
-
-<SubHeader>Set QAWOLF_API_KEY Environment Variable</SubHeader>
-
-In order to run your tests, you need to set the `QAWOLF_API_KEY` environment variable before calling the CLI. Your QA Wolf API key is provided in the first gray box in the CLI example.
-
-<Image
-  alt="Trigger API key"
-  height={217}
-  src="/docs/run-tests-with-cli/create-trigger-api-key.png"
-  width={486}
-/>
-
-<SubHeader>Run Tests with CLI</SubHeader>
-
-You can run your tests with the QA Wolf CLI. Below are the available options:
-
-- `--trigger` (required): the trigger ID.
-- `--env` (optional): JSON string of environment variables to pass to your tests.
-- `--no-wait` (optional): do not wait for tests to run before exiting.
-
-The second gray box from above provides an example:
-
-```bash
-export QAWOLF_API_KEY=qawolf_e601e973c4ea4310b6a2ec2bc21a7d37 # set API key
-
-npx qawolf test --trigger ckmtfve2100026ks44l0obx7x --env '{ "MY_VARIABLE": "secret" }'
-```
+<CliApiKeyExample />
 
 <SubHeader>Run Tests with GitHub Actions</SubHeader>
 
@@ -94,7 +43,7 @@ jobs:
 
     steps:
       - name: Run QA Wolf tests
-        run: npx qawolf test --trigger ckmtfve2100026ks44l0obx7x
+        run: npx qawolf test
         env:
           QAWOLF_API_KEY: ${{ secrets.QAWOLF_API_KEY }}
 ```
@@ -110,7 +59,7 @@ image: node
 
 qawolf:
   script:
-    - npx qawolf test --trigger ckmtfve2100026ks44l0obx7x
+    - npx qawolf test
 ```
 
 Please <ExternalLink href="https://slack.qawolf.com">reach out for help</ExternalLink> if you have questions about integrating QA Wolf into your process.

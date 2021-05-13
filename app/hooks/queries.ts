@@ -8,7 +8,6 @@ import {
   environmentsQuery,
   environmentVariablesQuery,
   gitHubBranchesQuery,
-  groupsQuery,
   integrationsQuery,
   onboardingQuery,
   runCountQuery,
@@ -16,11 +15,12 @@ import {
   shortSuiteQuery,
   suiteQuery,
   suitesQuery,
+  tagsForTestsQuery,
+  tagsQuery,
   teamQuery,
   testHistoryQuery,
   testsQuery,
   testSummariesQuery,
-  testTriggersQuery,
   triggersQuery,
   wolfQuery,
 } from "../graphql/queries";
@@ -33,21 +33,21 @@ import {
   Environment,
   EnvironmentVariable,
   GitHubBranch,
-  Group,
   Integration,
   Onboarding,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
+  Tag,
   TeamWithUsers,
   TestHistoryRun,
   TestSummary,
-  TestTriggers,
   Trigger,
   User,
   Wolf,
 } from "../lib/types";
+import { TagsForTest } from "../server/types";
 import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
@@ -88,14 +88,6 @@ type GitHubBranchesData = {
 };
 
 type GitHubBranchesVariables = {
-  team_id: string;
-};
-
-type GroupsData = {
-  groups: Group[];
-};
-
-type GroupsVariables = {
   team_id: string;
 };
 
@@ -150,6 +142,22 @@ type SuitesVariables = {
   team_id: string | null;
 };
 
+type TagsData = {
+  tags: Tag[];
+};
+
+type TagsVariables = {
+  team_id: string;
+};
+
+type TagsForTestsData = {
+  tagsForTests: TagsForTest[];
+};
+
+type TagsForTestsVariables = {
+  test_ids: string[];
+};
+
 type TeamData = {
   team: TeamWithUsers;
 };
@@ -171,15 +179,6 @@ type TestSummariesData = {
 };
 
 type TestSummariesVariables = {
-  test_ids: string[];
-  trigger_id: string | null;
-};
-
-type TestTriggersData = {
-  testTriggers: TestTriggers[];
-};
-
-type TestTriggersVariables = {
   test_ids: string[];
 };
 
@@ -314,17 +313,6 @@ export const useGitHubBranches = (
   );
 };
 
-export const useGroups = (
-  variables: GroupsVariables
-): QueryResult<GroupsData, GroupsVariables> => {
-  return useQuery<GroupsData, GroupsVariables>(groupsQuery, {
-    fetchPolicy,
-    onError,
-    skip: !variables.team_id,
-    variables,
-  });
-};
-
 export const useIntegrations = (
   variables: IntegrationsVariables
 ): QueryResult<IntegrationsData, IntegrationsVariables> => {
@@ -412,6 +400,30 @@ export const useSuites = (
   });
 };
 
+export const useTags = (
+  variables: TagsVariables
+): QueryResult<TagsData, TagsVariables> => {
+  return useQuery<TagsData, TagsVariables>(tagsQuery, {
+    fetchPolicy,
+    nextFetchPolicy,
+    onError,
+    skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useTagsForTests = (
+  variables: TagsForTestsVariables
+): QueryResult<TagsForTestsData, TagsForTestsVariables> => {
+  return useQuery<TagsForTestsData, TagsForTestsVariables>(tagsForTestsQuery, {
+    fetchPolicy,
+    onError,
+    // if null is passed as an id, skip the query (this happens prehydration)
+    skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
+    variables,
+  });
+};
+
 export const useTeam = (
   variables: TeamVariables
 ): QueryResult<TeamData, TeamVariables> => {
@@ -447,17 +459,6 @@ export const useTestSummaries = (
       variables,
     }
   );
-};
-
-export const useTestTriggers = (
-  variables: TestTriggersVariables
-): QueryResult<TestTriggersData, TestTriggersVariables> => {
-  return useQuery<TestTriggersData, TestTriggersVariables>(testTriggersQuery, {
-    fetchPolicy,
-    // if null is passed as an id, skip the query (this happens prehydration)
-    skip: !variables.test_ids.length || variables.test_ids.some((id) => !id),
-    variables,
-  });
 };
 
 export const useTests = (

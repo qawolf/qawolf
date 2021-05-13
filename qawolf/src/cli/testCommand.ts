@@ -3,14 +3,44 @@ import runTests from "./runTests";
 
 export const buildTestCommand = (): program.Command => {
   const command = new Command("test")
-    .description("🏃 Run QA Wolf tests assigned to the specified trigger")
-    .requiredOption("-t, --trigger <id>", "id of the trigger to run")
-    .option("-e, --env <env>", "environment variables to pass to your tests")
-    .option("-n, --no-wait", "do not wait for the tests finish running")
-    .option("-b, --branch <branch>", "the branch of tests to run")
-    .action(async ({ branch, env, trigger: triggerId, wait }) => {
-      await runTests({ branch, env, triggerId, wait });
-    });
+    .description(
+      "🏃 Run QA Wolf tests, optionally specifying a list of test tag names"
+    )
+    .option(
+      "-t, --tags <tags>",
+      "comma separated list of tag names (example: Account,Checkout)"
+    )
+    .option(
+      "-e, --environment <environment>",
+      "environment name to use when running your tests (example: Staging)"
+    )
+    .option(
+      "-v, --variables <variables>",
+      "environment variables to pass to your tests"
+    )
+
+    .option("--no-wait", "do not wait for the tests finish running")
+    .option("-b, --branch <branch>", "git branch of tests to run")
+    .option("--trigger <id>", "deprecated: id of the trigger to run")
+    .action(
+      async ({
+        branch,
+        environment,
+        tags,
+        trigger: triggerId,
+        variables,
+        wait,
+      }) => {
+        await runTests({
+          branch,
+          environment,
+          tags,
+          triggerId,
+          variables,
+          wait,
+        });
+      }
+    );
 
   return command;
 };

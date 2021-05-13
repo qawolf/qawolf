@@ -1,6 +1,6 @@
 import { hasInvitedUser } from "../models/invite";
 import { hasIntroGuide, hasTest } from "../models/test";
-import { hasTestTrigger } from "../models/test_trigger";
+import { hasTriggerOrApiSuite } from "../models/trigger";
 import { Context, Onboarding, TeamIdQuery } from "../types";
 import { ensureTeamAccess, ensureUser } from "./utils";
 
@@ -18,9 +18,9 @@ export const onboardingResolver = async (
   const options = { db, logger };
 
   return {
-    has_added_trigger_to_test: await hasTestTrigger(team_id, options),
     has_completed_tutorial: await hasIntroGuide(user.id, options),
     has_created_test: await hasTest(team_id, options),
     has_invited_user: await hasInvitedUser(team_id, options),
+    has_trigger: await hasTriggerOrApiSuite(team_id, options),
   };
 };

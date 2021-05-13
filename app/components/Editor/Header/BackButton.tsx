@@ -6,11 +6,11 @@ import { copy } from "../../../theme/copy";
 import Button from "../../shared/AppButton";
 import ArrowLeft from "../../shared/icons/ArrowLeft";
 import { StateContext } from "../../StateContext";
+import { TestContext } from "../contexts/TestContext";
 
 export default function BackButton(): JSX.Element {
   const { dashboardUri } = useContext(StateContext);
-  // TODO: update to real value
-  const hasChanges = false;
+  const { hasChanges } = useContext(TestContext);
 
   const href = hasChanges ? undefined : dashboardUri || routes.tests;
 

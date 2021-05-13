@@ -3,16 +3,16 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
-  groupFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
   runnerFragment,
   shortTriggerFragment,
   suiteFragment,
+  tagFragment,
+  tagsForTestFragment,
   teamFragment,
   testFragment,
-  testTriggersFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -74,15 +74,6 @@ export const gitHubBranchesQuery = gql`
   }
 `;
 
-export const groupsQuery = gql`
-  query groups($team_id: ID!) {
-    groups(team_id: $team_id) {
-      ...GroupFragment
-    }
-  }
-  ${groupFragment}
-`;
-
 export const integrationsQuery = gql`
   query integrations($team_id: ID!) {
     integrations(team_id: $team_id) {
@@ -95,10 +86,10 @@ export const integrationsQuery = gql`
 export const onboardingQuery = gql`
   query onboarding($team_id: ID!) {
     onboarding(team_id: $team_id) {
-      has_added_trigger_to_test
       has_completed_tutorial
       has_created_test
       has_invited_user
+      has_trigger
     }
   }
 `;
@@ -136,6 +127,7 @@ export const shortSuiteQuery = gql`
       environment_name
       environment_variables
       id
+      is_api
       team_id
       trigger {
         ...ShortTriggerFragment
@@ -162,6 +154,7 @@ export const suitesQuery = gql`
       environment_id
       environment_name
       id
+      is_api
       status_counts {
         created
         fail
@@ -174,6 +167,24 @@ export const suitesQuery = gql`
     }
   }
   ${shortTriggerFragment}
+`;
+
+export const tagsQuery = gql`
+  query tags($team_id: ID!) {
+    tags(team_id: $team_id) {
+      ...TagFragment
+    }
+  }
+  ${tagFragment}
+`;
+
+export const tagsForTestsQuery = gql`
+  query tagsForTests($test_ids: [ID!]!) {
+    tagsForTests(test_ids: $test_ids) {
+      ...TagsForTestFragment
+    }
+  }
+  ${tagsForTestFragment}
 `;
 
 export const teamQuery = gql`
@@ -208,8 +219,8 @@ export const testHistoryQuery = gql`
 `;
 
 export const testSummariesQuery = gql`
-  query testSummaries($test_ids: [ID!]!, $trigger_id: ID) {
-    testSummaries(test_ids: $test_ids, trigger_id: $trigger_id) {
+  query testSummaries($test_ids: [ID!]!) {
+    testSummaries(test_ids: $test_ids) {
       gif_url
       last_runs {
         created_at
@@ -222,19 +233,9 @@ export const testSummariesQuery = gql`
   }
 `;
 
-export const testTriggersQuery = gql`
-  query testTriggers($test_ids: [ID!]!) {
-    testTriggers(test_ids: $test_ids) {
-      ...TestTriggersFragment
-    }
-  }
-  ${testTriggersFragment}
-`;
-
 export const testsQuery = gql`
   query tests($branch: String, $team_id: ID!) {
     tests(branch: $branch, team_id: $team_id) {
-      group_id
       id
       name
       path

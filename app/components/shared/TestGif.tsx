@@ -1,5 +1,5 @@
 import { Box, BoxProps, Image } from "grommet";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { copy } from "../../theme/copy";
 import { borderSize } from "../../theme/theme";
@@ -31,18 +31,26 @@ export default function TestGif({
   testName,
 }: Props): JSX.Element {
   const { wolf } = useContext(UserContext);
+  const [hasError, setHasError] = useState(false);
 
-  if (gifUrl) {
+  const handleError = (): void => setHasError(true);
+
+  if (gifUrl && !hasError) {
     return (
       <Box {...boxProps} margin={margin} overflow="hidden">
         <Image
           a11yTitle={`${testName} latest run`}
           fit="contain"
+          onError={handleError}
           src={gifUrl}
         />
       </Box>
     );
   }
+
+  let message = copy.notRunYet;
+  if (isLoading) message = copy.loading;
+  if (hasError) message = copy.notAvailable;
 
   const innerHtml = isRunning ? (
     <Spinner size="small" />
@@ -50,7 +58,7 @@ export default function TestGif({
     <>
       {!!wolf && <WolfHead color={wolf.variant} />}
       <Text color="gray7" margin={{ top: "2px" }} size="componentSmall">
-        {isLoading ? copy.loading : copy.notRunYet}
+        {message}
       </Text>
     </>
   );

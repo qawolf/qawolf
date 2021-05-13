@@ -4,26 +4,21 @@ import { useRef, useState } from "react";
 import { state } from "../../../../../lib/state";
 import { ShortTest } from "../../../../../lib/types";
 import { copy } from "../../../../../theme/copy";
-import { edgeSize } from "../../../../../theme/theme";
+import { edgeSize, inputWidth } from "../../../../../theme/theme";
 import Button from "../../../../shared/AppButton";
 import Divider from "../../../../shared/Divider";
 import Drop from "../../../../shared/Drop";
-import Folder from "../../../../shared/icons/Folder";
-import Lightning from "../../../../shared/icons/Lightning";
 import More from "../../../../shared/icons/More";
+import Tag from "../../../../shared/icons/Tag";
 import Trash from "../../../../shared/icons/Trash";
 import Option from "../../../../shared/Select/Option";
 
-type Props = {
-  hasGroups: boolean;
-  test: ShortTest;
-};
+type Props = { test: ShortTest };
 
-const width = "240px";
-
-export default function Options({ hasGroups, test }: Props): JSX.Element {
+export default function Options({ test }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const testIds = [test.id];
 
   const handleClick = (): void => {
     setIsOpen((prev) => !prev);
@@ -32,15 +27,11 @@ export default function Options({ hasGroups, test }: Props): JSX.Element {
   const handleClose = (): void => setIsOpen(false);
 
   const handleDeleteClick = (): void => {
-    state.setModal({ name: "deleteTests", tests: [test] });
+    state.setModal({ name: "deleteTests", testIds });
   };
 
-  const handleGroupClick = (): void => {
-    state.setModal({ name: "editTestsGroup", tests: [test] });
-  };
-
-  const handleTriggersClick = (): void => {
-    state.setModal({ name: "triggers", testIds: [test.id] });
+  const handleTagsClick = (): void => {
+    state.setModal({ name: "tags", testIds });
   };
 
   return (
@@ -58,20 +49,13 @@ export default function Options({ hasGroups, test }: Props): JSX.Element {
           onClickOutside={handleClose}
           style={{ marginTop: edgeSize.xxxsmall }}
           target={ref.current}
-          width={width}
+          width={inputWidth}
         >
           <Option
-            IconComponent={Lightning}
-            label={copy.editTriggers}
-            onClick={handleTriggersClick}
+            IconComponent={Tag}
+            label={copy.editTags}
+            onClick={handleTagsClick}
           />
-          {hasGroups && (
-            <Option
-              IconComponent={Folder}
-              label={copy.addToGroup}
-              onClick={handleGroupClick}
-            />
-          )}
           <Divider margin={{ vertical: "xxxsmall" }} />
           <Option
             IconComponent={Trash}

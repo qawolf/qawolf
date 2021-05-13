@@ -119,18 +119,6 @@ type GitHubBranch {
   name: String!
 }
 
-"A group of tests"
-type Group {
-  "Group ID"
-  id: ID!
-
-  "Group name"
-  name: String!
-
-  "Team associated with this group"
-  team_id: ID!
-}
-
 "Valid types for Integration.type"
 enum IntegrationType {
   "GitHub (https://github.com/)"
@@ -184,9 +172,6 @@ type Invite {
 
 "Status of a user's onboarding in context of a team"
 type Onboarding {
-  "Whether the current team has assigned a trigger to a test"
-  has_added_trigger_to_test: Boolean!
-
   "Whether the current user has completed the interactive tutorial"
   has_completed_tutorial: Boolean!
 
@@ -195,6 +180,9 @@ type Onboarding {
 
   "Whether the current team has at least one other user or invite"
   has_invited_user: Boolean!
+
+  "Whether the current team has created a trigger or run tests with API"
+  has_trigger: Boolean!
 }
 
 "Status of a test run"
@@ -322,16 +310,19 @@ type Suite {
   "Suite ID"
   id: ID!
 
+  "Whether suite was created via API"
+  is_api: Boolean!
+
   "Associated test runs"
   runs: [SuiteRun!]!
 
   "Count of runs with each status"
   status_counts: StatusCounts!
 
-  "ID of the team that owns the associated test trigger"
+  "ID of the team that owns the associated trigger"
   team_id: ID!
 
-  "Associated test trigger"
+  "Associated trigger"
   trigger: Trigger
 }
 
@@ -363,6 +354,45 @@ type SuiteRun {
 
   "Name of the test we are running"
   test_name: String!
+
+  "Tags associated with the test we are running"
+  test_tags: [Tag!]!
+}
+
+"A tag for tests"
+type Tag {
+  "Tag color"
+  color: String!
+
+  "Tag ID"
+  id: ID!
+
+  "Tag name"
+  name: String!
+
+  "Team associated with this tag"
+  team_id: ID!
+}
+
+"A list of tags for a test"
+type TagsForTest {
+  "A list of associated tags"
+  tags: [Tag!]!
+
+  "The test ID"
+  test_id: ID!
+}
+
+"A relationship between a tag and a trigger"
+type TagTrigger {
+  "The tag trigger ID"
+  id: ID!
+
+  "The tag ID"
+  tag_id: ID!
+
+  "The trigger ID"
+  trigger_id: ID!
 }
 
 "A team of users"
@@ -407,12 +437,6 @@ type Team {
   "Team name, for display in UI"
   name: String!
 
-  """
-  The ID of the next trigger the team creates, used
-  to copy API call example when creating a trigger
-  """
-  next_trigger_id: ID!
-
   "Current plan this team is on"
   plan: String!
 
@@ -430,9 +454,6 @@ type Test {
 
   "Date and time at which this test was deleted, if it was"
   deleted_at: String
-
-  "The ID of a group associated with this test"
-  group_id: ID
 
   "Test ID"
   id: ID!
@@ -471,18 +492,6 @@ type TestSummary {
   test_id: ID!
 }
 
-"A list of trigger IDs for a test"
-type TestTriggers {
-  "The group ID of the test"
-  group_id: ID
-
-  "The test ID"
-  test_id: ID!
-
-  "A list of associated trigger IDs"
-  trigger_ids: [ID!]!
-}
-
 "A test trigger"
 type Trigger {
   "The color associated with this trigger"
@@ -494,13 +503,13 @@ type Trigger {
   "The deployment environment to run tests on for the GitHub integration."
   deployment_environment: String
 
-  "The ID of a deployment integration associated with this test trigger"
+  "The ID of a deployment integration associated with this trigger"
   deployment_integration_id: ID
 
   "The deployment provider"
   deployment_provider: DeploymentProvider
 
-  "The ID of an environment associated with this test trigger"
+  "The ID of an environment associated with this trigger"
   environment_id: ID
 
   "Test trigger ID"
@@ -514,6 +523,9 @@ type Trigger {
 
   "Number of minutes between test runs for the trigger"
   repeat_minutes: Int
+
+  "Tags associated with this trigger"
+  tags: [Tag!]!
 }
 
 "A registered QA Wolf user"
@@ -616,19 +628,6 @@ type Mutation {
     """
     team_id: ID!
   ): [Integration!]!
-
-  """
-  Create a new test group.
-
-  Requires that you have access to the team.
-  """
-  createGroup(
-    "Name of the group"
-    name: String!
-
-    "ID of the team that should own the group"
-    team_id: ID!
-  ): Group!
 
   """
   Creates a new environment variable record for an environment.
@@ -793,6 +792,19 @@ type Mutation {
   ): String!
 
   """
+  Create a new test tag.
+
+  Requires that you have access to the team.
+  """
+  createTag(
+    "Name of the tag"
+    name: String!
+
+    "ID of the team that should own the tag"
+    team_id: ID!
+  ): Tag!
+
+  """
   Creates a new test. The URL is used as the first page the browser
   will visit in the test, but this can be changed later.
 
@@ -803,11 +815,6 @@ type Mutation {
     Optional git branch
     """
     branch: String
-
-    """
-    Optional group ID
-    """
-    group_id: ID
 
     """
     Optional name of guide for test
@@ -859,11 +866,11 @@ type Mutation {
     "Interval to run the trigger on"
     repeat_minutes: Int
 
+    "IDs of associated tags"
+    tag_ids: [ID!]
+
     "ID of the team that should own the trigger"
     team_id: ID!
-
-    "IDs of the tests to add the trigger to"
-    test_ids: [ID!]
   ): Trigger!
 
   """
@@ -886,12 +893,12 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Delete a test group. All tests in this group will no longer have
-  an associated group.
+  Delete a test tag. All tests in this tag will no longer be
+  associated with it.
 
-  Requires that you have access to the team that owns the group.
+  Requires that you have access to the team that owns the tag.
   """
-  deleteGroup("ID of the group" id: ID!): Group!
+  deleteTag("ID of the tag" id: ID!): Tag!
 
   """
   Soft deletes a test trigger record by ID. All tests are removed from a
@@ -1089,19 +1096,6 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
-  Update a test group.
-
-  Requires that you have access to the team that owns the group.
-  """
-  updateGroup(
-    "ID of the group"
-    id: ID!
-
-    "New name of the group"
-    name: String!
-  ): Group!
-
-  """
   Updates information about a test run by run ID. A runner service calls
   this to provide status updates.
 
@@ -1161,6 +1155,43 @@ type Mutation {
   ): RunnerRun
 
   """
+  Update a test tag.
+
+  Requires that you have access to the team that owns the tag.
+  """
+  updateTag(
+    "ID of the tag"
+    id: ID!
+
+    "New name of the tag. Cannot contain commas."
+    name: String!
+  ): Tag!
+
+  """
+  Adds one or more tests to a tag. Returns the updated tag for tests relationships.
+
+  Requires that you have access to the team that owns the tag.
+  """
+  updateTagTests(
+    """
+    ID of tag to add all the tests to. If this field is set,
+    `remove_tag_id` may not be set.
+    """
+    add_tag_id: ID
+
+    """
+    ID of test tag to remove all the tests from. If this field is set,
+    `add_tag_id` may not be set.
+    """
+    remove_tag_id: ID
+
+    """
+    List of test IDs to add to / remove from the tag.
+    """
+    test_ids: [ID!]
+  ): [TagsForTest!]!
+
+  """
   Updates a team by ID.
 
   Requires that you have access to the team.
@@ -1197,46 +1228,6 @@ type Mutation {
     """
     name: String
   ): Team!
-
-  """
-  Adds one or more tests to a trigger. Returns the updated
-  test_trigger relationships.
-
-  Requires that you have access to the team that owns the trigger.
-  """
-  updateTestTriggers(
-    """
-    ID of test trigger to add all the tests to. If this field is set,
-    `remove_trigger_id` may not be set.
-    """
-    add_trigger_id: ID
-
-    """
-    ID of test trigger to remove all the tests from. If this field is set,
-    `add_trigger_id` may not be set.
-    """
-    remove_trigger_id: ID
-
-    """
-    List of test IDs to add to / remove from the test trigger.
-    """
-    test_ids: [ID!]
-  ): [TestTriggers!]!
-
-  """
-  Updates the group ID of the specified tests.
-
-  Requires that you have access to the team that owns the tests.
-  """
-  updateTestsGroup(
-    """
-    Updated value for this field. If it is `null`, it will be cleared.
-    """
-    group_id: ID
-
-    "List of test IDs"
-    test_ids: [ID!]!
-  ): [Test!]!
 
   """
   Updates a test trigger by ID.
@@ -1287,6 +1278,12 @@ type Mutation {
     value, the next upcoming run is also immediately rescheduled.
     """
     repeat_minutes: Int
+
+    """
+    Updated IDs of associated tags for the trigger.
+    If this field is omitted, it will not be changed.
+    """
+    tag_ids: [ID!]
   ): Trigger!
 
   """
@@ -1376,6 +1373,20 @@ type Query {
   gitHubBranches("The team ID" team_id: ID!): [GitHubBranch!]
 
   """
+  Returns all integrations for a single team by team ID.
+
+  Requires that you have access to the team.
+  """
+  integrations("The team ID" team_id: ID!): [Integration!]!
+
+  """
+  Returns the onboarding status for a user on a team by team ID.
+
+  Requires that you have access to the team.
+  """
+  onboarding("The team ID" team_id: ID!): Onboarding!
+
+  """
   Returns the runner for the run or test.
   """
   runner(
@@ -1401,25 +1412,11 @@ type Query {
   ): Runner
 
   """
-  Returns all groups for a single team by team ID.
+  Returns all tags for a single team by team ID.
 
   Requires that you have access to the team.
   """
-  groups("The team ID" team_id: ID!): [Group!]!
-
-  """
-  Returns all integrations for a single team by team ID.
-
-  Requires that you have access to the team.
-  """
-  integrations("The team ID" team_id: ID!): [Integration!]!
-
-  """
-  Returns the onboarding status for a user on a team by team ID.
-
-  Requires that you have access to the team.
-  """
-  onboarding("The team ID" team_id: ID!): Onboarding!
+  tags("The team ID" team_id: ID!): [Tag!]!
 
   """
   Returns the last 8 runs for a test by ID.
@@ -1450,6 +1447,13 @@ type Query {
   suites("The team ID" team_id: ID!): [Suite!]!
 
   """
+  Returns a list of tags for each test ID.
+
+  Requires that one of the teams you are on owns the tests.
+  """
+  tagsForTests("The test IDs" test_ids: [ID!]!): [TagsForTest!]!
+
+  """
   Returns a single team by ID.
 
   Requires that you are on the team.
@@ -1457,24 +1461,11 @@ type Query {
   team("The team ID" id: ID!): Team!
 
   """
-  Returns a test summary for each test ID. If 'trigger_id' is provided,
-  then the 'TestSummary.last_runs' will be filtered by that trigger.
+  Returns a test summary for each test ID.
 
   Requires that one of the teams you are on owns the tests.
   """
-  testSummaries(
-    "The test IDs"
-    test_ids: [ID!]!
-    "The trigger ID"
-    trigger_id: ID
-  ): [TestSummary!]!
-
-  """
-  Returns a test trigger for each test ID.
-
-  Requires that one of the teams you are on owns the tests.
-  """
-  testTriggers("The test IDs" test_ids: [ID!]!): [TestTriggers!]!
+  testSummaries("The test IDs" test_ids: [ID!]!): [TestSummary!]!
 
   """
   Returns a list of tests for the team ID.
@@ -1484,8 +1475,8 @@ type Query {
   tests("The git branch" branch: String, "The team ID" team_id: ID!): [Test!]!
 
   """
-  Returns all test triggers for a single team by team ID. The default trigger is
-  always first, followed by other triggers ordered by name ascending.
+  Returns all test triggers for a single team by team ID, ordered by name
+  ascending.
 
   Requires that you have access to the team.
   """

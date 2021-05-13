@@ -10,7 +10,6 @@ import GitHubStars from "../../../shared/GitHubStars";
 import Search from "../../../shared/Search";
 import { UserContext } from "../../../UserContext";
 
-const searchWidth = "240px"; // algolia sets it to this width automatically
 const slackHref = "https://slack.qawolf.com";
 
 export const handleJoinClick = (): void => {
@@ -32,12 +31,7 @@ export default function Buttons(): JSX.Element {
 
   return (
     <StyledBox align="center" direction="row" justify="between">
-      <Search
-        id="algolia-search"
-        search={search}
-        setSearch={setSearch}
-        width={searchWidth}
-      />
+      <Search id="algolia-search" search={search} setSearch={setSearch} />
       <Box align="center" direction="row" flex={false}>
         <GitHubStars type="dark" />
         <Button

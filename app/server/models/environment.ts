@@ -7,6 +7,11 @@ type CreateEnvironment = {
   team_id: string;
 };
 
+type FindEnvironmentByName = {
+  name: string;
+  team_id: string;
+};
+
 type UpdateEnvironment = {
   id: string;
   name: string;
@@ -58,6 +63,23 @@ export const deleteEnvironment = async (
   return environment;
 };
 
+export const findDefaultEnvironmentForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<Environment | null> => {
+  const log = logger.prefix("findDefaultEnvironmentForTeam");
+  log.debug("team", team_id);
+
+  const environments = await findEnvironmentsForTeam(team_id, { db, logger });
+
+  if (environments.length > 1) {
+    log.error("more than 1 environment");
+    throw new Error("Must provide environment name");
+  }
+
+  return environments[0] || null;
+};
+
 export const findEnvironment = async (
   id: string,
   { db, logger }: ModelOptions
@@ -73,6 +95,24 @@ export const findEnvironment = async (
     log.error("not found", id);
     throw new Error("Environment not found");
   }
+
+  return environment;
+};
+
+export const findEnvironmentForName = async (
+  { name, team_id }: FindEnvironmentByName,
+  { db, logger }: ModelOptions
+): Promise<Environment> => {
+  const log = logger.prefix("findEnvironmentForName");
+  log.debug("team", team_id);
+
+  const environment = await db("environments").where({ name, team_id }).first();
+
+  if (!environment) {
+    log.debug("not found", name);
+    throw new Error(`environment ${name} not found`);
+  }
+  log.debug("found", environment.id);
 
   return environment;
 };

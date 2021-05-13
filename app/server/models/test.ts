@@ -2,8 +2,9 @@ import isNil from "lodash/isNil";
 
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
-import { ModelOptions, Test } from "../types";
+import { ModelOptions, Test, Trigger } from "../types";
 import { cuid } from "../utils";
+import { findTagIdsForNames, findTagsForTrigger } from "./tag";
 
 type BuildTestName = {
   guide?: string | null;
@@ -13,15 +14,15 @@ type BuildTestName = {
 type CreateTest = {
   code: string;
   creator_id?: string;
-  group_id?: string | null;
   guide?: string | null;
   path?: string | null;
   team_id: string;
 };
 
-type FindEnabledTestsForTrigger = {
-  test_ids?: string[] | null;
-  trigger_id: string;
+type FindEnabledTestsForTags = {
+  tag_ids?: string[] | null;
+  tag_names?: string | null;
+  team_id: string;
 };
 
 export type LocationCount = {
@@ -42,11 +43,6 @@ type UpdateTestToPending = {
   id: string;
   runner_locations: string[];
   runner_requested_branch?: string;
-};
-
-type UpdateTestsGroup = {
-  group_id: string | null;
-  test_ids: string[];
 };
 
 const formatTestName = (name: string, testNumber: number): string => {
@@ -102,28 +98,19 @@ export const countIncompleteTests = async (
 export const countTestsForTeam = async (
   team_id: string,
   { db }: ModelOptions
-): Promise<{ test_enabled_count: number; test_with_trigger_count: number }> => {
-  const [enabledResult, triggeredResult] = await Promise.all([
-    db.raw(
-      `SELECT COUNT(*) as count FROM tests WHERE team_id = ? AND deleted_at IS NULL AND is_enabled = TRUE AND guide IS NULL`,
-      [team_id]
-    ),
-    db.raw(
-      `SELECT COUNT(DISTINCT test_id) as count 
-      FROM test_triggers JOIN tests ON test_triggers.test_id = tests.id 
-      WHERE tests.team_id = ? AND tests.deleted_at IS NULL AND tests.is_enabled = TRUE AND guide IS NULL`,
-      [team_id]
-    ),
-  ]);
+): Promise<{ test_enabled_count: number }> => {
+  const enabledResult = await db.raw(
+    `SELECT COUNT(*) as count FROM tests WHERE team_id = ? AND deleted_at IS NULL AND is_enabled = TRUE AND guide IS NULL`,
+    [team_id]
+  );
 
   return {
     test_enabled_count: Number(enabledResult.rows[0].count),
-    test_with_trigger_count: Number(triggeredResult.rows[0].count),
   };
 };
 
 export const createTest = async (
-  { code, creator_id, group_id, guide, path, team_id }: CreateTest,
+  { code, creator_id, guide, path, team_id }: CreateTest,
   { db, logger }: ModelOptions
 ): Promise<Test> => {
   const log = logger.prefix("createTest");
@@ -139,7 +126,6 @@ export const createTest = async (
     creator_id: creator_id || null,
     code,
     deleted_at: null,
-    group_id: group_id || null,
     guide: guide || null,
     id: cuid(),
     is_enabled: true,
@@ -163,16 +149,13 @@ export const deleteTests = async (
 
   log.debug(ids);
 
-  const tests = await db.transaction(async (trx) => {
-    const tests = await trx.select("*").from("tests").whereIn("id", ids);
-    const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
-    await trx("tests").update(updates).whereIn("id", ids);
-    return tests.map((test: Test) => ({ ...test, ...updates }));
-  });
+  const tests = await db("tests").whereIn("id", ids);
+  const updates = { deleted_at: minutesFromNow(), runner_requested_at: null };
 
+  await db("tests").update(updates).whereIn("id", ids);
   log.debug("deleted", ids);
 
-  return tests;
+  return tests.map((test: Test) => ({ ...test, ...updates }));
 };
 
 export const findEnabledTests = async (
@@ -191,28 +174,71 @@ export const findEnabledTests = async (
   return tests;
 };
 
+export const findEnabledTestsForTags = async (
+  { tag_ids, tag_names, team_id }: FindEnabledTestsForTags,
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findEnabledTestsForTags");
+  log.debug("team", team_id);
+
+  if (!tag_ids && !tag_names) {
+    log.debug("no tags provided");
+    return findEnabledTestsForTeam(team_id, { db, logger });
+  }
+
+  const finalTagIds =
+    tag_ids ||
+    (await findTagIdsForNames({ names: tag_names, team_id }, { db, logger }));
+
+  const tagTestRows = await db("tag_tests")
+    .distinct("test_id")
+    .whereIn("tag_id", finalTagIds);
+  const testIds = tagTestRows.map((row) => row.test_id);
+
+  const tests = await db("tests")
+    .whereIn("id", testIds)
+    .andWhere({ deleted_at: null, is_enabled: true })
+    .orderBy("tests.created_at", "asc");
+
+  log.debug(`found ${tests.length} tests`);
+
+  return tests;
+};
+
+export const findEnabledTestsForTeam = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<Test[]> => {
+  const log = logger.prefix("findEnabledTestsForTeam");
+  log.debug("team", team_id);
+
+  const tests = await db("tests")
+    .where({
+      deleted_at: null,
+      is_enabled: true,
+      team_id,
+    })
+    .orderBy("created_at", "asc");
+
+  log.debug(`found ${tests.length} tests`);
+
+  return tests;
+};
+
 export const findEnabledTestsForTrigger = async (
-  { test_ids, trigger_id }: FindEnabledTestsForTrigger,
+  trigger: Trigger,
   { db, logger }: ModelOptions
 ): Promise<Test[]> => {
   const log = logger.prefix("findEnabledTestsForTrigger");
-  log.debug(trigger_id);
+  log.debug("trigger", trigger.id);
 
-  const query = db
-    .select("tests.*" as "*")
-    .from("tests")
-    .innerJoin("test_triggers", "test_triggers.test_id", "tests.id")
-    .where({ deleted_at: null, trigger_id, is_enabled: true });
+  const tags = await findTagsForTrigger(trigger.id, { db, logger });
+  const tag_ids = tags.length ? tags.map((t) => t.id) : null;
 
-  if (test_ids && test_ids.length) {
-    query.whereIn("tests.id", test_ids);
-  }
-
-  const tests = await query.orderBy("created_at", "asc");
-
-  log.debug(`found ${tests.length} enabled tests for trigger ${trigger_id}`);
-
-  return tests;
+  return findEnabledTestsForTags(
+    { tag_ids, team_id: trigger.team_id },
+    { db, logger }
+  );
 };
 
 export const findPendingTest = async (
@@ -407,26 +433,4 @@ export const updateTestToPending = async (
   log.debug(options, didUpdate ? "updated" : "skipped");
 
   return didUpdate;
-};
-
-export const updateTestsGroup = async (
-  { group_id, test_ids }: UpdateTestsGroup,
-  { db, logger }: ModelOptions
-): Promise<Test[]> => {
-  const log = logger.prefix("updateTestsGroup");
-  log.debug("group", group_id, "tests", test_ids);
-
-  const tests = await db("tests")
-    .whereIn("id", test_ids)
-    .andWhere({ deleted_at: null });
-  const testIds = tests.map((t) => t.id);
-
-  const updated_at = new Date().toISOString();
-
-  await db("tests").whereIn("id", testIds).update({ group_id, updated_at });
-  log.debug("updated", testIds);
-
-  return tests.map((t) => {
-    return { ...t, group_id, updated_at };
-  });
 };

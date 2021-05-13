@@ -80,6 +80,11 @@ export type CreateUserWithEmail = WolfFields & {
 
 export type CreateUserWithGitHub = GitHubFields & WolfFields;
 
+export type CreatedSuite = {
+  runs: Run[];
+  suite: Suite;
+};
+
 export type DeploymentProvider = "netlify" | "vercel";
 
 export type Email = {
@@ -127,14 +132,6 @@ export type GitHubCommitStatus = {
   sha: string;
   suite_id: string;
   trigger_id: string;
-  updated_at?: string;
-};
-
-export type Group = {
-  created_at?: string;
-  id: string;
-  name: string;
-  team_id: string;
   updated_at?: string;
 };
 
@@ -262,6 +259,7 @@ export type Suite = {
   environment_variables: string | null;
   helpers: string;
   id: string;
+  is_api: boolean;
   team_id: string;
   trigger_id: string;
   updated_at?: string;
@@ -274,6 +272,35 @@ export type SuiteRun = {
   status: RunStatus;
   test_id: string;
   test_name: string;
+  test_tags?: Tag[];
+};
+
+export type Tag = {
+  created_at?: string;
+  color: string;
+  id: string;
+  name: string;
+  team_id: string;
+  updated_at?: string;
+};
+
+export type TagsForTest = {
+  tags: Tag[];
+  test_id: string;
+};
+
+export type TagTest = {
+  created_at?: string;
+  id: string;
+  tag_id: string;
+  test_id: string;
+  updated_at?: string;
+};
+
+export type TagTrigger = {
+  id: string;
+  tag_id: string;
+  trigger_id: string;
 };
 
 export type TeamPlan = "business" | "custom" | "free";
@@ -295,7 +322,6 @@ export type Team = {
   last_synced_at: string | null;
   limit_reached_at: string | null;
   name: string;
-  next_trigger_id: string;
   plan: TeamPlan;
   renewed_at: string;
   stripe_customer_id: string | null;
@@ -318,7 +344,6 @@ export type Test = {
   creator_id: string | null;
   code: string;
   deleted_at: string | null;
-  group_id: string | null;
   guide?: string | null;
   id: string;
   is_enabled: boolean;
@@ -330,12 +355,6 @@ export type Test = {
   team_id: string;
   updated_at: string;
   url?: string;
-};
-
-export type TestTrigger = {
-  id: string;
-  test_id: string;
-  trigger_id: string;
 };
 
 export type Trigger = {
@@ -401,11 +420,6 @@ export type CreateGitHubIntegrationsMutation = {
   team_id: string;
 };
 
-export type CreateGroupMutation = {
-  name: string;
-  team_id: string;
-};
-
 export type CreateInviteMutation = {
   emails: string[];
   team_id: string;
@@ -440,9 +454,13 @@ export type CreateSuiteMutation = {
   test_ids: string[];
 };
 
+export type CreateTagMutation = {
+  name: string;
+  team_id: string;
+};
+
 export type CreateTestMutation = {
   branch?: string | null;
-  group_id: string | null;
   guide: string | null;
   team_id: string;
   url: string;
@@ -456,8 +474,8 @@ export type CreateTriggerMutation = {
   environment_id: string | null;
   name: string;
   repeat_minutes: number | null;
+  tag_ids: string[] | null;
   team_id: string;
-  test_ids: string[] | null;
 };
 
 export type CreateUrlMutation = {
@@ -531,34 +549,6 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
-export type UpdateEnvironmentVariableMutation = {
-  id: string;
-  name: string;
-  value: string;
-};
-
-export type UpdateGroupMutation = {
-  id: string;
-  name: string;
-};
-
-export type UpdateTriggerMutation = {
-  deployment_branches?: string | null;
-  deployment_environment?: string | null;
-  deployment_integration_id?: string | null;
-  deployment_provider?: DeploymentProvider | null;
-  environment_id?: string | null;
-  id: string;
-  name?: string;
-  repeat_minutes?: number | null;
-};
-
-export type UpdateTestTriggersMutation = {
-  add_trigger_id: string | null;
-  remove_trigger_id: string | null;
-  test_ids: string[];
-};
-
 export type UpdateRunMutation = {
   error?: string;
   current_line: number | null;
@@ -572,6 +562,23 @@ export type UpdateRunnerMutation = {
   is_ready?: boolean;
 };
 
+export type UpdateEnvironmentVariableMutation = {
+  id: string;
+  name: string;
+  value: string;
+};
+
+export type UpdateTagMutation = {
+  id: string;
+  name: string;
+};
+
+export type UpdateTagTestsMutation = {
+  add_tag_id?: string | null;
+  remove_tag_id?: string | null;
+  test_ids: string[];
+};
+
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
@@ -581,9 +588,16 @@ export type UpdateTeamMutation = {
   name?: string | null;
 };
 
-export type UpdateTestsGroupMutation = {
-  group_id: string | null;
-  test_ids: string[];
+export type UpdateTriggerMutation = {
+  deployment_branches?: string | null;
+  deployment_environment?: string | null;
+  deployment_integration_id?: string | null;
+  deployment_provider?: DeploymentProvider | null;
+  environment_id?: string | null;
+  id: string;
+  name?: string;
+  repeat_minutes?: number | null;
+  tag_ids?: string[] | null;
 };
 
 export type UpdateUserMutation = {
@@ -631,10 +645,10 @@ export type IdQuery = {
 };
 
 export type Onboarding = {
-  has_added_trigger_to_test: boolean;
   has_completed_tutorial: boolean;
   has_created_test: boolean;
   has_invited_user: boolean;
+  has_trigger: boolean;
 };
 
 export type RunResult = Run & {
@@ -667,19 +681,12 @@ export type TestIdsQuery = {
 
 export type TestSummariesQuery = {
   test_ids: string[];
-  trigger_id: string | null;
 };
 
 export type TestSummary = {
   gif_url: string | null;
   last_runs: RunWithGif[];
   test_id: string;
-};
-
-export type TestTriggers = {
-  group_id: string | null;
-  test_id: string;
-  trigger_ids: string[];
 };
 
 export type TestsQuery = {

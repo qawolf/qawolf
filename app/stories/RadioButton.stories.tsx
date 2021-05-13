@@ -2,7 +2,7 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { Box, ThemeContext } from "grommet";
 import React from "react";
 
-import Folder from "../components/shared/icons/Folder";
+import Rocket from "../components/shared/icons/Rocket";
 import RadioButton, { Props } from "../components/shared/RadioButton";
 import Text from "../components/shared/Text";
 import { colors, edgeSize } from "../theme/theme";
@@ -25,7 +25,7 @@ const Template: Story<Props> = (props) => {
 const labelHtml = (
   <>
     <Box align="center" direction="row" margin={{ left: "xxsmall" }}>
-      <Folder color={colors.gray9} size={edgeSize.small} />
+      <Rocket color={colors.gray9} size={edgeSize.small} />
       <Text color="gray9" margin={{ left: "xxsmall" }} size="component">
         My Group
       </Text>

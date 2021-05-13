@@ -37,7 +37,7 @@ export default function Actions(): JSX.Element {
         IconComponent={List}
         href={routes.tests}
         isSelected={pathname.includes(routes.tests) && !query.group_id}
-        label={copy.allTests}
+        label={copy.tests}
       />
       <DashboardLink
         IconComponent={DotCircle}

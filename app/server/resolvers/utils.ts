@@ -3,8 +3,8 @@ import { AuthenticationError } from "../errors";
 import { Logger } from "../Logger";
 import { findEnvironment } from "../models/environment";
 import { findEnvironmentVariable } from "../models/environment_variable";
-import { findGroup } from "../models/group";
 import { findSuite } from "../models/suite";
+import { findTag } from "../models/tag";
 import { findTest } from "../models/test";
 import { findTrigger } from "../models/trigger";
 import { ModelOptions, Team, Test, User } from "../types";
@@ -19,13 +19,13 @@ type EnsureEnvironmentVariableAccess = {
   teams: Team[] | null;
 };
 
-type EnsureGroupAccess = {
-  group_id: string;
+type EnsureSuiteAccess = {
+  suite_id: string;
   teams: Team[] | null;
 };
 
-type EnsureSuiteAccess = {
-  suite_id: string;
+type EnsureTagAccess = {
+  tag_id: string;
   teams: Team[] | null;
 };
 
@@ -126,26 +126,6 @@ export const ensureEnvironmentVariableAccess = async (
   return selectedTeam;
 };
 
-export const ensureGroupAccess = async (
-  { group_id, teams }: EnsureGroupAccess,
-  options: ModelOptions
-): Promise<Team> => {
-  const log = options.logger.prefix("ensureGroupAccess");
-
-  const teamIds = ensureTeams({ teams, logger: log }).map((team) => team.id);
-  log.debug("ensure teams", teamIds, "can access group", group_id);
-
-  const group = await findGroup(group_id, options);
-  const selectedTeam = teams!.find((team) => group.team_id === team.id);
-
-  if (!selectedTeam) {
-    log.error("teams", teamIds, "cannot access group", group_id);
-    throw new AuthenticationError("cannot access group");
-  }
-
-  return selectedTeam;
-};
-
 /**
  * @summary Throws if `teams` is falsy or doesn't include `suite.team_id`. Can also
  *   throw if `suite_id` doesn't match any suite.
@@ -169,6 +149,30 @@ export const ensureSuiteAccess = async (
     log.error("teams", teamIds, "cannot access suite", suite_id);
     throw new Error("Teams cannot access suite");
   }
+};
+
+/**
+ * @summary Throws if `teams` is falsy or doesn't include `team_id`
+ * @returns The team from `teams` that matches `team_id`, if we didn't throw.
+ */
+export const ensureTagAccess = async (
+  { tag_id, teams }: EnsureTagAccess,
+  options: ModelOptions
+): Promise<Team> => {
+  const log = options.logger.prefix("ensureTagAccess");
+
+  const teamIds = ensureTeams({ teams, logger: log }).map((team) => team.id);
+  log.debug("ensure teams", teamIds, "can access tag", tag_id);
+
+  const tag = await findTag(tag_id, options);
+  const selectedTeam = teams!.find((team) => tag.team_id === team.id);
+
+  if (!selectedTeam) {
+    log.error("teams", teamIds, "cannot access tag", tag_id);
+    throw new AuthenticationError("cannot access tag");
+  }
+
+  return selectedTeam;
 };
 
 /**

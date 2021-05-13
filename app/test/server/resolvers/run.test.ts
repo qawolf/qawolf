@@ -118,6 +118,7 @@ describe("suiteRunsResolver", () => {
         id: "run2Id",
         status: "pass",
         test_name: "testName",
+        test_tags: [],
       },
     ]);
   });

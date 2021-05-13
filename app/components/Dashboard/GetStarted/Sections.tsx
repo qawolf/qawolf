@@ -56,7 +56,7 @@ export default function Sections({
         section="createTest"
       />
       <Section
-        isComplete={onboarding.has_added_trigger_to_test}
+        isComplete={onboarding.has_trigger}
         isOpen={openSection === "addTrigger"}
         onButtonClick={handleTriggerClick}
         onToggleOpen={onToggleOpen}

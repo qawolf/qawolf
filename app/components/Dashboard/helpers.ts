@@ -6,8 +6,9 @@ import {
   ShortTest,
   SuiteRun,
   SuiteSummary,
+  TagFilter,
+  TagsForTest,
   TestSummaryRun,
-  TestTriggers,
 } from "../../lib/types";
 import { copy } from "../../theme/copy";
 
@@ -18,23 +19,27 @@ type FilterRuns = {
 };
 
 type FilterTests = {
-  group_id: string | null;
+  filter: TagFilter;
   search: string;
-  testTriggers?: TestTriggers[];
-  tests?: ShortTest[] | null;
-  trigger_id?: string | null;
+  tagIds: string[];
+  testTags: TagsForTest[] | null;
+  tests: ShortTest[] | null;
 };
 
-export const noTriggerId = "none";
+export const noTagId = "noTag";
 
 export const buildTestsPath = (
-  groupId: string | null,
-  triggerId: string | null
+  tagIds: string[],
+  filter?: TagFilter
 ): string => {
-  const query = triggerId ? `?trigger_id=${triggerId}` : "";
+  const queryParts: string[] = [];
 
-  if (!groupId) return `${routes.tests}${query}`;
-  return `${routes.tests}/${groupId}${query}`;
+  if (filter === "all") queryParts.push("filter=all");
+  if (tagIds.length) queryParts.push(`tags=${tagIds.join(",")}`);
+
+  const formattedQuery = queryParts.length ? `?${queryParts.join("&")}` : "";
+
+  return `${routes.tests}${formattedQuery}`;
 };
 
 export const filterRuns = ({
@@ -58,19 +63,16 @@ export const filterRuns = ({
 };
 
 export const filterTests = ({
-  group_id,
+  filter,
   search,
-  testTriggers,
+  tagIds,
+  testTags,
   tests,
-  trigger_id,
 }: FilterTests): ShortTest[] | null => {
-  if (!tests || (trigger_id && !testTriggers)) return null;
+  if (!tests || (tagIds.length && !testTags)) return null;
 
   let filteredTests = [...tests];
-
-  if (group_id) {
-    filteredTests = filteredTests.filter((t) => t.group_id === group_id);
-  }
+  const includeNoTags = tagIds.includes(noTagId);
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
@@ -79,19 +81,18 @@ export const filterTests = ({
     });
   }
 
-  if (trigger_id === noTriggerId) {
+  if (tagIds.length) {
     filteredTests = filteredTests.filter((test) => {
-      const triggerIds =
-        testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+      const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
-      return !triggerIds.length;
-    });
-  } else if (trigger_id) {
-    filteredTests = filteredTests.filter((test) => {
-      const triggerIds =
-        testTriggers.find((t) => t.test_id === test.id)?.trigger_ids || [];
+      if (includeNoTags && !tags.length) {
+        return filter === "all" ? tagIds.length === 1 : true;
+      }
 
-      return triggerIds.includes(trigger_id);
+      if (filter === "all") {
+        return tagIds.every((tagId) => tags.some((tag) => tag.id === tagId));
+      }
+      return tags.some((t) => tagIds.includes(t.id));
     });
   }
 
@@ -100,9 +101,13 @@ export const filterTests = ({
 
 export const formatSuiteName = (suite: ShortSuite): string => {
   if (suite.trigger?.name) return suite.trigger.name;
-  if (!suite.environment_name) return copy.manuallyTriggered;
 
-  return `${copy.manuallyTriggered}: ${suite.environment_name}`;
+  const label = suite.is_api ? copy.apiTriggered : copy.manuallyTriggered;
+  const environment = suite.environment_name
+    ? `: ${suite.environment_name}`
+    : "";
+
+  return `${label}${environment}`;
 };
 
 export const getLabelForRun = (run: TestSummaryRun): string => {

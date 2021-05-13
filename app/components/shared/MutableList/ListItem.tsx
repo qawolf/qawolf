@@ -94,7 +94,7 @@ export default function ListItem({
       margin={{ bottom: borderSize.small }}
       onClick={handleClick}
       pad={{
-        left: type === "group" ? "xxsmall" : "xsmall",
+        left: "xsmall",
         right: "xxsmall",
         vertical: "xxsmall",
       }}

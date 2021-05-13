@@ -146,6 +146,8 @@ export const height = {
   navigation: "80px",
 };
 
+export const inputWidth = "240px";
+
 export const offset = {
   demoVideo: "-80px",
   hero: "-52px", // 80 - 28 for credit card note
@@ -262,11 +264,14 @@ export const theme: ThemeType = {
     border: {
       radius: edgeSize.xxsmall,
     },
+    extend: (): CSSProperties => {
+      return { cursor: "pointer" };
+    },
     overlay: {
       background: "rgba(21, 27, 38, 0.6)",
     },
     responsiveBreakpoint: null,
-  },
+  } as any,
   meter: {
     color: colors.success5,
   },

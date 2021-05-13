@@ -47,7 +47,6 @@ describe("createDefaultTeam", () => {
         last_synced_at: null,
         limit_reached_at: null,
         name: "My Team",
-        next_trigger_id: expect.any(String),
         plan: "free",
         renewed_at: expect.any(Date),
         stripe_customer_id: null,
@@ -403,21 +402,6 @@ describe("updateTeam", () => {
       plan: "free",
       stripe_customer_id: null,
       stripe_subscription_id: null,
-    });
-  });
-
-  it("updates next trigger id for a team", async () => {
-    const team = await updateTeam(
-      { id: "teamId", next_trigger_id: "nextTriggerId" },
-      options
-    );
-
-    const updatedTeam = await db.select("*").from("teams").first();
-    expect(updatedTeam).toEqual({
-      ...team,
-      api_key: expect.any(String),
-      next_trigger_id: "nextTriggerId",
-      updated_at: expect.anything(),
     });
   });
 

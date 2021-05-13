@@ -7,6 +7,7 @@ import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildIntegration,
+  buildSuite,
   buildTeam,
   buildTrigger,
   buildUser,
@@ -14,7 +15,6 @@ import {
 } from "../utils";
 
 const {
-  buildTriggerColor,
   createTrigger,
   deleteTrigger,
   findTrigger,
@@ -24,6 +24,7 @@ const {
   findTriggersForTeam,
   findPendingTriggers,
   getNextAt,
+  hasTriggerOrApiSuite,
   updateTrigger,
 } = triggerModel;
 
@@ -42,52 +43,6 @@ beforeAll(async () => {
 
 describe("trigger model", () => {
   afterEach(jest.restoreAllMocks);
-
-  describe("buildTriggerColor", () => {
-    const colors = ["red", "blue", "green"];
-
-    it("returns the first unused color if possible", () => {
-      expect(buildTriggerColor([], colors)).toBe("red");
-      expect(buildTriggerColor([{ color: "blue" }] as Trigger[], colors)).toBe(
-        "red"
-      );
-
-      expect(buildTriggerColor([{ color: "red" }] as Trigger[], colors)).toBe(
-        "blue"
-      );
-      expect(
-        buildTriggerColor(
-          [{ color: "red" }, { color: "blue" }, { color: "blue" }] as Trigger[],
-          colors
-        )
-      ).toBe("green");
-    });
-
-    it("returns the next color otherwise", () => {
-      expect(
-        buildTriggerColor(
-          [
-            { color: "red" },
-            { color: "blue" },
-            { color: "green" },
-          ] as Trigger[],
-          colors
-        )
-      ).toBe("red");
-
-      expect(
-        buildTriggerColor(
-          [
-            { color: "red" },
-            { color: "blue" },
-            { color: "green" },
-            { color: "red" },
-          ] as Trigger[],
-          colors
-        )
-      ).toBe("blue");
-    });
-  });
 
   describe("createTrigger", () => {
     afterEach(() => db("triggers").del());
@@ -130,7 +85,6 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "vercel",
           environment_id: "environmentId",
-          id: "deployTriggerId",
           name: "Deployment",
           repeat_minutes: 60,
           team_id: "teamId",
@@ -149,7 +103,7 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "vercel",
           environment_id: "environmentId",
-          id: "deployTriggerId",
+          id: expect.any(String),
           name: "Deployment",
           repeat_minutes: 60,
         },
@@ -163,7 +117,6 @@ describe("trigger model", () => {
           deployment_integration_id: "integrationId",
           deployment_provider: "netlify",
           environment_id: "environmentId",
-          id: "deployTrigger2Id",
           name: "Deployment (Netlify)",
           repeat_minutes: 60,
           team_id: "teamId",
@@ -182,7 +135,6 @@ describe("trigger model", () => {
         deployment_environment: "preview",
         deployment_integration_id: "integrationId",
         deployment_provider: "netlify",
-        id: "deployTrigger2Id",
         name: "Deployment (Netlify)",
       });
     });
@@ -512,6 +464,26 @@ describe("trigger model", () => {
       expect(
         getNextAt({ repeat_minutes: 60 * 24, timezone_id: "America/New_York" })
       ).toBe("2021-03-16T13:00:00.000Z");
+    });
+  });
+
+  describe("hasTriggerOrApiSuite", () => {
+    it("returns false if team does not have trigger", async () => {
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(false);
+    });
+
+    it("returns true if team has trigger", async () => {
+      await db("triggers").insert(buildTrigger({}));
+
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(true);
+
+      await db("triggers").del();
+    });
+
+    it("returns true if team has created suite with api", async () => {
+      await db("suites").insert(buildSuite({ is_api: true, trigger_id: null }));
+
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(true);
     });
   });
 

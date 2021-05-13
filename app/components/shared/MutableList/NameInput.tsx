@@ -8,7 +8,7 @@ import {
   MutableListType,
 } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { borderSize, edgeSize } from "../../../theme/theme";
+import { borderSize } from "../../../theme/theme";
 import TextInput from "../AppTextInput";
 
 type Props = {
@@ -17,8 +17,6 @@ type Props = {
   onSave: MutableListFunction;
   type: MutableListType;
 };
-
-const pad = `calc(${edgeSize.xxsmall} - ${borderSize.xsmall})`;
 
 export default function NameInput({
   fields,
@@ -58,7 +56,6 @@ export default function NameInput({
         id={type}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        pad={type === "group" ? { left: pad, right: pad } : undefined}
         placeholder={copy[type]}
         ref={ref}
         value={name}

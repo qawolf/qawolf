@@ -32,12 +32,6 @@ export type GitHubBranch = {
   name: string;
 };
 
-export type Group = {
-  id: string;
-  name: string;
-  team_id: string;
-};
-
 export type Integration = {
   github_repo_name: string;
   id: string;
@@ -56,10 +50,10 @@ export type Invite = {
 };
 
 export type Onboarding = {
-  has_added_trigger_to_test: boolean;
   has_completed_tutorial: boolean;
   has_created_test: boolean;
   has_invited_user: boolean;
+  has_trigger: boolean;
 };
 
 export type RunStatus = "created" | "fail" | "pass";
@@ -91,6 +85,7 @@ export type ShortSuite = {
   environment_name: string | null;
   environment_variables: string | null;
   id: string;
+  is_api: boolean;
   team_id: string;
   trigger: ShortTrigger | null;
 };
@@ -115,6 +110,7 @@ export type SuiteRun = {
   status: RunStatus;
   test_id: string;
   test_name: string;
+  test_tags: Tag[];
 };
 
 export type SuiteSummary = ShortSuite & {
@@ -126,6 +122,20 @@ export type ShortTeam = {
   name: string;
 };
 
+export type Tag = {
+  color: string;
+  id: string;
+  name: string;
+  team_id: string;
+};
+
+export type TagFilter = "all" | "any";
+
+export type TagsForTest = {
+  tags: Tag[];
+  test_id: string;
+};
+
 export type Team = ShortTeam & {
   alert_integration_id: string | null;
   alert_only_on_failure: boolean;
@@ -135,7 +145,6 @@ export type Team = ShortTeam & {
   inbox: string;
   is_email_alert_enabled: boolean;
   is_enabled: boolean;
-  next_trigger_id: string;
   plan: "business" | "custom" | "free";
   renewed_at: string;
 };
@@ -146,7 +155,6 @@ export type TeamWithUsers = Team & {
 };
 
 export type ShortTest = {
-  group_id: string | null;
   id: string;
   name: string | null;
   path: string | null;
@@ -196,6 +204,7 @@ export type Trigger = ShortTrigger & {
   deployment_integration_id: string | null;
   environment_id: string | null;
   next_at: string | null;
+  tags: Tag[];
 };
 
 export type User = {
@@ -220,11 +229,11 @@ export type CreateCode = {
 
 export type Modal =
   | "confirmBack"
+  | "createSuite"
   | "createTest"
-  | "editTestsGroup"
   | "environments"
-  | "deleteGroup"
   | "deleteTests"
+  | "tags"
   | "triggers";
 
 export type MutableListArgs = {
@@ -240,25 +249,20 @@ export type MutableListFields = {
   name: string;
 };
 
-export type MutableListType = "environment" | "group";
+export type MutableListType = "environment";
 
 export type NavigationOption = "code" | "logs" | "helpers";
 
 export type NavigationType = "dark" | "light";
 
+export type SelectState = "all" | "none" | "some";
+
 export type SelectedTest = {
-  group_id?: string;
   id: string;
   name: string;
 };
 
 export type Side = "left" | "right";
-
-export type TestTriggers = {
-  group_id: string | null;
-  test_id: string;
-  trigger_ids: string[];
-};
 
 export type TriggerFields = {
   deployment_branches: string | null;
@@ -268,6 +272,7 @@ export type TriggerFields = {
   environment_id: string | null;
   name: string;
   repeat_minutes: number | null;
+  tag_ids: string[] | null;
 };
 
 export type ValueProp = {
@@ -322,10 +327,8 @@ type SignUp = {
 };
 
 type ModalState = {
-  group?: MutableListFields;
   name: Modal | null;
   testIds?: string[];
-  tests?: SelectedTest[];
 };
 
 export type State = {

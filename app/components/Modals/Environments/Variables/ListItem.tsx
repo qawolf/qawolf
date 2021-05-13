@@ -13,7 +13,7 @@ import Form from "./Form";
 type Props = {
   editEnvironmentVariableId: string;
   environmentVariable: EnvironmentVariable;
-  onCancel: () => void;
+  onClose: () => void;
   onDelete: () => void;
   onEdit: (editEnvironmentVariableId: string) => void;
 };
@@ -23,7 +23,7 @@ export const nameWidth = "220px";
 export default function ListItem({
   editEnvironmentVariableId,
   environmentVariable,
-  onCancel,
+  onClose,
   onDelete,
   onEdit,
 }: Props): JSX.Element {
@@ -34,7 +34,7 @@ export default function ListItem({
       <Form
         environmentId={environmentVariable.environment_id}
         environmentVariable={environmentVariable}
-        onCancel={onCancel}
+        onClose={onClose}
       />
     );
   }

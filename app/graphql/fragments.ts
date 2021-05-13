@@ -17,14 +17,6 @@ export const environmentVariableFragment = gql`
   }
 `;
 
-export const groupFragment = gql`
-  fragment GroupFragment on Group {
-    id
-    name
-    team_id
-  }
-`;
-
 export const integrationFragment = gql`
   fragment IntegrationFragment on Integration {
     github_repo_name
@@ -80,6 +72,15 @@ export const shortTriggerFragment = gql`
   }
 `;
 
+export const tagFragment = gql`
+  fragment TagFragment on Tag {
+    color
+    id
+    name
+    team_id
+  }
+`;
+
 export const suiteRunFragment = gql`
   fragment SuiteRunFragment on SuiteRun {
     completed_at
@@ -91,7 +92,11 @@ export const suiteRunFragment = gql`
     status
     test_id
     test_name
+    test_tags {
+      ...TagFragment
+    }
   }
+  ${tagFragment}
 `;
 
 export const suiteFragment = gql`
@@ -102,6 +107,7 @@ export const suiteFragment = gql`
     environment_name
     environment_variables
     id
+    is_api
     runs {
       ...SuiteRunFragment
     }
@@ -112,6 +118,18 @@ export const suiteFragment = gql`
   }
   ${suiteRunFragment}
   ${shortTriggerFragment}
+`;
+
+export const tagsForTestFragment = gql`
+  fragment TagsForTestFragment on TagsForTest {
+    tags {
+      color
+      id
+      name
+      team_id
+    }
+    test_id
+  }
 `;
 
 export const teamFragment = gql`
@@ -126,7 +144,6 @@ export const teamFragment = gql`
     is_email_alert_enabled
     is_enabled
     name
-    next_trigger_id
     plan
     renewed_at
   }
@@ -136,7 +153,6 @@ export const testFragment = gql`
   fragment TestFragment on Test {
     code
     deleted_at
-    group_id
     id
     is_enabled
     name
@@ -144,14 +160,6 @@ export const testFragment = gql`
     team_id
     updated_at
     url
-  }
-`;
-
-export const testTriggersFragment = gql`
-  fragment TestTriggersFragment on TestTriggers {
-    group_id
-    test_id
-    trigger_ids
   }
 `;
 
@@ -167,7 +175,11 @@ export const triggerFragment = gql`
     name
     next_at
     repeat_minutes
+    tags {
+      ...TagFragment
+    }
   }
+  ${tagFragment}
 `;
 
 export const userFragment = gql`

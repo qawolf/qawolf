@@ -5,18 +5,18 @@ import { routes } from "../../lib/routes";
 import { state } from "../../lib/state";
 import { StateContext } from "../StateContext";
 import ConfirmBack from "./ConfirmBack";
+import CreateSuite from "./CreateSuite";
 import CreateTest from "./CreateTest";
-import DeleteGroup from "./DeleteGroup";
 import DeleteTests from "./DeleteTests";
-import EditTestsGroup from "./EditTestsGroup";
 import Environments from "./Environments";
+import Tags from "./Tags";
 import Triggers from "./Triggers";
 
 export default function Modals(): JSX.Element {
   const { pathname } = useRouter();
 
   const { modal } = useContext(StateContext);
-  const { group, name, testIds, tests } = modal || {};
+  const { name, testIds } = modal || {};
 
   const closeModal = () => state.setModal({ name: null });
 
@@ -33,28 +33,28 @@ export default function Modals(): JSX.Element {
     return <ConfirmBack closeModal={closeModal} />;
   }
 
+  if (isTests && name === "createSuite" && testIds) {
+    return <CreateSuite closeModal={closeModal} testIds={testIds} />;
+  }
+
   if ((isGetStarted || isTests) && name === "createTest") {
     return <CreateTest closeModal={closeModal} />;
   }
 
-  if (isDashboard && name === "deleteGroup" && group) {
-    return <DeleteGroup closeModal={closeModal} group={group} />;
-  }
-
-  if (isTests && name === "deleteTests" && tests) {
-    return <DeleteTests closeModal={closeModal} tests={tests} />;
-  }
-
-  if (isTests && name === "editTestsGroup" && tests) {
-    return <EditTestsGroup closeModal={closeModal} tests={tests} />;
+  if (isTests && name === "deleteTests" && testIds) {
+    return <DeleteTests closeModal={closeModal} testIds={testIds} />;
   }
 
   if ((isDashboard || isTest) && name === "environments") {
     return <Environments closeModal={closeModal} />;
   }
 
-  if ((isDashboard || isTest) && name === "triggers" && testIds) {
-    return <Triggers closeModal={closeModal} testIds={testIds} />;
+  if ((isDashboard || isTest) && name === "tags" && testIds) {
+    return <Tags closeModal={closeModal} testIds={testIds} />;
+  }
+
+  if ((isDashboard || isTest) && name === "triggers") {
+    return <Triggers closeModal={closeModal} />;
   }
 
   return null;

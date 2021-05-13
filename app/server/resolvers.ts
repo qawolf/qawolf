@@ -17,12 +17,6 @@ import {
   createGitHubIntegrationsResolver,
   gitHubBranchesResolver,
 } from "./resolvers/github";
-import {
-  createGroupResolver,
-  deleteGroupResolver,
-  groupsResolver,
-  updateGroupResolver,
-} from "./resolvers/group";
 import { integrationsResolver } from "./resolvers/integration";
 import {
   acceptInviteResolver,
@@ -53,18 +47,22 @@ import {
   suiteResolver,
   suitesResolver,
 } from "./resolvers/suite";
+import {
+  createTagResolver,
+  deleteTagResolver,
+  tagsForTestsResolver,
+  tagsForTriggerResolver,
+  tagsResolver,
+  updateTagResolver,
+} from "./resolvers/tag";
+import { updateTagTestsResolver } from "./resolvers/tag_test";
 import { teamResolver, updateTeamResolver } from "./resolvers/team";
 import {
   createTestResolver,
   deleteTestsResolver,
   testsResolver,
   testSummariesResolver,
-  updateTestsGroupResolver,
 } from "./resolvers/test";
-import {
-  testTriggersResolver,
-  updateTestTriggersResolver,
-} from "./resolvers/test_trigger";
 import {
   createTriggerResolver,
   deleteTriggerResolver,
@@ -86,6 +84,9 @@ export const resolvers = {
     invites: teamInvitesResolver,
     users: teamUsersResolver,
   },
+  Trigger: {
+    tags: tagsForTriggerResolver,
+  },
   Suite: {
     runs: suiteRunsResolver,
     status_counts: statusCountsResolver,
@@ -95,7 +96,6 @@ export const resolvers = {
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
-    createGroup: createGroupResolver,
     createInvites: createInvitesResolver,
     createSignInUrl: createGitHubSignInUrlResolver,
     createSlackIntegration: createSlackIntegrationResolver,
@@ -104,11 +104,12 @@ export const resolvers = {
     createStripePortalSession: createStripePortalSessionResolver,
     createSubscriber: createSubscriberResolver,
     createSuite: createSuiteResolver,
+    createTag: createTagResolver,
     createTest: createTestResolver,
     createTrigger: createTriggerResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
-    deleteGroup: deleteGroupResolver,
+    deleteTag: deleteTagResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
     saveEditor: saveEditorResolver,
@@ -119,12 +120,11 @@ export const resolvers = {
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
-    updateGroup: updateGroupResolver,
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
+    updateTag: updateTagResolver,
+    updateTagTests: updateTagTestsResolver,
     updateTeam: updateTeamResolver,
-    updateTestTriggers: updateTestTriggersResolver,
-    updateTestsGroup: updateTestsGroupResolver,
     updateTrigger: updateTriggerResolver,
     updateUser: updateUserResolver,
     updateWolf: updateWolfResolver,
@@ -136,17 +136,17 @@ export const resolvers = {
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
     gitHubBranches: gitHubBranchesResolver,
-    groups: groupsResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,
     runner: runnerResolver,
     runCount: runCountResolver,
     suite: suiteResolver,
     suites: suitesResolver,
+    tags: tagsResolver,
+    tagsForTests: tagsForTestsResolver,
     team: teamResolver,
     testHistory: testHistoryResolver,
     testSummaries: testSummariesResolver,
-    testTriggers: testTriggersResolver,
     tests: testsResolver,
     triggers: triggersResolver,
     wolf: wolfResolver,

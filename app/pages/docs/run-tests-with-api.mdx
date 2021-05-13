@@ -1,10 +1,8 @@
 import Link from "next/link";
 
-import AssignTrigger from "../../components/Docs/AssignTrigger";
-import CreateTrigger from "../../components/Docs/CreateTrigger";
+import ApiExample from "../../components/Docs/ApiExample";
 import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
-import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
 import SubHeader from "../../components/Docs/SubHeader";
 import ViewRunHistory from "../../components/Docs/ViewRunHistory";
@@ -13,56 +11,18 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 <Header>Run Tests with API</Header>
 
-In this tutorial, we'll trigger our tests by calling the QA Wolf API.
-
-<SubHeader>Create API Trigger</SubHeader>
-
-<CreateTrigger description="when we call the QA Wolf API" />
-
-Select the "API" tab on the right.
-
-<Image
-  alt="Create trigger"
-  height={418}
-  src="/docs/run-tests-with-api/create-trigger.png"
-  width={486}
-/>
-
-You can rename your trigger, or keep the default name ("API" in our example). If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
-
-<Image
-  alt="Choose environment"
-  height={159}
-  src="/docs/run-tests-with-api/choose-environment.png"
-  width={486}
-/>
-
-You'll notice a gray box that provides an example of how to call the QA Wolf API. Copy this example as we'll use it later. Don't worry, you can always access it again by editing the trigger.
-
-<Image
-  alt="Create trigger example"
-  height={142}
-  src="/docs/run-tests-with-api/create-trigger-example.png"
-  width={442}
-/>
-
-Once you are done, click the "Create trigger" button to save your trigger.
-
-<SubHeader>Assign API Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-with-api" />
+In this tutorial, we'll run our tests by calling the QA Wolf API.
 
 <SubHeader>Run Tests by Calling QA Wolf API</SubHeader>
 
-Let's revisit the API call example we copied when we created our trigger. If you forgot to copy it, you can access it again by editing the trigger.
+<ApiExample />
 
-`curl -H "Authorization: qawolf_api_key" -H "Content-Type: application/json" https://www.qawolf.com/api/suites -d '{"env": { "MY_VARIABLE": "secret" }, "trigger_id": "xxxv8y6ii000008mocm506o3l"}'`
+The API call makes a `POST` request to the `/suites` endpoint. It includes a few parts:
 
-This API call makes a `POST` request to the `/suites` endpoint. It includes a few parts:
-
-- The <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: qawolf_api_key"`
-- The `trigger_id` in the request body tells QA Wolf to run tests assigned to that trigger: `"trigger_id": "xxxv8y6ii000008mocm506o3l"`
-- The optional `env` object in the request body passes additional environment variables to your tests: `"env": { "MY_VARIABLE": "secret" }`
+- The required <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: API_KEY_HERE"`.
+- The optional `tags` string is a comma separated list of test tag names: `"tags": "Checkout,Sign up"`. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
+- The optional `environment` string is the name of the <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests: `"environment": "Staging"`. If you have multiple environments and do not provide an `environment`, QA Wolf will error and ask you to specify an environment.
+- The optional `variables` object in the request body provides <Link href="use-environment-variables">environment variables</Link> to your tests: `"variables": { "MY_VARIABLE": "secret" }`. If any variables share names with variables in your environment, the passed variables will override those values.
 
 If you paste this command into your terminal and run it, you'll get a response that looks like:
 
@@ -74,31 +34,6 @@ If you paste this command into your terminal and run it, you'll get a response t
 ```
 
 The `id` returned is the id of your new suite. The `url` links to the results page for your tests.
-
-<SubHeader>Get Suite Details by Calling QA Wolf API</SubHeader>
-
-If you want to check the status of your suite via API, you can make a `GET` request to the `/suites/:id` endpoint. This is useful if you want to take other actions after your suite finishes running.
-
-Include your API key as an <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink>, and the id of the suite in the URL (`suiteId` in the example below).
-
-`curl -H "Authorization: qawolf_api_key" https://www.qawolf.com/api/suites/suiteId`
-
-If you call this endpoint, the response will look like this:
-
-```json
-{
-  "id": "suiteId",
-  "is_complete": false,
-  "runs": [
-    {
-      "id": "runId",
-      "status": "created", // can also be 'fail' or 'pass'
-      "test_name": "My Test"
-    }
-  ],
-  "status": "created" // can also be 'fail' or 'pass'
-}
-```
 
 <ViewRunHistory description="when you call the QA Wolf API" />
 

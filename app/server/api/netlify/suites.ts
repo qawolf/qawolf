@@ -13,13 +13,12 @@ import {
 
 type CreateSuite = {
   integration_id: string;
-  team_id: string;
   trigger: Trigger;
 };
 
 const createSuite = async (
   req: NextApiRequest,
-  { integration_id, team_id, trigger }: CreateSuite,
+  { integration_id, trigger }: CreateSuite,
   { db, logger }: ModelOptions
 ): Promise<Suite | null> => {
   const { deployment_url } = req.body;
@@ -34,8 +33,7 @@ const createSuite = async (
     const result = await createSuiteForTrigger(
       {
         environment_variables: { URL: deployment_url },
-        team_id,
-        trigger_id: trigger.id,
+        trigger,
       },
       options
     );
@@ -87,7 +85,6 @@ const createSuitesForRequest = async (
         req,
         {
           integration_id: t.deployment_integration_id,
-          team_id: team.id,
           trigger: t,
         },
         options

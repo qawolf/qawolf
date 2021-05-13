@@ -3,12 +3,12 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
-  groupFragment,
   integrationFragment,
   inviteFragment,
+  tagFragment,
+  tagsForTestFragment,
   teamFragment,
   testFragment,
-  testTriggersFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -64,15 +64,6 @@ export const createGitHubIntegrationsMutation = gql`
     }
   }
   ${integrationFragment}
-`;
-
-export const createGroupMutation = gql`
-  mutation createGroup($name: String!, $team_id: ID!) {
-    createGroup(name: $name, team_id: $team_id) {
-      ...GroupFragment
-    }
-  }
-  ${groupFragment}
 `;
 
 export const createInvitesMutation = gql`
@@ -163,21 +154,23 @@ export const createSuiteMutation = gql`
   }
 `;
 
+export const createTagMutation = gql`
+  mutation createTag($name: String!, $team_id: ID!) {
+    createTag(name: $name, team_id: $team_id) {
+      ...TagFragment
+    }
+  }
+  ${tagFragment}
+`;
+
 export const createTestMutation = gql`
   mutation createTest(
     $branch: String
-    $group_id: ID
     $guide: String
     $team_id: ID!
     $url: String!
   ) {
-    createTest(
-      branch: $branch
-      group_id: $group_id
-      guide: $guide
-      team_id: $team_id
-      url: $url
-    ) {
+    createTest(branch: $branch, guide: $guide, team_id: $team_id, url: $url) {
       ...TestFragment
     }
   }
@@ -194,7 +187,7 @@ export const createTriggerMutation = gql`
     $name: String!
     $repeat_minutes: Int
     $team_id: ID!
-    $test_ids: [ID!]
+    $tag_ids: [ID!]
   ) {
     createTrigger(
       deployment_branches: $deployment_branches
@@ -205,7 +198,7 @@ export const createTriggerMutation = gql`
       name: $name
       repeat_minutes: $repeat_minutes
       team_id: $team_id
-      test_ids: $test_ids
+      tag_ids: $tag_ids
     ) {
       ...TriggerFragment
     }
@@ -231,13 +224,13 @@ export const deleteEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const deleteGroupMutation = gql`
-  mutation deleteGroup($id: ID!) {
-    deleteGroup(id: $id) {
-      ...GroupFragment
+export const deleteTagMutation = gql`
+  mutation deleteTag($id: ID!) {
+    deleteTag(id: $id) {
+      ...TagFragment
     }
   }
-  ${groupFragment}
+  ${tagFragment}
 `;
 
 export const deleteTestsMutation = gql`
@@ -362,30 +355,30 @@ export const updateEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const updateGroupMutation = gql`
-  mutation updateGroup($id: ID!, $name: String!) {
-    updateGroup(id: $id, name: $name) {
-      ...GroupFragment
+export const updateTagMutation = gql`
+  mutation updateTag($id: ID!, $name: String!) {
+    updateTag(id: $id, name: $name) {
+      ...TagFragment
     }
   }
-  ${groupFragment}
+  ${tagFragment}
 `;
 
-export const updateTestTriggersMutation = gql`
-  mutation updateTestTriggers(
-    $add_trigger_id: ID
-    $remove_trigger_id: ID
+export const updateTagTestsMutation = gql`
+  mutation updateTagTests(
+    $add_tag_id: ID
+    $remove_tag_id: ID
     $test_ids: [ID!]
   ) {
-    updateTestTriggers(
-      add_trigger_id: $add_trigger_id
-      remove_trigger_id: $remove_trigger_id
+    updateTagTests(
+      add_tag_id: $add_tag_id
+      remove_tag_id: $remove_tag_id
       test_ids: $test_ids
     ) {
-      ...TestTriggersFragment
+      ...TagsForTestFragment
     }
   }
-  ${testTriggersFragment}
+  ${tagsForTestFragment}
 `;
 
 export const updateTeamMutation = gql`
@@ -411,15 +404,6 @@ export const updateTeamMutation = gql`
   ${teamFragment}
 `;
 
-export const updateTestsGroupMutation = gql`
-  mutation updateTestsGroup($group_id: ID, $test_ids: [ID!]!) {
-    updateTestsGroup(group_id: $group_id, test_ids: $test_ids) {
-      ...TestFragment
-    }
-  }
-  ${testFragment}
-`;
-
 export const updateTriggerMutation = gql`
   mutation updateTrigger(
     $deployment_branches: String
@@ -430,6 +414,7 @@ export const updateTriggerMutation = gql`
     $id: ID!
     $name: String
     $repeat_minutes: Int
+    $tag_ids: [ID!]
   ) {
     updateTrigger(
       deployment_branches: $deployment_branches
@@ -440,6 +425,7 @@ export const updateTriggerMutation = gql`
       id: $id
       name: $name
       repeat_minutes: $repeat_minutes
+      tag_ids: $tag_ids
     ) {
       ...TriggerFragment
     }

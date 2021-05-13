@@ -11,6 +11,7 @@ import {
   updateRun,
 } from "../models/run";
 import { findRunner, resetRunner } from "../models/runner";
+import { findTagsForTests } from "../models/tag";
 import {
   Context,
   IdQuery,
@@ -114,7 +115,16 @@ export const suiteRunsResolver = async (
   logger.debug("suiteRunsResolver: suite", id);
   // access check not needed since done in the parent query
 
-  return findRunsForSuite(id, { db, logger });
+  const runs = await findRunsForSuite(id, { db, logger });
+
+  const testIds = runs.map((r) => r.test_id);
+  const testTags = await findTagsForTests(testIds, { db, logger });
+
+  return runs.map((r) => {
+    const test_tags = testTags.find((t) => t.test_id === r.test_id)?.tags || [];
+
+    return { ...r, test_tags };
+  });
 };
 
 /**

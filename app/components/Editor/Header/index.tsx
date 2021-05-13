@@ -2,7 +2,6 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-import { useTestTriggers } from "../../../hooks/queries";
 import { timeToText } from "../../../lib/helpers";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
@@ -37,11 +36,6 @@ export default function Header({ mode }: Props): JSX.Element {
   const branch = suite?.branch || stateBranch || null;
   const testId = test_id as string;
 
-  const { data: testTriggersData } = useTestTriggers({ test_ids: [testId] });
-  const hasTriggers = testTriggersData?.testTriggers[0]
-    ? !!testTriggersData?.testTriggers[0].trigger_ids.length
-    : false;
-
   return (
     <>
       <Box
@@ -71,13 +65,7 @@ export default function Header({ mode }: Props): JSX.Element {
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {mode === "test" && (
-            <TestButtons
-              branch={branch}
-              hasTriggers={hasTriggers}
-              testId={testId}
-            />
-          )}
+          {mode === "test" && <TestButtons branch={branch} testId={testId} />}
           {run?.test_id && (
             <Button
               IconComponent={Edit}

@@ -14,10 +14,11 @@ import {
   buildIntegration,
   buildPullRequestComment,
   buildSuite,
+  buildTag,
+  buildTagTrigger,
   buildTeam,
   buildTeamUser,
   buildTest,
-  buildTestTrigger,
   buildTrigger,
   buildUser,
   logger,
@@ -49,7 +50,10 @@ describe("handleNetlifySuitesRequest", () => {
     ]);
     await db("tests").insert(buildTest({}));
 
-    return db("test_triggers").insert(buildTestTrigger());
+    await db("tags").insert(buildTag({}));
+    await db("tag_triggers").insert(
+      buildTagTrigger({ trigger_id: "trigger2Id" })
+    );
   });
 
   afterEach(async () => {

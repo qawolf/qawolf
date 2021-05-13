@@ -17,10 +17,7 @@ export const orchestrateTriggers = async ({
       ensureTeamCanCreateSuite(team, logger);
 
       await db.transaction(async (trx) => {
-        await createSuiteForTrigger(
-          { trigger_id: trigger.id, team_id: trigger.team_id },
-          { db: trx, logger }
-        );
+        await createSuiteForTrigger({ trigger }, { db: trx, logger });
 
         // providing repeat_minutes will push forward next_at
         if (trigger.repeat_minutes) {

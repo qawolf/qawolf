@@ -3,7 +3,6 @@ import { useContext, useRef, useState } from "react";
 
 import { useDeleteTests } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
-import { SelectedTest } from "../../lib/types";
 import { copy } from "../../theme/copy";
 import CheckBox from "../shared/CheckBox";
 import Modal from "../shared/Modal";
@@ -14,17 +13,19 @@ import { StateContext } from "../StateContext";
 
 type Props = {
   closeModal: () => void;
-  tests: SelectedTest[];
+  testIds: string[];
 };
 
-export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
+export default function DeleteTests({
+  closeModal,
+  testIds,
+}: Props): JSX.Element {
   const { branch } = useContext(StateContext);
   const ref = useRef<HTMLButtonElement>(null);
 
   const [hasError, setHasError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const testIds = tests.map((test) => test.id);
   const [deleteTests, { loading }] = useDeleteTests({ branch, ids: testIds });
 
   const handleClick = (): void => {
@@ -57,7 +58,7 @@ export default function DeleteTests({ closeModal, tests }: Props): JSX.Element {
       <Box pad="medium">
         <Header
           closeModal={closeModal}
-          label={copy.deleteTests(tests.length)}
+          label={copy.deleteTests(testIds.length)}
         />
         <Text
           color="gray9"

@@ -5,17 +5,7 @@ import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
-
-export const TRIGGER_COLORS = [
-  "#4545E5",
-  "#C54BDE",
-  "#56BBD6",
-  "#8BC22D",
-  "#E59C59",
-  "#DA4E94",
-  "#ABB3C2",
-  "#667080",
-];
+import { buildColor } from "./utils";
 
 type GetNextAt = {
   repeat_minutes?: number | null;
@@ -31,7 +21,6 @@ type CreateTrigger = GetNextAt & {
   deployment_integration_id?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string;
-  id?: string;
   name: string;
   start_at?: Date;
   timezone_id?: string;
@@ -53,19 +42,6 @@ type UpdateTrigger = GetNextAt & {
   name?: string;
 };
 
-export const buildTriggerColor = (
-  triggers: Trigger[],
-  colors: string[] = TRIGGER_COLORS
-): string => {
-  const availableColor = colors.find(
-    (c) => !triggers.some((t) => t.color === c)
-  );
-
-  if (availableColor) return availableColor;
-
-  return colors[triggers.length % colors.length];
-};
-
 const formatBranches = (branches: string | null): string | null => {
   if (!branches) return null;
 
@@ -80,7 +56,6 @@ export const createTrigger = async (
     deployment_integration_id,
     deployment_provider,
     environment_id,
-    id,
     name,
     repeat_minutes,
     start_at,
@@ -96,7 +71,7 @@ export const createTrigger = async (
   const teamTriggers = await findTriggersForTeam(team_id, { db, logger });
 
   const trigger = {
-    color: buildTriggerColor(teamTriggers),
+    color: buildColor(teamTriggers.map((t) => t.color)),
     creator_id,
     deleted_at: null,
     deployment_branches: formatBranches(deployment_branches),
@@ -104,7 +79,7 @@ export const createTrigger = async (
     deployment_integration_id: deployment_integration_id || null,
     deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
-    id: id || cuid(),
+    id: cuid(),
     name,
     next_at: getNextAt({ repeat_minutes, start_at, timezone_id }),
     repeat_minutes: repeat_minutes || null,
@@ -315,6 +290,32 @@ export const getNextAt = ({
     .setZone("local", { keepLocalTime: true })
     .toJSDate()
     .toISOString();
+};
+
+export const hasTriggerOrApiSuite = async (
+  team_id: string,
+  { db, logger }: ModelOptions
+): Promise<boolean> => {
+  const log = logger.prefix("hasTriggerOrApiSuite");
+
+  const trigger = await db("triggers")
+    .where({ deleted_at: null, team_id })
+    .first();
+
+  if (trigger) {
+    log.debug("found trigger", trigger.id);
+    return true;
+  }
+
+  const apiSuite = await db("suites")
+    .where({
+      is_api: true,
+      team_id,
+    })
+    .first();
+  log.debug("has created suite with api?", !!apiSuite);
+
+  return !!apiSuite;
 };
 
 export const updateTrigger = async (

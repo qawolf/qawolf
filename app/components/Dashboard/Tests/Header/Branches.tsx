@@ -5,13 +5,11 @@ import { RiGitBranchLine } from "react-icons/ri";
 import { useGitHubBranches } from "../../../../hooks/queries";
 import { state } from "../../../../lib/state";
 import { copy } from "../../../../theme/copy";
-import { colors, edgeSize } from "../../../../theme/theme";
+import { colors, edgeSize, inputWidth } from "../../../../theme/theme";
 import Select from "../../../shared/Select";
 import Option from "../../../shared/Select/Option";
 import Text from "../../../shared/Text";
 import { StateContext } from "../../../StateContext";
-
-const width = "200px";
 
 export default function Branches(): JSX.Element {
   const { branch, teamId } = useContext(StateContext);
@@ -56,8 +54,8 @@ export default function Branches(): JSX.Element {
   });
 
   return (
-    <Box align="center" direction="row" margin={{ right: "xxsmall" }}>
-      <Select label={labelHtml} width={width}>
+    <Box align="center" direction="row" margin={{ right: "small" }}>
+      <Select label={labelHtml} width={inputWidth}>
         {optionsHtml}
       </Select>
     </Box>

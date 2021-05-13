@@ -8,6 +8,8 @@ import { prepareTestDb } from "../db";
 import {
   buildEnvironment,
   buildIntegration,
+  buildTag,
+  buildTagTrigger,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -23,15 +25,13 @@ beforeAll(async () => {
   await db("users").insert(buildUser({}));
   await db("teams").insert([team, buildTeam({ i: 2 })]);
   await db("environments").insert(buildEnvironment({}));
+  await db("tags").insert([buildTag({}), buildTag({ i: 2 })]);
 });
 
 describe("createTriggerResolver", () => {
   beforeAll(() => db("tests").insert(buildTest({})));
 
-  afterEach(async () => {
-    await db("test_triggers").del();
-    return db("triggers").del();
-  });
+  afterEach(() => db("triggers").del());
 
   afterAll(() => db("tests").del());
 
@@ -46,8 +46,8 @@ describe("createTriggerResolver", () => {
         environment_id: "environmentId",
         name: "Daily",
         repeat_minutes: 1440,
+        tag_ids: [],
         team_id: "teamId",
-        test_ids: null,
       },
       context
     );
@@ -59,25 +59,17 @@ describe("createTriggerResolver", () => {
       deployment_integration_id: null,
       deployment_provider: null,
       environment_id: "environmentId",
-      id: team.next_trigger_id,
       name: "Daily",
       repeat_minutes: 1440,
       team_id: "teamId",
     });
 
-    const testTriggers = await db("test_triggers").select("*");
+    const tagTriggers = await db("tag_triggers");
 
-    expect(testTriggers).toEqual([]);
-
-    const updatedTeam = await db("teams")
-      .select("*")
-      .where({ id: "teamId" })
-      .first();
-
-    expect(updatedTeam.next_trigger_id).not.toBe(team.next_trigger_id);
+    expect(tagTriggers).toEqual([]);
   });
 
-  it("creates test triggers if specified", async () => {
+  it("creates associated tag trigger records", async () => {
     const trigger = await createTriggerResolver(
       {},
       {
@@ -88,16 +80,16 @@ describe("createTriggerResolver", () => {
         environment_id: "environmentId",
         name: "Daily",
         repeat_minutes: 1440,
+        tag_ids: ["tagId"],
         team_id: "teamId",
-        test_ids: ["testId"],
       },
       context
     );
 
-    const testTriggers = await db("test_triggers").select("*");
+    const tagTriggers = await db("tag_triggers");
 
-    expect(testTriggers).toMatchObject([
-      { test_id: "testId", trigger_id: trigger.id },
+    expect(tagTriggers).toMatchObject([
+      { tag_id: "tagId", trigger_id: trigger.id },
     ]);
   });
 });
@@ -106,21 +98,14 @@ describe("deleteTriggerResolver", () => {
   beforeAll(async () => {
     await db("triggers").insert([buildTrigger({}), buildTrigger({ i: 2 })]);
     await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
-
-    return db("test_triggers").insert([
-      { id: "testTriggerId", test_id: "testId", trigger_id: "triggerId" },
-      { id: "testTrigger2Id", test_id: "test2Id", trigger_id: "triggerId" },
-      { id: "testTrigger3Id", test_id: "testId", trigger_id: "trigger2Id" },
-    ]);
   });
 
   afterAll(async () => {
-    await db("test_triggers").del();
     await db("triggers").del();
     return db("tests").del();
   });
 
-  it("deletes a trigger and associated test triggers", async () => {
+  it("deletes a trigger", async () => {
     const trigger = await deleteTriggerResolver(
       {},
       { id: "triggerId" },
@@ -135,9 +120,6 @@ describe("deleteTriggerResolver", () => {
       .where({ id: "triggerId" })
       .first();
     expect(dbTrigger.deleted_at).toBeTruthy();
-
-    const testTriggers = await db.select("*").from("test_triggers");
-    expect(testTriggers).toMatchObject([{ id: "testTrigger3Id" }]);
   });
 });
 
@@ -219,5 +201,26 @@ describe("updateTriggerResolver", () => {
       environment_id: "environmentId",
       repeat_minutes: null,
     });
+  });
+
+  it("updates tags for a trigger", async () => {
+    await db("tag_triggers").insert(buildTagTrigger({}));
+
+    await updateTriggerResolver(
+      {},
+      {
+        id: "triggerId",
+        tag_ids: ["tag2Id"],
+      },
+      context
+    );
+
+    const tagTriggers = await db("tag_triggers");
+
+    expect(tagTriggers).toMatchObject([
+      { tag_id: "tag2Id", trigger_id: "triggerId" },
+    ]);
+
+    await db("tag_triggers").del();
   });
 });

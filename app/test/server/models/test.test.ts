@@ -1,15 +1,12 @@
 import * as testModel from "../../../server/models/test";
-import {
-  countTestsForTeam,
-  updateTestToPending,
-} from "../../../server/models/test";
 import { Test } from "../../../server/types";
 import * as utils from "../../../server/utils";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
 import {
-  buildGroup,
   buildRunner,
+  buildTag,
+  buildTagTest,
   buildTeam,
   buildTest,
   buildTrigger,
@@ -19,10 +16,13 @@ import {
 
 const {
   buildTestName,
+  countTestsForTeam,
   createTest,
   countIncompleteTests,
   deleteTests,
   findEnabledTests,
+  findEnabledTestsForTags,
+  findEnabledTestsForTeam,
   findEnabledTestsForTrigger,
   findPendingTest,
   findTest,
@@ -31,7 +31,7 @@ const {
   hasIntroGuide,
   hasTest,
   updateTest,
-  updateTestsGroup,
+  updateTestToPending,
 } = testModel;
 
 const db = prepareTestDb();
@@ -39,9 +39,8 @@ const options = { db, logger };
 
 beforeAll(async () => {
   await db("users").insert([buildUser({}), buildUser({ i: 2 })]);
-  await db("teams").insert(buildTeam({}));
+  await db("teams").insert([buildTeam({}), buildTeam({ i: 2 })]);
   await db("triggers").insert(buildTrigger({}));
-  await db("groups").insert(buildGroup({}));
 });
 
 afterAll(() => jest.restoreAllMocks());
@@ -107,31 +106,18 @@ describe("countTestsForTeam", () => {
       buildTest({}),
       buildTest({ i: 2 }),
       buildTest({ i: 3, guide: "Guide" }),
-    ]);
-
-    await db("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "testId",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "test2Id",
-        trigger_id: "triggerId",
-      },
+      buildTest({ i: 4, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 5 }),
     ]);
   });
 
   afterAll(async () => {
-    await db("test_triggers").del();
     await db("tests").del();
   });
 
-  it("counts enabled and scheduled tests", async () => {
+  it("counts enabled tests", async () => {
     expect(await countTestsForTeam("teamId", options)).toEqual({
       test_enabled_count: 2,
-      test_with_trigger_count: 2,
     });
   });
 });
@@ -144,7 +130,6 @@ describe("createTest", () => {
       {
         code: "code",
         creator_id: "userId",
-        group_id: null,
         team_id: "teamId",
       },
       options
@@ -156,33 +141,12 @@ describe("createTest", () => {
       code: "code",
       creator_id: "userId",
       deleted_at: null,
-      group_id: null,
       guide: null,
       id: expect.any(String),
       is_enabled: true,
       name: "My Test",
       path: null,
       team_id: "teamId",
-    });
-  });
-
-  it("creates a new test with a group", async () => {
-    await createTest(
-      {
-        code: "code",
-        creator_id: "userId",
-        group_id: "groupId",
-        path: "myTest.test.js",
-        team_id: "teamId",
-      },
-      options
-    );
-
-    const tests = await db.select("*").from("tests").where({ code: "code" });
-
-    expect(tests[0]).toMatchObject({
-      group_id: "groupId",
-      path: "myTest.test.js",
     });
   });
 
@@ -321,48 +285,108 @@ describe("findEnabledTests", () => {
   });
 });
 
-describe("findEnabledTestsForTrigger", () => {
+describe("findEnabledTestsForTags", () => {
   beforeAll(async () => {
-    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ i: 3, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 4 }),
+      buildTest({ i: 5, team_id: "team2Id" }),
+      buildTest({ i: 6 }),
+    ]);
 
-    await db("test_triggers").insert([
-      {
-        id: "testTriggerId",
-        test_id: "testId",
-        trigger_id: "triggerId",
-      },
-      {
-        id: "testTrigger2Id",
-        test_id: "test2Id",
-        trigger_id: "triggerId",
-      },
+    await db("tags").insert([buildTag({}), buildTag({ i: 2 })]);
+
+    await db("tag_tests").insert([
+      buildTagTest({}),
+      buildTagTest({ i: 2, tag_id: "tag2Id" }),
+      buildTagTest({ i: 3, test_id: "test3Id" }),
+      buildTagTest({ i: 4, test_id: "test4Id" }),
+      buildTagTest({ i: 5, tag_id: "tag2Id", test_id: "test6Id" }),
     ]);
   });
 
   afterAll(async () => {
-    await db("test_triggers").del();
+    await db("tags").del();
     await db("tests").del();
   });
 
-  it("finds the enabled tests for a trigger", async () => {
-    const tests = await findEnabledTestsForTrigger(
-      { trigger_id: "triggerId" },
+  it("returns enabled tests for tag ids", async () => {
+    const tests = await findEnabledTestsForTags(
+      { tag_ids: ["tagId"], team_id: "teamId" },
       options
     );
 
+    expect(tests).toMatchObject([{ id: "testId" }]);
+
+    const tests2 = await findEnabledTestsForTags(
+      { tag_ids: ["tagId", "tag2Id"], team_id: "teamId" },
+      options
+    );
+
+    expect(tests2).toMatchObject([{ id: "testId" }, { id: "test6Id" }]);
+  });
+
+  it("returns enabled tests for tag names", async () => {
+    const tests = await findEnabledTestsForTags(
+      { tag_names: "tag1", team_id: "teamId" },
+      options
+    );
+
+    expect(tests).toMatchObject([{ id: "testId" }]);
+
+    const tests2 = await findEnabledTestsForTags(
+      { tag_names: "tag1,tag2", team_id: "teamId" },
+      options
+    );
+
+    expect(tests2).toMatchObject([{ id: "testId" }, { id: "test6Id" }]);
+  });
+
+  it("returns enabled tests for team if no tags provided", async () => {
+    const tests = await findEnabledTestsForTags({ team_id: "teamId" }, options);
+
     expect(tests).toMatchObject([
-      { id: "testId", is_enabled: true, team_id: "teamId" },
-      { id: "test2Id", is_enabled: true, team_id: "teamId" },
+      { id: "testId" },
+      { id: "test2Id" },
+      { id: "test6Id" },
+    ]);
+  });
+});
+
+describe("findEnabledTestsForTeam", () => {
+  beforeAll(async () => {
+    await db("tests").insert([
+      buildTest({}),
+      buildTest({ i: 2 }),
+      buildTest({ i: 3, is_enabled: false }),
+      buildTest({ deleted_at: minutesFromNow(), i: 4 }),
+      buildTest({ i: 5, team_id: "team2Id" }),
     ]);
   });
 
-  it("filters by test id if specified", async () => {
-    const tests = await findEnabledTestsForTrigger(
-      { trigger_id: "triggerId", test_ids: ["test2Id"] },
-      options
-    );
+  afterAll(() => db("tests").del());
+
+  it("finds enabled tests for a team", async () => {
+    const tests = await findEnabledTestsForTeam("teamId", options);
+
+    expect(tests).toMatchObject([{ id: "testId" }, { id: "test2Id" }]);
+  });
+});
+
+describe("findEnabledTestsForTrigger", () => {
+  beforeAll(async () => {
+    await db("tests").insert([buildTest({}), buildTest({ i: 2 })]);
+  });
+
+  afterAll(() => db("tests").del());
+
+  it("finds the enabled tests for a trigger", async () => {
+    const tests = await findEnabledTestsForTrigger(buildTrigger({}), options);
 
     expect(tests).toMatchObject([
+      { id: "testId", is_enabled: true, team_id: "teamId" },
       { id: "test2Id", is_enabled: true, team_id: "teamId" },
     ]);
   });
@@ -664,52 +688,5 @@ describe("updateTest", () => {
       code: "code",
       id: "test3Id",
     });
-  });
-});
-
-describe("updateTestsGroup", () => {
-  beforeAll(async () => {
-    await db("groups").insert(buildGroup({ i: 2 }));
-    return db("tests").insert([
-      buildTest({
-        i: 1,
-      }),
-      buildTest({ i: 2 }),
-      buildTest({ deleted_at: minutesFromNow(), i: 3 }),
-      buildTest({ i: 4 }),
-    ]);
-  });
-
-  afterAll(async () => {
-    await db("groups").where({ id: "group2Id" }).del();
-    return db("tests").del();
-  });
-
-  it("updates the group for tests", async () => {
-    const tests = await updateTestsGroup(
-      { group_id: "groupId", test_ids: ["testId", "test2Id", "test3Id"] },
-      options
-    );
-    expect(tests).toMatchObject([
-      { group_id: "groupId", id: "testId" },
-      { group_id: "groupId", id: "test2Id" },
-    ]);
-
-    const otherTests = await db("tests")
-      .where({ group_id: null })
-      .orderBy("id", "asc");
-    expect(otherTests).toMatchObject([{ group_id: null }, { group_id: null }]);
-
-    const tests2 = await updateTestsGroup(
-      { group_id: "group2Id", test_ids: ["testId"] },
-      options
-    );
-    expect(tests2).toMatchObject([{ group_id: "group2Id", id: "testId" }]);
-
-    const tests3 = await updateTestsGroup(
-      { group_id: null, test_ids: ["testId"] },
-      options
-    );
-    expect(tests3).toMatchObject([{ group_id: null, id: "testId" }]);
   });
 });

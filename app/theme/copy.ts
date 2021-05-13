@@ -15,10 +15,7 @@ export const copy = {
   addSnippetIntro3: "Then select this text.",
   addSnippetIntro4:
     'Finally, choose "Assert text" from the Action menu. Click the "Add snippet" button to add the assertion.',
-  addToGroup: "Add to group",
-  addToGroupDetail: "Tests can only belong to one group at a time",
-  addTrigger: "Add trigger",
-  addTriggerToTest: "Add a trigger to your test",
+  addTriggerToTest: "Trigger your tests to run",
   addTriggerToTestDetail:
     "Make sure your site works by running tests on a schedule, on deployment, or with an API call.",
   aka: "A.K.A.",
@@ -39,12 +36,13 @@ export const copy = {
   all: "All",
   allChangesCommitted: "All changes committed",
   allStatuses: "All statuses",
-  allTests: "All tests",
+  allTags: "All tests",
   allTriggers: "All triggers",
+  any: "Any",
   api: "API",
-  apiDetail: "Trigger tests by calling the",
-  apiDetail2: "QA Wolf API",
-  apiKeyHere: "API KEY HERE",
+  apiDetail: "You can also run your tests with the QA Wolf",
+  apiKeyHere: "API_KEY_HERE",
+  apiTriggered: "API triggered",
   back: "Back",
   backConfirm:
     "You have not committed your changes. If you go back now, your changes will be lost.",
@@ -61,8 +59,7 @@ export const copy = {
     "Select an element, then add a snippet with your chosen action and selector.",
   chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
-  cliDetail: "Trigger tests with the",
-  cliDetail2: "QA Wolf CLI",
+  cli: "CLI",
   clickMe: "Click me",
   clickMeClicked: "Clicked!",
   close: "Close",
@@ -91,6 +88,8 @@ export const copy = {
   createFirstTestDetail:
     "Create a test for a critical path to find bugs before customers do.",
   createOnline: "Create unlimited tests online",
+  createSuiteDetail: "Select the environment to use when running your tests",
+  createTag: "Create tag",
   createTagline: "Create tests at warp speed",
   createTest: "Create test",
   createTrigger: "Create trigger",
@@ -102,8 +101,10 @@ export const copy = {
   dedicatedSupport: "Dedicated support",
   delete: "Delete",
   deleted: "(Deleted)",
-  deleteGroup: "Delete group",
   deleteOk: "Yes, delete",
+  deleteTag: "Delete tag",
+  deleteTagConfirm: "Are you sure? This will permanently delete the tag",
+  deleteTagConfirm2: "but not the tests in it.",
   deleteTests: (count: number): string =>
     `Delete${count === 1 ? "" : ` ${count}`} test${count === 1 ? "" : "s"}`,
   deleteTestsDetail:
@@ -125,14 +126,12 @@ export const copy = {
   easyDebugDetail:
     "Debug with video, logs, and the exact line a test failed on.",
   edit: "Edit",
+  editTags: "Edit tags",
+  editTagsDetail: "Choose which tags you want to assign",
+  editTagsForTests: (count: number): string =>
+    `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,
   editTest: "Edit test",
-  editTestsGroup: (count: number): string =>
-    `Add ${count === 1 ? "" : `${count} tests `}to a group`,
   editTrigger: "Edit trigger",
-  editTriggers: "Edit triggers",
-  editTriggersDetail: "Choose which triggers you want to assign",
-  editTriggersForTests: (count: number): string =>
-    `Edit triggers${count === 1 ? "" : ` for ${count} tests`}`,
   email: "Email",
   emailPlaceholder: "you@awesome.com",
   emptyTestsSearch: "No tests found",
@@ -159,6 +158,7 @@ export const copy = {
   environmentNew: "Create environment",
   environmentNotSelected: "No environment",
   environments: "Environments",
+  filter: "Filter",
   frequency: "Frequency",
   frequencyDaily: "Every day",
   frequencyHourly: "Every hour",
@@ -175,16 +175,12 @@ export const copy = {
   gitHubComplete: "🎉 All set! You can close this page.",
   gitHubRepo: "GitHub repository",
   goHome: "Go Home",
-  group: "Group",
-  groupDelete: "Delete group",
-  groupDeleteConfirm:
-    "Are you sure? This will permanently delete this group, but not the tests inside it.",
-  groupNew: "Create group",
-  groups: "Test groups",
   growRevenue: "Grow revenue",
   growRevenueDetail:
     "2/3 of consumers abandon a purchase when they find a bug.",
   goBack: "Go back",
+  hasAll: "Has all",
+  hasAny: "Has any",
   headline: "Ship confidently",
   helpers: "Helpers",
   history: "History",
@@ -238,15 +234,16 @@ export const copy = {
   netlifyDeployContext: "Netlify deploy context",
   next: "Next",
   netlifyGitHub: "Optional: GitHub repository for QA Wolf status checks",
+  noCommas: "No commas",
   noEmail: "Please enter a valid email address",
-  noGroup: "No group",
   noHistory: "No history yet",
   noMobile:
     "Woof. We're not mobile friendly yet. Please try again on a larger screen!",
   noRuns: "No runs",
   noPassword: "Please provide your password",
-  noTrigger: "No trigger",
+  noTags: "No tags",
   none: "None",
+  notAvailable: "Not available",
   notFound: "(404. Page not found.)",
   notRunYet: "Not run yet",
   notStarted: "Preparing",
@@ -281,8 +278,6 @@ export const copy = {
   runTestIntro3:
     "in the bottom right corner of the code editor to run your test.",
   runsFail: "Failing tests",
-  runGroup: (count: number): string =>
-    `Run ${count ? `${count} ` : ""}test${count === 1 ? "" : "s"}`,
   runsInProgress: "Running tests",
   runLines: (count: number): string =>
     `Run ${count} line${count === 1 ? "" : "s"}`,
@@ -292,10 +287,8 @@ export const copy = {
     "You can run specific lines of code without re-running your entire test. This is helpful for adding assertions and editing your test.",
   runSelectedCode3: "Highlight and run the last line of code,",
   runSelectedCode4: 'which will automatically click this step’s "Next" button.',
-  runTests: (count: number, environment?: string | null): string =>
-    `Run ${count} test${count === 1 ? "" : "s"}${
-      environment ? ` on ${environment}` : ""
-    }`,
+  runTests: (count: number): string =>
+    `Run ${count} test${count === 1 ? "" : "s"}`,
   openVpn: "Connect with OpenVPN",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
@@ -303,10 +296,13 @@ export const copy = {
   pleaseType: "Please type",
   revisitTutorial: "Revisit tutorial",
   seePricing: "See pricing",
+  selectedTags: "Tests with selected tags",
   selector: "Selector",
   startTutorial: "Start tutorial",
   stepCount: (count: number): string => `Step ${count} of 6`,
+  tagName: "Tag name",
   tagline: "Create tests online with your team and run them in 100% parallel",
+  tags: "Tags",
   toggleCreateCode: "Toggle code creation",
   toggleCreateCode2: 'Click the "Create code" toggle',
   toggleCreateCode3:
@@ -350,6 +346,7 @@ export const copy = {
   stopRunning: "Stop running",
   subscribe: "Subscribe",
   subscribeSuccess: "Thanks for subscribing 🎉",
+  tagsEmpty: "No tags created",
   team: "Team",
   teamName: "Team name",
   teamNamePlaceholder: "My Team",
@@ -366,6 +363,7 @@ export const copy = {
   testRunsStarter: "100 test runs per month",
   testRunsBusiness: "1000 test runs per month",
   testRunsBusinessExtra: "$20 per 500 extra test runs",
+  tests: "Tests",
   toastAutosave: "🐺 QA Wolf autosaves your tests",
   trigger: "Trigger",
   triggers: "Triggers",
@@ -373,7 +371,7 @@ export const copy = {
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
   triggersDetail:
-    "Use triggers to run your tests on a schedule, on deployment, or with an API call",
+    "Use triggers to run your tests on a schedule or on deployment.",
   triggersEmpty: "No triggers created",
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",

@@ -9,7 +9,6 @@ import * as gitHubSync from "../../../server/services/gitHub/sync";
 import * as gitHubTree from "../../../server/services/gitHub/tree";
 import { prepareTestDb } from "../db";
 import {
-  buildGroup,
   buildIntegration,
   buildRun,
   buildTeam,
@@ -33,7 +32,6 @@ beforeAll(async () => {
     buildTeamUser({ i: 2, team_id: "team2Id", user_id: "user2Id" }),
   ]);
 
-  await db("groups").insert(buildGroup({}));
   await db("integrations").insert([
     buildIntegration({ type: "github_sync" }),
     buildIntegration({ i: 2, type: "github_sync" }),
@@ -54,12 +52,6 @@ beforeAll(async () => {
       team_id: "team2Id",
     }),
   ]);
-
-  await db("test_triggers").insert({
-    id: "testTriggerId",
-    test_id: "testId",
-    trigger_id: "triggerId",
-  });
 
   return db("runs").insert(run);
 });

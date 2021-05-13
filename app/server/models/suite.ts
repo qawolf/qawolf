@@ -5,13 +5,14 @@ import {
   findFilesForBranch,
 } from "../services/gitHub/tree";
 import {
+  CreatedSuite,
   FormattedVariables,
   GitHubFile,
   ModelOptions,
-  Run,
   Suite,
   SuiteResult,
   Test,
+  Trigger,
 } from "../types";
 import { cuid } from "../utils";
 import { encrypt } from "./encrypt";
@@ -48,6 +49,7 @@ type CreateSuite = {
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
   helpers: string;
+  is_api?: boolean;
   team_id: string;
   trigger_id: string;
 };
@@ -57,6 +59,7 @@ type CreateSuiteForTests = {
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
+  is_api?: boolean;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
@@ -65,13 +68,7 @@ type CreateSuiteForTests = {
 type CreateSuiteForTrigger = {
   branch?: string | null;
   environment_variables?: FormattedVariables | null;
-  team_id: string;
-  trigger_id: string;
-};
-
-type CreatedSuite = {
-  runs: Run[];
-  suite: Suite;
+  trigger: Trigger;
 };
 
 type FindSuitesForTeam = {
@@ -131,6 +128,7 @@ export const createSuite = async (
     environment_id,
     environment_variables,
     helpers,
+    is_api,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -153,6 +151,7 @@ export const createSuite = async (
     environment_variables: formattedVariables,
     helpers,
     id: cuid(),
+    is_api: is_api || false,
     team_id,
     trigger_id,
     updated_at: timestamp,
@@ -166,20 +165,23 @@ export const createSuite = async (
 };
 
 export const createSuiteForTrigger = async (
-  { branch, environment_variables, team_id, trigger_id }: CreateSuiteForTrigger,
+  { branch, environment_variables, trigger }: CreateSuiteForTrigger,
   { db, logger }: ModelOptions
 ): Promise<CreatedSuite | null> => {
   const log = logger.prefix("createSuiteForTrigger");
-  log.debug("trigger", trigger_id, "team", team_id);
+  log.debug("trigger", trigger.id);
 
-  const tests = await findEnabledTestsForTrigger(
-    { trigger_id },
-    { db, logger }
-  );
+  const tests = await findEnabledTestsForTrigger(trigger, { db, logger });
 
   if (tests.length) {
     const result = await createSuiteForTests(
-      { branch, environment_variables, team_id, trigger_id, tests },
+      {
+        branch,
+        environment_variables,
+        team_id: trigger.team_id,
+        trigger_id: trigger.id,
+        tests,
+      },
       { db, logger }
     );
 
@@ -196,6 +198,7 @@ export const createSuiteForTests = async (
     creator_id,
     environment_id,
     environment_variables,
+    is_api,
     team_id,
     tests,
     trigger_id,
@@ -225,6 +228,7 @@ export const createSuiteForTests = async (
       environment_id,
       environment_variables,
       helpers,
+      is_api,
       team_id,
       trigger_id,
     },

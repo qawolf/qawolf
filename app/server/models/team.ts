@@ -22,7 +22,6 @@ type UpdateTeam = {
   last_synced_at?: string;
   limit_reached_at?: string | null;
   name?: string;
-  next_trigger_id?: string;
   plan?: TeamPlan;
   renewed_at?: string;
   stripe_customer_id?: string;
@@ -61,7 +60,6 @@ export const createDefaultTeam = async ({
     last_synced_at: null,
     limit_reached_at: null,
     name: DEFAULT_NAME,
-    next_trigger_id: cuid(),
     plan: "free" as const,
     renewed_at: timestamp,
     stripe_customer_id: null,
@@ -193,7 +191,6 @@ export const updateTeam = async (
     last_synced_at,
     limit_reached_at,
     name,
-    next_trigger_id,
     plan,
     renewed_at,
     stripe_customer_id,
@@ -227,7 +224,6 @@ export const updateTeam = async (
     updates.limit_reached_at = limit_reached_at;
   }
   if (!isNil(name)) updates.name = name;
-  if (next_trigger_id) updates.next_trigger_id = next_trigger_id;
   if (plan) updates.plan = plan;
   if (renewed_at) updates.renewed_at = renewed_at;
   if (stripe_customer_id !== undefined)

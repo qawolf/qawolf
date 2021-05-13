@@ -2,37 +2,31 @@ import { Box } from "grommet";
 import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
-import { ShortTest, TestSummary, Trigger } from "../../../../../lib/types";
+import { ShortTest, Tag, TestSummary } from "../../../../../lib/types";
 import { border } from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
 import TestGif from "../../../../shared/TestGif";
 import Options from "./Options";
 import RunBars from "./RunBars";
+import Tags from "./Tags";
 import TestName from "./TestName";
-import Triggers from "./Triggers";
 
 type Props = {
-  groupName: string | null;
-  hasGroups: boolean;
   isChecked: boolean;
   isSummaryLoading: boolean;
-  noBorder?: boolean;
   onCheck: () => void;
   summary: TestSummary | null;
+  tags: Tag[];
   test: ShortTest;
-  triggers: Trigger[];
 };
 
 export default function TestCard({
-  groupName,
-  hasGroups,
   isChecked,
   isSummaryLoading,
-  noBorder,
   onCheck,
   summary,
+  tags,
   test,
-  triggers,
 }: Props): JSX.Element {
   const runs = summary?.last_runs || null;
   const testName = test.name || test.path;
@@ -40,10 +34,10 @@ export default function TestCard({
   return (
     <Box
       align="center"
-      border={noBorder ? undefined : { ...border, side: "top" }}
+      border={{ ...border, side: "bottom" }}
       direction="row"
       justify="between"
-      pad={{ horizontal: "small" }}
+      pad={{ horizontal: "medium" }}
     >
       <Box align="center" direction="row" fill="horizontal">
         <Box flex={false} margin={{ right: "small" }}>
@@ -68,16 +62,16 @@ export default function TestCard({
                   isRunning={!!runs?.length && !runs[0].gif_url}
                   testName={testName}
                 />
-                <TestName groupName={groupName} testName={testName} />
+                <TestName testName={testName} />
               </Box>
             </a>
           </Link>
         </Box>
       </Box>
       <Box align="center" direction="row" flex={false}>
-        <Triggers triggers={triggers} />
+        <Tags filterOnClick tags={tags} />
         <RunBars runs={runs} />
-        <Options hasGroups={hasGroups} test={test} />
+        <Options test={test} />
       </Box>
     </Box>
   );

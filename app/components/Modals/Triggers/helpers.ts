@@ -1,15 +1,9 @@
 import capitalize from "lodash/capitalize";
 
-import {
-  DeploymentProvider,
-  TestTriggers,
-  Trigger,
-  TriggerFields,
-} from "../../../lib/types";
+import { DeploymentProvider, Trigger, TriggerFields } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 
-export type SelectState = "all" | "none" | "some";
-export type TriggerMode = "api" | "deployment" | "schedule";
+export type TriggerMode = "deployment" | "schedule";
 
 type BuildTriggerFields = {
   deployBranches: string | null;
@@ -20,19 +14,7 @@ type BuildTriggerFields = {
   mode: TriggerMode;
   name: string;
   repeatMinutes: number;
-};
-
-type BuildUpdateTestTriggersResponse = {
-  addTriggerId: string;
-  testIds: string[];
-  testTriggers: TestTriggers[];
-  removeTriggerId: string;
-};
-
-type GetSelectState = {
-  testIds: string[];
-  testTriggers: TestTriggers[];
-  triggerId: string;
+  tagIds: string[];
 };
 
 type GetDefaultName = {
@@ -60,6 +42,7 @@ export const buildTriggerFields = ({
   mode,
   name,
   repeatMinutes,
+  tagIds,
 }: BuildTriggerFields): TriggerFields => {
   const constantFields = { environment_id: environmentId || null, name };
 
@@ -68,58 +51,26 @@ export const buildTriggerFields = ({
       ...constantFields,
       ...nullDeploymentFields,
       repeat_minutes: repeatMinutes,
-    };
-  }
-
-  if (mode === "deployment") {
-    return {
-      ...constantFields,
-      deployment_branches:
-        deployBranches && deployProvider === "vercel" ? deployBranches : null,
-      deployment_environment:
-        deployEnv && deployEnv !== "all" ? deployEnv : null,
-      deployment_integration_id: deployIntegrationId || null,
-      deployment_provider: deployProvider,
-      repeat_minutes: null,
+      tag_ids: tagIds,
     };
   }
 
   return {
     ...constantFields,
-    ...nullDeploymentFields,
+    deployment_branches:
+      deployBranches && deployProvider === "vercel" ? deployBranches : null,
+    deployment_environment: deployEnv && deployEnv !== "all" ? deployEnv : null,
+    deployment_integration_id: deployIntegrationId || null,
+    deployment_provider: deployProvider,
     repeat_minutes: null,
+    tag_ids: tagIds,
   };
-};
-
-export const buildUpdateTestTriggersResponse = ({
-  addTriggerId,
-  removeTriggerId,
-  testIds,
-  testTriggers,
-}: BuildUpdateTestTriggersResponse): TestTriggers[] => {
-  const updatedTestTriggers = testTriggers.filter((t) =>
-    testIds.includes(t.test_id)
-  );
-
-  return updatedTestTriggers.map((t) => {
-    const trigger_ids = [...t.trigger_ids];
-
-    if (addTriggerId) trigger_ids.push(addTriggerId);
-
-    if (removeTriggerId) {
-      const removeIndex = trigger_ids.indexOf(removeTriggerId);
-      if (removeIndex > -1) trigger_ids.splice(removeIndex, 1);
-    }
-
-    return { ...t, trigger_ids };
-  });
 };
 
 export const getDefaultMode = (trigger: Trigger | null): TriggerMode => {
   if (!trigger || trigger.repeat_minutes) return "schedule";
-  if (trigger.deployment_provider) return "deployment";
 
-  return "api";
+  return "deployment";
 };
 
 const getDeploymentName = (deployEnv: string): string => {
@@ -149,24 +100,6 @@ export const getDefaultName = ({
   }
 
   return defaultName;
-};
-
-export const getSelectState = ({
-  testIds,
-  testTriggers,
-  triggerId,
-}: GetSelectState): SelectState => {
-  if (!testIds.length) return "none";
-
-  const testFn = (testId: string): boolean => {
-    const testTriggersForTest = testTriggers.find((t) => t.test_id === testId);
-    return (testTriggersForTest?.trigger_ids || []).includes(triggerId);
-  };
-
-  if (testIds.every(testFn)) return "all";
-  if (testIds.some(testFn)) return "some";
-
-  return "none";
 };
 
 export const labelTextProps = {

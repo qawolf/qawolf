@@ -45,26 +45,17 @@ export default function Suite({ suiteId, teamId }: Props): JSX.Element {
 
   const innerHtml = suite ? (
     <>
-      <Header
-        checkedTestIds={checkedTestIds}
-        filteredRuns={filteredRuns}
-        search={search}
-        setSearch={setSearch}
-        suite={suite}
-      />
+      <Header search={search} setSearch={setSearch} suite={suite} />
       <List
         checkedTestIds={checkedTestIds}
         runs={filteredRuns}
         setCheckedTestIds={setCheckedTestIds}
+        suite={suite}
       />
     </>
   ) : (
     <Spinner />
   );
 
-  return (
-    <Box pad="medium" width="full">
-      {innerHtml}
-    </Box>
-  );
+  return <Box width="full">{innerHtml}</Box>;
 }

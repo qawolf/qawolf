@@ -1,6 +1,7 @@
 import { connectDb } from "../server/db";
 import { Logger } from "../server/Logger";
-import { findTriggersForTeam,TRIGGER_COLORS } from "../server/models/trigger";
+import { findTriggersForTeam } from "../server/models/trigger";
+import { COLORS } from "../server/models/utils";
 
 (async () => {
   const db = connectDb();
@@ -18,12 +19,10 @@ import { findTriggersForTeam,TRIGGER_COLORS } from "../server/models/trigger";
 
         await Promise.all(
           triggers.map(async (trigger, i) => {
-            const index = i === 0 ? 0 : i % TRIGGER_COLORS.length;
+            const index = i === 0 ? 0 : i % COLORS.length;
 
             return trx("triggers")
-              .update({
-                color: TRIGGER_COLORS[index],
-              })
+              .update({ color: COLORS[index] })
               .where({ id: trigger.id });
           })
         );
