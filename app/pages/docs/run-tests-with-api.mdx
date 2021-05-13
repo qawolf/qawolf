@@ -21,8 +21,8 @@ The API call makes a `POST` request to the `/suites` endpoint. It includes a few
 
 - The required <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink> provides your team's API key: `-H "Authorization: API_KEY_HERE"`.
 - The optional `tags` string is a comma separated list of test tag names: `"tags": "Checkout,Sign up"`. If not provided, all of your tests will run. Otherwise, tests with any of the provided tags will run.
-- The optional `environment` string in the request body specifies which <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests: `"environment": "Staging"`. If you have multiple environments and do not provide an `env_name`, QA Wolf will error and ask you to specify an environment.
-- The optional `variables` object in the request body passes additional <Link href="use-environment-variables">environment variables</Link> to your tests: `"variables": { "MY_VARIABLE": "secret" }`.
+- The optional `environment` string is the name of the <Link href="use-environment-variables#create-an-environment">environment</Link> to use when running your tests: `"environment": "Staging"`. If you have multiple environments and do not provide an `environment`, QA Wolf will error and ask you to specify an environment.
+- The optional `variables` object in the request body provides <Link href="use-environment-variables">environment variables</Link> to your tests: `"variables": { "MY_VARIABLE": "secret" }`. If any variables share names with variables in your environment, the passed variables will override those values.
 
 If you paste this command into your terminal and run it, you'll get a response that looks like:
 

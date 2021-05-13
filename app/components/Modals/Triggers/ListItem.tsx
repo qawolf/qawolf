@@ -7,12 +7,14 @@ import Text from "../../shared/Text";
 import TriggerIcon from "../../shared/TriggerIcon";
 
 type Props = {
+  noBorder: boolean;
   onDelete: () => void;
   onEdit: () => void;
   trigger: Trigger;
 };
 
 export default function ListItem({
+  noBorder,
   onDelete,
   onEdit,
   trigger,
@@ -21,7 +23,11 @@ export default function ListItem({
     <StyledBox
       a11yTitle={`trigger ${trigger.name}`}
       align="center"
-      border={{ color: "gray3", side: "bottom", size: borderSize.xsmall }}
+      border={
+        noBorder
+          ? undefined
+          : { color: "gray3", side: "bottom", size: borderSize.xsmall }
+      }
       direction="row"
       flex={false}
       justify="between"

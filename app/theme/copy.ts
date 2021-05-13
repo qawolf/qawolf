@@ -371,7 +371,7 @@ export const copy = {
     "Are you sure? This will permanently delete this trigger. Please type",
   triggerDeleteConfirm2: "to confirm.",
   triggersDetail:
-    "Use triggers to run your tests on a schedule or on deployment",
+    "Use triggers to run your tests on a schedule or on deployment.",
   triggersEmpty: "No triggers created",
   triggerId: "trigger_id",
   triggerNamePlaceholder: "Name your trigger",

@@ -9,7 +9,6 @@ import Divider from "../../shared/Divider";
 import Add from "../../shared/icons/Add";
 import Buttons from "../../shared/Modal/Buttons";
 import Text from "../../shared/Text";
-import DocLinks from "./DocLinks";
 import Header from "./Header";
 import ListItem from "./ListItem";
 
@@ -35,10 +34,11 @@ export default function TriggersList({
   let innerHtml: ReactNode;
 
   if (!isLoading && triggers?.length) {
-    const triggersHtml = triggers.map((t) => {
+    const triggersHtml = triggers.map((t, i) => {
       return (
         <ListItem
           key={t.id}
+          noBorder={i === triggers.length - 1}
           onDelete={() => onDelete(t)}
           onEdit={() => onEdit(t)}
           trigger={t}
@@ -67,7 +67,6 @@ export default function TriggersList({
       <Header closeModal={closeModal} />
       <Divider />
       {innerHtml}
-      <DocLinks />
       <Buttons
         SecondaryIconComponent={Add}
         onPrimaryClick={closeModal}
