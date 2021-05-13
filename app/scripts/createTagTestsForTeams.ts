@@ -4,9 +4,12 @@ import { cuid } from "../server/utils";
 (async () => {
   const db = connectDb();
 
-  const tests = await db("tests").select("*").whereNotNull("group_id");
-
   await db.transaction(async (trx) => {
+    const tests = await trx("tests")
+      .select("*")
+      .where({ deleted_at: null })
+      .whereNotNull("group_id");
+
     await Promise.all(
       tests.map(async (test) => {
         return trx("tag_tests").insert({
