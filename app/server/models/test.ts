@@ -197,7 +197,7 @@ export const findEnabledTestsForTags = async (
 
   const tests = await db("tests")
     .whereIn("id", testIds)
-    .andWhere({ deleted_at: null, "tests.is_enabled": true })
+    .andWhere({ deleted_at: null, is_enabled: true })
     .orderBy("tests.created_at", "asc");
 
   log.debug(`found ${tests.length} tests`);
