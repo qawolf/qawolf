@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { useCreateSuite } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
@@ -32,11 +32,6 @@ export default function CreateSuite({
 
   const [createSuite, { loading }] = useCreateSuite();
 
-  // do not choose environment if no options
-  useEffect(() => {
-    if (environments && environments.length < 1) closeModal();
-  }, [closeModal, environments]);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSelectedEnvironmentId(e.target.value);
   };
@@ -48,7 +43,9 @@ export default function CreateSuite({
         environment_id: selectedEnvironmentId,
         test_ids: testIds,
       },
-    }).then(closeModal);
+    })
+      .then(closeModal)
+      .catch(closeModal);
   };
 
   useOnHotKey({ hotKey: "Enter", onHotKey: handleClick });
