@@ -26,7 +26,7 @@ export const updateTagTestsResolver = async (
     { db, logger }
   );
 
-  // check the test team matches the trigger's team
+  // check the test team matches the tag's team
   testTeams.forEach((testTeam) => {
     if (testTeam.id !== tagTeam.id) {
       throw new Error("invalid team");
