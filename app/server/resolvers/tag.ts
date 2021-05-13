@@ -76,14 +76,13 @@ export const tagsForTestsResolver = async (
 };
 
 export const tagsForTriggerResolver = async (
-  { id, team_id }: Trigger,
+  { id }: Trigger,
   _: Record<string, unknown>,
-  { db, logger, teams }: Context
+  { db, logger }: Context
 ): Promise<Tag[]> => {
   const log = logger.prefix("tagsForTriggerResolver");
   log.debug("trigger", id);
-
-  ensureTeamAccess({ logger, team_id, teams });
+  // nested query so trigger access checked in parent
 
   return findTagsForTrigger(id, { db, logger });
 };
