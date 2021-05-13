@@ -55,7 +55,7 @@
     "luxon": "^1.26.0",
     "micro": "^9.3.4",
     "ms-rest-azure": "^3.0.0",
-    "next": "10.0.3",
+    "next": "10.2.0",
     "pg": "^8.5.1",
     "prism-react-renderer": "^1.1.1",
     "querystring": "^0.2.0",
