@@ -138,8 +138,6 @@ export const findTagsForTests = async (
   const log = logger.prefix("findTagsForTests");
   log.debug("tests", test_ids);
 
-  const tests = await db("tests").select("id").whereIn("id", test_ids);
-
   const tags = await db("tags")
     .select("tags.*")
     .select("tag_tests.test_id")
@@ -147,8 +145,8 @@ export const findTagsForTests = async (
     .whereIn("tag_tests.test_id", test_ids)
     .orderBy("tags.name", "asc");
 
-  const result: TagsForTest[] = tests.map(({ id }) => {
-    return { tags: [], test_id: id };
+  const result: TagsForTest[] = test_ids.map((test_id) => {
+    return { tags: [], test_id };
   });
 
   tags.forEach((t) => {
