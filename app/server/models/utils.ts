@@ -10,12 +10,12 @@ export const COLORS = [
 ];
 
 export const buildColor = (
-  teamColors: string[],
+  usedColors: string[],
   colors: string[] = COLORS
 ): string => {
-  const availableColor = colors.find((color) => !teamColors.includes(color));
+  const availableColor = colors.find((color) => !usedColors.includes(color));
 
   if (availableColor) return availableColor;
 
-  return colors[teamColors.length % colors.length];
+  return colors[usedColors.length % colors.length];
 };

@@ -24,7 +24,7 @@ const {
   findTriggersForTeam,
   findPendingTriggers,
   getNextAt,
-  hasTrigger,
+  hasTriggerOrApiSuite,
   updateTrigger,
 } = triggerModel;
 
@@ -467,15 +467,15 @@ describe("trigger model", () => {
     });
   });
 
-  describe("hasTrigger", () => {
+  describe("hasTriggerOrApiSuite", () => {
     it("returns false if team does not have trigger", async () => {
-      expect(await hasTrigger("teamId", options)).toBe(false);
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(false);
     });
 
     it("returns true if team has trigger", async () => {
       await db("triggers").insert(buildTrigger({}));
 
-      expect(await hasTrigger("teamId", options)).toBe(true);
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(true);
 
       await db("triggers").del();
     });
@@ -483,7 +483,7 @@ describe("trigger model", () => {
     it("returns true if team has created suite with api", async () => {
       await db("suites").insert(buildSuite({ is_api: true, trigger_id: null }));
 
-      expect(await hasTrigger("teamId", options)).toBe(true);
+      expect(await hasTriggerOrApiSuite("teamId", options)).toBe(true);
     });
   });
 

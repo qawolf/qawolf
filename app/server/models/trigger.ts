@@ -292,11 +292,11 @@ export const getNextAt = ({
     .toISOString();
 };
 
-export const hasTrigger = async (
+export const hasTriggerOrApiSuite = async (
   team_id: string,
   { db, logger }: ModelOptions
 ): Promise<boolean> => {
-  const log = logger.prefix("hasTrigger");
+  const log = logger.prefix("hasTriggerOrApiSuite");
 
   const trigger = await db("triggers")
     .where({ deleted_at: null, team_id })
