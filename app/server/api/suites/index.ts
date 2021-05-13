@@ -14,11 +14,11 @@ import { CreatedSuite, ModelOptions, Team, Test } from "../../types";
 import { parseVariables } from "../../utils";
 
 // errors example: https://stripe.com/docs/api/errors
-const findTeamForRequest = async (
+const ensureTeamForRequest = async (
   req: NextApiRequest,
   options: ModelOptions
 ): Promise<Team> => {
-  const log = options.logger.prefix("findTeamForRequest");
+  const log = options.logger.prefix("ensureTeamForRequest");
   const api_key = req.headers.authorization;
 
   if (!api_key) {
@@ -60,13 +60,13 @@ const createSuiteForRequest = async (
   options: ModelOptions
 ): Promise<CreatedSuite> => {
   const log = options.logger.prefix("createSuiteForRequest");
-  const team = await findTeamForRequest(req, options);
+  const team = await ensureTeamForRequest(req, options);
 
   const {
     branch,
     env,
-    environment: envName,
-    tags,
+    environment: environmentName,
+    tags: tagNames,
     trigger_id,
     variables,
   } = req.body;
@@ -76,6 +76,8 @@ const createSuiteForRequest = async (
   let environment_id: string | null = null;
   let tests: Test[] = [];
 
+  // trigger_id is deprecated and is here temporarily for backwards compatibility
+  // we will remove it after we help companies use it upgrade to tags
   if (trigger_id) {
     const trigger = await findTriggerOrNull(trigger_id, options);
     environment_id = trigger?.environment_id || null;
@@ -85,16 +87,16 @@ const createSuiteForRequest = async (
       options
     );
   } else {
-    const environment = envName
+    const environment = environmentName
       ? await findEnvironmentForName(
-          { name: envName, team_id: team.id },
+          { name: environmentName, team_id: team.id },
           options
         )
       : await findDefaultEnvironmentForTeam(team.id, options);
     if (environment) environment_id = environment.id;
 
     tests = await findEnabledTestsForTags(
-      { tag_names: tags, team_id: team.id },
+      { tag_names: tagNames, team_id: team.id },
       options
     );
   }
