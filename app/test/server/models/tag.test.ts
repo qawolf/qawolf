@@ -46,9 +46,9 @@ describe("createTag", () => {
     expect(dbTag).toMatchObject(tag);
   });
 
-  it("removes leading whitespace from name", async () => {
+  it("removes whitespace from name", async () => {
     const tag = await createTag(
-      { name: "  tag name", team_id: "teamId" },
+      { name: "  tag name  ", team_id: "teamId" },
       options
     );
 

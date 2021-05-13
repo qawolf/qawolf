@@ -40,7 +40,7 @@ export const createTag = async (
     const tag = {
       color: buildColor(teamTags.map((t) => t.color)),
       id: cuid(),
-      name: name.trimStart(),
+      name: name.trim(),
       team_id,
     };
 
