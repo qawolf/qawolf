@@ -96,8 +96,8 @@ export const findTagIdsForNames = async (
 ): Promise<string[]> => {
   const log = logger.prefix("findTagIdsForNames");
   log.debug("team", team_id, "names", names);
-  // split on commas, allowing whitespace after comma
-  const tagNames = names.split(/,\s*/);
+  // split on commas and remove whitespaces
+  const tagNames = names.split(",").map((n) => n.trim());
 
   const tags = await db("tags")
     .whereIn("name", tagNames)
