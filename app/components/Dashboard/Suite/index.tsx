@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useSuite } from "../../../hooks/queries";
-import { state } from "../../../lib/state";
 import { RunStatus } from "../../../lib/types";
 import Spinner from "../../shared/Spinner";
 import { filterRuns } from "../helpers";
@@ -41,11 +40,6 @@ export default function Suite({ suiteId, teamId }: Props): JSX.Element {
   useEffect(() => {
     if (suiteId) setCheckedTestIds([]);
   }, [suiteId]);
-
-  // set branch to suite's branch
-  useEffect(() => {
-    if (suite?.branch) state.setBranch(suite.branch);
-  }, [suite?.branch]);
 
   const filteredRuns = filterRuns({ runs: suite?.runs || [], search, status });
 
