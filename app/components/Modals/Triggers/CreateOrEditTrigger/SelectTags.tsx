@@ -14,16 +14,13 @@ export default function SelectTags({
   tagIds,
   tags,
 }: Props): JSX.Element {
-  const handleClick = (tagId: string): void => {
+  const handleClick = (tagName: string): void => {
     const newTagIds = [...tagIds];
 
-    const index = newTagIds.indexOf(tagId);
+    const index = newTagIds.indexOf(tagName);
 
-    if (index > -1) {
-      newTagIds.splice(index, 1);
-    } else {
-      newTagIds.push(tagId);
-    }
+    if (index > -1) newTagIds.splice(index, 1);
+    else newTagIds.push(tagName);
 
     setTagIds(newTagIds);
   };

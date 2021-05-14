@@ -5,18 +5,18 @@ import { TagFilter } from "../lib/types";
 
 type UseTagQuery = {
   filter: TagFilter;
-  tagIds: string[];
+  tagNames: string[];
 };
 
 export const useTagQuery = (): UseTagQuery => {
   const { query } = useRouter();
 
-  const { filter, tagIds } = useMemo(() => {
+  const { filter, tagNames } = useMemo(() => {
     const filter = query.filter === "all" ? "all" : "any";
-    const tagIds = query.tags ? (query.tags as string).split(",") : [];
+    const tagNames = query.tags ? (query.tags as string).split(",") : [];
 
-    return { filter: filter as TagFilter, tagIds };
+    return { filter: filter as TagFilter, tagNames };
   }, [query]);
 
-  return { filter, tagIds };
+  return { filter, tagNames };
 };

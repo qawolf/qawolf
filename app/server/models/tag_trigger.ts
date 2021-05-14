@@ -22,7 +22,7 @@ export const updateTagTriggersForTrigger = async (
       })
       .map((tagTrigger) => tagTrigger.id);
 
-    const missingTagIds = tag_ids.filter((tag_id) => {
+    const missingTagNames = tag_ids.filter((tag_id) => {
       return !tagTriggers.some((tagTrigger) => tagTrigger.tag_id === tag_id);
     });
 
@@ -30,8 +30,8 @@ export const updateTagTriggersForTrigger = async (
       await trx("tag_triggers").whereIn("id", extraTagTriggerIds).del();
     }
 
-    if (missingTagIds.length) {
-      const newTagTriggers = missingTagIds.map((tag_id) => {
+    if (missingTagNames.length) {
+      const newTagTriggers = missingTagNames.map((tag_id) => {
         return {
           id: cuid(),
           tag_id,

@@ -14,10 +14,10 @@ import TagsMenu from "./TagsMenu";
 
 type Props = {
   filter: TagFilter;
-  tagIds: string[];
+  tagNames: string[];
 };
 
-export default function SelectTags({ filter, tagIds }: Props): JSX.Element {
+export default function SelectTags({ filter, tagNames }: Props): JSX.Element {
   const { replace } = useRouter();
   const { teamId } = useContext(StateContext);
 
@@ -31,21 +31,21 @@ export default function SelectTags({ filter, tagIds }: Props): JSX.Element {
   const handleClose = (): void => setIsOpen(false);
 
   const handleFilterClick = (filter: TagFilter): void => {
-    replace(buildTestsPath(tagIds, filter));
+    replace(buildTestsPath(tagNames, filter));
   };
 
-  const handleTagClick = (tagId: string): void => {
-    const newTagIds = [...tagIds];
-    const index = newTagIds.indexOf(tagId);
+  const handleTagClick = (tagName: string): void => {
+    const newTagNames = [...tagNames];
+    const index = newTagNames.indexOf(tagName);
 
-    if (index > -1) newTagIds.splice(index, 1);
-    else newTagIds.push(tagId);
+    if (index > -1) newTagNames.splice(index, 1);
+    else newTagNames.push(tagName);
 
-    replace(buildTestsPath(newTagIds, filter));
+    replace(buildTestsPath(newTagNames, filter));
   };
 
   const buttonLabel =
-    tagIds.length > 1 ? `${copy.filter} (${copy[filter]})` : copy.filter;
+    tagNames.length > 1 ? `${copy.filter} (${copy[filter]})` : copy.filter;
 
   return (
     <Box align="center" direction="row" flex={false}>
@@ -64,11 +64,11 @@ export default function SelectTags({ filter, tagIds }: Props): JSX.Element {
         onClick={handleTagClick}
         onClose={handleClose}
         onFilterClick={handleFilterClick}
-        tagIds={tagIds}
+        tagNames={tagNames}
         tags={tags}
         target={ref.current}
       />
-      <SelectedTags onClick={handleTagClick} tagIds={tagIds} tags={tags} />
+      <SelectedTags onClick={handleTagClick} tagNames={tagNames} tags={tags} />
     </Box>
   );
 }

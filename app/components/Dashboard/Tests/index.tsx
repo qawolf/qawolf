@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function Tests({ branch, teamId }: Props): JSX.Element {
-  const { filter, tagIds } = useTagQuery();
+  const { filter, tagNames } = useTagQuery();
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
@@ -33,7 +33,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   const tests = filterTests({
     filter,
     search,
-    tagIds,
+    tagNames,
     tests: loading ? null : testsData,
     testTags: tagsData?.tagsForTests || null,
   });
@@ -41,7 +41,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   // clear checked tests when selected tags or test ids change
   useEffect(() => {
     setCheckedTestIds([]);
-  }, [filter, tagIds, testIds]);
+  }, [filter, tagNames, testIds]);
 
   return (
     <Box width="full">
@@ -49,7 +49,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
         filter={filter}
         search={search}
         setSearch={setSearch}
-        tagIds={tagIds}
+        tagNames={tagNames}
       />
       <List
         checkedTestIds={checkedTestIds}

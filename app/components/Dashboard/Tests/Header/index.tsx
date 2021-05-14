@@ -14,14 +14,14 @@ type Props = {
   filter: TagFilter;
   search: string;
   setSearch: (search: string) => void;
-  tagIds: string[];
+  tagNames: string[];
 };
 
 export default function Header({
   filter,
   search,
   setSearch,
-  tagIds,
+  tagNames,
 }: Props): JSX.Element {
   const handleCreateTestClick = (): void => {
     state.setModal({ name: "createTest" });
@@ -39,7 +39,7 @@ export default function Header({
             {copy.tests}
           </Text>
           <Search search={search} setSearch={setSearch} />
-          <SelectTags filter={filter} tagIds={tagIds} />
+          <SelectTags filter={filter} tagNames={tagNames} />
         </Box>
         <Box align="center" direction="row">
           <Branches />
