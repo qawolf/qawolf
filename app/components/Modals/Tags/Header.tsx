@@ -19,7 +19,7 @@ export default function Header({ closeModal, testCount }: Props): JSX.Element {
         margin={{ bottom: "medium", top: "xxsmall" }}
         size="componentParagraph"
       >
-        {copy.editTagsDetail}
+        {testCount ? copy.editTagsDetail : copy.editTagsDetailNoTests}
       </Text>
     </>
   );

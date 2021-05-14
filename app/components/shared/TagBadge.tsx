@@ -11,6 +11,7 @@ import {
   transitionDuration,
 } from "../../theme/theme";
 import Close from "./icons/Close";
+import NoTag from "./icons/NoTag";
 import Tag from "./icons/Tag";
 import Text from "./Text";
 
@@ -42,6 +43,8 @@ const StyledBox = styled(Box)`
 `;
 
 function TagBadge({ className, onClick, onClose, tag }: Props): JSX.Element {
+  const IconComponent = tag ? Tag : NoTag;
+  const color = tag?.color || colors.gray9;
   const tagName = tag?.name || copy.noTags;
 
   const innerHtml = (
@@ -56,10 +59,10 @@ function TagBadge({ className, onClick, onClose, tag }: Props): JSX.Element {
       style={{ maxWidth }}
     >
       <Box align="center" direction="row">
-        {!!tag && <Tag color={tag.color} size={edgeSize.small} />}
+        <IconComponent color={color} size={edgeSize.small} />
         <Text
           color="gray7"
-          margin={tag ? { left: "xxsmall" } : undefined}
+          margin={{ left: "xxsmall" }}
           size="componentSmall"
           style={overflowStyle}
         >

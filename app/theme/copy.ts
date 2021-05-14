@@ -129,8 +129,9 @@ export const copy = {
   edit: "Edit",
   editTags: "Edit tags",
   editTagsDetail: "Choose which tags you want to assign",
+  editTagsDetailNoTests: "Create, rename, and delete tags",
   editTagsForTests: (count: number): string =>
-    `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,
+    `Edit tags${count ? ` for ${count} test${count === 1 ? "" : "s"}` : ""}`,
   editTest: "Edit test",
   editTrigger: "Edit trigger",
   email: "Email",
