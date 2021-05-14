@@ -70,7 +70,7 @@ export default function RunCard({
               </Text>
               {run.is_test_deleted && (
                 <Box margin={{ left: "xxsmall" }}>
-                  <Trash color={colors.danger5} size={edgeSize.small} />
+                  <Trash color={colors.gray7} size={edgeSize.small} />
                 </Box>
               )}
             </Box>
