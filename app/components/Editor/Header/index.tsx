@@ -37,7 +37,7 @@ export default function Header({ mode }: Props): JSX.Element {
   const branch = suite?.branch || stateBranch || null;
   const testId = test_id as string;
 
-  // update run branch to suite branch
+  // update branch to suite branch if possible
   useEffect(() => {
     if (suite?.branch) state.setBranch(suite.branch);
   }, [suite?.branch]);
