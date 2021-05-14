@@ -26,7 +26,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   }, [testsData]);
 
   const { data: tagsData } = useTagsForTests({
-    test_ids: testsData.map((t) => t.id),
+    test_ids: testIds,
   });
   const testTags = tagsData?.tagsForTests || [];
 

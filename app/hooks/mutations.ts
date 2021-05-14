@@ -664,11 +664,11 @@ export const useDeleteTag = (): MutationTuple<
       const tagName = response?.deleteTag?.name;
       if (!tagName || !tagNames.includes(tagName)) return;
 
-      const newtagNames = [...tagNames];
-      const index = newtagNames.indexOf(tagName);
-      if (index > -1) newtagNames.splice(index, 1);
+      const newTagNames = [...tagNames];
+      const index = newTagNames.indexOf(tagName);
+      if (index > -1) newTagNames.splice(index, 1);
 
-      replace(buildTestsPath(newtagNames, filter));
+      replace(buildTestsPath(newTagNames, filter));
     },
     onError,
     refetchQueries: ["tags", "tagsForTests"],
