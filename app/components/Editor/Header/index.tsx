@@ -70,7 +70,7 @@ export default function Header({ mode }: Props): JSX.Element {
             <Button
               IconComponent={Edit}
               href={buildTestHref({ run, suite })}
-              isDisabled={!run?.test_id}
+              isDisabled={!run?.test_id || !!test?.deleted_at}
               label={copy.editTest}
               type="primary"
             />
