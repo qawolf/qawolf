@@ -30,6 +30,10 @@ export default function SelectTags({ filter, tagNames }: Props): JSX.Element {
   const handleClick = (): void => setIsOpen((prev) => !prev);
   const handleClose = (): void => setIsOpen(false);
 
+  const handleFilterClear = (): void => {
+    replace(buildTestsPath([]));
+  };
+
   const handleFilterClick = (filter: TagFilter): void => {
     replace(buildTestsPath(tagNames, filter));
   };
@@ -69,6 +73,14 @@ export default function SelectTags({ filter, tagNames }: Props): JSX.Element {
         target={ref.current}
       />
       <SelectedTags onClick={handleTagClick} tagNames={tagNames} tags={tags} />
+      {!!tagNames.length && (
+        <Button
+          label={copy.clearFilters}
+          margin={{ left: "xxxsmall" }}
+          onClick={handleFilterClear}
+          type="ghost"
+        />
+      )}
     </Box>
   );
 }
