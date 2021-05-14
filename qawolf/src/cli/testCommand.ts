@@ -18,7 +18,6 @@ export const buildTestCommand = (): program.Command => {
       "-v, --variables <variables>",
       "environment variables to pass to your tests"
     )
-
     .option("--no-wait", "do not wait for the tests finish running")
     .option("-b, --branch <branch>", "git branch of tests to run")
     .option("--trigger <id>", "deprecated: id of the trigger to run")
