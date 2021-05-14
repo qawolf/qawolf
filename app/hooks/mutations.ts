@@ -655,20 +655,20 @@ export const useDeleteTag = (): MutationTuple<
   DeleteTagVariables
 > => {
   const { replace } = useRouter();
-  const { filter, tagIds } = useTagQuery();
+  const { filter, tagNames } = useTagQuery();
 
   return useMutation<DeleteTagData, DeleteTagVariables>(deleteTagMutation, {
     awaitRefetchQueries: true,
     // remove deleted tag from filter if needed
     onCompleted: (response) => {
-      const tagId = response?.deleteTag?.id;
-      if (!tagId || !tagIds.includes(tagId)) return;
+      const tagName = response?.deleteTag?.name;
+      if (!tagName || !tagNames.includes(tagName)) return;
 
-      const newTagIds = [...tagIds];
-      const index = newTagIds.indexOf(tagId);
-      if (index > -1) newTagIds.splice(index, 1);
+      const newTagNames = [...tagNames];
+      const index = newTagNames.indexOf(tagName);
+      if (index > -1) newTagNames.splice(index, 1);
 
-      replace(buildTestsPath(newTagIds, filter));
+      replace(buildTestsPath(newTagNames, filter));
     },
     onError,
     refetchQueries: ["tags", "tagsForTests"],

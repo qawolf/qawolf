@@ -21,21 +21,21 @@ type FilterRuns = {
 type FilterTests = {
   filter: TagFilter;
   search: string;
-  tagIds: string[];
+  tagNames: string[];
   testTags: TagsForTest[] | null;
   tests: ShortTest[] | null;
 };
 
-export const noTagId = "noTag";
+export const noTagName = "noTag";
 
 export const buildTestsPath = (
-  tagIds: string[],
+  tagNames: string[],
   filter?: TagFilter
 ): string => {
   const queryParts: string[] = [];
 
   if (filter === "all") queryParts.push("filter=all");
-  if (tagIds.length) queryParts.push(`tags=${tagIds.join(",")}`);
+  if (tagNames.length) queryParts.push(`tags=${tagNames.join(",")}`);
 
   const formattedQuery = queryParts.length ? `?${queryParts.join("&")}` : "";
 
@@ -65,14 +65,14 @@ export const filterRuns = ({
 export const filterTests = ({
   filter,
   search,
-  tagIds,
+  tagNames,
   testTags,
   tests,
 }: FilterTests): ShortTest[] | null => {
-  if (!tests || (tagIds.length && !testTags)) return null;
+  if (!tests || (tagNames.length && !testTags)) return null;
 
   let filteredTests = [...tests];
-  const includeNoTags = tagIds.includes(noTagId);
+  const includeNoTags = tagNames.includes(noTagName);
 
   if (search) {
     filteredTests = filteredTests.filter((t) => {
@@ -81,18 +81,20 @@ export const filterTests = ({
     });
   }
 
-  if (tagIds.length) {
+  if (tagNames.length) {
     filteredTests = filteredTests.filter((test) => {
       const tags = testTags.find((t) => t.test_id === test.id)?.tags || [];
 
       if (includeNoTags && !tags.length) {
-        return filter === "all" ? tagIds.length === 1 : true;
+        return filter === "all" ? tagNames.length === 1 : true;
       }
 
       if (filter === "all") {
-        return tagIds.every((tagId) => tags.some((tag) => tag.id === tagId));
+        return tagNames.every((tagName) =>
+          tags.some((tag) => tag.name === tagName)
+        );
       }
-      return tags.some((t) => tagIds.includes(t.id));
+      return tags.some((t) => tagNames.includes(t.name));
     });
   }
 
