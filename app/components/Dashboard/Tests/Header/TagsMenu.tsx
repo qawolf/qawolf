@@ -66,7 +66,7 @@ export default function TagsMenu({
     >
       {!!tags.length && (
         <>
-          <Box pad={{ horizontal: "xsmall", vertical: "xxsmall" }}>
+          <Box flex={false} pad={{ horizontal: "xsmall", vertical: "xxsmall" }}>
             <RadioButtonGroup
               direction="row"
               gap={edgeSize.small}

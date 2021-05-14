@@ -33,11 +33,10 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
     testTags: tagsData?.tagsForTests || null,
   });
 
-  const sortedTestIds = testIds.sort().join(",");
   // clear checked tests when selected tags or test ids change
   useEffect(() => {
     setCheckedTestIds([]);
-  }, [filter, tagNames, sortedTestIds]);
+  }, [filter, tagNames, testIds.join(",")]);
 
   return (
     <Box width="full">
