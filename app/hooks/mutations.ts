@@ -185,7 +185,7 @@ type CreateTeamData = {
   createTeam: Team;
 };
 
-type CreateTestData = {
+export type CreateTestData = {
   createTest: Test;
 };
 
