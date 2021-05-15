@@ -72,7 +72,6 @@ export const docs: Section[] = [
     IconComponent: IoTrailSign,
     color: "#56BBD6",
     docs: [
-      { href: `${routes.docs}/add-an-assertion`, name: "Add an Assertion" },
       {
         href: `${routes.docs}/use-environment-variables`,
         name: "Use Environment Variables",
