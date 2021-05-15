@@ -12,14 +12,14 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
       {service === "vercel" && (
         <>
           <p>
-            {`Select the "Deployment" tab in the middle, and choose ${capitalizedService} as your
+            {`Select the "Deployment" tab on the right, and choose ${capitalizedService} as your
         deploy service. You can also optionally rename your trigger.`}
           </p>
           <Image
             alt="Create deploy trigger"
             height={301}
             src={`/docs/run-tests-on-${service}-deployment/create-deploy-trigger.png`}
-            width={483}
+            width={485}
           />
         </>
       )}
@@ -36,9 +36,9 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
       )}
       <Image
         alt="Connect GitHub repository"
-        height={service === "vercel" ? 321 : 83}
+        height={service === "vercel" ? 171 : 83}
         src={`/docs/run-tests-on-${service}-deployment/github-repo.png`}
-        width={service === "vercel" ? 400 : 491}
+        width={service === "vercel" ? 485 : 491}
       />
       <p>
         A new tab will open and visit GitHub. You will be asked to choose the

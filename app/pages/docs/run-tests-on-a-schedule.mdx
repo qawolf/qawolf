@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import AssignTrigger from "../../components/Docs/AssignTrigger";
+import ChooseTags from "../../components/Docs/ChooseTags";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
@@ -22,21 +22,19 @@ Confirm you are on the "Schedule" tab.
 
 <Image
   alt="Create trigger"
-  height={458}
+  height={531}
   src="/docs/run-tests-on-a-schedule/create-trigger.png"
-  width={488}
+  width={486}
 />
 
-You can rename your trigger, or keep the default name ("Daily" in our example).
+You can rename your trigger, or keep the default name ("Daily" in our example). Next choose whether you want your tests to run every day or every hour.
 
-Next choose whether you want your tests to run every day or every hour. If you have created <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
+<ChooseTags />
+
+If you have any <Link href="use-environment-variables">environments</Link>, you will also need to select one for your trigger.
 
 Once you are done, click the "Create trigger" button to save your trigger.
 
-<SubHeader>Assign Schedule Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-on-a-schedule" />
-
-<ViewRunHistory description="every day" />
+<ViewRunHistory description="on a schedule" />
 
 </Layout>

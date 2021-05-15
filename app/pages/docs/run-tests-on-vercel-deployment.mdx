@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import AssignTrigger from "../../components/Docs/AssignTrigger";
 import ChooseEnvironment from "../../components/Docs/ChooseEnvironment";
+import ChooseTags from "../../components/Docs/ChooseTags";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
@@ -22,7 +22,7 @@ In this tutorial, we'll set up our tests to run when <a href="https://vercel.com
 
 <InstallGitHubApp service="vercel" />
 
-### Choose Deployment Type
+<SubHeader>Choose Deployment Type</SubHeader>
 
 Vercel has <a href="https://vercel.com/docs/platform/deployments#deployment-types" target="\_blank">two types of deployments</a>: **production** and **preview**. Production deployments happen when you merge to your production branch or run the `vercel --prod` command. Preview deployments are all other deployments, like deployments of commits in a GitHub pull request.
 
@@ -35,7 +35,7 @@ QA Wolf allows you to run your tests on all deployments (preview and production)
   width={488}
 />
 
-### Choose Branches (Optional)
+<SubHeader>Choose Branches (Optional)</SubHeader>
 
 You can also optionally specify which GitHub branches your tests should run on.
 
@@ -50,11 +50,11 @@ If you only want your tests to run on specific GitHub branches, choose "Select" 
   width={488}
 />
 
+<SubHeader>Choose Tags</SubHeader>
+
+<ChooseTags />
+
 <ChooseEnvironment />
-
-<SubHeader>Assign Deployment Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-on-vercel-deployment" />
 
 <SubHeader>Update Tests to Use Deployment URL</SubHeader>
 
