@@ -9,6 +9,8 @@ type Props = {
   tag?: Tag;
 };
 
+const maxWidth = "226px"; // menu width minus padding and checkbox width
+
 export default function TagOption({
   isChecked,
   onClick,
@@ -20,6 +22,7 @@ export default function TagOption({
         pad={{ horizontal: "xsmall", vertical: "xxsmall" }}
         selectState={isChecked ? "all" : "none"}
         tag={tag}
+        maxWidth={maxWidth}
         width="full"
       />
     </Option>

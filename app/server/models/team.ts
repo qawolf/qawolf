@@ -14,6 +14,7 @@ const DEFAULT_NAME = "My Team";
 type UpdateTeam = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
+  base_price?: number;
   git_sync_integration_id?: string | null;
   helpers?: string;
   id: string;
@@ -21,6 +22,7 @@ type UpdateTeam = {
   is_enabled?: boolean;
   last_synced_at?: string;
   limit_reached_at?: string | null;
+  metered_price?: number;
   name?: string;
   plan?: TeamPlan;
   renewed_at?: string;
@@ -183,6 +185,7 @@ export const updateTeam = async (
   {
     alert_integration_id,
     alert_only_on_failure,
+    base_price,
     git_sync_integration_id,
     helpers,
     id,
@@ -190,6 +193,7 @@ export const updateTeam = async (
     is_enabled,
     last_synced_at,
     limit_reached_at,
+    metered_price,
     name,
     plan,
     renewed_at,
@@ -211,6 +215,7 @@ export const updateTeam = async (
   if (!isNil(alert_only_on_failure)) {
     updates.alert_only_on_failure = alert_only_on_failure;
   }
+  if (base_price !== undefined) updates.base_price = base_price;
   if (git_sync_integration_id !== undefined) {
     updates.git_sync_integration_id = git_sync_integration_id;
   }
@@ -223,6 +228,7 @@ export const updateTeam = async (
   if (limit_reached_at !== undefined) {
     updates.limit_reached_at = limit_reached_at;
   }
+  if (metered_price !== undefined) updates.metered_price = metered_price;
   if (!isNil(name)) updates.name = name;
   if (plan) updates.plan = plan;
   if (renewed_at) updates.renewed_at = renewed_at;

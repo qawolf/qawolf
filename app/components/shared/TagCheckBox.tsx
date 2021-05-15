@@ -10,6 +10,7 @@ import Text from "./Text";
 
 type Props = {
   isDisabled?: boolean;
+  maxWidth?: string;
   onClick?: () => void;
   selectState: SelectState;
   tag?: TagType;
@@ -17,10 +18,11 @@ type Props = {
   width?: BoxProps["width"];
 };
 
-const maxWidth = "320px";
+const defaultMaxWidth = "320px";
 
 export default function TagCheckBox({
   isDisabled,
+  maxWidth,
   onClick,
   selectState,
   pad,
@@ -36,7 +38,7 @@ export default function TagCheckBox({
       align="center"
       direction="row"
       margin={isDisabled ? undefined : { left: "xxsmall" }}
-      style={{ maxWidth }}
+      style={{ maxWidth: maxWidth || defaultMaxWidth }}
       width={width}
     >
       <IconComponent color={color} size={edgeSize.small} />

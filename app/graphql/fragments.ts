@@ -137,12 +137,14 @@ export const teamFragment = gql`
     alert_integration_id
     alert_only_on_failure
     api_key
+    base_price
     git_sync_integration_id
     helpers
     id
     inbox
     is_email_alert_enabled
     is_enabled
+    metered_price
     name
     plan
     renewed_at

@@ -9,7 +9,6 @@ import ValueProp from "./ValueProp";
 const valueProps = [
   copy.createOnline,
   copy.runInParallel,
-  copy.unlimitedTeamMembers,
   copy.testAcrossBrowsers,
   copy.debugEasily,
   copy.connectToFailures,

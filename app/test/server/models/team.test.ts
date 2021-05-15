@@ -39,6 +39,7 @@ describe("createDefaultTeam", () => {
       {
         alert_integration_id: null,
         api_key: expect.any(String),
+        base_price: null,
         helpers: "",
         id: expect.any(String),
         inbox: expect.any(String),
@@ -46,6 +47,7 @@ describe("createDefaultTeam", () => {
         is_enabled: true,
         last_synced_at: null,
         limit_reached_at: null,
+        metered_price: null,
         name: "My Team",
         plan: "free",
         renewed_at: expect.any(Date),
@@ -358,10 +360,12 @@ describe("updateTeam", () => {
 
     const team = await updateTeam(
       {
+        base_price: 119,
         id: "teamId",
         is_enabled: true,
         last_synced_at: timestamp,
         limit_reached_at: timestamp,
+        metered_price: 49,
         plan: "business",
         renewed_at: timestamp,
         stripe_customer_id: "stripeCustomerId",
@@ -374,9 +378,11 @@ describe("updateTeam", () => {
     expect(updatedTeam).toEqual({
       ...team,
       api_key: expect.any(String),
+      base_price: 119,
       is_enabled: true,
       last_synced_at: timestampDate,
       limit_reached_at: timestampDate,
+      metered_price: 49,
       plan: "business",
       renewed_at: timestampDate,
       stripe_customer_id: "stripeCustomerId",
@@ -386,8 +392,10 @@ describe("updateTeam", () => {
 
     await updateTeam(
       {
+        base_price: null,
         id: "teamId",
         limit_reached_at: null,
+        metered_price: null,
         plan: "free",
         stripe_customer_id: null,
         stripe_subscription_id: null,
@@ -397,8 +405,10 @@ describe("updateTeam", () => {
 
     const updatedTeam2 = await db.select("*").from("teams").first();
     expect(updatedTeam2).toMatchObject({
+      base_price: null,
       id: "teamId",
       limit_reached_at: null,
+      metered_price: null,
       plan: "free",
       stripe_customer_id: null,
       stripe_subscription_id: null,
