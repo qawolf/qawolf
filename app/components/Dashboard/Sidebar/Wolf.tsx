@@ -2,12 +2,14 @@ import { Box } from "grommet";
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { useOnboarding } from "../../../hooks/queries";
 import { copy } from "../../../theme/copy";
 import { transitionDuration } from "../../../theme/theme";
 import WolfPlaying from "../../shared/icons/WolfPlaying";
 import WolfSittingRight from "../../shared/icons/WolfSittingRight";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
+import Tips from "./Tips";
 
 const height = "134px";
 const timeout = 3 * 1000;
@@ -26,12 +28,17 @@ const StyledBox = styled(Box)`
 `;
 
 export default function Wolf(): JSX.Element {
-  const { wolf } = useContext(UserContext);
+  const { team, user, wolf } = useContext(UserContext);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const { data } = useOnboarding({ team_id: team?.id });
+  const onboarding = data?.onboarding || null;
+
   if (!wolf) return null;
+
+  const isOnboarded = Object.values(onboarding || {}).every((v) => v);
 
   const handleClick = (): void => {
     if (timeoutRef.current) {
@@ -47,21 +54,26 @@ export default function Wolf(): JSX.Element {
     }, timeout);
   };
 
+  const BoxComponent = isOnboarded ? StyledBox : Box;
   const IconComponent = isPlaying ? WolfPlaying : WolfSittingRight;
 
   return (
-    <StyledBox alignSelf="center" flex={false} onClick={handleClick}>
-      <Text
-        color="gray9"
-        margin={{ bottom: "xxsmall" }}
-        size="componentBold"
-        textAlign="center"
-      >
-        {copy.wolfGreeting(wolf.name)}
-      </Text>
-      <Box height={height} justify="end">
+    <BoxComponent align="center" flex={false} width="full">
+      {isOnboarded ? (
+        <Text
+          color="gray9"
+          margin={{ bottom: "xxsmall" }}
+          size="componentBold"
+          textAlign="center"
+        >
+          {copy.wolfGreeting(wolf.name)}
+        </Text>
+      ) : (
+        <Tips onboarding={onboarding} userId={user?.id} wolfName={wolf.name} />
+      )}
+      <Box height={height} justify="end" onClick={handleClick}>
         <IconComponent color={wolf.variant} />
       </Box>
-    </StyledBox>
+    </BoxComponent>
   );
 }

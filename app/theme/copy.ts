@@ -204,7 +204,7 @@ export const copy = {
   learnMore: "Learn more",
   learnQaWolf: "Learn how to use QA Wolf",
   learnQaWolfDetail:
-    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
+    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off, how to add snippets, and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2: "Your QA Wolf",
   learnedBasics3: "will tag along for your journey.",
@@ -398,9 +398,17 @@ export const copy = {
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },
+  wolfHere: (wolfName: string): string => {
+    return `${wolfName} here - `;
+  },
   wolfIntro: "Nice to meet you, I'm your QA Wolf!",
   wolfIntro2: "I help you set up tests fast, so you can ship confidently.",
   wolfIntro3: "Let's start by giving me a name:",
+  wolfTipCreateTest: "let's create your first test.",
+  wolfTipInvite: "invite team members to assemble your wolfpack.",
+  wolfTipTrigger:
+    "run your tests on Vercel/Netlify deployments or on a schedule.",
+  wolfTipTutorial: "let's learn how to use QA Wolf.",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",

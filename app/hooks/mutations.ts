@@ -468,7 +468,7 @@ export const useCreateInvites = (): MutationTuple<
     {
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["team"],
+      refetchQueries: ["onboarding", "team"],
     }
   );
 };
@@ -610,7 +610,7 @@ export const useCreateTrigger = (): MutationTuple<
       // cannot redirect to new trigger until trigger list loads
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["triggers"],
+      refetchQueries: ["onboarding", "triggers"],
     }
   );
 };

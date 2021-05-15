@@ -2,11 +2,9 @@ import { Box } from "grommet";
 import { useRouter } from "next/router";
 
 import { routes } from "../../../lib/routes";
-import { borderSize } from "../../../theme/theme";
+import { borderSize, width } from "../../../theme/theme";
 import Header from "./Header";
 import Wolf from "./Wolf";
-
-const width = "280px";
 
 export default function Sidebar(): JSX.Element {
   const { asPath } = useRouter();
@@ -19,7 +17,7 @@ export default function Sidebar(): JSX.Element {
       flex={false}
       justify="between"
       pad={{ top: "medium" }}
-      width={width}
+      width={width.dashboardSidebar}
     >
       <Header />
       {showWolf && <Wolf />}
