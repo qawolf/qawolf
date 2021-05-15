@@ -9,6 +9,7 @@ import WolfPlaying from "../../shared/icons/WolfPlaying";
 import WolfSittingRight from "../../shared/icons/WolfSittingRight";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
+import { buildIsOnboarded } from "./helpers";
 import Tips from "./Tips";
 
 const height = "134px";
@@ -38,7 +39,7 @@ export default function Wolf(): JSX.Element {
 
   if (!wolf) return null;
 
-  const isOnboarded = Object.values(onboarding || {}).every((v) => v);
+  const isOnboarded = buildIsOnboarded(onboarding);
 
   const handleClick = (): void => {
     if (timeoutRef.current) {

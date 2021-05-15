@@ -10,6 +10,17 @@ type BuildTipCopy = {
   onClick?: () => void;
 };
 
+export const buildIsOnboarded = (onboarding: Onboarding | null): boolean => {
+  if (!onboarding) return true;
+
+  // completing tutorial not hard requirement for onboarding
+  return (
+    onboarding.has_created_test &&
+    onboarding.has_trigger &&
+    onboarding.has_invited_user
+  );
+};
+
 export const buildTipCopy = (
   onboarding: Onboarding,
   onLearnClick: () => void
