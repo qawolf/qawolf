@@ -1,5 +1,4 @@
 import {
-  buildDeploymentUrlForTeam,
   createSuitesForDeployment,
   shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
@@ -17,79 +16,6 @@ import {
 } from "../../utils";
 
 const db = prepareTestDb();
-
-describe("buildDeploymentUrlForTeam", () => {
-  beforeAll(() => db("teams").insert(buildTeam({})));
-
-  afterAll(() => db("teams").del());
-
-  it("returns deployment url if there are multiple branches", async () => {
-    const url = await buildDeploymentUrlForTeam(
-      {
-        branches: ["hello", "world"],
-        deploymentUrl: "deploymenturl",
-        team_id: "teamId",
-      },
-      { db, logger }
-    );
-
-    expect(url).toBe("deploymenturl");
-  });
-
-  it("returns deployment url if no vercel team on team", async () => {
-    const url = await buildDeploymentUrlForTeam(
-      {
-        branches: ["hello"],
-        deploymentUrl: "deploymenturl",
-        team_id: "teamId",
-      },
-      { db, logger }
-    );
-
-    expect(url).toBe("deploymenturl");
-  });
-
-  it("builds url based on branch name otherwise", async () => {
-    await db("teams").update({ vercel_team: "team" });
-
-    // check the same project name and team
-    const url = await buildDeploymentUrlForTeam(
-      {
-        branches: ["hello"],
-        deploymentUrl: "https://team-slug-team.vercel.app",
-        team_id: "teamId",
-      },
-      { db, logger }
-    );
-    expect(url).toBe("https://team-git-hello-team.vercel.app");
-
-    // check a different project name and team
-    const url2 = await buildDeploymentUrlForTeam(
-      {
-        branches: ["hello-world"],
-        deploymentUrl: "https://project-name-slug-team.vercel.app",
-        team_id: "teamId",
-      },
-      { db, logger }
-    );
-    expect(url2).toBe("https://project-name-git-hello-world-team.vercel.app");
-
-    // check it works with a longer team name
-    await db("teams").update({ vercel_team: "team-qawolf-spirit" });
-
-    const url3 = await buildDeploymentUrlForTeam(
-      {
-        branches: ["hello-world"],
-        deploymentUrl: "https://project-slug-team-qawolf-spirit.vercel.app",
-        team_id: "teamId",
-      },
-      { db, logger }
-    );
-    expect(url3).toBe(
-      "https://project-git-hello-world-team-qawolf-spirit.vercel.app"
-    );
-  });
-});
 
 describe("createSuitesForDeployment", () => {
   beforeAll(async () => {

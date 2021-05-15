@@ -10,12 +10,6 @@ import {
 } from "../../services/gitHub/commitStatus";
 import { ModelOptions, Trigger } from "../../types";
 
-type BuildDeploymentUrlForTeam = {
-  branches: string[];
-  deploymentUrl: string;
-  team_id: string;
-};
-
 type CreateSuiteForDeployment = {
   branches: string[];
   deploymentUrl: string;
@@ -40,46 +34,6 @@ type ShouldRunTriggerOnDeployment = {
   branches: string[];
   environment?: string;
   trigger: Trigger;
-};
-
-export const buildDeploymentUrlForTeam = async (
-  { branches, deploymentUrl, team_id }: BuildDeploymentUrlForTeam,
-  options: ModelOptions
-): Promise<string> => {
-  const log = options.logger.prefix("buildDeploymentUrlForTeam");
-  log.debug("branches", branches, "url", deploymentUrl);
-
-  if (branches.length > 1) {
-    log.error(`multiple branches ${branches} for team ${team_id}`);
-    return deploymentUrl;
-  }
-
-  const team = await findTeam(team_id, options);
-  if (!team.vercel_team) {
-    log.debug(`use deployment url ${deploymentUrl} for team ${team_id}`);
-    return deploymentUrl;
-  }
-
-  // expect deploymentUrl to match this format: https://project-slug-team.vercel.app
-  // https://vercel.com/changelog/urls-are-becoming-consistent
-
-  // ["https://project-name-slug-team"]
-  const [prefix] = deploymentUrl.split(".");
-  const teamIndex = prefix.lastIndexOf(team.vercel_team);
-
-  // https://project-name-slug
-  const projectSlug = prefix.substring(0, teamIndex - 1);
-
-  // team.vercel.app
-  const teamDomain = deploymentUrl.substring(teamIndex);
-
-  // https://project-name
-  const project = projectSlug.substring(0, projectSlug.lastIndexOf("-"));
-
-  const gitUrl = `${project}-git-${branches[0]}-${teamDomain}`;
-  log.debug(`use git url ${gitUrl}`);
-
-  return gitUrl;
 };
 
 export const shouldRunTriggerOnDeployment = ({
@@ -130,14 +84,9 @@ const createSuiteForDeployment = async (
   const team = await findTeam(trigger.team_id, options);
   ensureTeamCanCreateSuite(team, options.logger);
 
-  const finalDeploymentUrl = await buildDeploymentUrlForTeam(
-    { branches, deploymentUrl, team_id: trigger.team_id },
-    options
-  );
-
   const { suite } = await createSuiteForTests(
     {
-      environment_variables: { URL: finalDeploymentUrl },
+      environment_variables: { URL: deploymentUrl },
       trigger_id: trigger.id,
       team_id: trigger.team_id,
       tests,
@@ -160,7 +109,7 @@ const createSuiteForDeployment = async (
   await createGitHubCommitStatus(
     {
       context: commitStatus.context,
-      deployment_url: finalDeploymentUrl,
+      deployment_url: deploymentUrl,
       github_installation_id: installationId,
       owner,
       repo,
