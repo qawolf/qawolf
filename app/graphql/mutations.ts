@@ -163,6 +163,15 @@ export const createTagMutation = gql`
   ${tagFragment}
 `;
 
+export const createTeamMutation = gql`
+  mutation createTeam {
+    createTeam {
+      ...TeamFragment
+    }
+  }
+  ${teamFragment}
+`;
+
 export const createTestMutation = gql`
   mutation createTest(
     $branch: String

@@ -408,6 +408,9 @@ type Team {
   "The API key for the team"
   api_key: String!
 
+  "The base subscription price for the team"
+  base_price: Int
+
   "The ID of a git integration associated with this team"
   git_sync_integration_id: ID
 
@@ -433,6 +436,9 @@ type Team {
   expired or accepted, sorted by email ascending
   """
   invites: [Invite!]!
+
+  "The metered subscription price for the team"
+  metered_price: Int
 
   "Team name, for display in UI"
   name: String!
@@ -803,6 +809,13 @@ type Mutation {
     "ID of the team that should own the tag"
     team_id: ID!
   ): Tag!
+
+  """
+  Create a new team.
+
+  Requires that you are logged in.
+  """
+  createTeam: Team!
 
   """
   Creates a new test. The URL is used as the first page the browser

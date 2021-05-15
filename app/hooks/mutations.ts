@@ -17,6 +17,7 @@ import {
   createSubscriberMutation,
   createSuiteMutation,
   createTagMutation,
+  createTeamMutation,
   createTestMutation,
   createTriggerMutation,
   deleteEnvironmentMutation,
@@ -178,6 +179,10 @@ type CreateTagData = {
 type CreateTagVariables = {
   name: string;
   team_id: string;
+};
+
+type CreateTeamData = {
+  createTeam: Team;
 };
 
 export type CreateTestData = {
@@ -468,7 +473,7 @@ export const useCreateInvites = (): MutationTuple<
     {
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["team"],
+      refetchQueries: ["onboarding", "team"],
     }
   );
 };
@@ -577,6 +582,24 @@ export const useCreateTag = (): MutationTuple<
   });
 };
 
+export const useCreateTeam = (): MutationTuple<
+  CreateTeamData,
+  Record<string, never>
+> => {
+  return useMutation<CreateTeamData>(createTeamMutation, {
+    awaitRefetchQueries: true,
+    onCompleted: (response) => {
+      // take user to new team
+      const { createTeam } = response || {};
+      if (!createTeam) return;
+
+      state.setTeamId(createTeam.id);
+    },
+    onError,
+    refetchQueries: ["currentUser"],
+  });
+};
+
 export const useCreateTest = (
   callback?: (data: CreateTestData) => void
 ): MutationTuple<CreateTestData, CreateTestVariables> => {
@@ -610,7 +633,7 @@ export const useCreateTrigger = (): MutationTuple<
       // cannot redirect to new trigger until trigger list loads
       awaitRefetchQueries: true,
       onError,
-      refetchQueries: ["triggers"],
+      refetchQueries: ["onboarding", "triggers"],
     }
   );
 };

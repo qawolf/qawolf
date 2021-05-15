@@ -17,16 +17,20 @@ const plans: PlanType[] = [
     label: copy.getStarted,
     name: "Starter",
     price: "Free",
-    valueProps: [copy.testRunsStarter, copy.communitySupport],
+    valueProps: [
+      copy.testRunsStarter,
+      copy.teamMembers3,
+      copy.communitySupport,
+    ],
   },
   {
     highlight: true,
     name: "Business",
-    price: 40,
+    price: 119,
     valueProps: [
       copy.testRunsBusiness,
       copy.testRunsBusinessExtra,
-      copy.prioritySupport,
+      copy.teamMembers10,
     ],
   },
   {
@@ -35,7 +39,12 @@ const plans: PlanType[] = [
     label: copy.contactUs,
     name: "Enterprise",
     price: "Custom",
-    valueProps: [copy.implementation, copy.openVpn, copy.dedicatedSupport],
+    valueProps: [
+      copy.onPremise,
+      copy.openVpn,
+      copy.teamMembersUnlimited,
+      copy.dedicatedSupport,
+    ],
   },
 ];
 

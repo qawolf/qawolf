@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import { useOnHotKey } from "../../../hooks/onHotKey";
 import { Trigger } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
-import { border } from "../../../theme/theme";
 import Divider from "../../shared/Divider";
 import Add from "../../shared/icons/Add";
 import Buttons from "../../shared/Modal/Buttons";
@@ -49,7 +48,7 @@ export default function TriggersList({
     innerHtml = triggersHtml;
   } else {
     innerHtml = (
-      <Box border={{ ...border, side: "bottom" }}>
+      <Box>
         <Text
           color="gray9"
           margin={{ vertical: "xxxlarge" }}

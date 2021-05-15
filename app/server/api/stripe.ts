@@ -14,10 +14,27 @@ const stripe = new Stripe(environment.STRIPE_API_KEY, {
   typescript: true,
 });
 
-type SubscriptionMetadata = {
+type Prices = {
+  base_price: number;
+  metered_price: number;
+};
+
+type SubscriptionMetadata = Prices & {
   ignore_webhook: boolean;
   plan: TeamPlan;
   team_id: string;
+};
+
+const buildPricesForSubscription = (
+  items: Stripe.SubscriptionItem[]
+): Prices => {
+  const basePlan = items.find((i) => i.plan.usage_type === "licensed")?.plan;
+  const meteredPlan = items.find((i) => i.plan.usage_type === "metered")?.plan;
+
+  const base_price = basePlan?.amount ? basePlan.amount / 100 : 119;
+  const metered_price = meteredPlan?.amount ? meteredPlan.amount / 100 : 49;
+
+  return { base_price, metered_price };
 };
 
 const buildTeamFieldsForPayment = (): Partial<Team> => {
@@ -62,6 +79,7 @@ export const findMetadataForSubscription = async (
     ignore_webhook: ignore_webhook === "true",
     plan: plan as TeamPlan,
     team_id,
+    ...buildPricesForSubscription(stripeSubscription.items.data),
   };
 };
 
@@ -74,15 +92,19 @@ export const handleCheckoutCompleted = async (
   const { customer, customer_email, subscription } = session;
   log.debug("customer", customer);
 
-  const { plan, team_id } = await findMetadataForSubscription(
-    subscription as string,
-    options
-  );
+  const {
+    base_price,
+    metered_price,
+    plan,
+    team_id,
+  } = await findMetadataForSubscription(subscription as string, options);
 
   const team = await updateTeam(
     {
       ...buildTeamFieldsForPayment(),
+      base_price,
       id: team_id,
+      metered_price,
       plan,
       stripe_customer_id: customer as string,
       stripe_subscription_id: subscription as string,
@@ -121,7 +143,9 @@ export const handleCustomerSubscriptionDeleted = async (
   await updateTeam(
     {
       ...buildTeamFieldsForPayment(),
+      base_price: null,
       id: team_id,
+      metered_price: null,
       plan: "free",
       stripe_customer_id: null,
       stripe_subscription_id: null,
@@ -173,10 +197,13 @@ export const handleInvoicePaid = async (
   const { customer, subscription } = invoice;
   log.debug("subscription", subscription);
 
-  const { ignore_webhook, plan, team_id } = await findMetadataForSubscription(
-    subscription as string,
-    options
-  );
+  const {
+    base_price,
+    ignore_webhook,
+    metered_price,
+    plan,
+    team_id,
+  } = await findMetadataForSubscription(subscription as string, options);
 
   if (ignore_webhook) {
     log.debug("ignore webhook for subscription", subscription);
@@ -186,7 +213,9 @@ export const handleInvoicePaid = async (
   await updateTeam(
     {
       ...buildTeamFieldsForPayment(),
+      base_price,
       id: team_id,
+      metered_price,
       plan,
       stripe_customer_id: customer as string,
       stripe_subscription_id: subscription as string,

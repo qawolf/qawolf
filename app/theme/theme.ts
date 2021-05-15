@@ -319,6 +319,7 @@ export const transition = `all ${transitionDuration}`;
 
 export const width = {
   content: "1080px",
+  dashboardSidebar: "280px",
   demoVideoPlay: "216px",
   docsSidebar: "280px",
 };

@@ -11,10 +11,16 @@ import Text from "../../../shared/Text";
 
 type Props = { team: TeamWithUsers };
 
-const getBill = (plan: TeamWithUsers["plan"], runCount: number): string => {
+const getBill = (
+  { base_price, metered_price, plan }: TeamWithUsers,
+  runCount: number
+): string => {
   if (plan !== "business") return "";
 
-  const bill = runCount <= 1000 ? 40 : Math.ceil(runCount / 500) * 20;
+  const bill =
+    runCount <= 1000
+      ? base_price || 119
+      : Math.ceil(runCount / 500) * (metered_price || 49);
   return ` (${copy.currentBill} $${bill})`;
 };
 
@@ -34,7 +40,7 @@ export default function Usage({ team }: Props): JSX.Element {
   const max = getMaxRuns(team.plan, runCount);
 
   const renewsAt = dateToText(daysFromNow(30, Number(team.renewed_at)));
-  const bill = getBill(team.plan, runCount);
+  const bill = getBill(team, runCount);
 
   return (
     <Box margin={{ top: "medium" }}>

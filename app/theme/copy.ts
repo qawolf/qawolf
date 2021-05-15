@@ -92,6 +92,7 @@ export const copy = {
   createSuiteDetail: "Select the environment to use when running your tests",
   createTag: "Create tag",
   createTagline: "Create tests at warp speed",
+  createTeam: "Create team",
   createTest: "Create test",
   createTrigger: "Create trigger",
   curious: "Curious yet?",
@@ -204,7 +205,7 @@ export const copy = {
   learnMore: "Learn more",
   learnQaWolf: "Learn how to use QA Wolf",
   learnQaWolfDetail:
-    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off and how to run selected lines of code.",
+    "Follow our interactive tutorial to learn the basics of QA Wolf. You will learn how to toggle code creation on/off, how to add snippets, and how to run selected lines of code.",
   learnedBasics: "Congratulations, you’ve mastered the basics of QA Wolf!",
   learnedBasics2: "Your QA Wolf",
   learnedBasics3: "will tag along for your journey.",
@@ -291,6 +292,7 @@ export const copy = {
   runSelectedCode4: 'which will automatically click this step’s "Next" button.',
   runTests: (count: number): string =>
     `Run ${count} test${count === 1 ? "" : "s"}`,
+  onPremise: "Run on premise",
   openVpn: "Connect with OpenVPN",
   other: "Other",
   otherDeploy: "Don't see the tool you use? Let us know!",
@@ -350,6 +352,9 @@ export const copy = {
   subscribeSuccess: "Thanks for subscribing 🎉",
   tagsEmpty: "No tags created",
   team: "Team",
+  teamMembers3: "Up to 3 team members",
+  teamMembers10: "Up to 10 team members",
+  teamMembersUnlimited: "Unlimited team members",
   teamName: "Team name",
   teamNamePlaceholder: "My Team",
   teamSettings: "Team settings",
@@ -364,7 +369,7 @@ export const copy = {
   testRuns: "Test runs",
   testRunsStarter: "100 test runs per month",
   testRunsBusiness: "1000 test runs per month",
-  testRunsBusinessExtra: "$20 per 500 extra test runs",
+  testRunsBusinessExtra: "$49 per 500 extra test runs",
   tests: "Tests",
   toastAutosave: "🐺 QA Wolf autosaves your tests",
   trigger: "Trigger",
@@ -380,7 +385,6 @@ export const copy = {
   tryForFree: "Try for free",
   uncommittedChanges: "Uncommitted changes",
   uncommittedChangesAlert: "You have uncommitted changes",
-  unlimitedTeamMembers: "Unlimited team members",
   upgrade: "Upgrade",
   urlPlaceholder: "https://myawesomesite.com",
   value: "Value",
@@ -395,9 +399,16 @@ export const copy = {
   wolfGreeting: (wolfName: string): string => {
     return `Hi, I'm ${wolfName}!`;
   },
+  wolfHere: (wolfName: string): string => {
+    return `${wolfName} here - `;
+  },
   wolfIntro: "Nice to meet you, I'm your QA Wolf!",
   wolfIntro2: "I help you set up tests fast, so you can ship confidently.",
   wolfIntro3: "Let's start by giving me a name:",
+  wolfTipCreateTest: "let's create your first test.",
+  wolfTipInvite: "invite team members to assemble your wolfpack.",
+  wolfTipTrigger: "run your tests on deployment or on a schedule.",
+  wolfTipTutorial: "let's learn how to use QA Wolf.",
   woof: "Woof.",
   woof2: "Woof woof woof.",
   zeroSetup: "Zero setup",

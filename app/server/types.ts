@@ -309,6 +309,7 @@ export type Team = {
   alert_integration_id: string | null;
   alert_only_on_failure?: boolean;
   api_key: string;
+  base_price?: number | null;
   created_at?: string;
   default_branches?: string | null;
   deleted_at?: string | null;
@@ -321,6 +322,7 @@ export type Team = {
   is_enabled: boolean;
   last_synced_at: string | null;
   limit_reached_at: string | null;
+  metered_price?: number | null;
   name: string;
   plan: TeamPlan;
   renewed_at: string;

@@ -22,7 +22,9 @@ const syncTeamSpy = jest.spyOn(syncTeams, "syncTeam").mockResolvedValue();
 
 beforeAll(() => {
   jest.spyOn(stripeFunction, "findMetadataForSubscription").mockResolvedValue({
+    base_price: 119,
     ignore_webhook: false,
+    metered_price: 49,
     team_id: "teamId",
     plan: "business",
   });
@@ -49,7 +51,9 @@ describe("handleCheckoutCompleted", () => {
     const team = await db.select("*").from("teams").first();
 
     expect(team).toMatchObject({
+      base_price: 119,
       limit_reached_at: null,
+      metered_price: 49,
       plan: "business",
       renewed_at: expect.any(Date),
       stripe_customer_id: "stripeCustomerId",
@@ -83,7 +87,9 @@ describe("handleCustomerSubscriptionDeleted", () => {
     const team = await db.select("*").from("teams").first();
 
     expect(team).toMatchObject({
+      base_price: null,
       limit_reached_at: null,
+      metered_price: null,
       plan: "free",
       renewed_at: expect.any(Date),
       stripe_customer_id: null,
@@ -111,8 +117,10 @@ describe("handleInvoicePaid", () => {
     const team = await db.select("*").from("teams").first();
 
     expect(team).toMatchObject({
+      base_price: 119,
       is_enabled: true,
       limit_reached_at: null,
+      metered_price: 49,
       renewed_at: expect.any(Date),
       stripe_subscription_id: "stripeSubscriptionId",
     });
@@ -122,7 +130,9 @@ describe("handleInvoicePaid", () => {
     jest
       .spyOn(stripeFunction, "findMetadataForSubscription")
       .mockResolvedValue({
+        base_price: 119,
         ignore_webhook: true,
+        metered_price: 49,
         team_id: "teamId",
         plan: "business",
       });
@@ -138,7 +148,9 @@ describe("handleInvoicePaid", () => {
     jest
       .spyOn(stripeFunction, "findMetadataForSubscription")
       .mockResolvedValue({
+        base_price: 119,
         ignore_webhook: false,
+        metered_price: 49,
         team_id: "teamId",
         plan: "business",
       });
