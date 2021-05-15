@@ -92,6 +92,7 @@ export const copy = {
   createSuiteDetail: "Select the environment to use when running your tests",
   createTag: "Create tag",
   createTagline: "Create tests at warp speed",
+  createTeam: "Create team",
   createTest: "Create test",
   createTrigger: "Create trigger",
   curious: "Curious yet?",

@@ -17,6 +17,7 @@ import {
   createSubscriberMutation,
   createSuiteMutation,
   createTagMutation,
+  createTeamMutation,
   createTestMutation,
   createTriggerMutation,
   deleteEnvironmentMutation,
@@ -180,7 +181,11 @@ type CreateTagVariables = {
   team_id: string;
 };
 
-export type CreateTestData = {
+type CreateTeamData = {
+  createTeam: Team;
+};
+
+type CreateTestData = {
   createTest: Test;
 };
 
@@ -574,6 +579,24 @@ export const useCreateTag = (): MutationTuple<
     awaitRefetchQueries: true,
     onError,
     refetchQueries: ["tags", "tagsForTests"],
+  });
+};
+
+export const useCreateTeam = (): MutationTuple<
+  CreateTeamData,
+  Record<string, never>
+> => {
+  return useMutation<CreateTeamData>(createTeamMutation, {
+    awaitRefetchQueries: true,
+    onCompleted: (response) => {
+      // take user to new team
+      const { createTeam } = response || {};
+      if (!createTeam) return;
+
+      state.setTeamId(createTeam.id);
+    },
+    onError,
+    refetchQueries: ["currentUser"],
   });
 };
 

@@ -50,7 +50,7 @@ export const createDefaultTeam = async ({
 
   const timestamp = new Date().toISOString();
 
-  const team = {
+  const teamData = {
     alert_integration_id: null,
     api_key: encrypt(buildApiKey()),
     created_at: timestamp,
@@ -69,8 +69,9 @@ export const createDefaultTeam = async ({
     updated_at: timestamp,
   };
 
-  await db("teams").insert(team);
-  log.debug("created", team);
+  const teams = await db("teams").insert(teamData, "*");
+  const team = teams[0];
+  log.debug("created", team.id);
 
   await createEnvironment(
     { name: DEFAULT_ENVIRONMENT_NAME, team_id: team.id },

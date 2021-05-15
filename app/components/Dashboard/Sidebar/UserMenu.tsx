@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
+import { useCreateTeam } from "../../../hooks/mutations";
 import { useLogOut } from "../../../hooks/onLogOut";
 import { routes } from "../../../lib/routes";
 import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import Divider from "../../shared/Divider";
+import Add from "../../shared/icons/Add";
 import Gear from "../../shared/icons/Gear";
 import LogOut from "../../shared/icons/LogOut";
 import Menu from "../../shared/Menu";
@@ -24,9 +26,15 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
   const { user } = useContext(UserContext);
 
+  const [createTeam, { loading }] = useCreateTeam();
   const handleLogOut = useLogOut();
 
   if (!isOpen || !user) return null;
+
+  const handleCreateTeamClick = (): void => {
+    if (loading) return;
+    createTeam();
+  };
 
   const handleSettingsClick = (): void => {
     push(routes.settings);
@@ -53,6 +61,11 @@ export default function UserMenu({ isOpen, onClose }: Props): JSX.Element {
   return (
     <Menu direction="down">
       {optionsHtml}
+      <Option
+        IconComponent={Add}
+        label={copy.createTeam}
+        onClick={handleCreateTeamClick}
+      />
       <Divider margin={{ vertical: "xxxsmall" }} />
       <Option
         IconComponent={Gear}
