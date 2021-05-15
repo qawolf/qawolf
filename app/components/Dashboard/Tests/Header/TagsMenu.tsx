@@ -7,16 +7,17 @@ import { edgeSize } from "../../../../theme/theme";
 import Divider from "../../../shared/Divider";
 import Drop from "../../../shared/Drop";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
-import { noTagId } from "../../helpers";
+import { noTagName } from "../../helpers";
+import EditTags from "./EditTags";
 import TagOption from "./TagOption";
 
 type Props = {
   filter: TagFilter;
   isOpen: boolean;
-  onClick: (tagId: string) => void;
+  onClick: (tagName: string) => void;
   onClose: () => void;
   onFilterClick: (filter: TagFilter) => void;
-  tagIds: string[];
+  tagNames: string[];
   tags: Tag[] | null;
   target: DropProps["target"];
 };
@@ -35,7 +36,7 @@ export default function TagsMenu({
   onClose,
   onFilterClick,
   tags,
-  tagIds,
+  tagNames,
   target,
 }: Props): JSX.Element {
   if (!isOpen || !tags) return null;
@@ -47,9 +48,9 @@ export default function TagsMenu({
   const optionsHtml = tags.map((tag) => {
     return (
       <TagOption
-        isChecked={tagIds.includes(tag.id)}
+        isChecked={tagNames.includes(tag.name)}
         key={tag.id}
-        onClick={() => onClick(tag.id)}
+        onClick={() => onClick(tag.name)}
         tag={tag}
       />
     );
@@ -65,7 +66,7 @@ export default function TagsMenu({
     >
       {!!tags.length && (
         <>
-          <Box pad={{ horizontal: "xsmall", vertical: "xxsmall" }}>
+          <Box flex={false} pad={{ horizontal: "xsmall", vertical: "xxsmall" }}>
             <RadioButtonGroup
               direction="row"
               gap={edgeSize.small}
@@ -79,12 +80,13 @@ export default function TagsMenu({
         </>
       )}
       {optionsHtml}
-      {!!tags.length && <Divider {...dividerProps} />}
       <TagOption
-        isChecked={tagIds.includes(noTagId)}
-        key={noTagId}
-        onClick={() => onClick(noTagId)}
+        isChecked={tagNames.includes(noTagName)}
+        key={noTagName}
+        onClick={() => onClick(noTagName)}
       />
+      <Divider {...dividerProps} />
+      <EditTags onClose={onClose} />
     </Drop>
   );
 }

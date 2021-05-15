@@ -14,12 +14,12 @@ type Props = {
 export default function Tags({ filterOnClick, tags }: Props): JSX.Element {
   const { query, replace } = useRouter();
 
-  const handleTagClick = (tagId: string): void => {
-    replace(buildTestsPath([tagId], query.filter as TagFilter));
+  const handleTagClick = (tagName: string): void => {
+    replace(buildTestsPath([tagName], query.filter as TagFilter));
   };
 
   const tagsHtml = tags.map((tag) => {
-    const onClick = filterOnClick ? () => handleTagClick(tag.id) : undefined;
+    const onClick = filterOnClick ? () => handleTagClick(tag.name) : undefined;
 
     return <TagBadge key={tag.id} onClick={onClick} tag={tag} />;
   });

@@ -3,8 +3,14 @@ import Link from "next/link";
 
 import { routes } from "../../../../../lib/routes";
 import { SuiteRun } from "../../../../../lib/types";
-import { border, edgeSize, overflowStyle } from "../../../../../theme/theme";
+import {
+  border,
+  colors,
+  edgeSize,
+  overflowStyle,
+} from "../../../../../theme/theme";
 import CheckBox from "../../../../shared/CheckBox";
+import Trash from "../../../../shared/icons/Trash";
 import StatusIcon from "../../../../shared/StatusIcon";
 import TestGif from "../../../../shared/TestGif";
 import Text from "../../../../shared/Text";
@@ -26,6 +32,7 @@ export default function RunCard({
   return (
     <Box
       align="center"
+      background={run.is_test_deleted ? "gray1" : "gray0"}
       border={{ ...border, side: "bottom" }}
       direction="row"
       pad={{ left: horizontalPad }}
@@ -33,6 +40,7 @@ export default function RunCard({
       <CheckBox
         a11yTitle={run.test_name}
         checked={isChecked}
+        disabled={run.is_test_deleted}
         onChange={onCheck}
       />
       <Link href={`${routes.run}/${run.id}`}>
@@ -60,6 +68,11 @@ export default function RunCard({
               >
                 {run.test_name}
               </Text>
+              {run.is_test_deleted && (
+                <Box margin={{ left: "xxsmall" }}>
+                  <Trash color={colors.gray7} size={edgeSize.small} />
+                </Box>
+              )}
             </Box>
             <Details run={run} />
           </Box>

@@ -59,6 +59,7 @@ export const copy = {
     "Select an element, then add a snippet with your chosen action and selector.",
   chooseElementHeader: "Choose an element in the browser",
   chooseGitHubRepo: "Choose GitHub repository",
+  clearFilters: "Clear filters",
   cli: "CLI",
   clickMe: "Click me",
   clickMeClicked: "Clicked!",
@@ -128,8 +129,9 @@ export const copy = {
   edit: "Edit",
   editTags: "Edit tags",
   editTagsDetail: "Choose which tags you want to assign",
+  editTagsDetailNoTests: "Create, rename, and delete tags",
   editTagsForTests: (count: number): string =>
-    `Edit tags${count === 1 ? "" : ` for ${count} tests`}`,
+    `Edit tags${count ? ` for ${count} test${count === 1 ? "" : "s"}` : ""}`,
   editTest: "Edit test",
   editTrigger: "Edit trigger",
   email: "Email",

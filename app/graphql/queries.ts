@@ -122,6 +122,7 @@ export const runnerQuery = gql`
 export const shortSuiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
+      branch
       created_at
       environment_id
       environment_name

@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTagsForTests } from "../../../hooks/queries";
 import { useTagQuery } from "../../../hooks/tagQuery";
@@ -14,32 +14,32 @@ type Props = {
 };
 
 export default function Tests({ branch, teamId }: Props): JSX.Element {
-  const { filter, tagIds } = useTagQuery();
+  const { filter, tagNames } = useTagQuery();
 
   const [search, setSearch] = useState("");
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
   const { tests: testsData, loading } = useTests({ branch, teamId });
+  // prevent infinite render
+  const testIds = useMemo(() => {
+    return testsData.map((t) => t.id);
+  }, [testsData]);
 
-  const { data: tagsData } = useTagsForTests({
-    test_ids: testsData.map((t) => t.id),
-  });
+  const { data: tagsData } = useTagsForTests({ test_ids: testIds });
   const testTags = tagsData?.tagsForTests || [];
 
   const tests = filterTests({
     filter,
     search,
-    tagIds,
+    tagNames,
     tests: loading ? null : testsData,
     testTags: tagsData?.tagsForTests || null,
   });
 
-  // clear checked tests when selected tags change
+  // clear checked tests when filters change
   useEffect(() => {
     setCheckedTestIds([]);
-  }, [filter, tagIds]);
-
-  const testIds = testsData.map((t) => t.id);
+  }, [filter, tagNames, testIds]);
 
   return (
     <Box width="full">
@@ -47,7 +47,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
         filter={filter}
         search={search}
         setSearch={setSearch}
-        tagIds={tagIds}
+        tagNames={tagNames}
       />
       <List
         checkedTestIds={checkedTestIds}

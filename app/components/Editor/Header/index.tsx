@@ -1,8 +1,9 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { timeToText } from "../../../lib/helpers";
+import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
@@ -35,6 +36,11 @@ export default function Header({ mode }: Props): JSX.Element {
 
   const branch = suite?.branch || stateBranch || null;
   const testId = test_id as string;
+
+  // update branch to suite branch if possible
+  useEffect(() => {
+    if (suite?.branch) state.setBranch(suite.branch);
+  }, [suite?.branch]);
 
   return (
     <>
@@ -70,7 +76,7 @@ export default function Header({ mode }: Props): JSX.Element {
             <Button
               IconComponent={Edit}
               href={buildTestHref({ run, suite })}
-              isDisabled={!run?.test_id}
+              isDisabled={!run?.test_id || !!test?.deleted_at}
               label={copy.editTest}
               type="primary"
             />

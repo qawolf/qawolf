@@ -51,6 +51,7 @@ export default function TagListItems({
     return (
       <ListItem
         editTagId={editTagId}
+        isDisabled={!testIds.length}
         key={tag.id}
         noBorder={i === tags.length - 1}
         onClose={onClose}

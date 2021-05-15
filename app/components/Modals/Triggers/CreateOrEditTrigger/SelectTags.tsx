@@ -19,11 +19,8 @@ export default function SelectTags({
 
     const index = newTagIds.indexOf(tagId);
 
-    if (index > -1) {
-      newTagIds.splice(index, 1);
-    } else {
-      newTagIds.push(tagId);
-    }
+    if (index > -1) newTagIds.splice(index, 1);
+    else newTagIds.push(tagId);
 
     setTagIds(newTagIds);
   };

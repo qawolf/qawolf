@@ -8,6 +8,7 @@ import Form from "./Form";
 
 type Props = {
   editTagId: string | null;
+  isDisabled: boolean;
   noBorder: boolean;
   onClick: () => void;
   onClose: () => void;
@@ -19,6 +20,7 @@ type Props = {
 
 export default function ListItem({
   editTagId,
+  isDisabled,
   noBorder,
   onClick,
   onClose,
@@ -34,7 +36,12 @@ export default function ListItem({
       </Box>
     ) : (
       <>
-        <TagCheckBox onClick={onClick} selectState={selectState} tag={tag} />
+        <TagCheckBox
+          isDisabled={isDisabled}
+          onClick={onClick}
+          selectState={selectState}
+          tag={tag}
+        />
         <EditDeleteButtons
           name={tag.name}
           onDelete={onDelete}
