@@ -407,8 +407,7 @@ export const copy = {
   wolfIntro3: "Let's start by giving me a name:",
   wolfTipCreateTest: "let's create your first test.",
   wolfTipInvite: "invite team members to assemble your wolfpack.",
-  wolfTipTrigger:
-    "run your tests on Vercel/Netlify deployments or on a schedule.",
+  wolfTipTrigger: "run your tests on deployment or on a schedule.",
   wolfTipTutorial: "let's learn how to use QA Wolf.",
   woof: "Woof.",
   woof2: "Woof woof woof.",
