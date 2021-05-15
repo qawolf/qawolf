@@ -1,5 +1,6 @@
-import { encrypt } from "../../../server/models/encrypt";
+import { findTeamsForUser } from "../../../server/models/team";
 import {
+  createTeamResolver,
   teamResolver,
   updateTeamResolver,
 } from "../../../server/resolvers/team";
@@ -15,10 +16,34 @@ import {
 const db = prepareTestDb();
 const context = { ...testContext, db };
 
+describe("createTeamResolver", () => {
+  beforeAll(() => db("users").insert(buildUser({})));
+
+  afterAll(async () => {
+    await db("environments").del();
+    await db("team_users").del();
+    await db("users").del();
+
+    return db("teams").del();
+  });
+
+  it("creates a new team", async () => {
+    const team = await createTeamResolver({}, {}, context);
+
+    expect(team).toMatchObject({ plan: "free" });
+
+    const teamsForUser = await findTeamsForUser("userId", {
+      db,
+      logger: context.logger,
+    });
+
+    expect(teamsForUser).toHaveLength(1);
+  });
+});
+
 describe("teamResolver", () => {
   beforeAll(async () => {
-    await db("teams").insert(buildTeam({}));
-    await db("teams").update({ api_key: encrypt("qawolf_api_key") });
+    await db("teams").insert(buildTeam({ apiKey: "qawolf_api_key" }));
 
     await db("users").insert(buildUser({}));
 
@@ -40,8 +65,7 @@ describe("teamResolver", () => {
 
 describe("updateTeamResolver", () => {
   beforeAll(async () => {
-    await db("teams").insert(buildTeam({}));
-    await db("teams").update({ api_key: encrypt("qawolf_api_key") });
+    await db("teams").insert(buildTeam({ apiKey: "qawolf_api_key" }));
 
     await db("users").insert(buildUser({}));
     await db("integrations").insert(buildIntegration({}));
@@ -58,6 +82,7 @@ describe("updateTeamResolver", () => {
   });
 
   it("updates a team alert settings", async () => {
+    console.log("TEAMS", await db("teams"));
     const team = await updateTeamResolver(
       {},
       {

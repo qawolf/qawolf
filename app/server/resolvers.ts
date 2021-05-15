@@ -56,7 +56,11 @@ import {
   updateTagResolver,
 } from "./resolvers/tag";
 import { updateTagTestsResolver } from "./resolvers/tag_test";
-import { teamResolver, updateTeamResolver } from "./resolvers/team";
+import {
+  createTeamResolver,
+  teamResolver,
+  updateTeamResolver,
+} from "./resolvers/team";
 import {
   createTestResolver,
   deleteTestsResolver,
@@ -105,6 +109,7 @@ export const resolvers = {
     createSubscriber: createSubscriberResolver,
     createSuite: createSuiteResolver,
     createTag: createTagResolver,
+    createTeam: createTeamResolver,
     createTest: createTestResolver,
     createTrigger: createTriggerResolver,
     deleteEnvironment: deleteEnvironmentResolver,

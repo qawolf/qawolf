@@ -811,6 +811,13 @@ type Mutation {
   ): Tag!
 
   """
+  Create a new team.
+
+  Requires that you are logged in.
+  """
+  createTeam: Team!
+
+  """
   Creates a new test. The URL is used as the first page the browser
   will visit in the test, but this can be changed later.
 
