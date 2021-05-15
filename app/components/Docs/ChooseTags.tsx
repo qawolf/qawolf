@@ -4,8 +4,7 @@ export default function ChooseTags(): JSX.Element {
   return (
     <>
       <p>
-        You can choose to run all your tests on a schedule, or only tests with
-        specific tags.
+        You can choose to run all your tests, or only tests with specific tags.
       </p>
       <Image
         alt="Choose tags"

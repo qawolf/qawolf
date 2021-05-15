@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import AssignTrigger from "../../components/Docs/AssignTrigger";
 import ChooseEnvironment from "../../components/Docs/ChooseEnvironment";
+import ChooseTags from "../../components/Docs/ChooseTags";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
@@ -23,14 +23,14 @@ QA Wolf maintains a <ExternalLink href="https://app.netlify.com/plugins/netlify-
 
 <CreateTrigger description="on Netlify deployments" />
 
-Select the "Deployment" tab in the middle, and choose Netlify as your deploy service.
+Select the "Deployment" tab on the right and choose Netlify as your deploy service.
 You can optionally rename your trigger.
 
 <Image
   alt="Create deploy trigger"
-  height={301}
+  height={303}
   src={`/docs/run-tests-on-netlify-deployment/create-deploy-trigger.png`}
-  width={483}
+  width={487}
 />
 
 <SubHeader>Install QA Wolf Build Plugin</SubHeader>
@@ -119,11 +119,13 @@ QA Wolf allows you to run your tests on all deployments (preview and production)
 
 <InstallGitHubApp service="netlify" />
 
+<SubHeader>Choose Tags</SubHeader>
+
+<ChooseTags />
+
 <ChooseEnvironment />
 
 <SubHeader>Assign Deployment Trigger to Test</SubHeader>
-
-<AssignTrigger doc="run-tests-on-netlify-deployment" />
 
 <SubHeader>Update Tests to Use URL from Netlify</SubHeader>
 
