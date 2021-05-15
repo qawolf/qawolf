@@ -49,7 +49,7 @@ export const buildTipCopy = (
   };
 };
 
-export const getIsOnboraded = (onboarding: Onboarding | null): boolean => {
+export const getIsOnboarded = (onboarding: Onboarding | null): boolean => {
   if (!onboarding) return true;
 
   // completing tutorial not hard requirement for onboarding
