@@ -82,7 +82,6 @@ describe("updateTeamResolver", () => {
   });
 
   it("updates a team alert settings", async () => {
-    console.log("TEAMS", await db("teams"));
     const team = await updateTeamResolver(
       {},
       {
