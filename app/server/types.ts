@@ -458,6 +458,7 @@ export type CreateSuiteMutation = {
 export type CreateTagMutation = {
   name: string;
   team_id: string;
+  test_ids: string[] | null;
 };
 
 export type CreateTestMutation = {

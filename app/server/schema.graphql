@@ -808,6 +808,9 @@ type Mutation {
 
     "ID of the team that should own the tag"
     team_id: ID!
+
+    "IDs of tests to assign to the tag"
+    test_ids: [ID!]
   ): Tag!
 
   """

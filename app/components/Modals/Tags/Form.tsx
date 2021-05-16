@@ -10,11 +10,12 @@ import { StateContext } from "../../StateContext";
 type Props = {
   onClose: () => void;
   tag?: Tag;
+  testIds?: string[];
 };
 
 export const id = "tag";
 
-export default function Form({ tag, onClose }: Props): JSX.Element {
+export default function Form({ onClose, tag, testIds }: Props): JSX.Element {
   const { teamId } = useContext(StateContext);
 
   const [name, setName] = useState(tag?.name || "");
@@ -40,7 +41,9 @@ export default function Form({ tag, onClose }: Props): JSX.Element {
         variables: { id: tag.id, name },
       }).then(onClose);
     } else {
-      createTag({ variables: { name, team_id: teamId } }).then(onClose);
+      createTag({
+        variables: { name, team_id: teamId, test_ids: testIds },
+      }).then(onClose);
     }
   };
 

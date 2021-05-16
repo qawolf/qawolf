@@ -83,7 +83,7 @@ export default function List({
       {isCreate && (
         <>
           <Divider />
-          <Form onClose={handleClose} />
+          <Form onClose={handleClose} testIds={testIds} />
         </>
       )}
       <Buttons

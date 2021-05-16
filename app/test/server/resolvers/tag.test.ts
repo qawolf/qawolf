@@ -29,16 +29,38 @@ beforeAll(async () => {
 });
 
 describe("createTagResolver", () => {
+  beforeAll(() => db("tests").insert(buildTest({})));
+
   afterEach(() => db("tags").del());
+
+  afterAll(() => db("tests").del());
 
   it("creates a new tag", async () => {
     const tag = await createTagResolver(
       {},
-      { name: "New tag", team_id: "teamId" },
+      { name: "New tag", team_id: "teamId", test_ids: null },
       context
     );
 
     expect(tag).toMatchObject({ name: "New tag", team_id: "teamId" });
+
+    const tagTests = await db("tag_tests");
+
+    expect(tagTests).toEqual([]);
+  });
+
+  it("creates a new tag and assigns it to a test", async () => {
+    const tag = await createTagResolver(
+      {},
+      { name: "New tag", team_id: "teamId", test_ids: ["testId"] },
+      context
+    );
+
+    expect(tag).toMatchObject({ name: "New tag", team_id: "teamId" });
+
+    const tagTests = await db("tag_tests");
+
+    expect(tagTests).toMatchObject([{ tag_id: tag.id, test_id: "testId" }]);
   });
 });
 
