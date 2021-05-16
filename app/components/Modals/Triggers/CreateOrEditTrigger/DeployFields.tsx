@@ -28,52 +28,36 @@ export default function DeployFields({
   setDeployIntegrationId,
   setDeployProvider,
 }: Props): JSX.Element {
-  let innerHtml = (
-    <GitHubRepo
-      deployIntegrationId={deployIntegrationId}
-      hasError={hasDeployError}
-      setDeployIntegrationId={setDeployIntegrationId}
-    />
-  );
-
-  if (deployProvider === "vercel") {
-    innerHtml = (
-      <>
-        <GitHubRepo
-          deployIntegrationId={deployIntegrationId}
-          hasError={hasDeployError}
-          setDeployIntegrationId={setDeployIntegrationId}
-        />
-        <VercelFields
-          deployBranches={deployBranches}
-          deployEnv={deployEnv}
-          setDeployBranches={setDeployBranches}
-          setDeployEnv={setDeployEnv}
-        />
-      </>
-    );
-  }
-
-  if (deployProvider === "netlify") {
-    innerHtml = (
-      <>
-        <NetlifyFields deployEnv={deployEnv} setDeployEnv={setDeployEnv} />
-        <GitHubRepo
-          deployIntegrationId={deployIntegrationId}
-          label={copy.netlifyGitHub}
-          setDeployIntegrationId={setDeployIntegrationId}
-        />
-      </>
-    );
-  }
-
   return (
     <>
       <DeployProviders
         provider={deployProvider}
         setProvider={setDeployProvider}
       />
-      {innerHtml}
+      {deployProvider === "vercel" ? (
+        <>
+          <GitHubRepo
+            deployIntegrationId={deployIntegrationId}
+            hasError={hasDeployError}
+            setDeployIntegrationId={setDeployIntegrationId}
+          />
+          <VercelFields
+            deployBranches={deployBranches}
+            deployEnv={deployEnv}
+            setDeployBranches={setDeployBranches}
+            setDeployEnv={setDeployEnv}
+          />
+        </>
+      ) : (
+        <>
+          <NetlifyFields deployEnv={deployEnv} setDeployEnv={setDeployEnv} />
+          <GitHubRepo
+            deployIntegrationId={deployIntegrationId}
+            label={copy.netlifyGitHub}
+            setDeployIntegrationId={setDeployIntegrationId}
+          />
+        </>
+      )}
     </>
   );
 }

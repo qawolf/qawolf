@@ -99,7 +99,7 @@ export default function Form({
     if (
       mode === "deployment" &&
       !deployIntegrationId &&
-      ["render", "vercel"].includes(deployProvider)
+      deployProvider === "vercel"
     ) {
       setHasDeployError(true);
       return;

@@ -55,17 +55,11 @@ export const buildTriggerFields = ({
     };
   }
 
-  let deployment_environment = null;
-  if (["netlify", "vercel"].includes(deployProvider)) {
-    deployment_environment =
-      deployEnv && deployEnv !== "all" ? deployEnv : null;
-  }
-
   return {
     ...constantFields,
     deployment_branches:
       deployBranches && deployProvider === "vercel" ? deployBranches : null,
-    deployment_environment,
+    deployment_environment: deployEnv && deployEnv !== "all" ? deployEnv : null,
     deployment_integration_id: deployIntegrationId || null,
     deployment_provider: deployProvider,
     repeat_minutes: null,

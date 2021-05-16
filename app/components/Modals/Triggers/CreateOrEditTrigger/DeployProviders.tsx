@@ -5,7 +5,6 @@ import { DeploymentProvider } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
-import Render from "../../../shared/icons/Render";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
@@ -17,7 +16,7 @@ type Props = {
 const buttonProps = {
   justify: "center" as const,
   type: "secondary" as const,
-  width: `calc(33.33% - 2 / 3 * ${edgeSize.xxsmall})`,
+  width: `calc(50% - ${edgeSize.xxxsmall})`,
 };
 
 export default function DeployProvider({
@@ -41,13 +40,6 @@ export default function DeployProvider({
           isSelected={provider === "netlify"}
           label={copy.netlify}
           onClick={() => setProvider("netlify")}
-        />
-        <Button
-          {...buttonProps}
-          IconComponent={Render}
-          isSelected={provider === "render"}
-          label={copy.render}
-          onClick={() => setProvider("render")}
         />
       </Box>
     </>

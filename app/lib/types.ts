@@ -4,7 +4,7 @@ export type AuthenticatedUser = {
   user: User;
 };
 
-export type DeploymentProvider = "netlify" | "render" | "vercel";
+export type DeploymentProvider = "netlify" | "vercel";
 
 export type Editor = {
   helpers: string;
