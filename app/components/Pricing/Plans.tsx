@@ -29,8 +29,8 @@ const plans: PlanType[] = [
     price: 119,
     valueProps: [
       copy.testRunsBusiness,
-      copy.testRunsBusinessExtra,
       copy.teamMembers10,
+      copy.testRunsBusinessExtra,
     ],
   },
   {
@@ -43,7 +43,7 @@ const plans: PlanType[] = [
       copy.onPremise,
       copy.openVpn,
       copy.teamMembersUnlimited,
-      copy.dedicatedSupport,
+      copy.syncToGitHub,
     ],
   },
 ];
