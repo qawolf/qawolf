@@ -155,8 +155,8 @@ export const createSuiteMutation = gql`
 `;
 
 export const createTagMutation = gql`
-  mutation createTag($name: String!, $team_id: ID!) {
-    createTag(name: $name, team_id: $team_id) {
+  mutation createTag($name: String!, $team_id: ID!, $test_ids: [ID!]) {
+    createTag(name: $name, team_id: $team_id, test_ids: $test_ids) {
       ...TagFragment
     }
   }

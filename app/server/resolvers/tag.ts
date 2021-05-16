@@ -6,6 +6,7 @@ import {
   findTagsForTrigger,
   updateTag,
 } from "../models/tag";
+import { createTagTestsForTag } from "../models/tag_test";
 import {
   Context,
   CreateTagMutation,
@@ -21,15 +22,31 @@ import { ensureTagAccess, ensureTeamAccess, ensureTestAccess } from "./utils";
 
 export const createTagResolver = async (
   _: Record<string, unknown>,
-  { name, team_id }: CreateTagMutation,
+  { name, team_id, test_ids }: CreateTagMutation,
   { db, logger, teams }: Context
 ): Promise<Tag> => {
   const log = logger.prefix("createTagResolver");
   log.debug("team", team_id);
 
-  ensureTeamAccess({ logger, team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id, teams });
+  await Promise.all(
+    (test_ids || []).map((test_id) => {
+      return ensureTestAccess({ teams: [team], test_id }, { db, logger });
+    })
+  );
 
-  return createTag({ name, team_id }, { db, logger });
+  return db.transaction(async (trx) => {
+    const tag = await createTag({ name, team_id }, { db: trx, logger });
+
+    if (test_ids?.length) {
+      await createTagTestsForTag(
+        { tag_id: tag.id, test_ids },
+        { db: trx, logger }
+      );
+    }
+
+    return tag;
+  });
 };
 
 export const deleteTagResolver = async (

@@ -179,6 +179,7 @@ type CreateTagData = {
 type CreateTagVariables = {
   name: string;
   team_id: string;
+  test_ids?: string[] | null;
 };
 
 type CreateTeamData = {

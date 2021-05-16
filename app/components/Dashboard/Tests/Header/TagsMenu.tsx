@@ -8,7 +8,6 @@ import Divider from "../../../shared/Divider";
 import Drop from "../../../shared/Drop";
 import RadioButtonGroup from "../../../shared/RadioButtonGroup";
 import { noTagName } from "../../helpers";
-import EditTags from "./EditTags";
 import TagOption from "./TagOption";
 
 type Props = {
@@ -80,13 +79,12 @@ export default function TagsMenu({
         </>
       )}
       {optionsHtml}
+      {!!tags.length && <Divider {...dividerProps} />}
       <TagOption
         isChecked={tagNames.includes(noTagName)}
         key={noTagName}
         onClick={() => onClick(noTagName)}
       />
-      <Divider {...dividerProps} />
-      <EditTags onClose={onClose} />
     </Drop>
   );
 }
