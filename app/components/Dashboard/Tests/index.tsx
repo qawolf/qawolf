@@ -20,10 +20,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   const [checkedTestIds, setCheckedTestIds] = useState<string[]>([]);
 
   const { tests: testsData, loading } = useTests({ branch, teamId });
-  // prevent infinite render
-  const testIds = useMemo(() => {
-    return testsData.map((t) => t.id);
-  }, [testsData]);
+  const testIds = testsData.map((t) => t.id);
 
   const { data: tagsData } = useTagsForTests({ test_ids: testIds });
   const testTags = tagsData?.tagsForTests || [];
@@ -39,7 +36,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   // clear checked tests when filters change
   useEffect(() => {
     setCheckedTestIds([]);
-  }, [filter, tagNames, testIds]);
+  }, [filter, tagNames, testIds.join(",")]);
 
   return (
     <Box width="full">
