@@ -28,10 +28,10 @@ export const createTagResolver = async (
   const log = logger.prefix("createTagResolver");
   log.debug("team", team_id);
 
-  ensureTeamAccess({ logger, team_id, teams });
+  const team = ensureTeamAccess({ logger, team_id, teams });
   await Promise.all(
     (test_ids || []).map((test_id) => {
-      return ensureTestAccess({ teams, test_id }, { db, logger });
+      return ensureTestAccess({ teams: [team], test_id }, { db, logger });
     })
   );
 
