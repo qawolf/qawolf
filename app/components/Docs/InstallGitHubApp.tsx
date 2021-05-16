@@ -2,14 +2,14 @@ import capitalize from "lodash/capitalize";
 
 import Image from "./Image";
 
-type Props = { service: "netlify" | "vercel" };
+type Props = { service: "netlify" | "render" | "vercel" };
 
 export default function InstallGitHubApp({ service }: Props): JSX.Element {
   const capitalizedService = capitalize(service);
 
   return (
     <>
-      {service === "vercel" && (
+      {["render", "vercel"].includes(service) && (
         <>
           <p>
             {`Select the "Deployment" tab on the right, and choose ${capitalizedService} as your
@@ -23,7 +23,7 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
           />
         </>
       )}
-      {service === "vercel" ? (
+      {["render", "vercel"].includes(service) ? (
         <p>
           Now we'll connect our GitHub repository (repo) to QA Wolf. Click the
           "Connect GitHub repository" button to get started.
@@ -36,9 +36,9 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
       )}
       <Image
         alt="Connect GitHub repository"
-        height={service === "vercel" ? 171 : 83}
+        height={service === "netlify" ? 83 : 171}
         src={`/docs/run-tests-on-${service}-deployment/github-repo.png`}
-        width={service === "vercel" ? 485 : 491}
+        width={service === "netlify" ? 491 : 485}
       />
       <p>
         A new tab will open and visit GitHub. You will be asked to choose the
@@ -57,7 +57,7 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
       <p>Confirm the repo you want to test is now selected in the dropdown.</p>
       <Image
         alt="Choose GitHub repo"
-        height={service === "vercel" ? 166 : 85.5}
+        height={service === "netlify" ? 85.5 : 166}
         src={`/docs/run-tests-on-${service}-deployment/choose-repo.png`}
         width={486}
       />

@@ -266,6 +266,7 @@ export const copy = {
   qawolf: "QA Wolf",
   readDocs: "Read the docs",
   rename: "Rename",
+  render: "Render",
   resetsOn: "Resets on:",
   required: "Required",
   roadmap: "Roadmap",

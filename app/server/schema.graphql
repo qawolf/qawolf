@@ -27,6 +27,9 @@ enum DeploymentProvider {
   "Netlify"
   netlify
 
+  "Render"
+  render
+
   "Vercel"
   vercel
 }
