@@ -1,8 +1,8 @@
 import { Frame, Page } from "playwright";
 
-import { ElementEvent, Variables, WindowEvent } from "../types";
+import { ElementEvent, TextOperation, Variables, WindowEvent } from "../types";
 import { ActionExpression } from "./parseCode";
-import { patch, PATCH_HANDLE } from "./patch";
+import { patch } from "./patch";
 
 type PrepareSourceVariable = {
   declare?: boolean;
@@ -167,7 +167,7 @@ export const formatArgument = (value: string | null): string => {
   return "`" + escaped.replace(/`/g, "\\`") + "`";
 };
 
-export const patchEvent = (options: PatchEventOptions): string | null => {
+export const patchEvent = (options: PatchEventOptions): TextOperation[] => {
   const { initializeCode, variable } = prepareSourceVariables({
     ...options,
     // we will patch the initialize code so we want to declare the variable
@@ -176,5 +176,5 @@ export const patchEvent = (options: PatchEventOptions): string | null => {
   });
 
   const eventCode = buildEventCode(options.event, variable);
-  return patch(options.code, `${initializeCode}${eventCode}\n${PATCH_HANDLE}`);
+  return patch(options.code, `${initializeCode}${eventCode}\n`);
 };

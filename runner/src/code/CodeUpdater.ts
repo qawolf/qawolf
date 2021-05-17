@@ -3,7 +3,13 @@ import { EventEmitter } from "events";
 import { omit } from "lodash";
 import { BrowserContext } from "playwright";
 
-import { CodeUpdate, ElementEvent, Variables, WindowEvent } from "../types";
+import {
+  CodeUpdate,
+  ElementEvent,
+  TextOperation,
+  Variables,
+  WindowEvent,
+} from "../types";
 import { ContextEventCollector } from "./ContextEventCollector";
 import { parseActionExpressions } from "./parseCode";
 import { PATCH_HANDLE } from "./patch";
@@ -14,10 +20,10 @@ import { patchReload } from "./patchReload";
 
 const debug = Debug("qawolf:CodeUpdater");
 
-export const updateCode = (options: PatchEventOptions): string | null => {
+export const updateCode = (options: PatchEventOptions): TextOperation[] => {
   const { code, event } = options;
   const patchIndex = code.indexOf(PATCH_HANDLE);
-  if (patchIndex < 0) return null;
+  if (patchIndex < 0) return [];
 
   if (["fill", "selectOption"].includes(event.action))
     return patchFillOrSelectOption(options);
@@ -59,11 +65,25 @@ export class CodeUpdater extends EventEmitter {
 
     debug("handle page event %o", omit(event, "frame", "page"));
 
-    const updatedCode = updateCode({
+    const operations = updateCode({
       code: this._code,
       event,
       expressions: parseActionExpressions(this._code),
       variables: this._variables,
+    });
+
+    let updatedCode = this._code;
+    operations.forEach((op) => {
+      if (op.type === "delete") {
+        updatedCode =
+          updatedCode.substring(0, op.index) +
+          updatedCode.substring(op.index + op.length);
+      } else if (op.type === "insert") {
+        updatedCode =
+          updatedCode.substring(0, op.index) +
+          op.value +
+          updatedCode.substring(op.index);
+      }
     });
 
     if (!updatedCode) {

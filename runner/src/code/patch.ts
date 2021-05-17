@@ -1,4 +1,5 @@
 import { repeat } from "lodash";
+import { TextOperation } from "../types";
 
 export const PATCH_HANDLE = "// 🐺 QA Wolf will create code here";
 
@@ -31,14 +32,11 @@ export const indent = (
     .join("\n");
 };
 
-export const patch = (code: string, patch: string): string => {
-  if (!code.includes(PATCH_HANDLE)) {
-    throw new Error("Cannot patch without handle");
-  }
+export const patch = (code: string, patch: string): TextOperation[] => {
+  const index = code.indexOf(PATCH_HANDLE);
+  if (index < 0) return [];
 
   const numSpaces = getIndentation(code, PATCH_HANDLE);
   const indentedPatch = indent(patch, numSpaces, 1);
-
-  const patchedCode = code.replace(PATCH_HANDLE, indentedPatch);
-  return patchedCode;
+  return [{ index, type: "insert", value: indentedPatch }];
 };
