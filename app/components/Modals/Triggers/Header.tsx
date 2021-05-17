@@ -1,7 +1,7 @@
 import { Box } from "grommet";
 
 import { copy } from "../../../theme/copy";
-import ExternalLink, { buildQaWolfDocsLink } from "../../shared/ExternalLink";
+import Link, { buildQaWolfDocsLink } from "../../shared/Link";
 import ModalHeader from "../../shared/Modal/Header";
 import Text from "../../shared/Text";
 
@@ -25,11 +25,15 @@ export default function Header({ closeModal }: Props): JSX.Element {
           <Text {...textProps} margin={{ right: "xxxsmall" }}>
             {copy.apiDetail}
           </Text>
-          <ExternalLink href={apiDocsHref}>{copy.api}</ExternalLink>
+          <Link href={apiDocsHref} newTab>
+            {copy.api}
+          </Link>
           <Text {...textProps} margin={{ horizontal: "xxxsmall" }}>
             {copy.or}
           </Text>
-          <ExternalLink href={cliDocsHref}>{copy.cli}</ExternalLink>{" "}
+          <Link href={cliDocsHref} newTab>
+            {copy.cli}
+          </Link>{" "}
           <Text {...textProps} margin={{ right: "xxxsmall" }}>
             .
           </Text>

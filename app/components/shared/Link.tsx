@@ -1,4 +1,5 @@
 import { Box, BoxProps } from "grommet";
+import NextLink from "next/link";
 import styled from "styled-components";
 
 import { isServer } from "../../lib/detection";
@@ -11,6 +12,7 @@ type Props = {
   isBold?: boolean;
   href: string;
   margin?: BoxProps["margin"];
+  newTab?: boolean;
 };
 
 export const buildQaWolfDocsLink = (href: string): string => {
@@ -30,22 +32,33 @@ const StyledText = styled(Text)`
   }
 `;
 
-export default function ExternalLink({
+export default function Link({
   children,
   isBold,
   href,
   margin,
+  newTab,
 }: Props): JSX.Element {
+  const anchorProps = {
+    href: newTab ? href : undefined,
+    target: newTab ? "_blank" : undefined,
+  };
+
+  let innerHtml = (
+    <a {...anchorProps}>
+      <StyledText color="primary" size={isBold ? "componentBold" : "component"}>
+        {children}
+      </StyledText>
+    </a>
+  );
+
+  if (!newTab) {
+    innerHtml = <NextLink href={href}>{innerHtml}</NextLink>;
+  }
+
   return (
-    <Box margin={margin}>
-      <a href={href} target="_blank">
-        <StyledText
-          color="primary"
-          size={isBold ? "componentBold" : "component"}
-        >
-          {children}
-        </StyledText>
-      </a>
+    <Box margin={margin} style={{ cursor: "pointer" }}>
+      {innerHtml}
     </Box>
   );
 }
