@@ -5,21 +5,52 @@ import Button from "../../components/shared/AppButton";
 import TextInput from "../../components/shared/AppTextInput";
 import Header from "../../components/shared/playground/Header";
 import Text from "../../components/shared/Text";
+import { edgeSize } from "../../theme/theme";
 
 const correctUsername = "username";
 const correctPassword = "wolf123";
 
-export default function LogIn(): JSX.Element {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const textProps = { color: "gray9", size: "component" as const };
 
-  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setUsername(e.target.value);
+export default function LogIn(): JSX.Element {
+  const [hasError, setHasError] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
+  const handleClick = (): void => {
+    setUsername("");
+    setPassword("");
+
+    if (username !== correctUsername || password !== correctPassword) {
+      setHasError(true);
+    } else {
+      setHasError(false);
+      setIsLoggedIn(true);
+    }
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
+
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setUsername(e.target.value);
+  };
+
+  if (isLoggedIn) {
+    return (
+      <Box align="center">
+        <Header label="You are logged in" />
+        <Button
+          label="Log out"
+          onClick={() => setIsLoggedIn(false)}
+          type="primary"
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box align="center">
@@ -38,17 +69,24 @@ export default function LogIn(): JSX.Element {
           type="password"
           value={password}
         />
-        <Button justify="center" label="Log in" type="primary" />
+        <Button
+          justify="center"
+          label="Log in"
+          onClick={handleClick}
+          type="primary"
+        />
+        <Box height={edgeSize.small} margin={{ top: "xxsmall" }}>
+          {hasError && (
+            <Text {...textProps} color="danger5" textAlign="center">
+              Invalid username/password
+            </Text>
+          )}
+        </Box>
         <Box margin={{ top: "large" }}>
-          <Text
-            color="gray9"
-            size="component"
-          >{`Username: ${correctUsername}`}</Text>
-          <Text
-            color="gray9"
-            margin={{ top: "xxsmall" }}
-            size="component"
-          >{`Password: ${correctPassword}`}</Text>
+          <Text {...textProps}>{`Username: ${correctUsername}`}</Text>
+          <Text {...textProps} margin={{ top: "xxsmall" }}>
+            {`Password: ${correctPassword}`}
+          </Text>
         </Box>
       </Box>
     </Box>
