@@ -2,6 +2,7 @@
 // DEBUG=qawolf* npm run test Runner.test.ts
 import { promises as fs } from "fs";
 
+import { CodeModel } from "../../src/code/CodeModel";
 import { Environment } from "../../src/environment/Environment";
 import { LogArtifactHook } from "../../src/runner/LogArtifactHook";
 import { createHooks, Runner } from "../../src/runner/Runner";
@@ -17,7 +18,7 @@ describe("createHooks", () => {
     videoUrl: "videoUrl",
   };
 
-  const environment = new Environment();
+  const environment = new Environment({ codeModel: new CodeModel() });
 
   afterAll(() => environment.close());
 

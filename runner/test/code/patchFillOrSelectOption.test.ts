@@ -1,11 +1,11 @@
+import { PatchEventOptions } from "../../src/code/insertEvent";
 import { parseActionExpressions } from "../../src/code/parseCode";
-import { PATCH_HANDLE } from "../../src/code/patch";
-import { PatchEventOptions } from "../../src/code/patchEvent";
 import {
   findExpressionToUpdate,
   patchFillOrSelectOption,
   updateExpression,
 } from "../../src/code/patchFillOrSelectOption";
+import { PATCH_HANDLE } from "../../src/code/patchUtils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -87,14 +87,26 @@ describe("findExpressionToUpdate", () => {
 describe("patchFillOrSelectOption", () => {
   it("inserts a fill", () => {
     expect(patchFillOrSelectOption({ ...options, code: PATCH_HANDLE })).toEqual(
-      `await page.fill("input", "hello");\n${PATCH_HANDLE}`
+      [
+        {
+          index: 0,
+          type: "insert",
+          value: 'await page.fill("input", "hello");\n',
+        },
+      ]
     );
   });
 
   it("inserts a selectOption", () => {
     expect(
       patchFillOrSelectOption({ ...selectOptions, code: PATCH_HANDLE })
-    ).toEqual(`await page.selectOption("select", "hello");\n${PATCH_HANDLE}`);
+    ).toEqual([
+      {
+        index: 0,
+        type: "insert",
+        value: 'await page.selectOption("select", "hello");\n',
+      },
+    ]);
   });
 
   it("updates a matching fill", () => {
@@ -106,7 +118,10 @@ describe("patchFillOrSelectOption", () => {
         code,
         expressions: parseActionExpressions(code),
       })
-    ).toEqual(`  await page.fill("input", "hello")\n${PATCH_HANDLE}`);
+    ).toEqual([
+      { index: 26, length: 5, type: "delete" },
+      { index: 26, type: "insert", value: ' "hello"' },
+    ]);
   });
 
   it("updates a matching selectOption", () => {
@@ -118,7 +133,10 @@ describe("patchFillOrSelectOption", () => {
         code,
         expressions: parseActionExpressions(code),
       })
-    ).toEqual(`  await page.selectOption("select", "hello")\n${PATCH_HANDLE}`);
+    ).toEqual([
+      { index: 35, length: 5, type: "delete" },
+      { index: 35, type: "insert", value: ' "hello"' },
+    ]);
   });
 });
 
@@ -127,17 +145,19 @@ describe("updateExpression", () => {
     const code = `await page.fill('.hello',  ''  );${PATCH_HANDLE}`;
     const [expression] = parseActionExpressions(code);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(updateExpression(code, expression!, "world")).toEqual(
-      `await page.fill('.hello',  "world"  );${PATCH_HANDLE}`
-    );
+    expect(updateExpression(code, expression!, "world")).toEqual([
+      { index: 25, length: 4, type: "delete" },
+      { index: 25, type: "insert", value: '  "world"' },
+    ]);
   });
 
   it("updates the value", () => {
     const code = `await page.fill('.hello', 'there');${PATCH_HANDLE}`;
     const [expression] = parseActionExpressions(code);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(updateExpression(code, expression!, "world")).toEqual(
-      `await page.fill('.hello', "world");${PATCH_HANDLE}`
-    );
+    expect(updateExpression(code, expression!, "world")).toEqual([
+      { index: 25, length: 8, type: "delete" },
+      { index: 25, type: "insert", value: ' "world"' },
+    ]);
   });
 });

@@ -1,7 +1,7 @@
+import { PatchEventOptions } from "../../src/code/insertEvent";
 import { parseActionExpressions } from "../../src/code/parseCode";
-import { PATCH_HANDLE } from "../../src/code/patch";
-import { PatchEventOptions } from "../../src/code/patchEvent";
 import { patchReload } from "../../src/code/patchReload";
+import { PATCH_HANDLE } from "../../src/code/patchUtils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -27,7 +27,7 @@ describe("reload", () => {
         code: reloadCode,
         expressions,
       })
-    ).toEqual(null);
+    ).toEqual([]);
   });
 
   it("inserts a reload", () => {
@@ -36,6 +36,6 @@ describe("reload", () => {
         ...options,
         code: PATCH_HANDLE,
       })
-    ).toEqual(reloadCode);
+    ).toEqual([{ index: 0, type: "insert", value: `await page.reload();\n` }]);
   });
 });

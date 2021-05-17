@@ -4,7 +4,7 @@ import {
   parseActionExpressions,
   selectAwaitChildExpression,
 } from "../../src/code/parseCode";
-import { PATCH_HANDLE } from "../../src/code/patch";
+import { PATCH_HANDLE } from "../../src/code/patchUtils";
 
 describe("buildActionExpression", () => {
   const statements = buildStatements(

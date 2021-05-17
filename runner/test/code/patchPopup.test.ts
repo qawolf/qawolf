@@ -1,17 +1,15 @@
 import { parseActionExpressions } from "../../src/code/parseCode";
-import { PATCH_HANDLE } from "../../src/code/patch";
 import { patchPopup } from "../../src/code/patchPopup";
+import { PATCH_HANDLE } from "../../src/code/patchUtils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const expected = `await something();
-const [page2] = await Promise.all([
+const expected = `const [page2] = await Promise.all([
   page.waitForEvent("popup"),
   page.press('.todo', 'Enter'),
 ]);
 await page2.waitForLoadState("domcontentloaded");
-await page2.bringToFront();
-${PATCH_HANDLE}`;
+await page2.bringToFront();`;
 
 describe("popup", () => {
   it("uses the previous expression to await the popup", () => {
@@ -29,6 +27,6 @@ describe("popup", () => {
         expressions: parseActionExpressions(code),
         variables: { page: "p1" },
       })
-    ).toEqual(expected);
+    ).toEqual([{ index: 19, type: "insert", value: expected }]);
   });
 });
