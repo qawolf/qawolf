@@ -75,9 +75,8 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
           value={password}
         />
         <Button
-          data-qa={isUpdated ? undefined : "Log in"}
           justify="center"
-          label="Log in"
+          label={isUpdated ? "Sign in" : "Log in"}
           onClick={handleClick}
           type="primary"
         />
