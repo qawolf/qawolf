@@ -1,9 +1,9 @@
 import { TextOperation } from "../types";
 import {
-  patchEvent,
+  insertEvent,
   PatchEventOptions,
   prepareSourceVariables,
-} from "./patchEvent";
+} from "./insertEvent";
 
 export const patchReload = (options: PatchEventOptions): TextOperation[] => {
   const { expressions } = options;
@@ -17,5 +17,5 @@ export const patchReload = (options: PatchEventOptions): TextOperation[] => {
     lastExpression?.variable === variable;
   if (shouldSkip) return [];
 
-  return patchEvent(options);
+  return insertEvent(options);
 };

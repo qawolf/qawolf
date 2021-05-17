@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 import { without } from "lodash";
 import { Browser } from "playwright";
 
+import { CodeModel } from "../code/CodeModel";
 import { CodeUpdater } from "../code/CodeUpdater";
 import { Logger } from "../services/Logger";
 import { RunHook, RunOptions, RunProgress, Variables } from "../types";
@@ -12,6 +13,11 @@ import { VM } from "./VM";
 
 const debug = Debug("qawolf:Environment");
 
+type EnvironmentOptions = {
+  codeModel: CodeModel;
+  logger?: Logger;
+};
+
 export class Environment extends EventEmitter {
   readonly _logger: Logger;
   readonly _vm: VM;
@@ -20,22 +26,20 @@ export class Environment extends EventEmitter {
   _elementChooser = new ElementChooser();
   _inProgress: Run[] = [];
   _variables: Variables = {};
-  _updater = new CodeUpdater(this._variables);
+  _updater: CodeUpdater;
 
-  constructor(logger?: Logger) {
+  constructor({ codeModel, logger }: EnvironmentOptions) {
     super();
 
     this._logger = logger || new Logger();
+
+    this._updater = new CodeUpdater({ codeModel, variables: this._variables });
 
     this._elementChooser.on("elementchooser", (event) =>
       this.emit("elementchooser", event)
     );
 
     this._logger.on("logscreated", (logs) => this.emit("logscreated", logs));
-
-    this._updater.on("codeupdated", (update) =>
-      this.emit("codeupdated", update)
-    );
 
     this._vm = new VM({
       logger: this._logger,

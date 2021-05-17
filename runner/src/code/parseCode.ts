@@ -1,7 +1,7 @@
 import ts from "typescript";
 
 import { buildStatements } from "../ast";
-import { PATCH_HANDLE } from "./patch";
+import { PATCH_HANDLE } from "./patchUtils";
 
 type Argument = {
   pos: number;

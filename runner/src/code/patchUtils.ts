@@ -1,4 +1,5 @@
 import { repeat } from "lodash";
+
 import { TextOperation } from "../types";
 
 export const PATCH_HANDLE = "// 🐺 QA Wolf will create code here";
@@ -32,7 +33,10 @@ export const indent = (
     .join("\n");
 };
 
-export const patch = (code: string, patch: string): TextOperation[] => {
+export const insertBeforeHandle = (
+  code: string,
+  patch: string
+): TextOperation[] => {
   const index = code.indexOf(PATCH_HANDLE);
   if (index < 0) return [];
 

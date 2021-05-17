@@ -1,7 +1,7 @@
 import { TextOperation, WindowEvent } from "../types";
+import { PatchEventOptions, prepareSourceVariables } from "./insertEvent";
 import { selectAwaitChildExpression } from "./parseCode";
-import { patch } from "./patch";
-import { PatchEventOptions, prepareSourceVariables } from "./patchEvent";
+import { insertBeforeHandle } from "./patchUtils";
 
 export const patchPopup = (options: PatchEventOptions): TextOperation[] => {
   const { pageVariable } = prepareSourceVariables(options);
@@ -39,5 +39,5 @@ export const patchPopup = (options: PatchEventOptions): TextOperation[] => {
   const withoutTrigger =
     code.substring(0, statement.pos) + code.substring(statement.end);
 
-  return patch(withoutTrigger, popupPatch);
+  return insertBeforeHandle(withoutTrigger, popupPatch);
 };

@@ -1,11 +1,11 @@
 import { ElementEvent, TextOperation } from "../types";
-import { ActionExpression } from "./parseCode";
 import {
   formatArgument,
-  patchEvent,
+  insertEvent,
   PatchEventOptions,
   prepareSourceVariables,
-} from "./patchEvent";
+} from "./insertEvent";
+import { ActionExpression } from "./parseCode";
 
 export const findExpressionToUpdate = (
   options: PatchEventOptions
@@ -81,5 +81,5 @@ export const patchFillOrSelectOption = (
     );
   }
 
-  return patchEvent(options);
+  return insertEvent(options);
 };

@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 
+import { CodeModel } from "../code/CodeModel";
 import { Environment } from "../environment/Environment";
 import { VersionedMap } from "../server/VersionedMap";
 import { Log } from "../services/Logger";
@@ -36,15 +37,21 @@ export const createHooks = (
 };
 
 export class Runner extends EventEmitter {
+  _codeModel = new CodeModel();
   _editor = new VersionedMap();
   _environment?: Environment;
   _hooks: RunHook[] = [];
 
   constructor() {
     super();
+
+    this._codeModel.on("codeupdated", (update: CodeUpdate) => {
+      this._editor.set("test_code", update.code);
+    });
+
     this._editor.on("keychanged", (event) => {
       if (event.key === "test_code") {
-        this._environment?.updater.updateCode(event.value);
+        this._codeModel.setValue(event.value);
       }
 
       this.emit("keychanged", event);
@@ -54,17 +61,10 @@ export class Runner extends EventEmitter {
   async _createEnvironment(): Promise<Environment> {
     await this._environment?.close();
 
-    const environment = new Environment();
-
-    environment.updater.updateCode(this._editor.get("test_code") || "");
+    const environment = new Environment({ codeModel: this._codeModel });
 
     // reset the logs when a new environment is created
     this.emit("logs", environment.logger.logs);
-
-    environment.on("codeupdated", (update: CodeUpdate) => {
-      console.log("set code updated", update);
-      this._editor.set("test_code", update.code);
-    });
 
     environment.on("elementchooser", (event: ElementChooserValue) =>
       this.emit("elementchooser", event)
