@@ -89,6 +89,7 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
         {isUpdated && (
           <Box margin={{ bottom: "small" }}>
             <CheckBox
+              a11yTitle="accept terms"
               checked={isChecked}
               label={labelHtml}
               onChange={handleCheckBoxChange}
