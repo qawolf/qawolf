@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 
 import Button from "../../components/shared/AppButton";
 import TextInput from "../../components/shared/AppTextInput";
-import CheckBox from "../../components/shared/CheckBox";
 import Header from "../../components/shared/playground/Header";
 import Text from "../../components/shared/Text";
 import { edgeSize } from "../../theme/theme";
@@ -16,7 +15,6 @@ const correctPassword = "wolf123";
 const textProps = { color: "gray9", size: "component" as const };
 
 export default function LogIn({ isUpdated }: Props): JSX.Element {
-  const [isChecked, setIsChecked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [error, setError] = useState("");
@@ -24,23 +22,17 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
   const [username, setUsername] = useState("");
 
   const handleClick = (): void => {
+    setUsername("");
+    setPassword("");
+
     if (username !== correctUsername || password !== correctPassword) {
       setUsername("");
       setPassword("");
       setError("Invalid username/password");
-    } else if (isUpdated && !isChecked) {
-      setError("Must accept terms");
     } else {
-      setUsername("");
-      setPassword("");
       setError("");
-      setIsChecked(false);
       setIsLoggedIn(true);
     }
-  };
-
-  const handleCheckBoxChange = (): void => {
-    setIsChecked((prev) => !prev);
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -64,13 +56,9 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
     );
   }
 
-  const labelHtml = (
-    <Text {...textProps}>I accept the terms and conditions</Text>
-  );
-
   return (
     <Box align="center">
-      <Header label="Enter your credentials to log in" />
+      <Header label="Log in" />
       <Box width="280px">
         <TextInput
           id="username"
@@ -86,17 +74,8 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
           type="password"
           value={password}
         />
-        {isUpdated && (
-          <Box margin={{ bottom: "small" }}>
-            <CheckBox
-              a11yTitle="accept terms"
-              checked={isChecked}
-              label={labelHtml}
-              onChange={handleCheckBoxChange}
-            />
-          </Box>
-        )}
         <Button
+          data-qa={isUpdated ? undefined : "Log in"}
           justify="center"
           label="Log in"
           onClick={handleClick}
