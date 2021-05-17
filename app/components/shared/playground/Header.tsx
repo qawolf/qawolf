@@ -10,7 +10,7 @@ type Props = {
 
 export default function Header({ label }: Props): JSX.Element {
   return (
-    <Box align="center" margin={{ top: "xlarge" }}>
+    <Box align="center" margin={{ top: "xxlarge" }}>
       <Logo width={edgeSize.xxxlarge} />
       <Text
         margin={{ bottom: "xxlarge", top: "medium" }}

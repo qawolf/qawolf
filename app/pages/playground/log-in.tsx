@@ -3,32 +3,44 @@ import { ChangeEvent, useState } from "react";
 
 import Button from "../../components/shared/AppButton";
 import TextInput from "../../components/shared/AppTextInput";
+import CheckBox from "../../components/shared/CheckBox";
 import Header from "../../components/shared/playground/Header";
 import Text from "../../components/shared/Text";
 import { edgeSize } from "../../theme/theme";
+
+type Props = { isUpdated?: boolean };
 
 const correctUsername = "username";
 const correctPassword = "wolf123";
 
 const textProps = { color: "gray9", size: "component" as const };
 
-export default function LogIn(): JSX.Element {
-  const [hasError, setHasError] = useState(false);
+export default function LogIn({ isUpdated }: Props): JSX.Element {
+  const [isChecked, setIsChecked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
   const handleClick = (): void => {
-    setUsername("");
-    setPassword("");
-
     if (username !== correctUsername || password !== correctPassword) {
-      setHasError(true);
+      setUsername("");
+      setPassword("");
+      setError("Invalid username/password");
+    } else if (isUpdated && !isChecked) {
+      setError("Must accept terms");
     } else {
-      setHasError(false);
+      setUsername("");
+      setPassword("");
+      setError("");
+      setIsChecked(false);
       setIsLoggedIn(true);
     }
+  };
+
+  const handleCheckBoxChange = (): void => {
+    setIsChecked((prev) => !prev);
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -52,6 +64,10 @@ export default function LogIn(): JSX.Element {
     );
   }
 
+  const labelHtml = (
+    <Text {...textProps}>I accept the terms and conditions</Text>
+  );
+
   return (
     <Box align="center">
       <Header label="Enter your credentials to log in" />
@@ -63,12 +79,22 @@ export default function LogIn(): JSX.Element {
           value={username}
         />
         <TextInput
+          id="password"
           margin={{ vertical: "small" }}
           onChange={handlePasswordChange}
           placeholder="Password"
           type="password"
           value={password}
         />
+        {isUpdated && (
+          <Box margin={{ bottom: "small" }}>
+            <CheckBox
+              checked={isChecked}
+              label={labelHtml}
+              onChange={handleCheckBoxChange}
+            />
+          </Box>
+        )}
         <Button
           justify="center"
           label="Log in"
@@ -76,13 +102,13 @@ export default function LogIn(): JSX.Element {
           type="primary"
         />
         <Box height={edgeSize.small} margin={{ top: "xxsmall" }}>
-          {hasError && (
+          {!!error && (
             <Text {...textProps} color="danger5" textAlign="center">
-              Invalid username/password
+              {error}
             </Text>
           )}
         </Box>
-        <Box margin={{ top: "large" }}>
+        <Box margin={{ top: "medium" }}>
           <Text {...textProps}>{`Username: ${correctUsername}`}</Text>
           <Text {...textProps} margin={{ top: "xxsmall" }}>
             {`Password: ${correctPassword}`}
