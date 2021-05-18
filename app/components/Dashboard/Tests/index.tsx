@@ -35,6 +35,19 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
     testTags: tagsLoading ? null : testTags,
   });
 
+  // remove selected tests that no longer match filters
+  useEffect(() => {
+    if (!tests) return;
+
+    const updatedCheckedTestIds = checkedTestIds.filter((testId) => {
+      return tests.some((test) => test.id === testId);
+    });
+
+    if (updatedCheckedTestIds.length < checkedTestIds.length) {
+      setCheckedTestIds(updatedCheckedTestIds);
+    }
+  }, [checkedTestIds, tests, testTags]);
+
   // clear checked tests when filters change
   useEffect(() => {
     setCheckedTestIds([]);
