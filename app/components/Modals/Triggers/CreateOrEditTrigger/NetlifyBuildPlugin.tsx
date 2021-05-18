@@ -3,9 +3,7 @@ import { Box } from "grommet";
 import { useApiKey } from "../../../../hooks/apiKey";
 import { copy } from "../../../../theme/copy";
 import CodeBlock from "../../../shared/CodeBlock";
-import ExternalLink, {
-  buildQaWolfDocsLink,
-} from "../../../shared/ExternalLink";
+import Link, { buildQaWolfDocsLink } from "../../../shared/Link";
 import Text from "../../../shared/Text";
 import { labelTextProps } from "../helpers";
 
@@ -30,14 +28,16 @@ export default function NetlifyBuildPlugin(): JSX.Element {
         >
           {copy.setUp}
         </Text>
-        <ExternalLink isBold href={docsHref} margin={labelTextProps.margin}>
+        <Link isBold href={docsHref} margin={labelTextProps.margin} newTab>
           {`(${copy.docs})`}
-        </ExternalLink>
+        </Link>
       </Box>
-      <ExternalLink href={pluginHref}>{copy.netlifyBuildPlugin}</ExternalLink>
-      <ExternalLink href={variablesHref} margin={{ vertical: "small" }}>
+      <Link href={pluginHref} newTab>
+        {copy.netlifyBuildPlugin}
+      </Link>
+      <Link href={variablesHref} margin={{ vertical: "small" }} newTab>
         {copy.netlifyBuildVariable}
-      </ExternalLink>
+      </Link>
       <CodeBlock>{apiKey}</CodeBlock>
     </>
   );

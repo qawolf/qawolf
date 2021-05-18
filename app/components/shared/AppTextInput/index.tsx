@@ -36,13 +36,14 @@ type Props = {
   pad?: { left: string; right: string };
   placeholder?: string;
   size?: Size;
+  type?: "password";
   value: string;
   width?: string;
 };
 
 const StyledGrommetTextInput = styled(GrommetTextInput)`
   &:hover {
-    border-color: ${colors.gray5} !important;
+    border-color: ${colors.gray6} !important;
   }
 
   &:focus {
@@ -65,6 +66,7 @@ function TextInput(
     pad,
     placeholder,
     size,
+    type,
     value,
     width,
   }: Props,
@@ -115,6 +117,7 @@ function TextInput(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ref={ref as any}
         style={style}
+        type={type}
         value={value}
       />
       {!!error && <ErrorBadge error={error} ref={errorRef} />}

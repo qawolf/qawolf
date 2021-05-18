@@ -13,6 +13,7 @@ export const routes = {
   invite: "/invite",
   logIn: "/log-in",
   notFound: "/404",
+  playground: "/playground",
   pricing: "/pricing",
   run: "/run",
   settings: "/settings",
