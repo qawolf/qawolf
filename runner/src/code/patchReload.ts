@@ -1,10 +1,11 @@
+import { TextOperation } from "../types";
 import {
-  patchEvent,
+  insertEvent,
   PatchEventOptions,
   prepareSourceVariables,
-} from "./patchEvent";
+} from "./insertEvent";
 
-export const patchReload = (options: PatchEventOptions): string | null => {
+export const patchReload = (options: PatchEventOptions): TextOperation[] => {
   const { expressions } = options;
   const { variable } = prepareSourceVariables(options);
 
@@ -14,8 +15,7 @@ export const patchReload = (options: PatchEventOptions): string | null => {
   const shouldSkip =
     lastExpression?.method === "reload" &&
     lastExpression?.variable === variable;
+  if (shouldSkip) return [];
 
-  if (shouldSkip) return null;
-
-  return patchEvent(options);
+  return insertEvent(options);
 };

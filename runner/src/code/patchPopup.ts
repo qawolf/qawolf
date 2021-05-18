@@ -1,9 +1,9 @@
-import { WindowEvent } from "../types";
+import { TextOperation, WindowEvent } from "../types";
+import { PatchEventOptions, prepareSourceVariables } from "./insertEvent";
 import { selectAwaitChildExpression } from "./parseCode";
-import { patch, PATCH_HANDLE } from "./patch";
-import { PatchEventOptions,prepareSourceVariables } from "./patchEvent";
+import { insertBeforeHandle } from "./patchUtils";
 
-export const patchPopup = (options: PatchEventOptions): string | null => {
+export const patchPopup = (options: PatchEventOptions): TextOperation[] => {
   const { pageVariable } = prepareSourceVariables(options);
 
   const { code, event, expressions, variables } = options;
@@ -11,7 +11,7 @@ export const patchPopup = (options: PatchEventOptions): string | null => {
   const triggerExpression = expressions[expressions.length - 1];
   if (!triggerExpression) {
     // Could not find expression that triggered the popup
-    return null;
+    return [];
   }
 
   // start at page2
@@ -34,11 +34,10 @@ export const patchPopup = (options: PatchEventOptions): string | null => {
     `]);`,
     `await ${popupVariable}.waitForLoadState("domcontentloaded");`,
     `await ${popupVariable}.bringToFront();`,
-    PATCH_HANDLE,
   ].join("\n");
 
   const withoutTrigger =
     code.substring(0, statement.pos) + code.substring(statement.end);
 
-  return patch(withoutTrigger, popupPatch);
+  return insertBeforeHandle(withoutTrigger, popupPatch);
 };

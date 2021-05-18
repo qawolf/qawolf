@@ -1,13 +1,13 @@
-import { parseActionExpressions } from "../../src/code/parseCode";
-import { PATCH_HANDLE } from "../../src/code/patch";
 import {
   buildEventCode,
   findLastPageVariable,
   formatArgument,
-  patchEvent,
+  insertEvent,
   prepareSourceVariable,
   prepareSourceVariables,
-} from "../../src/code/patchEvent";
+} from "../../src/code/insertEvent";
+import { parseActionExpressions } from "../../src/code/parseCode";
+import { PATCH_HANDLE } from "../../src/code/patchUtils";
 import { ElementEvent } from "../../src/types";
 
 // use strings to represent the event source
@@ -240,10 +240,10 @@ describe("prepareSourceVariables", () => {
   });
 });
 
-describe("patchEvent", () => {
+describe("insertEvent", () => {
   it("patches the initialization and method", () => {
     expect(
-      patchEvent({
+      insertEvent({
         code: PATCH_HANDLE,
         expressions: [],
         event: {
@@ -254,8 +254,12 @@ describe("patchEvent", () => {
         },
         variables: { page: "p1" },
       })
-    ).toEqual(
-      `const page2 = await context.newPage();\nawait page2.goto("https://google.com");\n${PATCH_HANDLE}`
-    );
+    ).toEqual([
+      {
+        index: 0,
+        type: "insert",
+        value: `const page2 = await context.newPage();\nawait page2.goto("https://google.com");\n`,
+      },
+    ]);
   });
 });

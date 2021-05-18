@@ -114,6 +114,18 @@ export type Suite = {
   runs: Run[];
 };
 
+export type TextOperation =
+  | {
+      index: number;
+      length: number;
+      type: "delete";
+    }
+  | {
+      index: number;
+      type: "insert";
+      value: string;
+    };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Variables = { [key: string]: any };
 

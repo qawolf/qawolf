@@ -3,40 +3,29 @@ import { EventEmitter } from "events";
 import { omit } from "lodash";
 import { BrowserContext } from "playwright";
 
-import { CodeUpdate, ElementEvent, Variables, WindowEvent } from "../types";
+import { ElementEvent, Variables, WindowEvent } from "../types";
+import { CodeModel } from "./CodeModel";
 import { ContextEventCollector } from "./ContextEventCollector";
 import { parseActionExpressions } from "./parseCode";
-import { PATCH_HANDLE } from "./patch";
-import { patchEvent, PatchEventOptions } from "./patchEvent";
-import { patchFillOrSelectOption } from "./patchFillOrSelectOption";
-import { patchPopup } from "./patchPopup";
-import { patchReload } from "./patchReload";
+import { patchEvent } from "./patchEvent";
+
+type CodeUpdaterOptions = {
+  codeModel: CodeModel;
+  variables: Variables;
+};
 
 const debug = Debug("qawolf:CodeUpdater");
 
-export const updateCode = (options: PatchEventOptions): string | null => {
-  const { code, event } = options;
-  const patchIndex = code.indexOf(PATCH_HANDLE);
-  if (patchIndex < 0) return null;
-
-  if (["fill", "selectOption"].includes(event.action))
-    return patchFillOrSelectOption(options);
-
-  if (event.action === "popup") return patchPopup(options);
-  if (event.action === "reload") return patchReload(options);
-
-  return patchEvent(options);
-};
-
 export class CodeUpdater extends EventEmitter {
-  _code = "";
+  _codeModel: CodeModel;
   _collector?: ContextEventCollector;
   _context?: BrowserContext;
   _enabledAt: number | false = false;
   _variables: Variables;
 
-  constructor(variables: Variables) {
+  constructor({ codeModel, variables }: CodeUpdaterOptions) {
     super();
+    this._codeModel = codeModel;
     this._variables = variables;
   }
 
@@ -59,23 +48,16 @@ export class CodeUpdater extends EventEmitter {
 
     debug("handle page event %o", omit(event, "frame", "page"));
 
-    const updatedCode = updateCode({
-      code: this._code,
+    const code = this._codeModel.value;
+
+    const operations = patchEvent({
+      code,
       event,
-      expressions: parseActionExpressions(this._code),
+      expressions: parseActionExpressions(code),
       variables: this._variables,
     });
 
-    if (!updatedCode) {
-      debug(`skip update: no changes`);
-      return false;
-    }
-
-    this._code = updatedCode;
-
-    const update: CodeUpdate = { code: this._code };
-    this.emit("codeupdated", update);
-    return true;
+    return this._codeModel.update(operations);
   }
 
   disable(): void {
@@ -94,12 +76,5 @@ export class CodeUpdater extends EventEmitter {
   async setContext(context: BrowserContext): Promise<void> {
     this._context = context;
     await this._collectEvents();
-  }
-
-  // Called when code is updated by the user
-  updateCode(code: string): boolean {
-    debug(`update code to ${code}`);
-    this._code = code;
-    return true;
   }
 }

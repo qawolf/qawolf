@@ -1,3 +1,4 @@
+import { CodeModel } from "../../src/code/CodeModel";
 import { Environment } from "../../src/environment/Environment";
 import { Run } from "../../src/environment/Run";
 import { RunOptions, RunProgress } from "../../src/types";
@@ -9,7 +10,7 @@ const runOptions: RunOptions = {
 };
 
 describe("Run", () => {
-  const environment = new Environment();
+  const environment = new Environment({ codeModel: new CodeModel() });
 
   afterAll(() => environment.close());
 
@@ -187,7 +188,7 @@ describe("Run", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
-    const environment = new Environment(logger);
+    const environment = new Environment({ codeModel: new CodeModel(), logger });
 
     const run = new Run({
       logger: environment.logger,

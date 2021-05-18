@@ -1,6 +1,7 @@
 import waitUntil from "async-wait-until";
 import { Browser } from "playwright";
 
+import { CodeModel } from "../../src/code/CodeModel";
 import { Environment } from "../../src/environment/Environment";
 import { RunOptions, RunProgress } from "../../src/types";
 import { FixturesServer, serveFixtures, sleep } from "../utils";
@@ -11,9 +12,14 @@ const runOptions: RunOptions = {
   restart: true,
 };
 
+let environment: Environment;
+
+beforeEach(() => {
+  environment = new Environment({ codeModel: new CodeModel() });
+});
+
 describe("close", () => {
   it("closes the browser", async () => {
-    const environment = new Environment();
     await environment.run({
       ...runOptions,
       code: "const { browser } = await launch({ headless: true });",
@@ -36,8 +42,6 @@ describe("run", () => {
   afterAll(() => server.close());
 
   it("disables the updater until runs are complete", async () => {
-    const environment = new Environment();
-
     const runPromise = environment.run({
       ...runOptions,
       code: "",
@@ -51,13 +55,15 @@ describe("run", () => {
   });
 
   it("emits code as it is updated", async () => {
-    const environment = new Environment();
-
     let updatedCode = "";
-    environment.on("codeupdated", ({ code }) => (updatedCode = code));
+
+    environment._updater._codeModel.on(
+      "codeupdated",
+      ({ code }) => (updatedCode = code)
+    );
 
     const code = `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${server.url}/Environment");\n// 🐺 QA Wolf will create code here`;
-    environment._updater.updateCode(code);
+    environment._updater._codeModel.setValue(code);
 
     await environment.run({ ...runOptions, code }, []);
 
@@ -69,8 +75,6 @@ describe("run", () => {
   });
 
   it("emits logs", async () => {
-    const environment = new Environment();
-
     let emitCount = 0;
 
     environment.on("logscreated", () => {
@@ -89,7 +93,6 @@ describe("run", () => {
   });
 
   it("emits progress for the current run", async () => {
-    const environment = new Environment();
     const events: RunProgress[] = [];
 
     environment.on("runprogress", (progress: RunProgress) =>
@@ -120,8 +123,6 @@ describe("run", () => {
   });
 
   it("stores variables across runs", async () => {
-    const environment = new Environment();
-
     const browserVariables = {};
 
     await environment.run({
@@ -157,8 +158,6 @@ describe("run", () => {
 
 describe("stop", () => {
   it("stops runs in progress and enables the updater", async () => {
-    const environment = new Environment();
-
     const runPromise = environment.run({
       ...runOptions,
       code:

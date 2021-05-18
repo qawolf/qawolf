@@ -1,11 +1,11 @@
-import { ElementEvent } from "../types";
-import { ActionExpression } from "./parseCode";
+import { ElementEvent, TextOperation } from "../types";
 import {
   formatArgument,
-  patchEvent,
+  insertEvent,
   PatchEventOptions,
   prepareSourceVariables,
-} from "./patchEvent";
+} from "./insertEvent";
+import { ActionExpression } from "./parseCode";
 
 export const findExpressionToUpdate = (
   options: PatchEventOptions
@@ -45,26 +45,33 @@ export const updateExpression = (
   code: string,
   expression: ActionExpression,
   value: string
-): string => {
+): TextOperation[] => {
   const valueArg = expression.args[1];
 
-  const beforeArg = code.substring(0, valueArg.pos);
-
-  // match the same padding
+  // match the padding
   const [valuePadding] = code
     .substring(valueArg.pos, valueArg.end)
     .match(/(^\s*)/) || [" "];
 
-  const updatedValue = formatArgument(value);
+  const updatedValue = valuePadding + formatArgument(value);
 
-  const afterArg = code.substring(valueArg.end);
-
-  return beforeArg + valuePadding + updatedValue + afterArg;
+  return [
+    {
+      type: "delete",
+      index: valueArg.pos,
+      length: valueArg.end - valueArg.pos,
+    },
+    {
+      type: "insert",
+      index: valueArg.pos,
+      value: updatedValue,
+    },
+  ];
 };
 
 export const patchFillOrSelectOption = (
   options: PatchEventOptions
-): string | null => {
+): TextOperation[] => {
   const matchingExpression = findExpressionToUpdate(options);
   if (matchingExpression) {
     return updateExpression(
@@ -74,5 +81,5 @@ export const patchFillOrSelectOption = (
     );
   }
 
-  return patchEvent(options);
+  return insertEvent(options);
 };

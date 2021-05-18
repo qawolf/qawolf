@@ -1,9 +1,9 @@
 import {
   getIndentation,
   indent,
-  patch,
+  insertBeforeHandle,
   PATCH_HANDLE,
-} from "../../src/code/patch";
+} from "../../src/code/patchUtils";
 
 describe("getIndentation", () => {
   it("works for no lines", () => {
@@ -37,9 +37,14 @@ describe("indent", () => {
   });
 });
 
-describe("patch", () => {
+describe("insertBeforeHandle", () => {
   it("matches indentation", () => {
-    const patched = patch(`  myMethod();\n  ${PATCH_HANDLE}`, "myPatch();");
-    expect(patched).toEqual("  myMethod();\n  myPatch();");
+    const patched = insertBeforeHandle(
+      `  myMethod();\n  ${PATCH_HANDLE}`,
+      "myPatch();"
+    );
+    expect(patched).toEqual([
+      { index: 16, type: "insert", value: "myPatch();" },
+    ]);
   });
 });
