@@ -46,7 +46,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
     if (updatedCheckedTestIds.length < checkedTestIds.length) {
       setCheckedTestIds(updatedCheckedTestIds);
     }
-  }, [checkedTestIds, tests, testTags]);
+  }, [checkedTestIds, testTags, tests]);
 
   // clear checked tests when filters change
   useEffect(() => {
