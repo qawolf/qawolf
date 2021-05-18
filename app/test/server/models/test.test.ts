@@ -416,6 +416,11 @@ describe("pending tests", () => {
     ]);
 
     await db("runners").insert(buildRunner({ test_id: "testId" }));
+    
+    // There was a bug causing update to pending to fail if any
+    // runner has `test_id: null`. Keep this here to ensure it
+    // does not reappear.
+    await db("runners").insert(buildRunner({ i: 2 }));
   });
 
   afterAll(async () => {

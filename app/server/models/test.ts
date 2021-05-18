@@ -421,7 +421,7 @@ export const updateTestToPending = async (
   SET runner_locations = ?, runner_requested_at = now(), runner_requested_branch = ?
   WHERE id = ? 
     AND runner_requested_at IS NULL 
-    AND id NOT IN (SELECT test_id FROM runners)`;
+    AND (id IN (SELECT test_id FROM runners)) IS NOT TRUE`;
 
   const result = await db.raw(sql, [
     runner_locations,
