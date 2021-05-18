@@ -81,6 +81,10 @@ if [[ $1 == "init" ]]; then
   printf "\nRunning migrations...\n\n"
   cd ../app && npm run migrate:run:dev
 
+  # seed database on first run
+  printf "\nSeeding database...\n\n"
+  cd ../app && npm run seed:dev
+
   exit 0
 fi
 

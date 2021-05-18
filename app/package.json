@@ -11,6 +11,7 @@
     "migrate:make": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:make --knexfile=server/knexfile.ts",
     "migrate:run": "ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "migrate:run:dev": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
+    "seed:dev": "ts-node ./scripts/ensureSeedLocalDb.ts",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest"
