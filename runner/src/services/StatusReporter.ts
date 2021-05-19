@@ -35,7 +35,10 @@ export class StatusReporter {
   }
 
   async _start(): Promise<void> {
-    if (!config.RUNNER_ID) return;
+    if (!config.RUNNER_ID) {
+      debug("QAWOLF_RUNNER_ID not set. Status reporting disabled.")
+      return;
+    }
 
     this._reportUpdate();
 
