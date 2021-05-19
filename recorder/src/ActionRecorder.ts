@@ -95,6 +95,13 @@ export class ActionRecorder {
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if ((event as MouseEvent).button !== 0) return;
 
+      // Some newer components emit PointerEvent instead of older MouseEvent.
+      // Usually multiple of these are emitted for the same "click". For now,
+      // we will handle only "mouse" type events.
+      if ((event as PointerEvent).pointerId != null && (event as PointerEvent).pointerType !== "mouse") {
+        return;
+      }
+      
       this.recordEvent(event);
     });
 
