@@ -9,7 +9,7 @@ import { edgeSize } from "../../theme/theme";
 
 type Props = { isUpdated?: boolean };
 
-const correctUsername = "username";
+const correctUsername = "spirit";
 const correctPassword = "wolf123";
 
 const textProps = { color: "gray9", size: "component" as const };
