@@ -39,13 +39,18 @@ export const authenticateRunner = async (
 ): Promise<void> => {
   const log = logger.prefix("authenticateRunner");
 
+  let statusUrl = "";
   try {
-    const statusUrl = buildRunnerStatusUrl(options);
+    statusUrl = buildRunnerStatusUrl(options);
     await axios.get(statusUrl, {
       headers: { authorization: options.api_key },
     });
   } catch (error) {
-    log.error("invalid api key", error.response);
+    if (error.code === "ECONNRESET") {
+      log.error(`Can't access runner status URL: ${statusUrl} It may be expecting HTTPS.`);
+    } else if (error.response != null) {
+      log.error("invalid api key", error.response);
+    }
     throw new AuthenticationError("invalid api key");
   }
 };

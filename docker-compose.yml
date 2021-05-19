@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: qawolf
+      POSTGRES_PASSWORD: qawolf
+      POSTGRES_DB: qawolf
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  runner:
+    build: ./runner
+    image: qawolf/runner:latest
+    environment:
+      DEBUG: "qawolf:*"
+      QAWOLF_API_URL: "http://172.17.0.1:3000/api"
+    ports:
+      - "26367:26367"
+
+volumes:
+  pg-data:

@@ -5,6 +5,7 @@ services:
       context: .
     environment:
       DEBUG: "qawolf:*"
-      QAWOLF_API_URL: "http://host.docker.internal:7071"
+      QAWOLF_API_URL: "http://172.17.0.1:3000/api"
     ports:
       - "26367:26367"
+      

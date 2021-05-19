@@ -11,6 +11,7 @@
     "migrate:make": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:make --knexfile=server/knexfile.ts",
     "migrate:run": "ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
     "migrate:run:dev": "DOTENV_PATH=../.env ts-node node_modules/.bin/knex migrate:latest --knexfile=server/knexfile.ts",
+    "seed:dev": "ts-node ./scripts/ensureSeedLocalDb.ts",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest"
@@ -55,7 +56,7 @@
     "luxon": "^1.26.0",
     "micro": "^9.3.4",
     "ms-rest-azure": "^3.0.0",
-    "next": "10.0.3",
+    "next": "10.2.0",
     "pg": "^8.5.1",
     "prism-react-renderer": "^1.1.1",
     "querystring": "^0.2.0",

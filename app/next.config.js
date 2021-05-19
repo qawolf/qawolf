@@ -35,13 +35,9 @@ const config = withMDX({
 
 module.exports = {
   ...config,
-  // move to non-experimental in 10.0.5
-  // broken in 10.0.4: https://github.com/vercel/next.js/issues/20500
-  experimental: {
-    productionBrowserSourceMaps: true,
-  },
   images: {
     domains: ["qawolf-public.s3.us-east-2.amazonaws.com"],
   },
+  productionBrowserSourceMaps: true,
   target: "serverless",
 };
