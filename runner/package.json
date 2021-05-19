@@ -7,15 +7,13 @@
   "scripts": {
     "build:recorder-script": "cd ../recorder && npm run build && cd ../runner && npm run copy-recorder-script",
     "build:tsc": "tsc",
+    "build:tsc:watch": "tsc-watch",
     "build": "npm run build:recorder-script && npm run build:tsc",
     "copy-recorder-script": "cp ../recorder/build/qawolf.recorder.js ./qawolf.recorder.js",
-    "dev-mode-off": "rm docker-compose.override.yml || true",
-    "dev-mode-on": "ln -s docker-compose.dev.yml docker-compose.override.yml || true",
-    "dev": "npm run dev-mode-on && concurrently --kill-others \"tsc --watch\" \"npm run watch-and-update-recorder\" \"docker-compose up\"",
     "lint": "eslint . --ext .ts,.tsx --config eslintrc.json",
-    "start": "npm run dev-mode-off && docker-compose up",
+    "start": "docker-compose up",
     "test": "jest",
-    "watch-and-update-recorder": "chokidar \"../recorder/build/qawolf.recorder.js\" -c \"npm run copy-recorder-script\""
+    "watch-and-update-recorder": "chokidar \"../recorder/build/qawolf.recorder.js\" -c \"npm run copy-recorder-script && docker cp ./qawolf.recorder.js $(docker ps -q -f ancestor=qawolf/runner):./qawolf.recorder.js\""
   },
   "keywords": [],
   "author": "QA Wolf Inc. <info@qawolf.com>",

@@ -32,3 +32,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .vercel
+
+# docker-compose.runner-dev.yml is symlinked to override as necessary
+docker-compose.override.yml
