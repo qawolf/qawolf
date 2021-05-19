@@ -75,15 +75,17 @@ if [[ $1 == "init" ]]; then
   npm run build:recorder-script
   printf "\nBuilding runner image...\n\n"
   docker pull qawolf/runner-base:$DOCKER_BASE_VERSION
+  cd ..
   docker-compose build runner
   
   # run migrations
   printf "\nRunning migrations...\n\n"
-  cd ../app && npm run migrate:run:dev
+  cd app
+  npm run migrate:run:dev
 
   # seed database on first run
   printf "\nSeeding database...\n\n"
-  cd ../app && npm run seed:dev
+  npm run seed:dev
 
   exit 0
 fi
@@ -110,8 +112,7 @@ fi
 # start postgres and runner containers, then start app in dev mode
 if [[ $1 == "dev" ]]; then
   ensureDotenv
-  docker-compose stop app
-  docker-compose up -d postgres runner
+  docker-compose up -d
   cd app 
   npm run dev
   exit 0
@@ -122,7 +123,7 @@ fi
 if [[ $1 == "start" ]]; then
   ensureDotenv
   docker-compose up -d
-  docker-compose logs -f app runner
+  docker-compose logs -f runner
   exit 0
 fi
 

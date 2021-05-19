@@ -25,11 +25,9 @@ const ensureSeedLocalDb = async (): Promise<void> => {
   if (Number(runnerCount) === 0) {
     const timestamp = minutesFromNow();
     await db("runners").insert({
-      api_key: "api-key",
       created_at: timestamp,
       id: cuid(),
       location: "local",
-      ready_at: timestamp,
       updated_at: timestamp,
     });
   }
