@@ -9,6 +9,7 @@ showHelp() {
   init      Install deps in all projects, build the runner container, and run app migrations
   build     Build all containers (or specify a container to build with an additional argument)
   dev       Start postgres and runner containers, then start app in dev mode
+  dev-all   Start postgres, then start app and runner in dev mode (hot reload runner and recorder changes)
   start     Run production builds in docker containers and tail logs app/runner logs
   stop      Stop all running containers
   clean     Clean up all containers, volumes, and node_modules (full reset)
@@ -112,12 +113,29 @@ fi
 # start postgres and runner containers, then start app in dev mode
 if [[ $1 == "dev" ]]; then
   ensureDotenv
+  rm docker-compose.override.yml || true
   docker-compose up -d
   cd app 
   npm run dev
   exit 0
 fi
 
+# start postgres, then start all projects in dev (hot reload) mode
+if [[ $1 == "dev-all" ]]; then
+  ensureDotenv
+  ln -s docker-compose.runner-dev.yml docker-compose.override.yml || true
+  docker-compose up -d
+  # This needs to do 5 things for full hot reload:
+  # - watch runner TS files and rebuild to /dist as they change
+  # - watch /dist and copy into running container when it changes
+  # - watch recorder TS files and rebuild to recorder/build/qawolf.recorder.js when they change
+  # - watch recorder/build/qawolf.recorder.js and copy to runner/qawolf.recorder.js when it changes
+  # - watch runner/qawolf.recorder.js and copy into running container when it changes
+  runner/node_modules/.bin/concurrently --kill-others -n runner-build-watch,recorder-build-watch,docker-recorder-update,app "docker-compose exec -T runner npm run build:tsc:watch -- --onSuccess \"scripts/restart-node.sh\"" "cd recorder && npm run build:watch" "cd runner && npm run watch-and-update-recorder" "cd app && npm run dev"
+  # cd app 
+  # npm run dev
+  exit 0
+fi
 
 # run production builds in docker containers and tail logs
 if [[ $1 == "start" ]]; then
