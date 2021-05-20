@@ -45,6 +45,9 @@ export const launch = async ({ devtools }: LaunchOptions = {}): Promise<
   const options = {
     args: browserName === "chromium" ? ["--no-sandbox"] : [],
     devtools,
+    // Currently the PointerEvent click test only passes in non-headless mode.
+    // Maybe this issue will be resolved someday, but anyway non-headless is
+    // a more accurate test for the recorder.
     headless: false
   };
 
