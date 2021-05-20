@@ -46,8 +46,13 @@ const createSuite = async (
           options
         ),
         createCommentForIntegration(
-          req,
-          { integration, suite_id: result.suite.id, trigger },
+          {
+            committed_at: req.body.committed_at,
+            integration,
+            pull_request_id: req.body.pull_request_id,
+            suite_id: result.suite.id,
+            trigger,
+          },
           options
         ),
       ]);

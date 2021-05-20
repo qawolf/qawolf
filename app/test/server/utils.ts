@@ -181,6 +181,7 @@ type BuildTrigger = {
   deployment_branches?: string;
   deployment_environment?: string;
   deployment_integration_id?: string;
+  deployment_preview_url?: string;
   deployment_provider?: DeploymentProvider;
   environment_id?: string;
   i?: number;
@@ -562,6 +563,7 @@ export const buildTrigger = ({
   deployment_branches,
   deployment_environment,
   deployment_integration_id,
+  deployment_preview_url,
   deployment_provider,
   environment_id,
   i,
@@ -579,6 +581,7 @@ export const buildTrigger = ({
     deployment_branches: deployment_branches || null,
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
+    deployment_preview_url: deployment_preview_url || null,
     deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
     id: `trigger${finalI === 1 ? "" : i}Id`,

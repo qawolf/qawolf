@@ -85,7 +85,7 @@ export type CreatedSuite = {
   suite: Suite;
 };
 
-export type DeploymentProvider = "netlify" | "vercel";
+export type DeploymentProvider = "netlify" | "render" | "vercel";
 
 export type Email = {
   created_at?: string;
@@ -366,6 +366,7 @@ export type Trigger = {
   deployment_branches?: string | null;
   deployment_environment?: string | null;
   deployment_integration_id: string | null;
+  deployment_preview_url?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id: string | null;
   id: string;
@@ -472,6 +473,7 @@ export type CreateTriggerMutation = {
   deployment_branches: string | null;
   deployment_environment: string | null;
   deployment_integration_id: string | null;
+  deployment_preview_url: string | null;
   deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
   name: string;
@@ -594,6 +596,7 @@ export type UpdateTriggerMutation = {
   deployment_branches?: string | null;
   deployment_environment?: string | null;
   deployment_integration_id?: string | null;
+  deployment_preview_url?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;
   id: string;

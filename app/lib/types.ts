@@ -4,7 +4,7 @@ export type AuthenticatedUser = {
   user: User;
 };
 
-export type DeploymentProvider = "netlify" | "vercel";
+export type DeploymentProvider = "netlify" | "render" | "vercel";
 
 export type Editor = {
   helpers: string;
@@ -204,6 +204,7 @@ export type Trigger = ShortTrigger & {
   deployment_branches: string | null;
   deployment_environment: string | null;
   deployment_integration_id: string | null;
+  deployment_preview_url: string | null;
   environment_id: string | null;
   next_at: string | null;
   tags: Tag[];
@@ -270,6 +271,7 @@ export type TriggerFields = {
   deployment_branches: string | null;
   deployment_environment: string | null;
   deployment_integration_id: string | null;
+  deployment_preview_url: string | null;
   deployment_provider: DeploymentProvider | null;
   environment_id: string | null;
   name: string;

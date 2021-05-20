@@ -1,9 +1,8 @@
 import { Box } from "grommet";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { timeToText } from "../../../lib/helpers";
-import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Button from "../../shared/AppButton";
@@ -34,13 +33,10 @@ export default function Header({ mode }: Props): JSX.Element {
   const { branch: stateBranch } = useContext(StateContext);
   const { hasChanges, run, suite, test } = useContext(TestContext);
 
-  const branch = suite?.branch || stateBranch || null;
-  const testId = test_id as string;
+  const runBranch = suite?.branch || null;
+  const testBranch = stateBranch || null;
 
-  // update branch to suite branch if possible
-  useEffect(() => {
-    if (suite?.branch) state.setBranch(suite.branch);
-  }, [suite?.branch]);
+  const testId = test_id as string;
 
   return (
     <>
@@ -64,14 +60,20 @@ export default function Header({ mode }: Props): JSX.Element {
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
         <Box align="center" direction="row">
-          <Branch hasChanges={hasChanges} branch={branch} mode={mode} />
+          <Branch
+            hasChanges={hasChanges}
+            branch={mode === "test" ? testBranch : runBranch}
+            mode={mode}
+          />
           <TestHistory testId={test?.id || null} />
           <Divider
             height={edgeSize.large}
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {mode === "test" && <TestButtons branch={branch} testId={testId} />}
+          {mode === "test" && (
+            <TestButtons branch={testBranch} testId={testId} />
+          )}
           {run?.test_id && (
             <Button
               IconComponent={Edit}

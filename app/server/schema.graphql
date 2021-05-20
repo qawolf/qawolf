@@ -27,6 +27,9 @@ enum DeploymentProvider {
   "Netlify"
   netlify
 
+  "Render"
+  render
+
   "Vercel"
   vercel
 }
@@ -512,6 +515,9 @@ type Trigger {
   "The ID of a deployment integration associated with this trigger"
   deployment_integration_id: ID
 
+  "The deployment preview URL (used if provider is Render)"
+  deployment_preview_url: String
+
   "The deployment provider"
   deployment_provider: DeploymentProvider
 
@@ -869,6 +875,9 @@ type Mutation {
     The ID of the integration for the connected GitHub repository.
     """
     deployment_integration_id: ID
+
+    "The deployment preview URL (for Render)"
+    deployment_preview_url: String
 
     "The deployment provider"
     deployment_provider: DeploymentProvider
@@ -1268,6 +1277,9 @@ type Mutation {
     changed. If it is `null`, it will be cleared.
     """
     deployment_integration_id: ID
+
+    "The deployment preview URL (for Render)"
+    deployment_preview_url: String
 
     "The deployment provider"
     deployment_provider: DeploymentProvider

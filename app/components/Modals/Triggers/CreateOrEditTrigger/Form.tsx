@@ -65,10 +65,16 @@ export default function Form({
   const [deployIntegrationId, setDeployIntegrationId] = useState<string | null>(
     editTrigger?.deployment_integration_id || null
   );
+  const [deployPreviewUrl, setDeployPreviewUrl] = useState<string | null>(
+    editTrigger?.deployment_preview_url || null
+  );
   const [deployProvider, setDeployProvider] = useState<DeploymentProvider>(
     editTrigger?.deployment_provider || "vercel"
   );
   const [hasDeployError, setHasDeployError] = useState(false);
+  const [hasDeployPreviewUrlError, setHasDeployPreviewUrlError] = useState(
+    false
+  );
 
   // tags
   const [tagIds, setTagIds] = useState<string[]>(
@@ -94,14 +100,23 @@ export default function Form({
 
   const handleSave = (): void => {
     setHasDeployError(false);
+    setHasDeployPreviewUrlError(false);
     setNameError("");
 
     if (
       mode === "deployment" &&
       !deployIntegrationId &&
-      deployProvider === "vercel"
+      ["render", "vercel"].includes(deployProvider)
     ) {
       setHasDeployError(true);
+      return;
+    }
+    if (
+      mode === "deployment" &&
+      deployProvider === "render" &&
+      !deployPreviewUrl
+    ) {
+      setHasDeployPreviewUrlError(true);
       return;
     }
     if (!name) {
@@ -114,6 +129,7 @@ export default function Form({
         deployBranches,
         deployEnv,
         deployIntegrationId,
+        deployPreviewUrl,
         deployProvider,
         environmentId,
         mode,
@@ -150,11 +166,14 @@ export default function Form({
             deployBranches={deployBranches}
             deployEnv={deployEnv}
             deployIntegrationId={deployIntegrationId}
+            deployPreviewUrl={deployPreviewUrl}
             deployProvider={deployProvider}
             hasDeployError={hasDeployError}
+            hasDeployPreviewUrlError={hasDeployPreviewUrlError}
             setDeployBranches={setDeployBranches}
             setDeployEnv={setDeployEnv}
             setDeployIntegrationId={setDeployIntegrationId}
+            setDeployPreviewUrl={setDeployPreviewUrl}
             setDeployProvider={setDeployProvider}
           />
         )}

@@ -26,9 +26,11 @@ export const handleDeploymentStatusEvent = async (
 
   return createSuitesForDeployment(
     {
+      committedAt: deployment.created_at,
       deploymentUrl,
       environment: environment.toLowerCase(),
       installationId: installation.id,
+      ref: deployment.ref,
       repoId: repository.id,
       repoFullName: repository.full_name,
       sha: deployment.sha,

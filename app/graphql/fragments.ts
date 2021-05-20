@@ -171,6 +171,7 @@ export const triggerFragment = gql`
     deployment_branches
     deployment_environment
     deployment_integration_id
+    deployment_preview_url
     deployment_provider
     environment_id
     id

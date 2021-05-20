@@ -17,7 +17,9 @@ type CreateCommitStatusForIntegration = {
 };
 
 type CreateCommentForIntegration = {
+  committed_at?: string;
   integration: Integration | null;
+  pull_request_id?: number | null;
   suite_id: string;
   trigger: Trigger;
 };
@@ -65,12 +67,16 @@ export const createCommitStatusForIntegration = async (
 };
 
 export const createCommentForIntegration = async (
-  req: NextApiRequest,
-  { integration, suite_id, trigger }: CreateCommentForIntegration,
+  {
+    committed_at,
+    integration,
+    pull_request_id,
+    suite_id,
+    trigger,
+  }: CreateCommentForIntegration,
   options: ModelOptions
 ): Promise<void> => {
   const log = options.logger.prefix("createCommentForIntegration");
-  const { committed_at, pull_request_id } = req.body;
 
   if (!committed_at || !integration || !pull_request_id) {
     const payload = { committed_at, integration, pull_request_id };

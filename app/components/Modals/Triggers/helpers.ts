@@ -9,6 +9,7 @@ type BuildTriggerFields = {
   deployBranches: string | null;
   deployEnv: string | null;
   deployIntegrationId: string | null;
+  deployPreviewUrl: string | null;
   deployProvider: DeploymentProvider | null;
   environmentId: string;
   mode: TriggerMode;
@@ -30,6 +31,7 @@ const nullDeploymentFields = {
   deployment_branches: null,
   deployment_environment: null,
   deployment_integration_id: null,
+  deployment_preview_url: null,
   deployment_provider: null,
 };
 
@@ -37,6 +39,7 @@ export const buildTriggerFields = ({
   deployBranches,
   deployEnv,
   deployIntegrationId,
+  deployPreviewUrl,
   deployProvider,
   environmentId,
   mode,
@@ -55,12 +58,20 @@ export const buildTriggerFields = ({
     };
   }
 
+  let deployment_environment = null;
+  if (["netlify", "vercel"].includes(deployProvider)) {
+    deployment_environment =
+      deployEnv && deployEnv !== "all" ? deployEnv : null;
+  }
+
   return {
     ...constantFields,
     deployment_branches:
       deployBranches && deployProvider === "vercel" ? deployBranches : null,
-    deployment_environment: deployEnv && deployEnv !== "all" ? deployEnv : null,
+    deployment_environment,
     deployment_integration_id: deployIntegrationId || null,
+    deployment_preview_url:
+      deployProvider === "render" ? deployPreviewUrl : null,
     deployment_provider: deployProvider,
     repeat_minutes: null,
     tag_ids: tagIds,

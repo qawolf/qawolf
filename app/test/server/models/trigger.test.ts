@@ -86,7 +86,6 @@ describe("trigger model", () => {
           deployment_provider: "vercel",
           environment_id: "environmentId",
           name: "Deployment",
-          repeat_minutes: 60,
           team_id: "teamId",
         },
         options
@@ -105,7 +104,7 @@ describe("trigger model", () => {
           environment_id: "environmentId",
           id: expect.any(String),
           name: "Deployment",
-          repeat_minutes: 60,
+          repeat_minutes: null,
         },
       ]);
 
@@ -118,7 +117,6 @@ describe("trigger model", () => {
           deployment_provider: "netlify",
           environment_id: "environmentId",
           name: "Deployment (Netlify)",
-          repeat_minutes: 60,
           team_id: "teamId",
         },
         options
@@ -137,6 +135,55 @@ describe("trigger model", () => {
         deployment_provider: "netlify",
         name: "Deployment (Netlify)",
       });
+
+      await createTrigger(
+        {
+          creator_id: "userId",
+          deployment_branches: null,
+          deployment_integration_id: "integrationId",
+          deployment_preview_url: "https://example-pr-2.onrender.com/",
+          deployment_provider: "render",
+          environment_id: "environmentId",
+          name: "Deployment (Render)",
+          team_id: "teamId",
+        },
+        options
+      );
+
+      const trigger3 = await db
+        .select("*")
+        .from("triggers")
+        .orderBy("created_at", "desc")
+        .first();
+
+      expect(trigger3).toMatchObject({
+        deployment_branches: null,
+        deployment_environment: null,
+        deployment_integration_id: "integrationId",
+        deployment_preview_url: "https://example-pr-2.onrender.com/",
+        deployment_provider: "render",
+        name: "Deployment (Render)",
+      });
+    });
+
+    it("throws an error if invalid URL", async () => {
+      await expect(
+        (async (): Promise<Trigger> => {
+          return createTrigger(
+            {
+              creator_id: "userId",
+              deployment_branches: null,
+              deployment_integration_id: "integrationId",
+              deployment_preview_url: "not a url",
+              deployment_provider: "render",
+              environment_id: "environmentId",
+              name: "Deployment (Render)",
+              team_id: "teamId",
+            },
+            options
+          );
+        })()
+      ).rejects.toThrowError("must provide valid URL");
     });
 
     it("throws an error if trigger name taken", async () => {
@@ -532,9 +579,10 @@ describe("trigger model", () => {
       await updateTrigger(
         {
           deployment_branches: null,
-          deployment_environment: "preview",
+          deployment_environment: null,
           deployment_integration_id: "integration2Id",
-          deployment_provider: "netlify",
+          deployment_preview_url: "https://example-pr-2.onrender.com",
+          deployment_provider: "render",
           id: "triggerId",
         },
         options
@@ -542,8 +590,29 @@ describe("trigger model", () => {
       const updatedTrigger2 = await db.select("*").from("triggers").first();
 
       expect(updatedTrigger2.deployment_branches).toBeNull();
-      expect(updatedTrigger2.deployment_environment).toBe("preview");
-      expect(updatedTrigger2.deployment_provider).toBe("netlify");
+      expect(updatedTrigger2.deployment_environment).toBeNull();
+      expect(updatedTrigger2.deployment_preview_url).toBe(
+        "https://example-pr-2.onrender.com/"
+      );
+      expect(updatedTrigger2.deployment_provider).toBe("render");
+
+      await updateTrigger(
+        {
+          deployment_branches: null,
+          deployment_environment: "preview",
+          deployment_integration_id: "integration2Id",
+          deployment_preview_url: null,
+          deployment_provider: "netlify",
+          id: "triggerId",
+        },
+        options
+      );
+      const updatedTrigger3 = await db.select("*").from("triggers").first();
+
+      expect(updatedTrigger3.deployment_branches).toBeNull();
+      expect(updatedTrigger3.deployment_environment).toBe("preview");
+      expect(updatedTrigger3.deployment_preview_url).toBeNull();
+      expect(updatedTrigger3.deployment_provider).toBe("netlify");
     });
 
     it("updates trigger environment", async () => {

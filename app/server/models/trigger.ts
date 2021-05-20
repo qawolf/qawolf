@@ -19,6 +19,7 @@ type CreateTrigger = GetNextAt & {
   deployment_branches?: string | null;
   deployment_environment?: string | null;
   deployment_integration_id?: string | null;
+  deployment_preview_url?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string;
   name: string;
@@ -36,6 +37,7 @@ type UpdateTrigger = GetNextAt & {
   deployment_branches?: string | null;
   deployment_environment?: string | null;
   deployment_integration_id?: string | null;
+  deployment_preview_url?: string | null;
   deployment_provider?: DeploymentProvider | null;
   environment_id?: string | null;
   id: string;
@@ -48,12 +50,23 @@ const formatBranches = (branches: string | null): string | null => {
   return branches.split(/[\s,]+/).join(",");
 };
 
+const formatUrl = (url?: string): string | null => {
+  if (!url) return null;
+
+  try {
+    return new URL(url).href;
+  } catch (e) {
+    throw new ClientError("must provide valid URL");
+  }
+};
+
 export const createTrigger = async (
   {
     creator_id,
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
+    deployment_preview_url,
     deployment_provider,
     environment_id,
     name,
@@ -77,6 +90,7 @@ export const createTrigger = async (
     deployment_branches: formatBranches(deployment_branches),
     deployment_environment: deployment_environment || null,
     deployment_integration_id: deployment_integration_id || null,
+    deployment_preview_url: formatUrl(deployment_preview_url),
     deployment_provider: deployment_provider || null,
     environment_id: environment_id || null,
     id: cuid(),
@@ -323,6 +337,7 @@ export const updateTrigger = async (
     deployment_branches,
     deployment_environment,
     deployment_integration_id,
+    deployment_preview_url,
     deployment_provider,
     environment_id,
     id,
@@ -351,6 +366,9 @@ export const updateTrigger = async (
     }
     if (deployment_integration_id !== undefined) {
       updates.deployment_integration_id = deployment_integration_id;
+    }
+    if (deployment_preview_url !== undefined) {
+      updates.deployment_preview_url = formatUrl(deployment_preview_url);
     }
     if (deployment_provider !== undefined) {
       updates.deployment_provider = deployment_provider;

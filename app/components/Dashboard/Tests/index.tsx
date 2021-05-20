@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTagsForTests } from "../../../hooks/queries";
 import { useTagQuery } from "../../../hooks/tagQuery";
@@ -25,7 +25,10 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   const { data: tagsData, loading: tagsLoading } = useTagsForTests({
     test_ids: testIds,
   });
-  const testTags = tagsData?.tagsForTests || [];
+  // prevent recomputing the value of testTags
+  const testTags = useMemo(() => {
+    return tagsData?.tagsForTests || [];
+  }, [tagsData]);
 
   const tests = filterTests({
     filter,
