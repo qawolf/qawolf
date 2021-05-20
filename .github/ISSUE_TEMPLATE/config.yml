@@ -1,8 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Feature Requests
-    url: https://github.com/qawolf/qawolf/discussions
-    about: Request new features and product improvements on GitHub Discussions.
   - name: Chat
     url: https://slack.qawolf.com
     about: Join our Slack channel to ask questions and give feedback.
