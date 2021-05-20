@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { findRun } from "../models/run";
 import { Context, Runner } from "../types";
 import { ensureTeams, ensureTestAccess, ensureUser } from "./utils";
@@ -28,6 +29,21 @@ export const runnerResolver = async (
 
   // TODO get runner from pool by session key (run_id or test_id_branch)
   // we need to track this centrally to send to the same region
+
+  if (process.env.RUNNER_SCHEDULER_URL) {
+    try {
+      const res = await fetch(
+        `${process.env.RUNNER_SCHEDULER_URL}/session/${testId}`
+      );
+      const runner: Runner | null = await res.json();
+      log.debug(runner);
+      return runner;
+    } catch (err) {
+      log.error(err);
+      return null;
+    }
+  }
+  
   return {
     vnc_url: "ws://localhost:5000",
     ws_url: "ws://localhost:4000/socket.io",
