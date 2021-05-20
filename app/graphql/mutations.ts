@@ -191,6 +191,7 @@ export const createTriggerMutation = gql`
     $deployment_branches: String
     $deployment_environment: String
     $deployment_integration_id: ID
+    $deployment_preview_url: String
     $deployment_provider: DeploymentProvider
     $environment_id: ID
     $name: String!
@@ -202,6 +203,7 @@ export const createTriggerMutation = gql`
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
+      deployment_preview_url: $deployment_preview_url
       deployment_provider: $deployment_provider
       environment_id: $environment_id
       name: $name
@@ -418,6 +420,7 @@ export const updateTriggerMutation = gql`
     $deployment_branches: String
     $deployment_environment: String
     $deployment_integration_id: ID
+    $deployment_preview_url: String
     $deployment_provider: DeploymentProvider
     $environment_id: ID
     $id: ID!
@@ -429,6 +432,7 @@ export const updateTriggerMutation = gql`
       deployment_branches: $deployment_branches
       deployment_environment: $deployment_environment
       deployment_integration_id: $deployment_integration_id
+      deployment_preview_url: $deployment_preview_url
       deployment_provider: $deployment_provider
       environment_id: $environment_id
       id: $id

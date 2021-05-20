@@ -1,4 +1,5 @@
 import {
+  buildUrl,
   createSuitesForDeployment,
   shouldRunTriggerOnDeployment,
 } from "../../../../server/api/github/deployment";
@@ -16,6 +17,50 @@ import {
 } from "../../utils";
 
 const db = prepareTestDb();
+
+describe("buildUrl", () => {
+  it("returns deployment url if trigger does not have example url", () => {
+    expect(
+      buildUrl({
+        deploymentUrl: "deploymentUrl",
+        pullRequestId: 123,
+        trigger: buildTrigger({}),
+      })
+    ).toBe("deploymentUrl");
+  });
+
+  it("returns deployment url if no have pull request", () => {
+    expect(
+      buildUrl({
+        deploymentUrl: "deploymentUrl",
+        pullRequestId: null,
+        trigger: buildTrigger({ deployment_preview_url: "previewUrl" }),
+      })
+    ).toBe("deploymentUrl");
+  });
+
+  it("replaces pull request number otherwise", () => {
+    expect(
+      buildUrl({
+        deploymentUrl: "deploymentUrl",
+        pullRequestId: 123,
+        trigger: buildTrigger({
+          deployment_preview_url: "https://next-js-example-pr-4.onrender.com",
+        }),
+      })
+    ).toBe("https://next-js-example-pr-123.onrender.com");
+
+    expect(
+      buildUrl({
+        deploymentUrl: "deploymentUrl",
+        pullRequestId: 11,
+        trigger: buildTrigger({
+          deployment_preview_url: "https://render2-pr-1633.onrender.com/",
+        }),
+      })
+    ).toBe("https://render2-pr-11.onrender.com");
+  });
+});
 
 describe("createSuitesForDeployment", () => {
   beforeAll(async () => {
@@ -51,8 +96,8 @@ describe("createSuitesForDeployment", () => {
 
   it("creates suites for a deployment", async () => {
     const findBranchesForCommitSpy = jest
-      .spyOn(gitHubService, "findBranchesForCommit")
-      .mockResolvedValue(["feature"]);
+      .spyOn(gitHubService, "findBranchForCommit")
+      .mockResolvedValue({ branch: "feature", pullRequestId: 123 });
 
     const createCommitStatusSpy = jest
       .spyOn(gitHubService, "createCommitStatus")
@@ -62,8 +107,10 @@ describe("createSuitesForDeployment", () => {
 
     await createSuitesForDeployment(
       {
+        committedAt: new Date().toISOString(),
         deploymentUrl: "url",
         installationId: 123,
+        ref: "feature",
         repoId: 1,
         repoFullName: "qawolf/repo",
         sha: "sha",
@@ -89,6 +136,7 @@ describe("createSuitesForDeployment", () => {
     expect(findBranchesForCommitSpy.mock.calls[0][0]).toEqual({
       installationId: 123,
       owner: "qawolf",
+      ref: "feature",
       repo: "repo",
       sha: "sha",
     });
@@ -105,46 +153,30 @@ describe("createSuitesForDeployment", () => {
 });
 
 describe("shouldRunTriggerOnDeployment", () => {
-  it("returns true if specified branches match trigger", () => {
+  it("returns true if specified branch matches trigger", () => {
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["main", "develop"],
+        branch: "main",
+        pullRequestId: 123,
         trigger: buildTrigger({ deployment_branches: "main,production" }),
       })
     ).toBe(true);
 
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["main"],
+        branch: "main",
+        pullRequestId: 123,
         trigger: buildTrigger({}),
-      })
-    ).toBe(true);
-
-    expect(
-      shouldRunTriggerOnDeployment({
-        branches: ["main", "develop"],
-        environment: "preview",
-        trigger: buildTrigger({ deployment_branches: "main,production" }),
       })
     ).toBe(true);
   });
 
-  it("returns false if specified branches do not match trigger", () => {
+  it("returns false if specified branch does not match trigger", () => {
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["main", "develop"],
+        branch: "main",
+        pullRequestId: 123,
         trigger: buildTrigger({ deployment_branches: "feature" }),
-      })
-    ).toBe(false);
-
-    expect(
-      shouldRunTriggerOnDeployment({
-        branches: ["main", "develop"],
-        environment: "preview",
-        trigger: buildTrigger({
-          deployment_branches: "feature",
-          deployment_environment: "preview",
-        }),
       })
     ).toBe(false);
   });
@@ -152,16 +184,18 @@ describe("shouldRunTriggerOnDeployment", () => {
   it("returns false if environment does not match", () => {
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["develop"],
+        branch: "develop",
         environment: "production",
+        pullRequestId: 123,
         trigger: buildTrigger({ deployment_environment: "preview" }),
       })
     ).toBe(false);
 
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["main"],
+        branch: "main",
         environment: "production",
+        pullRequestId: 123,
         trigger: buildTrigger({
           deployment_branches: "main",
           deployment_environment: "preview",
@@ -173,21 +207,34 @@ describe("shouldRunTriggerOnDeployment", () => {
   it("returns true if environment matches trigger", () => {
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["develop"],
+        branch: "develop",
         environment: "preview",
+        pullRequestId: 123,
         trigger: buildTrigger({ deployment_environment: "preview" }),
       })
     ).toBe(true);
 
     expect(
       shouldRunTriggerOnDeployment({
-        branches: ["main"],
+        branch: "main",
         environment: "preview",
+        pullRequestId: 123,
         trigger: buildTrigger({
           deployment_branches: "main",
           deployment_environment: "preview",
         }),
       })
     ).toBe(true);
+  });
+
+  it("returns false if render and no pull request", () => {
+    expect(
+      shouldRunTriggerOnDeployment({
+        branch: "develop",
+        environment: "preview",
+        pullRequestId: null,
+        trigger: buildTrigger({ deployment_provider: "render" }),
+      })
+    ).toBe(false);
   });
 });

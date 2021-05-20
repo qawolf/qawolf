@@ -71,14 +71,16 @@ export const TestProvider: FC = ({ children }) => {
   );
   const suite = suiteData?.suite || null;
 
-  // tee up correct environment if test edited
+  // tee up correct branch and environment if test edited
   useEffect(() => {
-    if (!suite?.environment_id || suite.environment_id === environmentId) {
-      return;
+    if (suite?.environment_id && suite.environment_id !== environmentId) {
+      state.setEnvironmentId(suite.environment_id);
     }
 
-    state.setEnvironmentId(suite.environment_id);
-  }, [environmentId, suite]);
+    if (suite?.branch && team.git_sync_integration_id) {
+      state.setBranch(suite.branch);
+    }
+  }, [environmentId, suite, team]);
 
   useEffect(() => {
     if (!run || run.completed_at) return;

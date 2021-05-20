@@ -1,48 +1,79 @@
 import { logger } from "../../../test/server/utils";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
+import { findIntegration } from "../../models/integration";
 import { createSuiteForTests } from "../../models/suite";
 import { ensureTeamCanCreateSuite, findTeam } from "../../models/team";
 import { findEnabledTestsForTrigger } from "../../models/test";
 import { findTriggersForGitHubIntegration } from "../../models/trigger";
 import {
   createCommitStatus,
-  findBranchesForCommit,
+  findBranchForCommit,
 } from "../../services/gitHub/commitStatus";
 import { ModelOptions, Trigger } from "../../types";
+import { createCommentForIntegration } from "../netlify/github";
+
+type BuildUrl = {
+  deploymentUrl: string;
+  pullRequestId: number | null;
+  trigger: Trigger;
+};
 
 type CreateSuiteForDeployment = {
-  branches: string[];
+  committedAt: string;
+  branch: string;
   deploymentUrl: string;
   environment?: string;
   installationId: number;
   owner: string;
+  pullRequestId: number | null;
   repo: string;
   sha: string;
   trigger: Trigger;
 };
 
 type CreateSuitesForDeployment = {
+  committedAt: string;
   deploymentUrl: string;
   environment?: string;
   installationId: number;
+  ref: string;
   repoFullName: string;
   repoId: number;
   sha: string;
 };
 
 type ShouldRunTriggerOnDeployment = {
-  branches: string[];
+  branch: string;
   environment?: string;
+  pullRequestId: number | null;
   trigger: Trigger;
 };
 
+export const buildUrl = ({
+  deploymentUrl,
+  pullRequestId,
+  trigger,
+}: BuildUrl): string => {
+  if (!pullRequestId || !trigger.deployment_preview_url) return deploymentUrl;
+
+  return trigger.deployment_preview_url.replace(
+    /\d+.onrender.com\/?/,
+    `${pullRequestId}.onrender.com`
+  );
+};
+
 export const shouldRunTriggerOnDeployment = ({
-  branches,
+  branch,
   environment,
+  pullRequestId,
   trigger,
 }: ShouldRunTriggerOnDeployment): boolean => {
+  if (trigger.deployment_provider === "render" && !pullRequestId) {
+    return false;
+  }
+
   const isBranchMatch = trigger.deployment_branches
-    ? trigger.deployment_branches.split(",").some((b) => branches.includes(b))
+    ? trigger.deployment_branches.split(",").includes(branch)
     : true;
 
   const isEnvironmentMatch = trigger.deployment_environment
@@ -54,11 +85,13 @@ export const shouldRunTriggerOnDeployment = ({
 
 const createSuiteForDeployment = async (
   {
-    branches,
+    branch,
+    committedAt,
     deploymentUrl,
     environment,
     installationId,
     owner,
+    pullRequestId,
     repo,
     sha,
     trigger,
@@ -67,9 +100,16 @@ const createSuiteForDeployment = async (
 ): Promise<void> => {
   const log = options.logger.prefix("createSuiteForDeployment");
 
-  if (!shouldRunTriggerOnDeployment({ branches, environment, trigger })) {
+  if (
+    !shouldRunTriggerOnDeployment({
+      branch,
+      environment,
+      pullRequestId,
+      trigger,
+    })
+  ) {
     log.debug(
-      `skip trigger ${trigger.id} on branches ${branches} and environment ${environment}`
+      `skip trigger ${trigger.id} on branch ${branch}, environment ${environment}, pull request ${pullRequestId}`
     );
     return;
   }
@@ -86,6 +126,7 @@ const createSuiteForDeployment = async (
 
   const { suite } = await createSuiteForTests(
     {
+      branch,
       environment_variables: { URL: deploymentUrl },
       trigger_id: trigger.id,
       team_id: trigger.team_id,
@@ -119,13 +160,30 @@ const createSuiteForDeployment = async (
     },
     options
   );
+
+  // create comment on pull request
+  await createCommentForIntegration(
+    {
+      committed_at: committedAt,
+      integration: await findIntegration(
+        trigger.deployment_integration_id,
+        options
+      ),
+      pull_request_id: pullRequestId,
+      suite_id: suite.id,
+      trigger,
+    },
+    options
+  );
 };
 
 export const createSuitesForDeployment = async (
   {
+    committedAt,
     deploymentUrl,
     environment,
     installationId,
+    ref,
     repoFullName,
     repoId,
     sha,
@@ -134,10 +192,11 @@ export const createSuitesForDeployment = async (
 ): Promise<void> => {
   const [owner, repo] = repoFullName.split("/");
 
-  const branches = await findBranchesForCommit(
+  const { branch, pullRequestId } = await findBranchForCommit(
     {
       installationId,
       owner,
+      ref,
       repo,
       sha,
     },
@@ -155,11 +214,17 @@ export const createSuitesForDeployment = async (
         triggers.map((trigger) =>
           createSuiteForDeployment(
             {
-              branches,
-              deploymentUrl,
+              branch,
+              committedAt,
+              deploymentUrl: buildUrl({
+                deploymentUrl,
+                pullRequestId,
+                trigger,
+              }),
               environment,
               installationId,
               owner,
+              pullRequestId,
               repo,
               sha,
               trigger,

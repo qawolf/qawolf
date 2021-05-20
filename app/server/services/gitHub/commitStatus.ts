@@ -18,6 +18,11 @@ export type GitHubCommitStatus = RestEndpointMethodTypes["repos"]["createCommitS
 
 export type GitHubRepos = RestEndpointMethodTypes["apps"]["listReposAccessibleToInstallation"]["response"]["data"]["repositories"];
 
+type BranchForCommit = {
+  branch: string;
+  pullRequestId: number | null;
+};
+
 type CreateCommitStatus = {
   context: string;
   installationId: number;
@@ -28,9 +33,10 @@ type CreateCommitStatus = {
   suiteId: string;
 };
 
-type FindBranchesForCommit = {
+type FindBranchForCommit = {
   installationId: number;
   owner: string;
+  ref: string;
   repo: string;
   sha: string;
 };
@@ -79,10 +85,10 @@ export const createCommitStatus = async (
   return data;
 };
 
-export const findBranchesForCommit = async (
-  { installationId, owner, repo, sha }: FindBranchesForCommit,
+export const findBranchForCommit = async (
+  { installationId, owner, ref, repo, sha }: FindBranchForCommit,
   options: ModelOptions
-): Promise<string[]> => {
+): Promise<BranchForCommit> => {
   const { octokit } = await createOctokitForInstallation(
     { installationId },
     options
@@ -94,7 +100,16 @@ export const findBranchesForCommit = async (
     repo,
   });
 
-  return uniq(data.check_suites.map((s) => s.head_branch));
+  const branches = uniq(data.check_suites.map((s) => s.head_branch));
+  const branch = branches.includes(ref) ? ref : branches[0];
+
+  const pullRequests = data.check_suites
+    .filter((s) => s.head_branch === branch)
+    .find((s) => s.pull_requests.length)?.pull_requests;
+
+  const pullRequestId = pullRequests?.length ? pullRequests[0].number : null;
+
+  return { branch, pullRequestId };
 };
 
 export const findGitHubReposForInstallation = async (
