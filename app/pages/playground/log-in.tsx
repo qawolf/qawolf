@@ -7,14 +7,12 @@ import Header from "../../components/shared/playground/Header";
 import Text from "../../components/shared/Text";
 import { edgeSize } from "../../theme/theme";
 
-type Props = { isUpdated?: boolean };
-
 const correctUsername = "spirit";
 const correctPassword = "wolf123";
 
 const textProps = { color: "gray9", size: "component" as const };
 
-export default function LogIn({ isUpdated }: Props): JSX.Element {
+export default function LogIn(): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [error, setError] = useState("");
@@ -76,7 +74,7 @@ export default function LogIn({ isUpdated }: Props): JSX.Element {
         />
         <Button
           justify="center"
-          label={isUpdated ? "Sign in" : "Log in"}
+          label="Log in"
           onClick={handleClick}
           type="primary"
         />
