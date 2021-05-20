@@ -1,7 +1,7 @@
 ---
 name: Idea
 about: Have an idea to improve QA Wolf? Let us know!
-labels: "idea"
+labels: "enhancement"
 ---
 
 ## Description
