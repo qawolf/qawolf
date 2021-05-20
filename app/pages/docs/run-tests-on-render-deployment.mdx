@@ -4,6 +4,7 @@ import ChooseEnvironment from "../../components/Docs/ChooseEnvironment";
 import ChooseTags from "../../components/Docs/ChooseTags";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
 import ExternalLink from "../../components/Docs/ExternalLink";
+import GitHubComment from "../../components/Docs/GitHubComment";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import InstallGitHubApp from "../../components/Docs/InstallGitHubApp";
@@ -24,6 +25,19 @@ Note that QA Wolf does not currently support <ExternalLink href="https://render.
 <CreateTrigger description="on Render deployments" />
 
 <InstallGitHubApp service="render" />
+
+<SubHeader>Provide Preview Environment URL</SubHeader>
+
+In order to know what URL to run your tests on, you must provide an example Preview Environment URL for your project. QA Wolf will use this example to construct the URL for future pull requests.
+
+This is required because Render does not yet provide this information via the GitHub Deployments API.
+
+<Image
+  alt="Preview Environment URL"
+  height={92}
+  src="/docs/run-tests-on-render-deployment/preview-url.png"
+  width={485}
+/>
 
 <SubHeader>Choose Tags</SubHeader>
 
@@ -64,6 +78,8 @@ Now when you make a pull request on GitHub, your tests will run after your Rende
   src="/docs/run-tests-on-render-deployment/github-checks.png"
   width={576}
 />
+
+<GitHubComment />
 
 <ViewRunHistory description="on Render deployments" />
 

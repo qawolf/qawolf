@@ -3,6 +3,7 @@ import Link from "next/link";
 import ChooseEnvironment from "../../components/Docs/ChooseEnvironment";
 import ChooseTags from "../../components/Docs/ChooseTags";
 import CreateTrigger from "../../components/Docs/CreateTrigger";
+import GitHubComment from "../../components/Docs/GitHubComment";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import InstallGitHubApp from "../../components/Docs/InstallGitHubApp";
@@ -89,6 +90,8 @@ Now when you make a pull request on GitHub, your tests will run after your Verce
   src="/docs/run-tests-on-vercel-deployment/github-checks.png"
   width={600}
 />
+
+<GitHubComment />
 
 <ViewRunHistory description="on Vercel deployments" />
 
