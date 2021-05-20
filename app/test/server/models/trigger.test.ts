@@ -141,7 +141,7 @@ describe("trigger model", () => {
           creator_id: "userId",
           deployment_branches: null,
           deployment_integration_id: "integrationId",
-          deployment_preview_url: "url",
+          deployment_preview_url: "https://example-pr-2.onrender.com/",
           deployment_provider: "render",
           environment_id: "environmentId",
           name: "Deployment (Render)",
@@ -160,10 +160,30 @@ describe("trigger model", () => {
         deployment_branches: null,
         deployment_environment: null,
         deployment_integration_id: "integrationId",
-        deployment_preview_url: "url",
+        deployment_preview_url: "https://example-pr-2.onrender.com/",
         deployment_provider: "render",
         name: "Deployment (Render)",
       });
+    });
+
+    it("throws an error if invalid URL", async () => {
+      await expect(
+        (async (): Promise<Trigger> => {
+          return createTrigger(
+            {
+              creator_id: "userId",
+              deployment_branches: null,
+              deployment_integration_id: "integrationId",
+              deployment_preview_url: "not a url",
+              deployment_provider: "render",
+              environment_id: "environmentId",
+              name: "Deployment (Render)",
+              team_id: "teamId",
+            },
+            options
+          );
+        })()
+      ).rejects.toThrowError("must provide valid URL");
     });
 
     it("throws an error if trigger name taken", async () => {
@@ -561,7 +581,7 @@ describe("trigger model", () => {
           deployment_branches: null,
           deployment_environment: null,
           deployment_integration_id: "integration2Id",
-          deployment_preview_url: "url",
+          deployment_preview_url: "https://example-pr-2.onrender.com",
           deployment_provider: "render",
           id: "triggerId",
         },
@@ -571,7 +591,9 @@ describe("trigger model", () => {
 
       expect(updatedTrigger2.deployment_branches).toBeNull();
       expect(updatedTrigger2.deployment_environment).toBeNull();
-      expect(updatedTrigger2.deployment_preview_url).toBe("url");
+      expect(updatedTrigger2.deployment_preview_url).toBe(
+        "https://example-pr-2.onrender.com/"
+      );
       expect(updatedTrigger2.deployment_provider).toBe("render");
 
       await updateTrigger(

@@ -25,6 +25,7 @@ export default function Tests({ branch, teamId }: Props): JSX.Element {
   const { data: tagsData, loading: tagsLoading } = useTagsForTests({
     test_ids: testIds,
   });
+  // prevent recomputing the value of testTags
   const testTags = useMemo(() => {
     return tagsData?.tagsForTests || [];
   }, [tagsData]);
