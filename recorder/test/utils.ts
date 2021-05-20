@@ -1,5 +1,7 @@
 import fs from "fs";
+import http, { Server } from "http";
 import path from "path";
+import serve from "serve-handler";
 import playwright, { Browser, BrowserContext, Page } from "playwright";
 import webpackConfig from "../webpack.config";
 
@@ -43,7 +45,7 @@ export const launch = async ({ devtools }: LaunchOptions = {}): Promise<
   const options = {
     args: browserName === "chromium" ? ["--no-sandbox"] : [],
     devtools,
-    headless: !devtools,
+    headless: false
   };
 
   const browser = await playwright[browserName].launch(options);
@@ -69,4 +71,31 @@ export const launch = async ({ devtools }: LaunchOptions = {}): Promise<
 
 export const setBody = async (page: Page, content: string): Promise<void> => {
   await page.setContent(`<html><body>${content}</body></html`);
+};
+
+let server: Server | null = null;
+export const serveFixtures = async (): Promise<void> => {
+  server = http.createServer((request, response) => {
+    return serve(request, response, {
+      public: "test/fixtures"
+    });
+  });
+  
+  return new Promise((resolve) => {
+    server.listen(9876, resolve);
+  });
+};
+
+export const stopServeFixtures = async (): Promise<void> => {
+  if (server == null) return;
+
+  return new Promise((resolve, reject) => {
+    server.close((error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
 };

@@ -1,7 +1,7 @@
 import { Page } from "playwright";
 import waitForExpect from "wait-for-expect";
 
-import { launch, LaunchResult } from "./utils";
+import { launch, LaunchResult, serveFixtures, stopServeFixtures } from "./utils";
 import { Action, ElementAction } from "../src/types";
 
 let actions: ElementAction[] = [];
@@ -20,6 +20,8 @@ const actionsOfType = (type: Action): ElementAction[] => {
 };
 
 beforeAll(async () => {
+  await serveFixtures();
+
   launched = await launch();
 
   await launched.context.exposeBinding(
@@ -30,7 +32,10 @@ beforeAll(async () => {
   );
 });
 
-afterAll(() => launched.browser.close());
+afterAll(async () => {
+  await stopServeFixtures();
+  await launched.browser.close()
+});
 
 beforeEach(() => {
   actions = [];
@@ -61,6 +66,22 @@ it("records click for hiding target", async () => {
 
   expect(actionsOfType("click").map((action) => action.selector)).toEqual([
     "#hide-me",
+  ]);
+});
+
+it("record only one click for PointerEvent clicks", async () => {
+  const page = await launched.context.newPage();
+  await page.goto("http://localhost:9876/grommet");
+
+  await page.click("text=interested?");
+
+  await waitForExpect(() => {
+    expect(actionsOfType("click").length).toBe(1);
+  }, 10000);
+  await page.close();
+
+  expect(actionsOfType("click").map((action) => action.selector)).toEqual([
+    "text=interested?",
   ]);
 });
 
