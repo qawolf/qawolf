@@ -7,6 +7,12 @@ import { edgeSize, width } from "../../theme/theme";
 
 const posts = [
   {
+    date: "April 28, 2021",
+    imageUrl:
+      "https://qawolf-public.s3.us-east-2.amazonaws.com/blog/april-newsletter/wolf-april.jpg",
+    title: "April Newsletter",
+  },
+  {
     date: "April 1, 2021",
     imageUrl:
       "https://qawolf-public.s3.us-east-2.amazonaws.com/blog/q-1-newsletter/wolf-q1.jpg",
