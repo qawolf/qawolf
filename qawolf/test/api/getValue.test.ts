@@ -20,15 +20,15 @@ describe("getValue", () => {
             <input id="checkbox-input-unchecked" type="checkbox" />
             <input id="number-input" type="number" value="42" />
             <select id="select">
-                <option value="selected" selected>Choose me</option>
-                <option value="no-selected">Not me</option>
+              <option value="selected" selected>Choose me</option>
+              <option value="no-selected">Not me</option>
             </select>
             <select id="select-empty">
-                <option value="">Choose an option</option>
-                <option value="selected">Choose me</option>
+              <option value="">Choose an option</option>
+              <option value="selected">Choose me</option>
             </select>
             <svg viewBox="0 0 10 10" x="200" width="100">
-                <circle cx="5" cy="5" r="4" />
+              <circle cx="5" cy="5" r="4" />
             </svg>
           </body>
         </html>

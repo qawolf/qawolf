@@ -34,8 +34,13 @@ export const assertText = async (
         const element = document.querySelector(selector) as HTMLElement;
         if (!element) return false;
 
-        const elementText =
+        let elementText =
           (element as HTMLInputElement).value || element.innerText || "";
+
+        if (element.tagName.toLowerCase() === "select") {
+          const select = element as HTMLSelectElement;
+          elementText = select.options[select.selectedIndex].value;
+        }
 
         return elementText.includes(text);
       },
