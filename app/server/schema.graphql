@@ -113,6 +113,15 @@ type EnvironmentVariables {
   variables: [EnvironmentVariable!]!
 }
 
+"A file for the test editor"
+type File {
+  content: String!
+  id: ID!
+  is_read_only: Boolean!
+  name: String
+  path: String
+}
+
 "A GitHub branch"
 type GitHubBranch {
   "Whether the branch is the default"
@@ -1391,6 +1400,13 @@ type Query {
     "The environment ID"
     environment_id: ID!
   ): EnvironmentVariables!
+
+  """
+  Returns file for the test editor by id.
+
+  Requires that you have access to the team.
+  """
+  file("The file ID": id: ID!): File!
 
   """
   Returns GitHub branches for a team by team ID.
