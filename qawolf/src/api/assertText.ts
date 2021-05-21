@@ -39,7 +39,7 @@ export const assertText = async (
 
         if (element.tagName.toLowerCase() === "select") {
           const select = element as HTMLSelectElement;
-          elementText = select.options[select.selectedIndex].value;
+          elementText = select.options[select.selectedIndex].text;
         }
 
         return elementText.includes(text);
