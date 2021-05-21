@@ -40,6 +40,14 @@ describe("assertText", () => {
     };
 
     await expect(testFn()).resolves.not.toThrowError();
+
+    const testFn2 = async (): Promise<void> => {
+      return assertText(page, "Hello World", {
+        selector: "text=Hello World",
+      });
+    };
+
+    await expect(testFn2()).resolves.not.toThrowError();
   });
 
   it("does not throw an error if input value contains text", async () => {
