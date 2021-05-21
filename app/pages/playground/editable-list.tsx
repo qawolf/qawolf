@@ -67,7 +67,7 @@ export default function EditableList(): JSX.Element {
   const listHtml = groceries.map((item, i) => {
     return (
       <Box
-        a11yTitle={`grocery-${i}`}
+        a11yTitle={`grocery-${i + 1}`}
         align="center"
         direction="row"
         justify="between"
@@ -80,7 +80,7 @@ export default function EditableList(): JSX.Element {
         <Box align="center" direction="row">
           <Button
             IconComponent={Edit}
-            a11yTitle={`edit item ${i}`}
+            a11yTitle={`edit item ${i + 1}`}
             label={copy.edit}
             margin={{ right: "xxsmall" }}
             onClick={() => handleEditClick(i)}
@@ -88,7 +88,7 @@ export default function EditableList(): JSX.Element {
           />
           <Button
             IconComponent={Trash}
-            a11yTitle={`delete item ${i}`}
+            a11yTitle={`delete item ${i + 1}`}
             hoverType="danger"
             label={copy.delete}
             onClick={() => handleDeleteClick(i)}

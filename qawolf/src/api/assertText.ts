@@ -27,31 +27,43 @@ export const assertText = async (
   options: AssertTextOptions = {}
 ): Promise<void> => {
   const selector = options.selector || "body";
+  const timeout = (options || {}).timeout || 30000;
 
-  try {
-    await pageOrFrame.waitForFunction(
-      ({ selector, text }): boolean => {
-        const element = document.querySelector(selector) as HTMLElement;
-        if (!element) return false;
+  return new Promise(async (resolve, reject) => {
+    let fulfilled = false;
 
-        let elementText =
-          (element as HTMLInputElement).value || element.innerText || "";
+    const timeoutId = setTimeout(() => {
+      if (fulfilled) return;
+      fulfilled = true;
+      reject(new Error(`assertText: "${text}" not found in "${selector}"`));
+    }, timeout);
 
-        if (element.tagName.toLowerCase() === "select") {
-          const select = element as HTMLSelectElement;
-          elementText = select.options[select.selectedIndex]?.text || "";
+    while (!fulfilled) {
+      try {
+        const hasText = await pageOrFrame.$eval(
+          selector,
+          (element, text) => {
+            let elementText =
+              (element as HTMLInputElement).value ||
+              (element as HTMLElement).innerText ||
+              "";
+            if (element.tagName.toLowerCase() === "select") {
+              const select = element as HTMLSelectElement;
+              elementText = select.options[select.selectedIndex]?.text || "";
+            }
+            return elementText.includes(text);
+          },
+          text
+        );
+
+        if (hasText && !fulfilled) {
+          fulfilled = true;
+          clearTimeout(timeoutId);
+          resolve();
         }
+      } catch (e) {}
 
-        return elementText.includes(text);
-      },
-      { selector, text },
-      { polling: 100, timeout: (options || {}).timeout || 30000 }
-    );
-  } catch (error) {
-    if (error.message.includes("waitForFunction: Timeout")) {
-      throw new Error(`assertText: "${text}" not found in "${selector}"`);
+      await new Promise((r) => setTimeout(r, 100));
     }
-
-    throw error;
-  }
+  });
 };
