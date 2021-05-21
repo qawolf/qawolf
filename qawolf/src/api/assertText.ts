@@ -29,34 +29,41 @@ export const assertText = async (
   const selector = options.selector || "body";
   const timeout = (options || {}).timeout || 30000;
 
-  try {
-    const element = await pageOrFrame.waitForSelector(selector, { timeout });
+  return new Promise(async (resolve, reject) => {
+    let fulfilled = false;
 
-    await pageOrFrame.waitForFunction(
-      ({ element, text }): boolean => {
-        let elementText =
-          (element as HTMLInputElement).value ||
-          (element as HTMLElement).innerText ||
-          "";
+    const timeoutId = setTimeout(() => {
+      if (fulfilled) return;
+      fulfilled = true;
+      reject(new Error(`assertText: "${text}" not found in "${selector}"`));
+    }, timeout);
 
-        if (element.tagName.toLowerCase() === "select") {
-          const select = element as HTMLSelectElement;
-          elementText = select.options[select.selectedIndex]?.text || "";
+    while (!fulfilled) {
+      try {
+        const hasText = await pageOrFrame.$eval(
+          selector,
+          (element, text) => {
+            let elementText =
+              (element as HTMLInputElement).value ||
+              (element as HTMLElement).innerText ||
+              "";
+            if (element.tagName.toLowerCase() === "select") {
+              const select = element as HTMLSelectElement;
+              elementText = select.options[select.selectedIndex]?.text || "";
+            }
+            return elementText.includes(text);
+          },
+          text
+        );
+
+        if (hasText && !fulfilled) {
+          fulfilled = true;
+          clearTimeout(timeoutId);
+          resolve();
         }
+      } catch (e) {}
 
-        return elementText.includes(text);
-      },
-      { element, text },
-      { polling: 100, timeout }
-    );
-  } catch (error) {
-    if (
-      error.message.includes("waitForFunction: Timeout") ||
-      error.message.includes("waitForSelector: Timeout")
-    ) {
-      throw new Error(`assertText: "${text}" not found in "${selector}"`);
+      await new Promise((r) => setTimeout(r, 100));
     }
-
-    throw error;
-  }
+  });
 };
