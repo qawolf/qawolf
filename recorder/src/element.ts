@@ -17,7 +17,7 @@ export const getAssertText = (element: HTMLElement): string => {
   let text = (element as HTMLInputElement).value || element.innerText || "";
   if (element.tagName.toLowerCase() === "select") {
     const select = element as HTMLSelectElement;
-    text = select.options[select.selectedIndex].text;
+    text = select.options[select.selectedIndex]?.text || "";
   }
 
   if (!text.length || text.length > 500) return "";

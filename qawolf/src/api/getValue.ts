@@ -15,7 +15,7 @@ export const getValue = async (
     return pageOrFrame.evaluate((element) => {
       if (element.tagName.toLowerCase() === "select") {
         const select = element as HTMLSelectElement;
-        return select.options[select.selectedIndex].value;
+        return select.options[select.selectedIndex]?.value || "";
       }
 
       if (element.getAttribute("type") === "checkbox") {

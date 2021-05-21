@@ -27,6 +27,7 @@ describe("getValue", () => {
               <option value="">Choose an option</option>
               <option value="selected">Choose me</option>
             </select>
+            <select id="select-no-options"></select>
             <svg viewBox="0 0 10 10" x="200" width="100">
               <circle cx="5" cy="5" r="4" />
             </svg>
@@ -76,6 +77,9 @@ describe("getValue", () => {
 
     const value2 = await getValue(page, "#select-empty");
     expect(value2).toBe("");
+
+    const value3 = await getValue(page, "#select-no-options");
+    expect(value3).toBe("");
   });
 
   it("returns empty string for svg", async () => {
