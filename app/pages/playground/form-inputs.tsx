@@ -75,7 +75,7 @@ export default function FormInputs(): JSX.Element {
               Howling
             </Text>
           }
-          onClick={() => setIsHowlChecked((prev) => !prev)}
+          onChange={() => setIsHowlChecked((prev) => !prev)}
         />
         <Box height={edgeSize.small} />
         <CheckBox
@@ -86,7 +86,7 @@ export default function FormInputs(): JSX.Element {
               Barking
             </Text>
           }
-          onClick={() => setIsBarkChecked((prev) => !prev)}
+          onChange={() => setIsBarkChecked((prev) => !prev)}
         />
       </Box>
     </Box>
