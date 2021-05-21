@@ -118,6 +118,14 @@ export type EnvironmentVariable = {
   updated_at?: string;
 };
 
+export type File = {
+  content: string;
+  id: string;
+  is_read_only: boolean;
+  name: string | null;
+  path: string | null;
+};
+
 export type FormattedVariables = { [name: string]: string };
 
 export type GitHubCommitStatus = {
