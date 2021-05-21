@@ -32,7 +32,10 @@ export const buildActionOptions = (
     ? [...FillActions]
     : [...ClickActions];
 
-  if (!hasText) options.splice(options.indexOf("Assert page text"), 1);
+  if (!hasText) {
+    options.splice(options.indexOf("Assert element text"), 1);
+    options.splice(options.indexOf("Assert page text"), 1);
+  }
 
   return options;
 };
