@@ -39,7 +39,7 @@ export const TestContext = createContext<TestContextValue>({
 const pollInterval = 2000;
 
 export const TestProvider: FC = ({ children }) => {
-  const { branch, environmentId, teamId } = useContext(StateContext);
+  const { branch, teamId } = useContext(StateContext);
 
   const { query } = useRouter();
 
@@ -73,14 +73,14 @@ export const TestProvider: FC = ({ children }) => {
 
   // tee up correct branch and environment if test edited
   useEffect(() => {
-    if (suite?.environment_id && suite.environment_id !== environmentId) {
+    if (suite?.environment_id) {
       state.setEnvironmentId(suite.environment_id);
     }
 
     if (suite?.branch && team.git_sync_integration_id) {
       state.setBranch(suite.branch);
     }
-  }, [environmentId, suite, team]);
+  }, [suite, team]);
 
   useEffect(() => {
     if (!run || run.completed_at) return;

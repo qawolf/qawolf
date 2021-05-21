@@ -12,7 +12,7 @@ type Props = {
   value: ActionType | null;
 };
 
-const width = "156px";
+const width = "180px";
 
 export default function Action({
   hasText,

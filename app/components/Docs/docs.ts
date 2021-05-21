@@ -93,6 +93,10 @@ export const docs: Section[] = [
         name: "Call an API",
       },
       {
+        href: `${routes.docs}/get-a-value`,
+        name: "Get a Value",
+      },
+      {
         href: `${routes.docs}/how-qa-wolf-picks-selectors`,
         name: "How QA Wolf Picks Selectors",
       },

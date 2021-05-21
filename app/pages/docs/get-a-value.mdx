@@ -1,0 +1,37 @@
+import Link from "next/link";
+
+import Header from "../../components/Docs/Header";
+import Image from "../../components/Docs/Image";
+import Layout from "../../components/Docs/Layout";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>Get a Value</Header>
+
+In this example, we get an element value in our test with the <Link href="get-value">getValue</Link> helper.
+
+Feel free to copy and run this example yourself!
+
+```js
+const { context } = await launch();
+const page = await context.newPage();
+await page.goto("https://www.qawolf.com/playground/editable-list");
+// store existing item value
+var value = await getValue(page, '[aria-label="grocery-2"] p');
+// edit item value
+await page.click('[aria-label="edit item 2"]');
+var editedValue = "Gummy bears";
+await page.fill('[placeholder="Edited item"]', editedValue);
+await page.click('[aria-label="Save"]');
+// store new item value
+var value2 = await getValue(page, '[aria-label="grocery-2"] p');
+// assert new value is different than original value
+assert(value2 !== value);
+// assert new value matches edited value
+assert(value2 === editedValue);
+// assert new value is present in list
+await assertText(page, editedValue, { selector: '[aria-label="grocery-2"] p' });
+```
+
+</Layout>
