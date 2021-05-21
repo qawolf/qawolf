@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import Header from "../../components/Docs/Header";
 import Layout from "../../components/Docs/Layout";
 import Playwright from "../../components/Docs/Playwright";
@@ -7,7 +9,7 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>getValue(page, selector[, options])</Header>
 
-Get the value of an element by selector on the page or frame.
+Get the value of an element by selector on the page or frame. <Link href="get-a-value">See an example test here.</Link>
 
 If the element has the `value` attribute, it is returned. Otherwise, `innerText` is returned.
 
