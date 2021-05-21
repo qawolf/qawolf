@@ -5,7 +5,7 @@ const ClickActions = [
   "Assert element text",
   "Assert page text",
   "Click",
-  "Get value",
+  "Get element value",
   "Hover",
   "Upload image",
 ] as const;
@@ -16,7 +16,7 @@ const FillActions = [
   "Assert page text",
   "Fill",
   "Fill test email",
-  "Get value",
+  "Get element value",
   "Hover",
 ] as const;
 
@@ -68,7 +68,7 @@ export const buildCode = (
     return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then wait for the message\n// const message = await waitForMessage();`;
   }
 
-  if (action === "Get value") {
+  if (action === "Get element value") {
     return `var value = await getValue(page, ${formatArgument(selector)});`;
   }
 
