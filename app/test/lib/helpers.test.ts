@@ -1,4 +1,57 @@
-import { isValidURL, parseUrl } from "../../lib/helpers";
+import { formatBill, isValidURL, parseUrl } from "../../lib/helpers";
+import { TeamWithUsers } from "../../lib/types";
+
+describe("formatBill", () => {
+  it("returns empty string if not on business plan", () => {
+    expect(
+      formatBill(
+        {
+          base_price: null,
+          metered_price: null,
+          plan: "free",
+        } as TeamWithUsers,
+        5
+      )
+    ).toBe("");
+  });
+
+  it("returns base price if run count < 1000", () => {
+    expect(
+      formatBill(
+        {
+          base_price: 119,
+          metered_price: 49,
+          plan: "business",
+        } as TeamWithUsers,
+        5
+      )
+    ).toMatch("$119");
+  });
+
+  it("returns base price plus metered price if run count > 1000", () => {
+    expect(
+      formatBill(
+        {
+          base_price: 119,
+          metered_price: 49,
+          plan: "business",
+        } as TeamWithUsers,
+        1001
+      )
+    ).toMatch("$168");
+
+    expect(
+      formatBill(
+        {
+          base_price: 119,
+          metered_price: 49,
+          plan: "business",
+        } as TeamWithUsers,
+        1501
+      )
+    ).toMatch("$217");
+  });
+});
 
 describe("isValidURL", () => {
   it("returns true if URL is valid", () => {

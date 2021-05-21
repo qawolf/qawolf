@@ -1,4 +1,5 @@
-import { Log } from "./types";
+import { copy } from "../theme/copy";
+import { Log, TeamWithUsers } from "./types";
 
 const monthNames = [
   "Jan",
@@ -46,6 +47,21 @@ export const durationToText = (
   if (!seconds) return minutesText;
 
   return `${minutesText} ${seconds}s`;
+};
+
+export const formatBill = (
+  { base_price, metered_price, plan }: TeamWithUsers,
+  runCount: number
+): string => {
+  if (plan !== "business") return "";
+
+  let bill = base_price || 119;
+
+  if (runCount > 1000) {
+    bill = bill + Math.ceil((runCount - 1000) / 500) * (metered_price || 49);
+  }
+
+  return ` (${copy.currentBill} $${bill})`;
 };
 
 export const formatLogBackground = (logLevel: Log["severity"]): string => {

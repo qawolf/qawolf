@@ -2,7 +2,7 @@ import { Box } from "grommet";
 import isNil from "lodash/isNil";
 
 import { useRunCount } from "../../../../hooks/queries";
-import { dateToText } from "../../../../lib/helpers";
+import { dateToText, formatBill } from "../../../../lib/helpers";
 import { TeamWithUsers } from "../../../../lib/types";
 import { daysFromNow } from "../../../../shared/utils";
 import { copy } from "../../../../theme/copy";
@@ -10,19 +10,6 @@ import Meter from "../../../shared/Meter";
 import Text from "../../../shared/Text";
 
 type Props = { team: TeamWithUsers };
-
-const getBill = (
-  { base_price, metered_price, plan }: TeamWithUsers,
-  runCount: number
-): string => {
-  if (plan !== "business") return "";
-
-  const bill =
-    runCount <= 1000
-      ? base_price || 119
-      : Math.ceil(runCount / 500) * (metered_price || 49);
-  return ` (${copy.currentBill} $${bill})`;
-};
 
 const getMaxRuns = (plan: TeamWithUsers["plan"], runCount: number): number => {
   if (plan !== "business") return 100;
@@ -40,7 +27,7 @@ export default function Usage({ team }: Props): JSX.Element {
   const max = getMaxRuns(team.plan, runCount);
 
   const renewsAt = dateToText(daysFromNow(30, Number(team.renewed_at)));
-  const bill = getBill(team, runCount);
+  const bill = formatBill(team, runCount);
 
   return (
     <Box margin={{ top: "medium" }}>

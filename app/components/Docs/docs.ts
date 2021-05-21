@@ -124,6 +124,10 @@ export const docs: Section[] = [
         name: "getInbox",
       },
       {
+        href: `${routes.docs}/get-value`,
+        name: "getValue",
+      },
+      {
         href: `${routes.docs}/launch`,
         name: "launch",
       },
