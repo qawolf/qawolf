@@ -11,6 +11,7 @@ export default function Playground(): JSX.Element {
       <Box gap="xxsmall">
         <Link href={`${routes.playground}/log-in`}>Log in form</Link>
         <Link href={`${routes.playground}/editable-list`}>Editable list</Link>
+        <Link href={`${routes.playground}/form-inputs`}>Form inputs</Link>
       </Box>
     </Box>
   );
