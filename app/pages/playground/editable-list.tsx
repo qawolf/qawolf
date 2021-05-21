@@ -53,7 +53,7 @@ export default function EditableList(): JSX.Element {
     setEditI(i);
   };
 
-  const handleSave = (): void => {
+  const handleSaveClick = (): void => {
     setGroceries((prev) => {
       const updated = [...prev];
       updated[editI] = editItem;
@@ -120,7 +120,7 @@ export default function EditableList(): JSX.Element {
             isDisabled={!editItem}
             label={copy.save}
             margin={{ left: "xxsmall" }}
-            onClick={handleSave}
+            onClick={handleSaveClick}
             type="primary"
           />
         </Box>
