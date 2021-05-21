@@ -72,6 +72,16 @@ export const shouldRunTriggerOnDeployment = ({
     return false;
   }
 
+  // for render deployments with multiple services,
+  // wait for the one we want
+  if (
+    trigger.deployment_provider === "render" &&
+    trigger.render_environment &&
+    !environment.includes(trigger.render_environment)
+  ) {
+    return false;
+  }
+
   const isBranchMatch = trigger.deployment_branches
     ? trigger.deployment_branches.split(",").includes(branch)
     : true;

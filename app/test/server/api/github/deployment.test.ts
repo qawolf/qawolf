@@ -237,4 +237,32 @@ describe("shouldRunTriggerOnDeployment", () => {
       })
     ).toBe(false);
   });
+
+  it("returns false if render and no environment match", () => {
+    expect(
+      shouldRunTriggerOnDeployment({
+        branch: "develop",
+        environment: "RENDER_ID - example PR #",
+        pullRequestId: 123,
+        trigger: {
+          ...buildTrigger({ deployment_provider: "render" }),
+          render_environment: "RENDER_ID - example-mongodb PR #123",
+        },
+      })
+    ).toBe(false);
+  });
+
+  it("returs true if render and environment match", () => {
+    expect(
+      shouldRunTriggerOnDeployment({
+        branch: "develop",
+        environment: "RENDER_ID - example PR #123",
+        pullRequestId: 123,
+        trigger: {
+          ...buildTrigger({ deployment_provider: "render" }),
+          render_environment: "RENDER_ID - example PR #",
+        },
+      })
+    ).toBe(true);
+  });
 });
