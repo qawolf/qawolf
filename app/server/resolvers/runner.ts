@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+
 import { findRun } from "../models/run";
 import { Context, Runner } from "../types";
 import { ensureTeams, ensureTestAccess, ensureUser } from "./utils";
@@ -45,7 +46,7 @@ export const runnerResolver = async (
   }
   
   return {
-    vnc_url: "ws://localhost:5000",
-    ws_url: "ws://localhost:4000/socket.io",
+    vnc_url: process.env.RUNNER_VNC_URL || "ws://localhost:5000",
+    ws_url: process.env.RUNNER_WS_URL || "ws://localhost:4000/socket.io",
   };
 };
