@@ -2,17 +2,21 @@ import { edgeSize } from "../../../../theme/theme";
 
 const ClickActions = [
   "Assert element",
-  "Assert text",
+  "Assert element text",
+  "Assert page text",
   "Click",
+  "Get value",
   "Hover",
   "Upload image",
 ] as const;
 
 const FillActions = [
   "Assert element",
-  "Assert text",
+  "Assert element text",
+  "Assert page text",
   "Fill",
   "Fill test email",
+  "Get value",
   "Hover",
 ] as const;
 
@@ -28,7 +32,7 @@ export const buildActionOptions = (
     ? [...FillActions]
     : [...ClickActions];
 
-  if (!hasText) options.splice(options.indexOf("Assert text"), 1);
+  if (!hasText) options.splice(options.indexOf("Assert page text"), 1);
 
   return options;
 };
@@ -42,7 +46,13 @@ export const buildCode = (
     return `await assertElement(page, ${formatArgument(selector)});`;
   }
 
-  if (action === "Assert text") {
+  if (action === "Assert element text") {
+    return `await assertText(page, ${formatArgument(
+      text
+    )}, { selector: ${formatArgument(selector)} });`;
+  }
+
+  if (action === "Assert page text") {
     return `await assertText(page, ${formatArgument(text)});`;
   }
 
@@ -56,6 +66,10 @@ export const buildCode = (
 
   if (action === "Fill test email") {
     return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then wait for the message\n// const message = await waitForMessage();`;
+  }
+
+  if (action === "Get value") {
+    return `var value = await getValue(page, ${formatArgument(selector)});`;
   }
 
   if (action === "Hover") return `await page.hover(${selectorArgument});`;
