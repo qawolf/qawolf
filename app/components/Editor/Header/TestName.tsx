@@ -1,27 +1,36 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { Test } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
 import Divider from "../../shared/Divider";
 import EditableText from "../../shared/EditableText";
-import { TestContext } from "../contexts/TestContext";
+import { EditorContext } from "../contexts/EditorContext";
 
 type Props = {
   disabled?: boolean;
-  test: Test | null;
 };
 
-export default function TestName({ disabled, test }: Props): JSX.Element {
+export default function TestName({ disabled }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
+  const [value, setValue] = useState("");
 
-  const { controller, name, path } = useContext(TestContext);
+  const { testModel } = useContext(EditorContext);
 
-  if (!test) return null;
+  useEffect(() => {
+    setValue(testModel.path);
+
+    const updateValue = ({ key }) => {
+      if (key !== "path") return;
+      setValue(testModel.path);
+    };
+
+    testModel.on("changed", updateValue);
+
+    return () => testModel.off("changed", updateValue);
+  }, [testModel]);
 
   const handleSave = (value: string): void => {
-    if (test.path) controller._state.set("path", value);
-    else controller._state.set("name", value);
+    testModel.path = value;
   };
 
   return (
@@ -32,7 +41,7 @@ export default function TestName({ disabled, test }: Props): JSX.Element {
         onSave={handleSave}
         placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
-        value={name || path || ""}
+        value={value || ""}
       />
       <Divider
         height={edgeSize.large}

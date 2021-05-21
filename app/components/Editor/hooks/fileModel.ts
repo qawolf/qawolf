@@ -23,17 +23,16 @@ export const useFileModel = ({ editor, id, state }: UseFile): FileHook => {
 
     const [type] = id.split(".");
     if (type === "helpers") {
-      file.setFile({ content: editor?.helpers, id });
+      file.setFile({ content: editor?.helpers, id, path: "helpers" });
     } else if (type === "run") {
       file.setFile({
         content: editor.run.code,
         id,
-        name: editor.test.name,
-        path: editor.test.path,
+        path: editor.test.path || editor.test.name,
       });
     } else if (type === "test") {
       const { code, name, path } = editor.test;
-      file.setFile({ content: code, id, name, path });
+      file.setFile({ content: code, id, path: path || name });
     }
   }, [editor, fileModelRef, id]);
 

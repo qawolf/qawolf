@@ -51,7 +51,7 @@ export default function Header({ mode }: Props): JSX.Element {
       >
         <Box align="center" direction="row">
           <BackButton />
-          <TestName disabled={mode !== "test"} test={test} />
+          <TestName disabled={mode !== "test"} />
           {!!run && (
             <Text color="gray7" margin={{ right: "small" }} size="component">
               {timeToText(run.created_at)}
