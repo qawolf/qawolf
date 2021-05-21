@@ -66,7 +66,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
 
   if (!isVisible) return null;
 
-  const selectorIsDisabled = action === "Assert text";
+  const selectorIsDisabled = action === "Assert page text";
   return (
     <Box
       background="gray9"

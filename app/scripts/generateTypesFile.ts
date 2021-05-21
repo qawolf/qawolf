@@ -186,6 +186,21 @@ declare function getInbox(options?: { id?: string; new?: boolean; }):
     }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; }>;
     waitForMessage: (options?: { after?: Date; timeout?: number; }) => Promise<{ from: string; html: string; subject: string; text: string; to: string; urls: string[]>; }>;
   };
+
+/**
+ * Get the value of the specified element by selector on the page or frame.
+ * 
+ * If the element is not found before timeout, an error is thrown.
+ * 
+ * \`\`\`js
+ * const value = await getValue(page, "#my-input");
+ * \`\`\`
+ *
+ * \`\`\`js
+ * const value = await getValue(page, "h1", { timeout: 1000 });
+ * \`\`\`
+ */
+declare function getValue(page: import('playwright').Page | import('playwright').Frame, selector: string, options?: { timeout?: number }): Promise<boolean | string>;
 `;
 
   writeFileSync("./public/types.txt", types);

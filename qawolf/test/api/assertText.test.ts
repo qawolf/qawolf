@@ -15,6 +15,10 @@ describe("assertText", () => {
           <p>Hello World</p>
           <input type="text" value="my input text">
           <button>Submit</button>
+          <select id="select">
+            <option value="selected" selected>Choose me</option>
+            <option value="no-selected">Not me</option>
+          </select>
         </body>
       </html>
     `);
@@ -41,6 +45,14 @@ describe("assertText", () => {
   it("does not throw an error if input value contains text", async () => {
     const testFn = async (): Promise<void> => {
       return assertText(page, "my input text", { selector: "input" });
+    };
+
+    await expect(testFn()).resolves.not.toThrowError();
+  });
+
+  it("does not throw an error if select value contains text", async () => {
+    const testFn = async (): Promise<void> => {
+      return assertText(page, "Choose me", { selector: "select" });
     };
 
     await expect(testFn()).resolves.not.toThrowError();

@@ -8,7 +8,11 @@ export default function Playground(): JSX.Element {
   return (
     <Box align="center">
       <Header label="Welcome to the QA Wolf playground!" />
-      <Link href={`${routes.playground}/log-in`}>Log in form</Link>
+      <Box gap="xxsmall">
+        <Link href={`${routes.playground}/log-in`}>Log in form</Link>
+        <Link href={`${routes.playground}/editable-list`}>Editable list</Link>
+        <Link href={`${routes.playground}/form-inputs`}>Form inputs</Link>
+      </Box>
     </Box>
   );
 }

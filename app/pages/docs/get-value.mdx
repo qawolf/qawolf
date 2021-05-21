@@ -1,0 +1,38 @@
+import Header from "../../components/Docs/Header";
+import Layout from "../../components/Docs/Layout";
+import Playwright from "../../components/Docs/Playwright";
+import SubHeader from "../../components/Docs/SubHeader";
+
+<Layout>
+
+<Header>getValue(page, selector[, options])</Header>
+
+Get the value of an element by selector on the page or frame.
+
+If the element has the `value` attribute, it is returned. Otherwise, `innerText` is returned.
+
+If the element is a checkbox, a `boolean` is returned reflecting whether the element is checked.
+
+If the element is not found before the timeout, an error is thrown.
+
+```js
+// get the value of a header
+const header = await getValue(page, "h1");
+
+// get the value of an input within 60 seconds
+const inputValue = await getValue(page, "input", { timeout: 60 * 1000 });
+```
+
+<SubHeader>Arguments</SubHeader>
+
+**page** (<Playwright page />): The page to search for text.
+
+**selector** (string): Selector of element to assert exists.
+
+**[options]** (Object)
+
+- [timeout] (number): Time in milliseconds to wait for the element. Default: `30000`
+
+**Returns:** `Promise<boolean | string>`
+
+</Layout>
