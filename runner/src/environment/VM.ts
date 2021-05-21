@@ -2,7 +2,7 @@ import assert from "assert";
 import axios from "axios";
 import faker from "faker";
 import { devices } from "playwright";
-import { assertElement, assertText } from "qawolf";
+import { assertElement, assertText, getValue } from "qawolf";
 import { NodeVM } from "vm2";
 
 import { GetInbox, getInbox } from "../services/inbox";
@@ -67,6 +67,7 @@ export class VM {
           inbox: this._env.QAWOLF_TEAM_INBOX!,
         });
       },
+      getValue,
       launch: async (launchOptions: LaunchOptions) => {
         process.env.DISPLAY = vmOptions.display || ":0.0";
 
