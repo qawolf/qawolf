@@ -4,6 +4,7 @@ import React, { FC } from "react";
 import { useWindowSize } from "../../hooks/windowSize";
 import { breakpoints } from "../../theme/theme";
 import Application from "./Application";
+import { EditorProvider } from "./contexts/EditorContext";
 import { RunnerProvider } from "./contexts/RunnerContext";
 import { TestProvider } from "./contexts/TestContext";
 import EditorMobile from "./EditorMobile";
@@ -14,7 +15,9 @@ import Sidebar from "./Sidebar";
 const WithProviders: FC = ({ children }): JSX.Element => {
   return (
     <TestProvider>
-      <RunnerProvider>{children}</RunnerProvider>
+      <EditorProvider>
+        <RunnerProvider>{children}</RunnerProvider>
+      </EditorProvider>
     </TestProvider>
   );
 };
