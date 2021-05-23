@@ -34,7 +34,9 @@ export default function CodeEditor({
   useHelpersTypes({ helpers, monaco });
   useGlyphs({ editor, progress, testContent });
 
-  useEffect(() => helpersModel?.onChange("content", setHelpers), [testModel]);
+  useEffect(() => helpersModel?.onChange("content", setHelpers), [
+    helpersModel,
+  ]);
   useEffect(() => testModel?.onChange("content", setTestContent), [testModel]);
   useEffect(() => testModel?.onChange("readOnly", setReadOnly), [testModel]);
 

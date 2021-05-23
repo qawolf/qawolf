@@ -1,10 +1,6 @@
 import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useState } from "react";
-
-export type Selection = {
-  startLine: number;
-  endLine: number;
-};
+import { Selection } from "../../../lib/types";
 
 type OnSelectionChange = (
   event: monacoEditor.editor.ICursorSelectionChangedEvent

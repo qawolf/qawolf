@@ -67,11 +67,7 @@ export default function Sidebar(): JSX.Element {
       if (isRunning) {
         stopTest();
       } else {
-        runTest({
-          code: controller.code,
-          helpers: controller.helpers,
-          selection,
-        });
+        runTest(selection);
       }
     }
   };

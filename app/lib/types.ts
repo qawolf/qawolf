@@ -325,6 +325,11 @@ export type RunProgress = {
   status: RunStatus;
 };
 
+export type Selection = {
+  startLine: number;
+  endLine: number;
+};
+
 // State Types
 type SignUp = {
   inviteId?: string | null;

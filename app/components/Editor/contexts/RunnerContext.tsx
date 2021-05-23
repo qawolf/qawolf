@@ -8,6 +8,7 @@ import { RunnerHook, useRunner } from "../hooks/runner";
 import { useRunProgress } from "../hooks/runProgress";
 import { RunTest, useRunTest } from "../hooks/runTest";
 import { SelectionHook, useSelection } from "../hooks/selection";
+import { EditorContext } from "./EditorContext";
 import { TestContext } from "./TestContext";
 
 type RunnerContext = ConnectRunnerHook &
@@ -44,7 +45,8 @@ export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { controller, run, suite, team } = useContext(TestContext);
+  const { state } = useContext(EditorContext);
+  const { run, suite, team } = useContext(TestContext);
 
   const {
     elementChooserValue,
@@ -73,10 +75,9 @@ export const RunnerProvider: FC = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!controller || !runner) return;
-
-    runner.syncState(controller._state);
-  }, [controller, runner]);
+    if (!state || !runner) return;
+    runner.syncState(state);
+  }, [state, runner]);
 
   const value = {
     apiKey,

@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { PATCH_HANDLE } from "../../../lib/code";
-
+import { Selection } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 export type BindOptions = {
@@ -94,6 +94,28 @@ export class FileModel extends EventEmitter {
     this._editor?.setValue(this.content);
 
     this.emit("changed", { key: "readOnly" });
+  }
+
+  // content helpers
+
+  insertSnippet(snippet: string): Selection {
+    // patch at the handle or the bottom if there is no patch handle
+    const codeLines = this.content.split("\n");
+    let patchLine = codeLines.findIndex((l) => l.includes(PATCH_HANDLE));
+    if (patchLine < 0) patchLine = codeLines.length;
+
+    // insert the snippet
+    const snippetLines = snippet.split("\n");
+    codeLines.splice(patchLine, 0, ...snippetLines);
+
+    this.content = codeLines.join("\n");
+
+    const selection = {
+      startLine: patchLine + 1,
+      endLine: patchLine + 1 + snippetLines.length,
+    };
+
+    return selection;
   }
 
   toggleCodeGeneration(mouseLineNumber?: number): void {
