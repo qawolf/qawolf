@@ -36,7 +36,19 @@ export class FileModel extends EventEmitter {
     });
   }
 
-  bind({ editor }: BindOptions): void {
+  bind<T>(key: string, callback: (value: T) => void): () => void {
+    const onChange = (event: { key: string }) => {
+      if (event.key === key) callback(this[key]);
+    };
+
+    this.on("changed", onChange);
+
+    callback(this[key]);
+
+    return () => this.off("changed", onChange);
+  }
+
+  bindEditor({ editor }: BindOptions): void {
     this._editor = editor;
 
     editor.setValue(this.content);
@@ -61,16 +73,6 @@ export class FileModel extends EventEmitter {
     this._state.set("content", value);
   }
 
-  onChange<T>(key: string, callback: (value: T) => void): () => void {
-    const onChange = (event: { key: string }) => {
-      if (event.key === key) callback(this[key]);
-    };
-
-    this.on("changed", onChange);
-
-    return () => this.off("changed", onChange);
-  }
-
   get path(): string | undefined {
     // TODO deal with name
     return this._state.get("path") || this._file?.path || "";
@@ -93,6 +95,8 @@ export class FileModel extends EventEmitter {
 
     this._editor?.setValue(this.content);
 
+    this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "path" });
     this.emit("changed", { key: "readOnly" });
   }
 

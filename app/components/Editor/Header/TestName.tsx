@@ -16,11 +16,7 @@ export default function TestName({ disabled }: Props): JSX.Element {
 
   const { testModel } = useContext(EditorContext);
 
-  useEffect(() => {
-    setValue(testModel.path);
-
-    return testModel.onChange("path", setValue);
-  }, [testModel]);
+  useEffect(() => testModel.bind("path", setValue), [testModel]);
 
   const handleSave = (value: string): void => {
     testModel.path = value;

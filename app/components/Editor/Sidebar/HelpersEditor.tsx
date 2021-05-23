@@ -17,12 +17,10 @@ export default function HelpersEditor({
   const { helpersModel } = useContext(EditorContext);
   const [readOnly, setReadOnly] = useState(true);
 
-  useEffect(() => helpersModel?.onChange("readOnly", setReadOnly), [
-    helpersModel,
-  ]);
+  useEffect(() => helpersModel?.bind("readOnly", setReadOnly), [helpersModel]);
 
   const editorDidMount = (options: BindOptions) => {
-    helpersModel.bind(options);
+    helpersModel.bindEditor(options);
   };
 
   return (

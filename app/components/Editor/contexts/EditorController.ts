@@ -1,6 +1,5 @@
 import { EventEmitter } from "events";
 import { debounce } from "lodash";
-import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 
 import { saveEditorMutation } from "../../../graphql/mutations";
 import { editorQuery } from "../../../graphql/queries";
@@ -13,9 +12,7 @@ export class EditorController extends EventEmitter {
   readonly _state = new VersionedMap();
 
   _branch: string;
-  _helpersEditor: editorNs.IStandaloneCodeEditor;
   _saveCount = -1;
-  _testEditor: editorNs.IStandaloneCodeEditor;
   _value: Editor;
 
   constructor() {
@@ -23,14 +20,6 @@ export class EditorController extends EventEmitter {
 
     // sync state to the editors
     this._state.on("changed", ({ key, value, sender }) => {
-      if (key === "helpers_code" && this._helpersEditor) {
-        const currentValue = this._helpersEditor.getValue();
-        if (currentValue !== value) this._helpersEditor.setValue(value);
-      } else if (key === "test_code" && this._testEditor) {
-        const currentValue = this._testEditor.getValue();
-        if (currentValue !== value) this._testEditor.setValue(value);
-      }
-
       if (key === "save_count") {
         if (value > this._saveCount) {
           this._saveCount = value;
@@ -45,14 +34,6 @@ export class EditorController extends EventEmitter {
 
       if (sender) this._autoSave();
     });
-  }
-
-  get code(): string {
-    return this._state.get("test_code") || "";
-  }
-
-  get helpers(): string {
-    return this._state.get("helpers_code") || "";
   }
 
   getChanges(): Partial<SaveEditorVariables> {
@@ -95,32 +76,6 @@ export class EditorController extends EventEmitter {
 
   setBranch(branch: string): void {
     this._branch = branch;
-  }
-
-  setHelpersEditor(editor: editorNs.IStandaloneCodeEditor): void {
-    this._helpersEditor = editor;
-
-    // hydrate with current value
-    const value = this._state.get("helpers_code");
-    if (value !== undefined) editor.setValue(value);
-
-    // update state when editor changes
-    editor.onDidChangeModelContent(() => {
-      this._state.set("helpers_code", editor.getValue());
-    });
-  }
-
-  setTestEditor(editor: editorNs.IStandaloneCodeEditor): void {
-    this._testEditor = editor;
-
-    // hydrate with current value
-    const value = this._state.get("test_code");
-    if (value !== undefined) editor.setValue(value);
-
-    // update state when editor changes
-    editor.onDidChangeModelContent(() => {
-      this._state.set("test_code", editor.getValue());
-    });
   }
 
   _autoSave = debounce(() => {

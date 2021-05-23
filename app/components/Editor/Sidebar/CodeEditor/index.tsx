@@ -34,14 +34,12 @@ export default function CodeEditor({
   useHelpersTypes({ helpers, monaco });
   useGlyphs({ editor, progress, testContent });
 
-  useEffect(() => helpersModel?.onChange("content", setHelpers), [
-    helpersModel,
-  ]);
-  useEffect(() => testModel?.onChange("content", setTestContent), [testModel]);
-  useEffect(() => testModel?.onChange("readOnly", setReadOnly), [testModel]);
+  useEffect(() => helpersModel?.bind("content", setHelpers), [helpersModel]);
+  useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
+  useEffect(() => testModel?.bind("readOnly", setReadOnly), [testModel]);
 
   const editorDidMount = ({ editor, monaco }) => {
-    testModel.bind({ editor, monaco });
+    testModel.bindEditor({ editor, monaco });
 
     setEditor(editor);
     setMonaco(monaco);
