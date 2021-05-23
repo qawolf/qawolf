@@ -5,7 +5,7 @@ import { PATCH_HANDLE } from "../../../lib/code";
 
 import { VersionedMap } from "../../../lib/VersionedMap";
 
-type BindOptions = {
+export type BindOptions = {
   editor: editorNs.IStandaloneCodeEditor;
   monaco: typeof monacoEditor;
 };
@@ -25,13 +25,8 @@ export class FileModel extends EventEmitter {
 
   constructor(state: VersionedMap) {
     super();
+
     this._state = state;
-  }
-
-  bind({ editor }: BindOptions): void {
-    this._editor = editor;
-
-    // TODO handle on change & off
 
     this._state.on("changed", ({ key, value }) => {
       if (this._editor && key === this._contentKey) {
@@ -39,6 +34,12 @@ export class FileModel extends EventEmitter {
         if (currentValue !== value) this._editor.setValue(value);
       }
     });
+  }
+
+  bind({ editor }: BindOptions): void {
+    this._editor = editor;
+
+    editor.setValue(this.content);
   }
 
   changes(): Partial<File> {
@@ -53,15 +54,26 @@ export class FileModel extends EventEmitter {
   }
 
   get content(): string {
-    return this._state.get(this._contentKey) || "";
+    return this._state.get(this._contentKey) || this._file?.content || "";
   }
 
   set content(value: string) {
     this._state.set("content", value);
   }
 
+  onChange<T>(key: string, callback: (value: T) => void): () => void {
+    const onChange = (event: { key: string }) => {
+      if (event.key === key) callback(this[key]);
+    };
+
+    this.on("changed", onChange);
+
+    return () => this.off("changed", onChange);
+  }
+
   get path(): string | undefined {
-    return this._state.get("path") || this._file?.path;
+    // TODO deal with name
+    return this._state.get("path") || this._file?.path || "";
   }
 
   set path(value: string) {
@@ -78,6 +90,10 @@ export class FileModel extends EventEmitter {
     this._contentKey = file.path.includes("helpers")
       ? "helpers_code"
       : "test_code";
+
+    this._editor?.setValue(this.content);
+
+    this.emit("changed", { key: "readOnly" });
   }
 
   toggleCodeGeneration(mouseLineNumber?: number): void {

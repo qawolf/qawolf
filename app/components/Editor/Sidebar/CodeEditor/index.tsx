@@ -1,8 +1,9 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
+import { useEffect } from "react";
 import { useContext, useState } from "react";
+import { EditorContext } from "../../contexts/EditorContext";
 
 import { RunnerContext } from "../../contexts/RunnerContext";
-import { TestContext } from "../../contexts/TestContext";
 import EditorComponent from "../Editor";
 import { includeTypes } from "../helpers";
 import { useEnvTypes, useHelpersTypes } from "./hooks/envTypes";
@@ -22,15 +23,23 @@ export default function CodeEditor({
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
+  const [testContent, setTestContent] = useState("");
+  const [helpers, setHelpers] = useState("");
+  const [readOnly, setReadOnly] = useState(true);
+
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
-  const { code, controller, hasWriteAccess, team } = useContext(TestContext);
+  const { helpersModel, testModel } = useContext(EditorContext);
 
   useEnvTypes({ env, monaco });
-  useHelpersTypes({ helpers: team?.helpers, monaco });
-  useGlyphs({ code, editor, progress });
+  useHelpersTypes({ helpers, monaco });
+  useGlyphs({ editor, progress, testContent });
+
+  useEffect(() => helpersModel?.onChange("content", setHelpers), [testModel]);
+  useEffect(() => testModel?.onChange("content", setTestContent), [testModel]);
+  useEffect(() => testModel?.onChange("readOnly", setReadOnly), [testModel]);
 
   const editorDidMount = ({ editor, monaco }) => {
-    controller.setTestEditor(editor);
+    testModel.bind({ editor, monaco });
 
     setEditor(editor);
     setMonaco(monaco);
@@ -45,9 +54,7 @@ export default function CodeEditor({
       editorDidMount={editorDidMount}
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{
-        readOnly: !hasWriteAccess,
-      }}
+      options={{ readOnly }}
     />
   );
 }

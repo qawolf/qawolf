@@ -19,15 +19,11 @@ export default function CodeToggle({
   const [isToggled, setIsToggled] = useState(false);
 
   useEffect(() => {
-    const setIsToggledState = ({ key }) => {
-      if (key !== "content") return;
-      setIsToggled(testModel.content.includes(PATCH_HANDLE));
-    };
-    setIsToggledState({ key: "content" });
+    setIsToggled(testModel.content.includes(PATCH_HANDLE));
 
-    testModel.on("changed", setIsToggledState);
-
-    return () => testModel.off("changed", setIsToggledState);
+    return testModel.onChange<string>("content", (content) => {
+      setIsToggled(content.includes(PATCH_HANDLE));
+    });
   }, [testModel]);
 
   const handleClick = (): void =>

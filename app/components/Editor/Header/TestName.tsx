@@ -19,14 +19,7 @@ export default function TestName({ disabled }: Props): JSX.Element {
   useEffect(() => {
     setValue(testModel.path);
 
-    const updateValue = ({ key }) => {
-      if (key !== "path") return;
-      setValue(testModel.path);
-    };
-
-    testModel.on("changed", updateValue);
-
-    return () => testModel.off("changed", updateValue);
+    return testModel.onChange("path", setValue);
   }, [testModel]);
 
   const handleSave = (value: string): void => {

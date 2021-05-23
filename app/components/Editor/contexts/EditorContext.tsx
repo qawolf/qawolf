@@ -8,15 +8,13 @@ import { useFileModel } from "../hooks/fileModel";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = {
-  helpersModel: FileModel;
+  helpersModel?: FileModel;
   state: VersionedMap;
-  testModel: FileModel;
+  testModel?: FileModel;
 };
 
 export const EditorContext = createContext<EditorContextValue>({
-  helpersModel: new FileModel(null),
   state: new VersionedMap(),
-  testModel: new FileModel(null),
 });
 
 export const EditorProvider: FC = ({ children }) => {
