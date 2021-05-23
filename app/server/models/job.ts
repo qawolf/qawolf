@@ -27,6 +27,7 @@ export const claimPendingJob = async ({
 
   const jobs = await db("jobs")
     .whereIn("id", subquery)
+    .whereNull("started_at")
     .update({ started_at: minutesFromNow() }, "*");
 
   const job = jobs[0] || null;
