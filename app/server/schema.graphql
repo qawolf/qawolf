@@ -1136,6 +1136,22 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Updates a helpers or test file by ID.
+
+  Requires that you have access to the team that owns the helpers or test.
+  """
+  updateFile(
+    "The file content"
+    content: String!
+
+    "The file ID"
+    id: ID!
+
+    "The test name if applicable"
+    path: String
+  ): File!
+
+  """
   Updates information about a test run by run ID. A runner service calls
   this to provide status updates.
 
