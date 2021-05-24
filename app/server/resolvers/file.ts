@@ -54,7 +54,7 @@ const buildFileForRun = async (
 
   return {
     content: run.code,
-    id,
+    id: `run.${id}`,
     is_read_only: true,
     path: test.path || test.name,
   };
@@ -68,7 +68,7 @@ const buildFileForTeam = async (
 
   return {
     content: team.helpers,
-    id,
+    id: `helpers.${id}`,
     is_read_only: false,
     path: HELPERS_PATH,
   };
@@ -93,7 +93,7 @@ const buildFileForTest = async (
 
   return {
     content: buildTestContent({ files, test }, { db, logger }),
-    id,
+    id: `test.${id}`,
     is_read_only: false,
     path: test.path || test.name,
   };
@@ -123,3 +123,5 @@ export const fileResolver = async (
   log.alert(message);
   throw new ClientError(message);
 };
+
+// export const updateFileResolver = async (): Promise<File> => {};

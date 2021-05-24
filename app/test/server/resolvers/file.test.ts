@@ -72,7 +72,7 @@ describe("fileResolver", () => {
 
     expect(file).toMatchObject({
       content: team.helpers,
-      id: "teamId",
+      id: "helpers.teamId",
       is_read_only: false,
       path: treeService.HELPERS_PATH,
     });
@@ -83,7 +83,7 @@ describe("fileResolver", () => {
 
     expect(file).toMatchObject({
       content: run.code,
-      id: "runId",
+      id: "run.runId",
       is_read_only: true,
       path: test.path,
     });
@@ -96,7 +96,7 @@ describe("fileResolver", () => {
 
     expect(file).toMatchObject({
       content: test2.code,
-      id: "test2Id",
+      id: "test.test2Id",
       is_read_only: false,
       path: test2.name,
     });
@@ -117,7 +117,7 @@ describe("fileResolver", () => {
 
     expect(file).toMatchObject({
       content: "git code",
-      id: "testId",
+      id: "test.testId",
       is_read_only: false,
       path: test.path,
     });
