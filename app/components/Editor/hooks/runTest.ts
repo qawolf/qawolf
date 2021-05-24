@@ -43,13 +43,13 @@ export const useRunTest = ({
   }, [ranAt]);
 
   const runTest = async (selection?: Selection) => {
-    const code = testModel.content;
+    const testContent = testModel.content;
 
-    resetProgress(code);
+    resetProgress(testContent);
     setRanAt(new Date());
 
     const options: RunOptions = {
-      code,
+      code: testContent,
       env: env || {},
       helpers: helpersModel.content,
       restart: !selection || selection.startLine === 1,

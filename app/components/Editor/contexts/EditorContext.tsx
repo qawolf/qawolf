@@ -14,6 +14,7 @@ import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
 import { useFileModel } from "../hooks/fileModel";
 import { useRun } from "../hooks/run";
+import { useSuite } from "../hooks/suite";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = {
@@ -62,7 +63,8 @@ export const EditorProvider: FC = ({ children }) => {
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
 
-  const { run, suite } = useRun({ branch, runId, team });
+  const { run } = useRun({ branch, runId, teamId });
+  const { suite } = useSuite({ run, team });
 
   const {
     fileModel: helpersModel,
