@@ -1,4 +1,5 @@
 import { ClientError } from "../errors";
+import { findRun } from "../models/run";
 import { findTest } from "../models/test";
 import { findFilesForBranch } from "../services/gitHub/tree";
 import {
@@ -43,6 +44,22 @@ export const buildTestContent = (
   return gitTest.text;
 };
 
+const buildFileForRun = async (
+  id: string,
+  { db, logger, teams }: Context
+): Promise<File> => {
+  const run = await findRun(id, { db, logger });
+  const test = await findTest(run.test_id, { db, logger });
+  await ensureTestAccess({ teams, test }, { db, logger });
+
+  return {
+    content: run.code,
+    id,
+    is_read_only: true,
+    path: test.path || test.name,
+  };
+};
+
 const buildFileForTest = async (
   { branch, id }: BuildFileForTest,
   { db, logger, teams }: Context
@@ -78,6 +95,9 @@ export const fileResolver = async (
 
   const [type, id] = fileId.split(fileDelimiter);
 
+  if (type === "run") {
+    return buildFileForRun(id, context);
+  }
   if (type === "test") {
     return buildFileForTest({ branch, id }, context);
   }
