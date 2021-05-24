@@ -60,6 +60,19 @@ beforeAll(async () => {
 
 afterEach(() => jest.restoreAllMocks());
 
+describe("runResolver", () => {
+  it("returns a run", async () => {
+    const run = await runResolver.runResolver({}, { id: "runId" }, context);
+
+    expect(run).toMatchObject({
+      id: "runId",
+      logs_url: null,
+      test_id: "testId",
+      video_url: null,
+    });
+  });
+});
+
 describe("runCountResolver", () => {
   it("returns run count for a team", async () => {
     const count = await runCountResolver({}, { team_id: "teamId" }, context);

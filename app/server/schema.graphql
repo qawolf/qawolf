@@ -1453,6 +1453,13 @@ type Query {
   onboarding("The team ID" team_id: ID!): Onboarding!
 
   """
+  Returns run by run ID.
+
+  Requires that you have access to the team that owns the test.
+  """
+  run("The run ID" id: ID!): Run!
+
+  """
   Returns the runner for the run or test.
   """
   runner(

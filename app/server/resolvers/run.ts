@@ -4,6 +4,7 @@ import { AuthenticationError } from "../errors";
 import {
   countRunsForTeam,
   findRun,
+  findRunResult,
   findRunsForSuite,
   findStatusCountsForSuite,
   findTestHistory,
@@ -17,6 +18,7 @@ import {
   IdQuery,
   ModelOptions,
   Run,
+  RunResult,
   StatusCounts,
   Suite,
   SuiteRun,
@@ -59,7 +61,6 @@ export const validateApiKey = async (
   { db, logger }: ModelOptions
 ): Promise<void> => {
   const log = logger.prefix("validateApiKey");
-  log.debug();
 
   if (!api_key) {
     log.error("no api key provided");
@@ -72,6 +73,23 @@ export const validateApiKey = async (
     log.error("incorrect api key for run", run?.id, "runner", runner?.id);
     throw new AuthenticationError("invalid api key");
   }
+};
+
+/**
+ * @returns Test run result
+ */
+export const runResolver = async (
+  _: Record<string, unknown>,
+  { id }: IdQuery,
+  { db, logger, teams }: Context
+): Promise<RunResult> => {
+  const log = logger.prefix("runResolver");
+  log.debug("run", id);
+
+  const run = await findRunResult(id, { db, logger });
+  await ensureTestAccess({ teams, test_id: run.test_id }, { db, logger });
+
+  return run;
 };
 
 /**

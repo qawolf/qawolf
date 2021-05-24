@@ -13,6 +13,7 @@ import {
   environmentVariablesResolver,
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
+import { fileResolver, updateFileResolver } from "./resolvers/file";
 import {
   createGitHubIntegrationsResolver,
   gitHubBranchesResolver,
@@ -26,6 +27,7 @@ import {
 import { onboardingResolver } from "./resolvers/onboarding";
 import {
   runCountResolver,
+  runResolver,
   statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
@@ -125,6 +127,7 @@ export const resolvers = {
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
+    updateFile: updateFileResolver,
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
     updateTag: updateTagResolver,
@@ -140,9 +143,11 @@ export const resolvers = {
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
+    file: fileResolver,
     gitHubBranches: gitHubBranchesResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,
+    run: runResolver,
     runner: runnerResolver,
     runCount: runCountResolver,
     suite: suiteResolver,
