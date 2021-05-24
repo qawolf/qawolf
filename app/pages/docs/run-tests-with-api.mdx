@@ -35,6 +35,33 @@ If you paste this command into your terminal and run it, you'll get a response t
 
 The `id` returned is the id of your new suite. The `url` links to the results page for your tests.
 
+<SubHeader>Get Suite Details by Calling QA Wolf API</SubHeader>
+
+If you want to check the status of your suite via API, you can make a `GET` request to the `/suites/:id` endpoint. This is useful if you want to take other actions after your suite finishes running.
+
+`https://www.qawolf.com/suites/:id`
+
+Include your API key as an <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</ExternalLink>, and the id of the suite in the URL (`suiteId` in the example below).
+
+<SuiteApiExample />
+
+If you call this endpoint, the response will look like this:
+
+```json
+{
+  "id": "suiteId",
+  "is_complete": false,
+  "runs": [
+    {
+      "id": "runId",
+      "status": "created", // can also be "fail" or "pass"
+      "test_name": "My Test"
+    }
+  ],
+  "status": "created" // can also be "fail" or "pass"
+}
+```
+
 <ViewRunHistory description="when you call the QA Wolf API" />
 
 </Layout>
