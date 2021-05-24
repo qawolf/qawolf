@@ -373,12 +373,12 @@ export const updateTest = async (
     }
 
     const updates: Partial<Test> = {
-      code: code || existingTest.code,
+      code: isNil(code) ? existingTest.code : code,
       is_enabled: isNil(is_enabled) ? existingTest.is_enabled : is_enabled,
       updated_at: minutesFromNow(),
     };
 
-    if (name !== undefined) {
+    if (!isNil(name)) {
       updates.name = name;
     }
     if (path !== undefined) {
