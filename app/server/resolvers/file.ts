@@ -1,28 +1,76 @@
 import { ClientError } from "../errors";
 import { findTest } from "../models/test";
-import { Context, File, IdQuery } from "../types";
+import { findFilesForBranch } from "../services/gitHub/tree";
+import {
+  Context,
+  File,
+  FileQuery,
+  GitHubFile,
+  ModelOptions,
+  Test,
+} from "../types";
 import { ensureTestAccess } from "./utils";
+
+type BuildFileForTest = {
+  branch?: string | null;
+  id: string;
+};
+
+type BuildTestContent = {
+  files: GitHubFile[] | null;
+  test: Test;
+};
 
 const fileDelimiter = ".";
 
-export const buildFileForTest = async (
-  id: string,
+export const buildTestContent = (
+  { files, test }: BuildTestContent,
+  { logger }: ModelOptions
+): string => {
+  const log = logger.prefix("buildTestContent");
+
+  if (!files) {
+    log.debug("no files");
+    return test.code;
+  }
+
+  const gitTest = files.find((f) => f.path === test.path);
+  if (!gitTest) {
+    log.alert(`test ${test.id} not found`);
+    throw new ClientError(`Test ${test.path} not found in git`);
+  }
+
+  return gitTest.text;
+};
+
+const buildFileForTest = async (
+  { branch, id }: BuildFileForTest,
   { db, logger, teams }: Context
 ): Promise<File> => {
   const test = await findTest(id, { db, logger });
   const team = await ensureTestAccess({ test, teams }, { db, logger });
 
+  let files: GitHubFile[] | null = null;
+
+  if (branch && team.git_sync_integration_id) {
+    const branchFiles = await findFilesForBranch(
+      { branch, integrationId: team.git_sync_integration_id },
+      { db, logger }
+    );
+    files = branchFiles.files;
+  }
+
   return {
+    content: buildTestContent({ files, test }, { db, logger }),
     id,
     is_read_only: false,
-    name: test.name || null,
-    path: test.path || null,
+    path: test.path || test.name,
   };
 };
 
 export const fileResolver = async (
   _: Record<string, unknown>,
-  { id: fileId }: IdQuery,
+  { branch, id: fileId }: FileQuery,
   context: Context
 ): Promise<File> => {
   const log = context.logger.prefix("fileResolver");
@@ -31,7 +79,7 @@ export const fileResolver = async (
   const [type, id] = fileId.split(fileDelimiter);
 
   if (type === "test") {
-    return buildFileForTest(id, context);
+    return buildFileForTest({ branch, id }, context);
   }
 
   const message = `invalid file type ${type}`;

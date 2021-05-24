@@ -115,11 +115,17 @@ type EnvironmentVariables {
 
 "A file for the test editor"
 type File {
+  "The text content of the file"
   content: String!
+
+  "The id of the file"
   id: ID!
+
+  "Whether the current user can edit the file"
   is_read_only: Boolean!
-  name: String
-  path: String
+
+  "The name or path of the file"
+  path: String!
 }
 
 "A GitHub branch"
@@ -1406,7 +1412,7 @@ type Query {
 
   Requires that you have access to the team.
   """
-  file("The file ID": id: ID!): File!
+  file("The  git branch" branch: String, "The file ID" id: ID!): File!
 
   """
   Returns GitHub branches for a team by team ID.
