@@ -1,8 +1,8 @@
+import { Selection } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import Button from "../../../shared/AppButton";
 import Edit from "../../../shared/icons/Edit";
 import Play from "../../../shared/icons/Play";
-import { Selection } from "../../hooks/selection";
 
 type Props = {
   className?: string;

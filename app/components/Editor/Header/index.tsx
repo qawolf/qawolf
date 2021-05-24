@@ -53,7 +53,7 @@ export default function Header(): JSX.Element {
           <Branch
             hasChanges={hasChanges}
             branch={runId ? runBranch : testBranch}
-            mode={runId ? "run" : "test"}
+            isRun={!!runId}
           />
           <TestHistory testId={testId} />
           <Divider
