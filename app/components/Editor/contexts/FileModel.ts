@@ -30,13 +30,13 @@ export class FileModel extends EventEmitter {
     this._state = state;
 
     this._state.on("changed", ({ key, value }) => {
-      if (this._editor && key === this._contentKey) {
+      if (key === this._contentKey && this._editor) {
         const currentValue = this._editor.getValue();
         if (currentValue !== value) this._editor.setValue(value);
+        this.emit("changed", { key: "content", value });
+      } else if (key === "path") {
+        this.emit("changed", { key, value });
       }
-
-      // TODO
-      // this.emit("changed", { key });
     });
   }
 
@@ -56,6 +56,10 @@ export class FileModel extends EventEmitter {
     this._editor = editor;
 
     editor.setValue(this.content);
+
+    editor.onDidChangeModelContent(() => {
+      this._state.set(this._contentKey, editor.getValue());
+    });
   }
 
   changes(): Partial<File> {
@@ -74,7 +78,7 @@ export class FileModel extends EventEmitter {
   }
 
   set content(value: string) {
-    this._state.set("content", value);
+    this._state.set(this._contentKey, value);
   }
 
   get isReadOnly(): boolean {
@@ -82,7 +86,6 @@ export class FileModel extends EventEmitter {
   }
 
   get path(): string | undefined {
-    // TODO deal with name
     return this._state.get("path") || this._file?.path || "";
   }
 
@@ -97,11 +100,8 @@ export class FileModel extends EventEmitter {
       ? "helpers_code"
       : "test_code";
 
+    // use this.content since state might be set with a newer version
     this._editor?.setValue(this.content);
-
-    this.emit("changed", { key: "content" });
-    this.emit("changed", { key: "isReadOnly" });
-    this.emit("changed", { key: "path" });
   }
 
   // content helpers

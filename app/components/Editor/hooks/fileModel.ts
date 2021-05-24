@@ -28,31 +28,15 @@ export const useFileModel = ({
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [path, setPath] = useState("");
 
-  useEffect(() => ref.current.bind("isReadOnly", setIsReadOnly), [ref]);
   useEffect(() => ref.current.bind("path", setPath), [ref]);
 
-  useEffect(() => {
-    const fileModel = ref.current;
-    if (!autoSave || !fileModel) return;
-
-    const onChanged = debounce(() => {
-      if (fileModel.isReadOnly) return;
-
-      console.log("todo updateFile mutation");
-    }, 100);
-
-    fileModel.on("changed", onChanged);
-
-    return () => fileModel.off("changed", onChanged);
-  }, [autoSave]);
-
-  // TODO this should be a query instead
   useEffect(() => {
     if (!editor) return;
 
     const file = ref.current;
 
     const [type] = id.split(".");
+    // TODO this should be a query instead
     if (type === "helpers") {
       file.setFile({
         content: editor?.helpers,
@@ -76,7 +60,23 @@ export const useFileModel = ({
         path: path || name,
       });
     }
-  }, [editor, ref, id]);
+
+    setIsReadOnly(file.isReadOnly);
+    setPath(file.path);
+
+    // listen for changes to save after the file is loaded
+    if (autoSave) {
+      const onChanged = debounce(() => {
+        if (file.isReadOnly) return;
+
+        console.log("todo updateFile mutation", file.content);
+      }, 100);
+
+      file.on("changed", onChanged);
+
+      return () => file.off("changed", onChanged);
+    }
+  }, [autoSave, editor, ref, id]);
 
   return { fileModel: ref.current, isReadOnly, path };
 };
