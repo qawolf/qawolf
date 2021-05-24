@@ -17,6 +17,15 @@ export const environmentVariableFragment = gql`
   }
 `;
 
+export const fileFragment = gql`
+  fragment FileFragment on File {
+    content
+    id
+    is_read_only
+    path
+  }
+`;
+
 export const integrationFragment = gql`
   fragment IntegrationFragment on Integration {
     github_repo_name

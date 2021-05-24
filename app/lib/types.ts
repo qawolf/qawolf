@@ -27,6 +27,13 @@ export type EnvironmentVariable = {
   value: string;
 };
 
+export type File = {
+  content: string;
+  id: string;
+  is_read_only: boolean;
+  path: string;
+};
+
 export type GitHubBranch = {
   is_default: boolean;
   name: string;

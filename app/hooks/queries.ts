@@ -7,6 +7,7 @@ import {
   editorQuery,
   environmentsQuery,
   environmentVariablesQuery,
+  fileQuery,
   gitHubBranchesQuery,
   integrationsQuery,
   onboardingQuery,
@@ -32,6 +33,7 @@ import {
   Editor,
   Environment,
   EnvironmentVariable,
+  File,
   GitHubBranch,
   Integration,
   Onboarding,
@@ -89,6 +91,15 @@ type GitHubBranchesData = {
 
 type GitHubBranchesVariables = {
   team_id: string;
+};
+
+type FileData = {
+  file: File;
+};
+
+type FileVariables = {
+  branch?: string | null;
+  id: string;
 };
 
 type IntegrationsData = {
@@ -296,6 +307,17 @@ export const useEnvironmentVariables = (
       variables,
     }
   );
+};
+
+export const useFile = (
+  variables: FileVariables
+): QueryResult<FileData, FileVariables> => {
+  return useQuery(fileQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.id,
+    variables,
+  });
 };
 
 export const useGitHubBranches = (

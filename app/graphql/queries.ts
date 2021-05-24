@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  fileFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
@@ -63,6 +64,15 @@ export const environmentVariablesQuery = gql`
     }
   }
   ${environmentVariableFragment}
+`;
+
+export const fileQuery = gql`
+  query file($branch: String, $id: ID!) {
+    file(branch: $branch, id: $id) {
+      ...FileFragment
+    }
+  }
+  ${fileFragment}
 `;
 
 export const gitHubBranchesQuery = gql`
