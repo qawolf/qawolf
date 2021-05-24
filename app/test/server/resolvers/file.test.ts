@@ -67,6 +67,17 @@ describe("buildTestContent", () => {
 });
 
 describe("fileResolver", () => {
+  it("returns a run file", async () => {
+    const file = await fileResolver({}, { id: "run.runId" }, context);
+
+    expect(file).toMatchObject({
+      content: run.code,
+      id: "runId",
+      is_read_only: true,
+      path: test.path,
+    });
+  });
+
   it("returns a test file without branch", async () => {
     jest.spyOn(treeService, "findFilesForBranch");
 
