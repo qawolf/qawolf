@@ -27,7 +27,7 @@ export default function CodeEditor({
   const [helpers, setHelpers] = useState("");
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
-  const { helpersModel, isTestReadOnly, testModel } = useContext(EditorContext);
+  const { helpersModel, isTestLoaded, testModel } = useContext(EditorContext);
 
   useEnvTypes({ env, monaco });
   useHelpersTypes({ helpers, monaco });
@@ -50,9 +50,11 @@ export default function CodeEditor({
     <EditorComponent
       a11yTitle="test code"
       editorDidMount={editorDidMount}
+      initializeOptions={
+        isTestLoaded ? { isReadOnly: testModel.isReadOnly } : null
+      }
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{ readOnly: isTestReadOnly }}
     />
   );
 }

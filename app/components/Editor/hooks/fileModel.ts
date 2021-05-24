@@ -7,7 +7,7 @@ import { FileModel } from "../contexts/FileModel";
 
 export type FileHook = {
   fileModel: FileModel;
-  isReadOnly: boolean;
+  isLoaded: boolean;
   path: string;
 };
 
@@ -24,11 +24,19 @@ export const useFileModel = ({
   id,
   state,
 }: UseFile): FileHook => {
-  const ref = useRef(new FileModel(state));
-  const [isReadOnly, setIsReadOnly] = useState(true);
+  const ref = useRef<FileModel>();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
 
-  useEffect(() => ref.current.bind("path", setPath), [ref]);
+  useEffect(() => {
+    if (!state) return;
+
+    ref.current = new FileModel(state);
+
+    ref.current.bind("path", setPath);
+
+    return () => ref.current.dispose();
+  }, [state]);
 
   useEffect(() => {
     if (!editor) return;
@@ -61,7 +69,8 @@ export const useFileModel = ({
       });
     }
 
-    setIsReadOnly(file.isReadOnly);
+    setIsLoaded(true);
+
     setPath(file.path);
 
     // listen for changes to save after the file is loaded
@@ -76,7 +85,7 @@ export const useFileModel = ({
 
       return () => file.off("changed", onChanged);
     }
-  }, [autoSave, editor, ref, id]);
+  }, [autoSave, editor, id]);
 
-  return { fileModel: ref.current, isReadOnly, path };
+  return { fileModel: ref.current, isLoaded, path };
 };

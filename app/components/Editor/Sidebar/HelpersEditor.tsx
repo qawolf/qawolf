@@ -14,7 +14,7 @@ export default function HelpersEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
-  const { helpersModel, isHelpersReadOnly } = useContext(EditorContext);
+  const { helpersModel, isHelpersLoaded } = useContext(EditorContext);
 
   const editorDidMount = (options: BindOptions) => {
     helpersModel.bindEditor(options);
@@ -24,9 +24,11 @@ export default function HelpersEditor({
     <EditorComponent
       a11yTitle="helpers code"
       editorDidMount={editorDidMount}
+      initializeOptions={
+        isHelpersLoaded ? { isReadOnly: helpersModel.isReadOnly } : null
+      }
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{ readOnly: isHelpersReadOnly }}
     />
   );
 }

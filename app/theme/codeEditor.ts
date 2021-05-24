@@ -57,16 +57,16 @@ export const rulesReadOnly: monacoEditor.editor.ITokenThemeRule[] = [
   { token: "type", foreground: colors.gray3 },
 ];
 
-export const theme: monacoEditor.editor.IStandaloneThemeData = {
-  base: "vs-dark",
-  colors: editorColors,
-  inherit: true,
-  rules,
-};
-
 export const themeReadOnly: monacoEditor.editor.IStandaloneThemeData = {
   base: "vs-dark",
   colors: editorColors,
   inherit: true,
   rules: rulesReadOnly,
+};
+
+export const themeWrite: monacoEditor.editor.IStandaloneThemeData = {
+  base: "vs-dark",
+  colors: editorColors,
+  inherit: true,
+  rules,
 };

@@ -21,6 +21,7 @@ type File = {
 export class FileModel extends EventEmitter {
   _contentKey?: string;
   _editor?: editorNs.IStandaloneCodeEditor;
+  _disposeHooks = [];
   _file?: File;
   _state: VersionedMap;
 
@@ -57,9 +58,11 @@ export class FileModel extends EventEmitter {
 
     editor.setValue(this.content);
 
-    editor.onDidChangeModelContent(() => {
+    const disposable = editor.onDidChangeModelContent(() => {
       this._state.set(this._contentKey, editor.getValue());
     });
+
+    this._disposeHooks.push(() => disposable.dispose());
   }
 
   changes(): Partial<File> {
@@ -79,6 +82,12 @@ export class FileModel extends EventEmitter {
 
   set content(value: string) {
     this._state.set(this._contentKey, value);
+  }
+
+  dispose(): void {
+    this.removeAllListeners();
+    this._disposeHooks.forEach((dispose) => dispose());
+    this._disposeHooks = [];
   }
 
   get isReadOnly(): boolean {

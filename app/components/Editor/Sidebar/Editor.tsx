@@ -8,8 +8,8 @@ import { AutoSizer } from "react-virtualized";
 import {
   background,
   options as baseOptions,
-  theme,
   themeReadOnly,
+  themeWrite,
 } from "../../../theme/codeEditor";
 
 const language = "javascript";
@@ -19,20 +19,24 @@ type EditorDidMount = {
   monaco: typeof monacoEditor;
 };
 
+type InitializeOptions = {
+  isReadOnly: boolean;
+};
+
 type Props = {
   a11yTitle?: string;
   editorDidMount: (options: EditorDidMount) => void;
+  initializeOptions?: InitializeOptions;
   isVisible: boolean;
   onKeyDown: (e: IKeyboardEvent) => void;
-  options: editor.IEditorOptions & editor.IGlobalEditorOptions;
 };
 
 export default function Editor({
   a11yTitle,
   editorDidMount,
+  initializeOptions,
   isVisible,
   onKeyDown,
-  options,
 }: Props): JSX.Element {
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [isMonacoMounting, setIsMonacoMounting] = useState(true);
@@ -64,41 +68,36 @@ export default function Editor({
   useEffect(() => {
     if (!isEditorReady) return;
 
-    editorRef.current.updateOptions(options);
-  }, [options, isEditorReady]);
-
-  useEffect(() => {
-    if (!isEditorReady) return;
-
     const handler = editorRef.current.onKeyDown(onKeyDown);
-
-    return () => {
-      handler.dispose();
-    };
+    return () => handler.dispose();
   }, [isEditorReady, onKeyDown]);
 
   useEffect(() => {
-    if (isMonacoMounting || isEditorReady) return;
+    if (isMonacoMounting || isEditorReady || !initializeOptions) return;
+
+    const { isReadOnly } = initializeOptions;
 
     function createEditor() {
       const monaco = monacoRef.current;
 
+      const themeName = isReadOnly ? "qawolf-read" : "qawolf-write";
+      monaco.editor.defineTheme(
+        themeName,
+        isReadOnly ? themeReadOnly : themeWrite
+      );
+
       const editor = monaco.editor.create(containerRef.current, {
+        ...baseOptions,
         automaticLayout: true,
         language,
-        ...baseOptions,
-        ...options,
+        readOnly: isReadOnly,
+        theme: themeName,
       });
-
       editorRef.current = editor;
 
-      monaco.editor.defineTheme(
-        "qawolf",
-        options.readOnly ? themeReadOnly : theme
-      );
-      monaco.editor.setTheme("qawolf");
-
       monaco.editor.setModelLanguage(editorRef.current.getModel(), language);
+
+      editorRef.current.updateOptions({ readOnly: isReadOnly });
 
       setIsEditorReady(true);
 
@@ -106,7 +105,7 @@ export default function Editor({
     }
 
     createEditor();
-  }, [editorDidMount, isMonacoMounting, isEditorReady, options]);
+  }, [editorDidMount, initializeOptions, isMonacoMounting, isEditorReady]);
 
   const style = {
     height: isVisible ? "100%" : "0%",

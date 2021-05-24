@@ -21,9 +21,9 @@ type EditorContextValue = {
   commitEditor?: () => Promise<void>;
   hasChanges: boolean;
   helpersModel?: FileModel;
-  isHelpersReadOnly: boolean;
+  isHelpersLoaded: boolean;
   isLoaded: boolean;
-  isTestReadOnly: boolean;
+  isTestLoaded: boolean;
   run: Run | null;
   runId?: string;
   suite: Suite | null;
@@ -36,9 +36,9 @@ type EditorContextValue = {
 
 export const EditorContext = createContext<EditorContextValue>({
   hasChanges: false,
-  isHelpersReadOnly: true,
+  isHelpersLoaded: true,
   isLoaded: false,
-  isTestReadOnly: true,
+  isTestLoaded: true,
   run: null,
   state: new VersionedMap(),
   suite: null,
@@ -66,10 +66,7 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun({ branch, runId, teamId });
   const { suite } = useSuite({ run, team });
 
-  const {
-    fileModel: helpersModel,
-    isReadOnly: isHelpersReadOnly,
-  } = useFileModel({
+  const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel({
     autoSave: !branch,
     id: `helpers.${teamId}`,
     editor,
@@ -78,7 +75,7 @@ export const EditorProvider: FC = ({ children }) => {
 
   const {
     fileModel: testModel,
-    isReadOnly: isTestReadOnly,
+    isLoaded: isTestLoaded,
     path: testPath,
   } = useFileModel({
     autoSave: !branch,
@@ -124,12 +121,12 @@ export const EditorProvider: FC = ({ children }) => {
         commitEditor,
         hasChanges,
         helpersModel,
-        isHelpersReadOnly,
+        isHelpersLoaded,
         // only consider the test loading the first time it loads (when there is no test data)
         // this prevents the loading placeholder from flashing every poll
         // TODO update this for 2 queries
         isLoaded: !data && loading,
-        isTestReadOnly,
+        isTestLoaded,
         run,
         runId,
         suite,
