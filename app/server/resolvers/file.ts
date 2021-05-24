@@ -1,6 +1,7 @@
 import { ClientError } from "../errors";
 import { findRun } from "../models/run";
-import { findTest } from "../models/test";
+import { updateTeam } from "../models/team";
+import { findTest, updateTest } from "../models/test";
 import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
   Context,
@@ -8,7 +9,9 @@ import {
   FileQuery,
   GitHubFile,
   ModelOptions,
+  Team,
   Test,
+  UpdateFileMutation,
 } from "../types";
 import { ensureTeamAccess, ensureTestAccess } from "./utils";
 
@@ -23,6 +26,24 @@ type BuildTestContent = {
 };
 
 const fileDelimiter = ".";
+
+const formatHelpersFile = ({ helpers, id }: Team): File => {
+  return {
+    content: helpers,
+    id: `helpers.${id}`,
+    is_read_only: false,
+    path: HELPERS_PATH,
+  };
+};
+
+const formatTestFile = (test: Test): File => {
+  return {
+    content: test.code,
+    id: `test.${test.id}`,
+    is_read_only: false,
+    path: test.name || test.path,
+  };
+};
 
 export const buildTestContent = (
   { files, test }: BuildTestContent,
@@ -66,12 +87,7 @@ const buildFileForTeam = async (
 ): Promise<File> => {
   const team = ensureTeamAccess({ logger, team_id: id, teams });
 
-  return {
-    content: team.helpers,
-    id: `helpers.${id}`,
-    is_read_only: false,
-    path: HELPERS_PATH,
-  };
+  return formatHelpersFile(team);
 };
 
 const buildFileForTest = async (
@@ -92,10 +108,8 @@ const buildFileForTest = async (
   }
 
   return {
+    ...formatTestFile(test),
     content: buildTestContent({ files, test }, { db, logger }),
-    id: `test.${id}`,
-    is_read_only: false,
-    path: test.path || test.name,
   };
 };
 
@@ -124,4 +138,33 @@ export const fileResolver = async (
   throw new ClientError(message);
 };
 
-// export const updateFileResolver = async (): Promise<File> => {};
+export const updateFileResolver = async (
+  _: Record<string, unknown>,
+  { content, id: fileId, path }: UpdateFileMutation,
+  { db, logger, teams }: Context
+): Promise<File> => {
+  const log = logger.prefix("updateFileResolver");
+  log.debug("file", fileId);
+
+  const [type, id] = fileId.split(fileDelimiter);
+
+  if (type === "helpers") {
+    ensureTeamAccess({ logger, team_id: id, teams });
+    const team = await updateTeam({ helpers: content, id }, { db, logger });
+
+    return formatHelpersFile(team);
+  }
+  if (type === "test") {
+    await ensureTestAccess({ teams, test_id: id }, { db, logger });
+    const test = await updateTest(
+      { code: content, id, name: path },
+      { db, logger }
+    );
+
+    return formatTestFile(test);
+  }
+
+  const message = `invalid file type ${type}`;
+  log.alert(message);
+  throw new ClientError(message);
+};

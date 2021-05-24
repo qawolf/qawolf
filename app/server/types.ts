@@ -560,6 +560,12 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
+export type UpdateFileMutation = {
+  content?: string | null;
+  id: string;
+  path?: string | null;
+};
+
 export type UpdateRunMutation = {
   error?: string;
   current_line: number | null;

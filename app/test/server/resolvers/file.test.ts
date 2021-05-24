@@ -1,4 +1,10 @@
-import { buildTestContent, fileResolver } from "../../../server/resolvers/file";
+import { updateTeam } from "../../../server/models/team";
+import { updateTest } from "../../../server/models/test";
+import {
+  buildTestContent,
+  fileResolver,
+  updateFileResolver,
+} from "../../../server/resolvers/file";
 import * as treeService from "../../../server/services/gitHub/tree";
 import { File } from "../../../server/types";
 import { prepareTestDb } from "../db";
@@ -70,7 +76,7 @@ describe("fileResolver", () => {
   it("returns a helpers file", async () => {
     const file = await fileResolver({}, { id: "helpers.teamId" }, context);
 
-    expect(file).toMatchObject({
+    expect(file).toEqual({
       content: team.helpers,
       id: "helpers.teamId",
       is_read_only: false,
@@ -81,7 +87,7 @@ describe("fileResolver", () => {
   it("returns a run file", async () => {
     const file = await fileResolver({}, { id: "run.runId" }, context);
 
-    expect(file).toMatchObject({
+    expect(file).toEqual({
       content: run.code,
       id: "run.runId",
       is_read_only: true,
@@ -94,7 +100,7 @@ describe("fileResolver", () => {
 
     const file = await fileResolver({}, { id: "test.test2Id" }, context);
 
-    expect(file).toMatchObject({
+    expect(file).toEqual({
       content: test2.code,
       id: "test.test2Id",
       is_read_only: false,
@@ -115,7 +121,7 @@ describe("fileResolver", () => {
       context
     );
 
-    expect(file).toMatchObject({
+    expect(file).toEqual({
       content: "git code",
       id: "test.testId",
       is_read_only: false,
@@ -129,6 +135,73 @@ describe("fileResolver", () => {
     await expect(
       (): Promise<File> => {
         return fileResolver({}, { id: "invalid.id" }, context);
+      }
+    ).rejects.toThrowError("invalid file type");
+  });
+});
+
+describe("updateFileResolver", () => {
+  it("updates a helpers file", async () => {
+    const oldHelpers = team.helpers;
+
+    const file = await updateFileResolver(
+      {},
+      { content: "new helpers", id: "helpers.teamId" },
+      context
+    );
+
+    expect(file).toEqual({
+      content: "new helpers",
+      id: "helpers.teamId",
+      is_read_only: false,
+      path: treeService.HELPERS_PATH,
+    });
+
+    await updateTeam({ helpers: oldHelpers, id: "teamId" }, options);
+  });
+
+  it("updates a test file content", async () => {
+    const oldCode = test2.code;
+
+    const file = await updateFileResolver(
+      {},
+      { content: "new code", id: "test.test2Id" },
+      context
+    );
+
+    expect(file).toEqual({
+      content: "new code",
+      id: "test.test2Id",
+      is_read_only: false,
+      path: test2.name,
+    });
+
+    await updateTest({ code: oldCode, id: "test2Id" }, options);
+  });
+
+  it("updates a test file path", async () => {
+    const oldName = test2.name;
+
+    const file = await updateFileResolver(
+      {},
+      { id: "test.test2Id", path: "new name" },
+      context
+    );
+
+    expect(file).toEqual({
+      content: test2.code,
+      id: "test.test2Id",
+      is_read_only: false,
+      path: "new name",
+    });
+
+    await updateTest({ id: "test2Id", name: oldName }, options);
+  });
+
+  it("throws an error if invalid file type", async () => {
+    await expect(
+      (): Promise<File> => {
+        return updateFileResolver({}, { id: "invalid.id" }, context);
       }
     ).rejects.toThrowError("invalid file type");
   });

@@ -1142,12 +1142,12 @@ type Mutation {
   """
   updateFile(
     "The file content"
-    content: String!
+    content: String
 
     "The file ID"
     id: ID!
 
-    "The test name if applicable"
+    "The test name"
     path: String
   ): File!
 

@@ -416,7 +416,7 @@ describe("pending tests", () => {
     ]);
 
     await db("runners").insert(buildRunner({ test_id: "testId" }));
-    
+
     // There was a bug causing update to pending to fail if any
     // runner has `test_id: null`. Keep this here to ensure it
     // does not reappear.
@@ -672,6 +672,21 @@ describe("updateTest", () => {
     });
 
     await updateTest({ id: "testId", name: "test", path: null }, options);
+  });
+
+  it("clears existing code", async () => {
+    const test = await updateTest(
+      {
+        code: "",
+        id: "testId",
+      },
+      options
+    );
+
+    expect(test).toMatchObject({
+      code: "",
+      id: "testId",
+    });
   });
 
   it("throws an error if updating to non-unique name", async () => {
