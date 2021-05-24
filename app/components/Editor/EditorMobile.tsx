@@ -7,12 +7,9 @@ import StatusBadge from "../shared/StatusBadge";
 import Text from "../shared/Text";
 import TestVideo from "./Canvas/TestVideo";
 import { EditorContext } from "./contexts/EditorContext";
-import { RunContext } from "./contexts/RunContext";
 
 export default function EditorMobile(): JSX.Element {
-  const { runId, testPath } = useContext(EditorContext);
-  const { run } = useContext(RunContext);
-
+  const { run, runId, testPath } = useContext(EditorContext);
   if (!runId) return <NoMobile />;
 
   const videoUrl = run?.video_url;

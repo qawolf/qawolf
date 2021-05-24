@@ -9,7 +9,6 @@ import { NavigationOption } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { StateContext } from "../../StateContext";
 import { EditorContext } from "../contexts/EditorContext";
-import { RunContext } from "../contexts/RunContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { buildTestHref } from "../helpers";
 import Buttons from "./Buttons";
@@ -33,8 +32,7 @@ const enable = {
 export default function Sidebar(): JSX.Element {
   const { push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
-  const { isTestReadOnly, runId, testId } = useContext(EditorContext);
-  const { run, suite } = useContext(RunContext);
+  const { isTestReadOnly, run, runId, suite } = useContext(EditorContext);
   const {
     elementChooserValue,
     progress,
@@ -52,23 +50,21 @@ export default function Sidebar(): JSX.Element {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
 
-  const isRunning = testId && progress && !progress?.completed_at;
+  const isRunning = progress && !progress?.completed_at;
 
   const handleAction = (): void => {
     if (isActionDisabled) return;
 
-    if (run) {
+    if (runId) {
       // edit the test
       push(buildTestHref({ run, suite }));
       return;
     }
 
-    if (test) {
-      if (isRunning) {
-        stopTest();
-      } else {
-        runTest(selection);
-      }
+    if (isRunning) {
+      stopTest();
+    } else {
+      runTest(selection);
     }
   };
 

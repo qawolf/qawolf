@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { getCanvasSize } from "../../lib/size";
 import Canvas from "./Canvas";
 import Header from "./Canvas/Header";
-import { RunContext } from "./contexts/RunContext";
+import { EditorContext } from "./contexts/EditorContext";
 
 type State = {
   height: number | null;
@@ -12,7 +12,7 @@ type State = {
 };
 
 export default function Application(): JSX.Element {
-  const { run } = useContext(RunContext);
+  const { run } = useContext(EditorContext);
 
   const ref = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState<State>({

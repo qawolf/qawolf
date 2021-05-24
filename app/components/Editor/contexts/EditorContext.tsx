@@ -9,20 +9,23 @@ import {
 } from "react";
 
 import { useEditor, useTeam } from "../../../hooks/queries";
-import { Team } from "../../../lib/types";
+import { Run, Suite, Team } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
 import { useFileModel } from "../hooks/fileModel";
+import { useRun } from "../hooks/run";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = {
-  commitEditor: () => Promise<void>;
+  commitEditor?: () => Promise<void>;
   hasChanges: boolean;
   helpersModel?: FileModel;
   isHelpersReadOnly: boolean;
   isLoaded: boolean;
   isTestReadOnly: boolean;
+  run: Run | null;
   runId?: string;
+  suite: Suite | null;
   state: VersionedMap;
   team?: Team;
   testId?: string;
@@ -31,12 +34,13 @@ type EditorContextValue = {
 };
 
 export const EditorContext = createContext<EditorContextValue>({
-  commitEditor: async () => {},
   hasChanges: false,
   isHelpersReadOnly: true,
   isLoaded: false,
   isTestReadOnly: true,
+  run: null,
   state: new VersionedMap(),
+  suite: null,
 });
 
 export const EditorProvider: FC = ({ children }) => {
@@ -57,6 +61,8 @@ export const EditorProvider: FC = ({ children }) => {
 
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
+
+  const { run, suite } = useRun({ branch, runId, team });
 
   const {
     fileModel: helpersModel,
@@ -122,10 +128,12 @@ export const EditorProvider: FC = ({ children }) => {
         // TODO update this for 2 queries
         isLoaded: !data && loading,
         isTestReadOnly,
+        run,
         runId,
+        suite,
         state,
         team,
-        testId,
+        testId: testId || run?.test_id,
         testModel,
         testPath,
       }}

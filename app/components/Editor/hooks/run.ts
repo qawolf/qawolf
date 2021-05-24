@@ -1,41 +1,37 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useEditor, useSuite } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
-import { Run, Suite } from "../../../lib/types";
-import { StateContext } from "../../StateContext";
-import { EditorContext } from "./EditorContext";
+import { Run, Suite, Team } from "../../../lib/types";
 
-type RunContextValue = {
+export type RunHook = {
   run: Run | null;
   suite: Suite | null;
 };
 
-export const RunContext = createContext<RunContextValue>({
-  run: null,
-  suite: null,
-});
+type UseRun = {
+  branch?: string;
+  runId?: string;
+  team?: Team;
+};
 
 const pollInterval = 2000;
 
-// TODO move into one useRun hook
-export const RunProvider: FC = ({ children }) => {
+export const useRun = ({ branch, runId, team }: UseRun): RunHook => {
   const { query } = useRouter();
-  const { runId, team } = useContext(EditorContext);
-  const { branch, teamId } = useContext(StateContext);
 
-  // TODO replace with useRun
+  // TODO replace with run query
   const { data, startPolling, stopPolling } = useEditor(
     { branch, run_id: runId },
-    { teamId }
+    { teamId: team?.id }
   );
   const editorData = data?.editor || null;
   const run = editorData?.run || null;
 
   const { data: suiteData } = useSuite(
     { id: run?.suite_id || (query?.suite_id as string) },
-    { teamId }
+    { teamId: team?.id }
   );
   const suite = suiteData?.suite || null;
 
@@ -60,10 +56,8 @@ export const RunProvider: FC = ({ children }) => {
     };
   }, [run, startPolling, stopPolling]);
 
-  const value = {
+  return {
     run,
     suite,
   };
-
-  return <RunContext.Provider value={value}>{children}</RunContext.Provider>;
 };

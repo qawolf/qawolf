@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import { timeToText } from "../../../lib/helpers";
@@ -12,7 +11,6 @@ import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
 import { EditorContext } from "../contexts/EditorContext";
-import { RunContext } from "../contexts/RunContext";
 import { RunnerContext } from "../contexts/RunnerContext";
 import { buildTestHref } from "../helpers";
 import BackButton from "./BackButton";
@@ -25,8 +23,7 @@ import TestName from "./TestName";
 export default function Header(): JSX.Element {
   const { progress } = useContext(RunnerContext);
   const { branch: stateBranch } = useContext(StateContext);
-  const { hasChanges, runId, testId } = useContext(EditorContext);
-  const { run, suite } = useContext(RunContext);
+  const { hasChanges, run, runId, suite, testId } = useContext(EditorContext);
 
   const runBranch = suite?.branch || null;
   const testBranch = stateBranch || null;
@@ -58,13 +55,13 @@ export default function Header(): JSX.Element {
             branch={runId ? runBranch : testBranch}
             mode={runId ? "run" : "test"}
           />
-          <TestHistory testId={run?.test_id || null} />
+          <TestHistory testId={testId} />
           <Divider
             height={edgeSize.large}
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {testId && <TestButtons branch={testBranch} testId={testId} />}
+          {!runId && <TestButtons branch={testBranch} testId={testId} />}
           {run?.test_id && (
             <Button
               IconComponent={Edit}
