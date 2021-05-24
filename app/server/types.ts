@@ -122,8 +122,7 @@ export type File = {
   content: string;
   id: string;
   is_read_only: boolean;
-  name: string | null;
-  path: string | null;
+  path: string;
 };
 
 export type FormattedVariables = { [name: string]: string };
@@ -652,6 +651,11 @@ export type EmailQuery = {
 
 export type EnvironmentIdQuery = {
   environment_id: string;
+};
+
+export type FileQuery = {
+  branch?: string | null;
+  id: string;
 };
 
 export type IdQuery = {
