@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 
+import { debounce } from "lodash";
+
 import { Editor } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { FileModel } from "../contexts/FileModel";
@@ -7,13 +9,34 @@ import { FileModel } from "../contexts/FileModel";
 export type FileHook = { fileModel: FileModel };
 
 type UseFile = {
+  autoSave: boolean;
   editor: Editor;
   id: string;
   state: VersionedMap;
 };
 
-export const useFileModel = ({ editor, id, state }: UseFile): FileHook => {
+export const useFileModel = ({
+  autoSave,
+  editor,
+  id,
+  state,
+}: UseFile): FileHook => {
   const fileModelRef = useRef(new FileModel(state));
+
+  useEffect(() => {
+    const fileModel = fileModelRef.current;
+    if (!autoSave || !fileModel) return;
+
+    const onChanged = debounce(() => {
+      if (fileModel.readOnly) return;
+
+      console.log("todo updateFile mutation");
+    }, 100);
+
+    fileModel.on("changed", onChanged);
+
+    return () => fileModel.off("changed", onChanged);
+  }, [autoSave]);
 
   // TODO this should be a query instead
   useEffect(() => {

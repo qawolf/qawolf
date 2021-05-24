@@ -110,8 +110,6 @@ export const useGlyphs = ({
     return () => clearInterval(checkLoadedInterval);
   }, [editor]);
 
-  console.log("testContent", testContent);
-
   useEffect(() => {
     if (!isEditorLoaded) return;
 

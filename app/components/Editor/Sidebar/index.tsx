@@ -33,7 +33,7 @@ export default function Sidebar(): JSX.Element {
   const { query, push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
 
-  const { controller, run, suite, test } = useContext(TestContext);
+  const { run, suite, test } = useContext(TestContext);
   const {
     elementChooserValue,
     progress,

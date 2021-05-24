@@ -12,6 +12,7 @@ import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
 import { RunnerContext } from "../contexts/RunnerContext";
+import { EditorContext } from "../contexts/EditorContext";
 import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
 import { Mode } from "../hooks/mode";
@@ -31,7 +32,8 @@ export default function Header({ mode }: Props): JSX.Element {
 
   const { progress } = useContext(RunnerContext);
   const { branch: stateBranch } = useContext(StateContext);
-  const { hasChanges, run, suite, test } = useContext(TestContext);
+  const { hasChanges } = useContext(EditorContext);
+  const { run, suite, test } = useContext(TestContext);
 
   const runBranch = suite?.branch || null;
   const testBranch = stateBranch || null;

@@ -5,17 +5,9 @@ import { useEditor, useSuite, useTeam } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
 import { Run, Suite, Team, Test } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
-import { useEditorController } from "../hooks/editorController";
-import { EditorController } from "./EditorController";
 
 type TestContextValue = {
-  code: string | null;
-  controller: EditorController | null;
-  hasChanges: boolean;
-  hasWriteAccess: boolean;
   isTestLoading: boolean;
-  name: string | null;
-  path: string | null;
   run: Run | null;
   suite: Suite | null;
   team: Team | null;
@@ -23,13 +15,7 @@ type TestContextValue = {
 };
 
 export const TestContext = createContext<TestContextValue>({
-  code: null,
-  controller: null,
-  hasChanges: false,
-  hasWriteAccess: false,
   isTestLoading: true,
-  name: null,
-  path: null,
   run: null,
   suite: null,
   team: null,
@@ -45,14 +31,6 @@ export const TestProvider: FC = ({ children }) => {
 
   const run_id = query.run_id as string;
   const test_id = query.test_id as string;
-
-  const {
-    code,
-    editorController,
-    hasChanges,
-    name,
-    path,
-  } = useEditorController();
 
   const { data: teamData } = useTeam({ id: teamId });
   const { data, loading, startPolling, stopPolling } = useEditor(
@@ -92,28 +70,11 @@ export const TestProvider: FC = ({ children }) => {
     };
   }, [run, startPolling, stopPolling]);
 
-  useEffect(() => {
-    if (!editorController || !editorData) return;
-
-    editorController.setValue(editorData);
-  }, [editorController, editorData]);
-
-  useEffect(() => {
-    if (!editorController) return;
-
-    editorController.setBranch(branch);
-  }, [branch, editorController]);
-
   const value = {
-    code,
-    controller: editorController,
-    hasChanges,
     hasWriteAccess: test_id && !test?.deleted_at,
     // only consider the test loading the first time it loads (when there is no test data)
     // this prevents the loading placeholder from flashing every poll
     isTestLoading: !data && loading,
-    name,
-    path,
     run,
     suite,
     team,
