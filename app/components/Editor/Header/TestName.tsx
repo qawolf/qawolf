@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { copy } from "../../../theme/copy";
 import { borderSize, edgeSize } from "../../../theme/theme";
@@ -12,11 +12,8 @@ type Props = {
 
 export default function TestName({ disabled }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
-  const [value, setValue] = useState("");
 
-  const { testModel } = useContext(EditorContext);
-
-  useEffect(() => testModel.bind("path", setValue), [testModel]);
+  const { testModel, testPath } = useContext(EditorContext);
 
   const handleSave = (value: string): void => {
     testModel.path = value;
@@ -30,7 +27,7 @@ export default function TestName({ disabled }: Props): JSX.Element {
         onSave={handleSave}
         placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
-        value={value || ""}
+        value={testPath || ""}
       />
       <Divider
         height={edgeSize.large}

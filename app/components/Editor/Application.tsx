@@ -4,18 +4,15 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { getCanvasSize } from "../../lib/size";
 import Canvas from "./Canvas";
 import Header from "./Canvas/Header";
-import { TestContext } from "./contexts/TestContext";
-import { Mode } from "./hooks/mode";
-
-type Props = { mode: Mode };
+import { RunContext } from "./contexts/RunContext";
 
 type State = {
   height: number | null;
   width: number | null;
 };
 
-export default function Application({ mode }: Props): JSX.Element {
-  const { run } = useContext(TestContext);
+export default function Application(): JSX.Element {
+  const { run } = useContext(RunContext);
 
   const ref = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState<State>({
@@ -58,7 +55,6 @@ export default function Application({ mode }: Props): JSX.Element {
       <Box fill ref={ref}>
         <Canvas
           height={canvasHeight}
-          mode={mode}
           videoUrl={run?.video_url}
           width={canvasWidth}
         />

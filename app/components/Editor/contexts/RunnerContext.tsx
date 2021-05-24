@@ -9,7 +9,7 @@ import { useRunProgress } from "../hooks/runProgress";
 import { RunTest, useRunTest } from "../hooks/runTest";
 import { SelectionHook, useSelection } from "../hooks/selection";
 import { EditorContext } from "./EditorContext";
-import { TestContext } from "./TestContext";
+import { RunContext } from "./RunContext";
 
 type RunnerContext = ConnectRunnerHook &
   ElementChooserHook &
@@ -45,8 +45,8 @@ export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { state } = useContext(EditorContext);
-  const { run, suite, team } = useContext(TestContext);
+  const { state, team } = useContext(EditorContext);
+  const { run, suite } = useContext(RunContext);
 
   const {
     elementChooserValue,

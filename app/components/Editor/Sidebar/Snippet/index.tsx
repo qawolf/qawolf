@@ -2,11 +2,9 @@ import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
-import { PATCH_HANDLE } from "../../../../lib/code";
 import { border } from "../../../../theme/theme";
 import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
-import { TestContext } from "../../contexts/TestContext";
 import Action from "./Action";
 import Buttons from "./Buttons";
 import ChooseElement from "./ChooseElement";

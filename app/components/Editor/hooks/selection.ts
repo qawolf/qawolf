@@ -1,5 +1,6 @@
 import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useState } from "react";
+
 import { Selection } from "../../../lib/types";
 
 type OnSelectionChange = (

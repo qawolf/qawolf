@@ -8,7 +8,8 @@ import {
   useState,
 } from "react";
 
-import { useEditor } from "../../../hooks/queries";
+import { useEditor, useTeam } from "../../../hooks/queries";
+import { Team } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
 import { useFileModel } from "../hooks/fileModel";
@@ -18,39 +19,62 @@ type EditorContextValue = {
   commitEditor: () => Promise<void>;
   hasChanges: boolean;
   helpersModel?: FileModel;
+  isHelpersReadOnly: boolean;
+  isLoaded: boolean;
+  isTestReadOnly: boolean;
+  runId?: string;
   state: VersionedMap;
+  team?: Team;
+  testId?: string;
   testModel?: FileModel;
+  testPath?: string;
 };
 
 export const EditorContext = createContext<EditorContextValue>({
   commitEditor: async () => {},
   hasChanges: false,
+  isHelpersReadOnly: true,
+  isLoaded: false,
+  isTestReadOnly: true,
   state: new VersionedMap(),
 });
 
 export const EditorProvider: FC = ({ children }) => {
   const { branch, teamId } = useContext(StateContext);
-  const { current: state } = useRef(new VersionedMap());
-
-  const [hasChanges, setHasChanges] = useState(false);
 
   const { query } = useRouter();
-  const run_id = query.run_id as string;
-  const test_id = query.test_id as string;
+  const runId = query.run_id as string;
+  const testId = query.test_id as string;
 
-  const { data } = useEditor({ branch, run_id, test_id }, { teamId });
+  const { current: state } = useRef(new VersionedMap());
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const { data, loading } = useEditor(
+    { branch, run_id: runId, test_id: testId },
+    { teamId }
+  );
   const editor = data?.editor || null;
 
-  const { fileModel: helpersModel } = useFileModel({
+  const { data: teamData } = useTeam({ id: teamId });
+  const team = teamData?.team || null;
+
+  const {
+    fileModel: helpersModel,
+    isReadOnly: isHelpersReadOnly,
+  } = useFileModel({
     autoSave: !branch,
     id: `helpers.${teamId}`,
     editor,
     state,
   });
 
-  const { fileModel: testModel } = useFileModel({
+  const {
+    fileModel: testModel,
+    isReadOnly: isTestReadOnly,
+    path: testPath,
+  } = useFileModel({
     autoSave: !branch,
-    id: run_id ? `run.${run_id}` : `test.${test_id}`,
+    id: runId ? `run.${runId}` : `test.${testId}`,
     editor,
     state,
   });
@@ -88,7 +112,23 @@ export const EditorProvider: FC = ({ children }) => {
 
   return (
     <EditorContext.Provider
-      value={{ commitEditor, hasChanges, helpersModel, state, testModel }}
+      value={{
+        commitEditor,
+        hasChanges,
+        helpersModel,
+        isHelpersReadOnly,
+        // only consider the test loading the first time it loads (when there is no test data)
+        // this prevents the loading placeholder from flashing every poll
+        // TODO update this for 2 queries
+        isLoaded: !data && loading,
+        isTestReadOnly,
+        runId,
+        state,
+        team,
+        testId,
+        testModel,
+        testPath,
+      }}
     >
       {children}
     </EditorContext.Provider>

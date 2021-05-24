@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
+
 import { PATCH_HANDLE } from "../../../lib/code";
 import { Selection } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
@@ -12,8 +13,8 @@ export type BindOptions = {
 
 type File = {
   content: string;
-  deleted_at?: string;
   id: string;
+  is_read_only: boolean;
   path: string;
 };
 
@@ -33,6 +34,9 @@ export class FileModel extends EventEmitter {
         const currentValue = this._editor.getValue();
         if (currentValue !== value) this._editor.setValue(value);
       }
+
+      // TODO
+      // this.emit("changed", { key });
     });
   }
 
@@ -73,6 +77,10 @@ export class FileModel extends EventEmitter {
     this._state.set("content", value);
   }
 
+  get isReadOnly(): boolean {
+    return !!this._file?.is_read_only;
+  }
+
   get path(): string | undefined {
     // TODO deal with name
     return this._state.get("path") || this._file?.path || "";
@@ -80,10 +88,6 @@ export class FileModel extends EventEmitter {
 
   set path(value: string) {
     this._state.set("path", value);
-  }
-
-  get readOnly(): boolean {
-    return !!this._file?.deleted_at;
   }
 
   setFile(file: File): void {
@@ -96,8 +100,8 @@ export class FileModel extends EventEmitter {
     this._editor?.setValue(this.content);
 
     this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "isReadOnly" });
     this.emit("changed", { key: "path" });
-    this.emit("changed", { key: "readOnly" });
   }
 
   // content helpers

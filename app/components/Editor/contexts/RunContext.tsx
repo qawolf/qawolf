@@ -1,47 +1,37 @@
 import { useRouter } from "next/router";
 import { createContext, FC, useContext, useEffect } from "react";
 
-import { useEditor, useSuite, useTeam } from "../../../hooks/queries";
+import { useEditor, useSuite } from "../../../hooks/queries";
 import { state } from "../../../lib/state";
-import { Run, Suite, Team, Test } from "../../../lib/types";
+import { Run, Suite } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
+import { EditorContext } from "./EditorContext";
 
-type TestContextValue = {
-  isTestLoading: boolean;
+type RunContextValue = {
   run: Run | null;
   suite: Suite | null;
-  team: Team | null;
-  test: Test | null;
 };
 
-export const TestContext = createContext<TestContextValue>({
-  isTestLoading: true,
+export const RunContext = createContext<RunContextValue>({
   run: null,
   suite: null,
-  team: null,
-  test: null,
 });
 
 const pollInterval = 2000;
 
-export const TestProvider: FC = ({ children }) => {
+// TODO move into one useRun hook
+export const RunProvider: FC = ({ children }) => {
+  const { query } = useRouter();
+  const { runId, team } = useContext(EditorContext);
   const { branch, teamId } = useContext(StateContext);
 
-  const { query } = useRouter();
-
-  const run_id = query.run_id as string;
-  const test_id = query.test_id as string;
-
-  const { data: teamData } = useTeam({ id: teamId });
-  const { data, loading, startPolling, stopPolling } = useEditor(
-    { branch, run_id, test_id },
+  // TODO replace with useRun
+  const { data, startPolling, stopPolling } = useEditor(
+    { branch, run_id: runId },
     { teamId }
   );
   const editorData = data?.editor || null;
-
   const run = editorData?.run || null;
-  const team = teamData?.team || null;
-  const test = editorData?.test || null;
 
   const { data: suiteData } = useSuite(
     { id: run?.suite_id || (query?.suite_id as string) },
@@ -71,15 +61,9 @@ export const TestProvider: FC = ({ children }) => {
   }, [run, startPolling, stopPolling]);
 
   const value = {
-    hasWriteAccess: test_id && !test?.deleted_at,
-    // only consider the test loading the first time it loads (when there is no test data)
-    // this prevents the loading placeholder from flashing every poll
-    isTestLoading: !data && loading,
     run,
     suite,
-    team,
-    test,
   };
 
-  return <TestContext.Provider value={value}>{children}</TestContext.Provider>;
+  return <RunContext.Provider value={value}>{children}</RunContext.Provider>;
 };

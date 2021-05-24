@@ -1,8 +1,8 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect } from "react";
 import { useContext, useState } from "react";
-import { EditorContext } from "../../contexts/EditorContext";
 
+import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
 import EditorComponent from "../Editor";
 import { includeTypes } from "../helpers";
@@ -25,10 +25,9 @@ export default function CodeEditor({
 
   const [testContent, setTestContent] = useState("");
   const [helpers, setHelpers] = useState("");
-  const [readOnly, setReadOnly] = useState(true);
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
-  const { helpersModel, testModel } = useContext(EditorContext);
+  const { helpersModel, isTestReadOnly, testModel } = useContext(EditorContext);
 
   useEnvTypes({ env, monaco });
   useHelpersTypes({ helpers, monaco });
@@ -36,7 +35,6 @@ export default function CodeEditor({
 
   useEffect(() => helpersModel?.bind("content", setHelpers), [helpersModel]);
   useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
-  useEffect(() => testModel?.bind("readOnly", setReadOnly), [testModel]);
 
   const editorDidMount = ({ editor, monaco }) => {
     testModel.bindEditor({ editor, monaco });
@@ -54,7 +52,7 @@ export default function CodeEditor({
       editorDidMount={editorDidMount}
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{ readOnly }}
+      options={{ readOnly: isTestReadOnly }}
     />
   );
 }

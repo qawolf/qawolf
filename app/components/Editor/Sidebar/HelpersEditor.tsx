@@ -1,5 +1,5 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { EditorContext } from "../contexts/EditorContext";
 import { BindOptions } from "../contexts/FileModel";
@@ -14,10 +14,7 @@ export default function HelpersEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
-  const { helpersModel } = useContext(EditorContext);
-  const [readOnly, setReadOnly] = useState(true);
-
-  useEffect(() => helpersModel?.bind("readOnly", setReadOnly), [helpersModel]);
+  const { helpersModel, isHelpersReadOnly } = useContext(EditorContext);
 
   const editorDidMount = (options: BindOptions) => {
     helpersModel.bindEditor(options);
@@ -29,7 +26,7 @@ export default function HelpersEditor({
       editorDidMount={editorDidMount}
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{ readOnly }}
+      options={{ readOnly: isHelpersReadOnly }}
     />
   );
 }
