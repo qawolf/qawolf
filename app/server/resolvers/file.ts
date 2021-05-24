@@ -1,7 +1,7 @@
 import { ClientError } from "../errors";
 import { findRun } from "../models/run";
 import { findTest } from "../models/test";
-import { findFilesForBranch } from "../services/gitHub/tree";
+import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
   Context,
   File,
@@ -10,7 +10,7 @@ import {
   ModelOptions,
   Test,
 } from "../types";
-import { ensureTestAccess } from "./utils";
+import { ensureTeamAccess, ensureTestAccess } from "./utils";
 
 type BuildFileForTest = {
   branch?: string | null;
@@ -60,6 +60,20 @@ const buildFileForRun = async (
   };
 };
 
+const buildFileForTeam = async (
+  id: string,
+  { logger, teams }: Context
+): Promise<File> => {
+  const team = ensureTeamAccess({ logger, team_id: id, teams });
+
+  return {
+    content: team.helpers,
+    id,
+    is_read_only: false,
+    path: HELPERS_PATH,
+  };
+};
+
 const buildFileForTest = async (
   { branch, id }: BuildFileForTest,
   { db, logger, teams }: Context
@@ -95,6 +109,9 @@ export const fileResolver = async (
 
   const [type, id] = fileId.split(fileDelimiter);
 
+  if (type === "helpers") {
+    return buildFileForTeam(id, context);
+  }
   if (type === "run") {
     return buildFileForRun(id, context);
   }

@@ -67,6 +67,17 @@ describe("buildTestContent", () => {
 });
 
 describe("fileResolver", () => {
+  it("returns a helpers file", async () => {
+    const file = await fileResolver({}, { id: "helpers.teamId" }, context);
+
+    expect(file).toMatchObject({
+      content: team.helpers,
+      id: "teamId",
+      is_read_only: false,
+      path: treeService.HELPERS_PATH,
+    });
+  });
+
   it("returns a run file", async () => {
     const file = await fileResolver({}, { id: "run.runId" }, context);
 

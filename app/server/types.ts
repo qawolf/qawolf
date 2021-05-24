@@ -21,7 +21,6 @@ export type Context = {
 };
 
 // GitHub types
-
 export type GitHubBranch = {
   is_default: boolean;
   name: string;
