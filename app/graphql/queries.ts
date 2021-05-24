@@ -104,6 +104,15 @@ export const onboardingQuery = gql`
   }
 `;
 
+export const runQuery = gql`
+  query run($id: ID!) {
+    run(id: $id) {
+      ...RunFragment
+    }
+  }
+  ${runFragment}
+`;
+
 export const runCountQuery = gql`
   query runCount($team_id: ID!) {
     runCount(team_id: $team_id)

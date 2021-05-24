@@ -37,11 +37,13 @@ import {
   GitHubBranch,
   Integration,
   Onboarding,
+  Run,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
   Tag,
+  TagsForTest,
   TeamWithUsers,
   TestHistoryRun,
   TestSummary,
@@ -49,7 +51,6 @@ import {
   User,
   Wolf,
 } from "../lib/types";
-import { TagsForTest } from "../server/types";
 import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
@@ -116,6 +117,14 @@ type OnboardingData = {
 
 type OnboardingVariables = {
   team_id: string;
+};
+
+type RunData = {
+  run: Run;
+};
+
+type RunVariables = {
+  id: string;
 };
 
 type RunCountData = {
@@ -353,6 +362,17 @@ export const useOnboarding = (
     fetchPolicy: "network-only",
     onError,
     skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useRun = (
+  variables: RunVariables
+): QueryResult<RunData, RunVariables> => {
+  return useQuery<RunData, RunVariables>(runCountQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.id,
     variables,
   });
 };
