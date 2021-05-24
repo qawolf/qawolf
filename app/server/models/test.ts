@@ -378,7 +378,7 @@ export const updateTest = async (
       updated_at: minutesFromNow(),
     };
 
-    if (!isNil(name)) {
+    if (name !== undefined) {
       updates.name = name;
     }
     if (path !== undefined) {
