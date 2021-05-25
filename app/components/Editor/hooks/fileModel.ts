@@ -1,7 +1,8 @@
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import { useFile } from "../../../hooks/queries";
 
+import { useUpdateFile } from "../../../hooks/mutations";
+import { useFile } from "../../../hooks/queries";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { FileModel } from "../contexts/FileModel";
 
@@ -27,6 +28,8 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
   const { data } = useFile({ branch, id });
   const file = data?.file || null;
 
+  const [updateFile] = useUpdateFile();
+
   useEffect(() => {
     if (!state) return;
 
@@ -42,6 +45,8 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
   useEffect(() => {
     if (!file) return;
 
+    console.log("set file", file);
+
     modelRef.current.setFile(file);
     setIsLoaded(true);
     setPath(file.path);
@@ -49,23 +54,25 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
 
   useEffect(() => {
     // do not autosave for git branches
-    if (branch) return;
-
     // listen for changes to save after the file is loaded
-    if (!isLoaded) return;
+    //
+    if (branch || !isLoaded || !updateFile) return;
 
     const fileModel = modelRef.current;
 
     const onChanged = debounce(() => {
       if (fileModel.isReadOnly) return;
 
-      console.log("todo updateFile mutation", fileModel.content);
+      const changes = fileModel.changes();
+      if (!changes) return;
+
+      updateFile({ variables: { ...changes, id: fileModel.id } });
     }, 100);
 
     fileModel.on("changed", onChanged);
 
     return () => fileModel.off("changed", onChanged);
-  }, [branch, isLoaded]);
+  }, [branch, isLoaded, updateFile]);
 
   return { fileModel: modelRef.current, isLoaded, isReadOnly, path };
 };

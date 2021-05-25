@@ -90,6 +90,10 @@ export class FileModel extends EventEmitter {
     this._disposeHooks = [];
   }
 
+  get id(): string | undefined {
+    return this._file?.id;
+  }
+
   get isReadOnly(): boolean {
     return !!this._file?.is_read_only;
   }
