@@ -13,12 +13,12 @@ type Props = {
 };
 
 export default function TestButtons({ branch, testId }: Props): JSX.Element {
-  const { hasChanges, commitEditor } = useContext(EditorContext);
+  const { hasChanges, commitChanges } = useContext(EditorContext);
   const [loading, setLoading] = useState(false);
 
   const handleCommitClick = async (): Promise<void> => {
     setLoading(true);
-    await commitEditor();
+    await commitChanges();
     setLoading(false);
   };
 

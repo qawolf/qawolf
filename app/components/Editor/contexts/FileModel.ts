@@ -33,7 +33,7 @@ export class FileModel extends EventEmitter {
         const currentValue = this._editor.getValue();
         if (currentValue !== value) this._editor.setValue(value);
         this.emit("changed", { key: "content", value });
-      } else if (key === "path") {
+      } else if (key === "path" && this._contentKey !== "helpers_code") {
         this.emit("changed", { key, value });
       }
     });
@@ -64,12 +64,14 @@ export class FileModel extends EventEmitter {
   }
 
   changes(): Partial<File> {
-    const changes: Partial<File> = {};
+    if (!this._file) return null;
 
+    const changes: Partial<File> = {};
     const { content, path } = this._file;
 
     if (this.content !== content) changes.content = this.content;
-    if (this.path !== path) changes.path = this.path;
+    if (this.path !== path && this._contentKey !== "helpers_code")
+      changes.path = this.path;
 
     return Object.keys(changes).length ? changes : null;
   }

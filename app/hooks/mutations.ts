@@ -77,7 +77,7 @@ type CommitEditorData = {
   test: File;
 };
 
-type CommitEditorVariables = {
+export type CommitEditorVariables = {
   branch: string;
   code?: string | null;
   helpers?: string | null;

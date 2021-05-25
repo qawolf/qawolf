@@ -1,37 +1,29 @@
 import { useRouter } from "next/router";
-import {
-  createContext,
-  FC,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, FC, useContext, useRef } from "react";
 
 import { useTeam } from "../../../hooks/queries";
-import { Run, Suite, Team } from "../../../lib/types";
+import { Team } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
+import { CommitChangesHook, useCommitChanges } from "../hooks/commitChanges";
 import { useFileModel } from "../hooks/fileModel";
-import { useRun } from "../hooks/run";
-import { useSuite } from "../hooks/suite";
+import { RunHook, useRun } from "../hooks/run";
+import { SuiteHook, useSuite } from "../hooks/suite";
 import { FileModel } from "./FileModel";
 
-type EditorContextValue = {
-  commitEditor?: () => Promise<void>;
-  hasChanges: boolean;
-  helpersModel?: FileModel;
-  isLoaded: boolean;
-  isReadOnly: boolean;
-  run: Run | null;
-  runId?: string;
-  suite: Suite | null;
-  state: VersionedMap;
-  team?: Team;
-  testId?: string;
-  testModel?: FileModel;
-  testPath?: string;
-};
+type EditorContextValue = CommitChangesHook &
+  RunHook &
+  SuiteHook & {
+    helpersModel?: FileModel;
+    isLoaded: boolean;
+    isReadOnly: boolean;
+    runId?: string;
+    state: VersionedMap;
+    team?: Team;
+    testId?: string;
+    testModel?: FileModel;
+    testPath?: string;
+  };
 
 export const EditorContext = createContext<EditorContextValue>({
   hasChanges: false,
@@ -50,7 +42,6 @@ export const EditorProvider: FC = ({ children }) => {
   const testId = query.test_id as string;
 
   const { current: state } = useRef(new VersionedMap());
-  const [hasChanges, setHasChanges] = useState(false);
 
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
@@ -75,41 +66,17 @@ export const EditorProvider: FC = ({ children }) => {
     state,
   });
 
-  useEffect(() => {
-    if (!helpersModel || !testModel) return;
-
-    const updateHasChanges = () => {
-      const changes = helpersModel.changes() || testModel.changes();
-      setHasChanges(!!changes);
-    };
-
-    helpersModel.on("change", updateHasChanges);
-    testModel.on("change", updateHasChanges);
-
-    return () => {
-      helpersModel.off("change", updateHasChanges);
-      testModel.off("change", updateHasChanges);
-    };
-  }, [helpersModel, testModel]);
-
-  const commitEditor = async () => {
-    if (!branch) return;
-
-    // TODO useMutation commitChanges
-    // const test_id = this._value?.test.id;
-    // if (!test_id) return;
-    // const changes = this.getChanges();
-    // if (!changes) return;
-    // await client.mutate({
-    //   mutation: saveEditorMutation,
-    //   variables: { ...changes, branch: this._branch, test_id },
-    // });
-  };
+  const { commitChanges, hasChanges } = useCommitChanges({
+    branch,
+    helpersModel,
+    testId,
+    testModel,
+  });
 
   return (
     <EditorContext.Provider
       value={{
-        commitEditor,
+        commitChanges,
         hasChanges,
         helpersModel,
         isLoaded: isHelpersLoaded && isTestLoaded,
