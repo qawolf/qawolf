@@ -284,12 +284,13 @@ export const useFile = (
 
   return useQuery(fileQuery, {
     fetchPolicy,
-    // onCompleted: (response) => {
-    //   const { file } = response || {};
-    //   if (!file) return;
-    //   // set correct team id if needed
-    //   if (file.team_id !== teamId) state.setTeamId(file.team_id);
-    // },
+    onCompleted: (response) => {
+      const { file } = response || {};
+      if (!file) return;
+
+      // set correct team id if needed
+      if (file.team_id !== state.state.teamId) state.setTeamId(file.team_id);
+    },
     onError: (error: ApolloError) => {
       if (
         error.message.includes("cannot access") ||
