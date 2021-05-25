@@ -12,6 +12,7 @@ import {
   onboardingQuery,
   runCountQuery,
   runnerQuery,
+  runQuery,
   shortSuiteQuery,
   suiteQuery,
   suitesQuery,
@@ -344,7 +345,7 @@ export const useOnboarding = (
 export const useRun = (
   variables: RunVariables
 ): QueryResult<RunData, RunVariables> => {
-  return useQuery<RunData, RunVariables>(runCountQuery, {
+  return useQuery<RunData, RunVariables>(runQuery, {
     fetchPolicy,
     onError,
     skip: !variables.id,
