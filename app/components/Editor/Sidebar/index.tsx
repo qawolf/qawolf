@@ -51,7 +51,7 @@ export default function Sidebar(): JSX.Element {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
 
-  const isRunning = progress && !progress?.completed_at;
+  const canStop = !runId && progress && !progress?.completed_at;
 
   const handleAction = (): void => {
     if (isActionDisabled) return;
@@ -62,7 +62,7 @@ export default function Sidebar(): JSX.Element {
       return;
     }
 
-    if (isRunning) {
+    if (canStop) {
       stopTest();
     } else {
       runTest(selection);
@@ -104,10 +104,10 @@ export default function Sidebar(): JSX.Element {
         <Snippet isVisible={isChooserActive} />
         {!isChooserActive && (
           <Buttons
+            canStop={canStop}
             isActionDisabled={isActionDisabled}
             isRun={!!runId}
             isRunLoading={!run}
-            isRunning={isRunning}
             onAction={handleAction}
             selection={selection}
           />

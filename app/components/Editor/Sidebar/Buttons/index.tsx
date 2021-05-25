@@ -15,19 +15,19 @@ import RunButton from "./RunButton";
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;
 
 type Props = {
+  canStop: boolean;
   isActionDisabled: boolean;
   isRun: boolean;
   isRunLoading: boolean;
-  isRunning: boolean;
   onAction: () => void;
   selection: Selection;
 };
 
 export default function Buttons({
+  canStop,
   isActionDisabled,
   isRun,
   isRunLoading,
-  isRunning,
   onAction,
   selection,
 }: Props): JSX.Element {
@@ -61,7 +61,7 @@ export default function Buttons({
           width={width}
         />
       )}
-      {isRunning ? (
+      {canStop ? (
         <Button
           IconComponent={Stop}
           justify="center"
