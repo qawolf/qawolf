@@ -107,6 +107,8 @@ export class FileModel extends EventEmitter {
       ? "helpers_code"
       : "test_code";
 
+    this.emit("changed", { key: "content", value: this.content });
+    this.emit("changed", { key: "path", value: this.path });
     this.emit("changed", { key: "isReadOnly", value: this.isReadOnly });
 
     // use this.content since state might be set with a newer version
