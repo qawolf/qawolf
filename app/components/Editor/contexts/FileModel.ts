@@ -2,8 +2,6 @@ import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 
-import { PATCH_HANDLE } from "../../../lib/code";
-import { Selection } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 export type BindOptions = {
@@ -118,46 +116,5 @@ export class FileModel extends EventEmitter {
     // use this.content since state might be set with a newer version
     const value = this.content;
     if (this._editor?.getValue() !== value) this._editor?.setValue(value);
-  }
-
-  // content helpers
-
-  insertSnippet(snippet: string): Selection {
-    // patch at the handle or the bottom if there is no patch handle
-    const codeLines = this.content.split("\n");
-    let patchLine = codeLines.findIndex((l) => l.includes(PATCH_HANDLE));
-    if (patchLine < 0) patchLine = codeLines.length;
-
-    // insert the snippet
-    const snippetLines = snippet.split("\n");
-    codeLines.splice(patchLine, 0, ...snippetLines);
-
-    this.content = codeLines.join("\n");
-
-    const selection = {
-      startLine: patchLine + 1,
-      endLine: patchLine + 1 + snippetLines.length,
-    };
-
-    return selection;
-  }
-
-  toggleCodeGeneration(mouseLineNumber?: number): void {
-    const includesHandle = this.content.includes(PATCH_HANDLE);
-    if (includesHandle) {
-      // replace up to one leading newline
-      const regex = new RegExp(`\n?${PATCH_HANDLE}`, "g");
-      this.content.replace(regex, "");
-    } else {
-      const lines = this.content.split("\n");
-      const insertIndex = mouseLineNumber ? mouseLineNumber - 1 : lines.length;
-
-      // if the selected line is empty, insert it there
-      if (lines[insertIndex] === "") lines[insertIndex] = PATCH_HANDLE;
-      // otherwise insert it after the line
-      else lines.splice(insertIndex + 1, 0, PATCH_HANDLE);
-
-      this.content = lines.join("\n");
-    }
   }
 }

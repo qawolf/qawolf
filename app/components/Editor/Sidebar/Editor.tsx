@@ -9,7 +9,7 @@ import {
   background,
   options as baseOptions,
   themeReadOnly,
-  themeWrite,
+  themeReadWrite,
 } from "../../../theme/codeEditor";
 
 const language = "javascript";
@@ -80,10 +80,10 @@ export default function Editor({
     function createEditor() {
       const monaco = monacoRef.current;
 
-      const themeName = isReadOnly ? "qawolf-read" : "qawolf-write";
+      const themeName = isReadOnly ? "qawolf-read" : "qawolf-read-write";
       monaco.editor.defineTheme(
         themeName,
-        isReadOnly ? themeReadOnly : themeWrite
+        isReadOnly ? themeReadOnly : themeReadWrite
       );
 
       const editor = monaco.editor.create(containerRef.current, {

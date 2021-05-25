@@ -2,6 +2,7 @@ import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
+import { insertSnippet } from "../../../../lib/testFile";
 import { border } from "../../../../theme/theme";
 import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
@@ -32,9 +33,9 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   );
 
   const addRunSnippet = () => {
-    if (!hasChosenElement) return;
+    if (!hasChosenElement || !testModel) return;
 
-    const selection = testModel?.insertSnippet(snippetCode);
+    const selection = insertSnippet(testModel, snippetCode);
 
     // this will enable code generation so make sure to call it before
     // run test which will disable code generation

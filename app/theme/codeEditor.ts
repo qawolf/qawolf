@@ -64,7 +64,7 @@ export const themeReadOnly: monacoEditor.editor.IStandaloneThemeData = {
   rules: rulesReadOnly,
 };
 
-export const themeWrite: monacoEditor.editor.IStandaloneThemeData = {
+export const themeReadWrite: monacoEditor.editor.IStandaloneThemeData = {
   base: "vs-dark",
   colors: editorColors,
   inherit: true,

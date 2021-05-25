@@ -45,8 +45,6 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
   useEffect(() => {
     if (!file) return;
 
-    console.log("set file", file);
-
     modelRef.current.setFile(file);
     setIsLoaded(true);
     setPath(file.path);
@@ -55,7 +53,6 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
   useEffect(() => {
     // do not autosave for git branches
     // listen for changes to save after the file is loaded
-    //
     if (branch || !isLoaded || !updateFile) return;
 
     const fileModel = modelRef.current;

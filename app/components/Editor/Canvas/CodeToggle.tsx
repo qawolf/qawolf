@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import { PATCH_HANDLE } from "../../../lib/code";
+import { toggleCodeGeneration } from "../../../lib/testFile";
 import { copy } from "../../../theme/copy";
 import Toggle from "../../shared/Toggle";
 import { EditorContext } from "../contexts/EditorContext";
@@ -25,7 +26,7 @@ export default function CodeToggle({
   }, [testModel]);
 
   const handleClick = (): void =>
-    testModel.toggleCodeGeneration(mouseLineNumber);
+    toggleCodeGeneration(testModel, mouseLineNumber);
 
   return (
     <Toggle
