@@ -44,7 +44,7 @@ export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { run, state, suite, team } = useContext(EditorContext);
+  const { run, suite, team } = useContext(EditorContext);
 
   const {
     elementChooserValue,
@@ -71,11 +71,6 @@ export const RunnerProvider: FC = ({ children }) => {
     requestTestRunner,
     runner,
   });
-
-  useEffect(() => {
-    if (!state || !runner) return;
-    runner.syncState(state);
-  }, [state, runner]);
 
   const value = {
     apiKey,

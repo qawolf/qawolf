@@ -3,17 +3,17 @@ import { PATCH_HANDLE } from "./code";
 import { Selection } from "./types";
 
 export const insertSnippet = (file: FileModel, snippet: string): Selection => {
-  // patch at the handle or the bottom if there is no patch handle
-  const codeLines = file.content.split("\n");
-  let patchLine = codeLines.findIndex((l) => l.includes(PATCH_HANDLE));
-  if (patchLine < 0) patchLine = codeLines.length;
+  const lines = file.content.split("\n");
+
+  let patchLine = lines.findIndex((l) => l.includes(PATCH_HANDLE));
+  // patch at the bottom if there is no patch handle
+  if (patchLine < 0) patchLine = lines.length;
 
   // insert the snippet
+  const index = lines.splice(0, patchLine).join("").length;
+  file.insert(index, snippet);
+
   const snippetLines = snippet.split("\n");
-  codeLines.splice(patchLine, 0, ...snippetLines);
-
-  file.content = codeLines.join("\n");
-
   const selection = {
     startLine: patchLine + 1,
     endLine: patchLine + 1 + snippetLines.length,
@@ -26,20 +26,30 @@ export const toggleCodeGeneration = (
   file: FileModel,
   mouseLineNumber?: number
 ): void => {
-  const includesHandle = file.content.includes(PATCH_HANDLE);
-  if (includesHandle) {
-    // replace up to one leading newline
-    const regex = new RegExp(`\n?${PATCH_HANDLE}`, "g");
-    file.content = file.content.replace(regex, "");
+  const code = file.content;
+
+  // match up to one leading newline
+  const patchMatch = new RegExp(`\n?${PATCH_HANDLE}`, "g").exec(code);
+  if (patchMatch) {
+    // delete the patch handle
+    file.delete(patchMatch.index, patchMatch[0].length);
   } else {
-    const lines = file.content.split("\n");
-    const insertIndex = mouseLineNumber ? mouseLineNumber - 1 : lines.length;
+    let patch = PATCH_HANDLE;
 
-    // if the selected line is empty, insert it there
-    if (lines[insertIndex] === "") lines[insertIndex] = PATCH_HANDLE;
-    // otherwise insert it after the line
-    else lines.splice(insertIndex + 1, 0, PATCH_HANDLE);
+    // insert the patch handle
+    const lines = code.split("\n");
 
-    file.content = lines.join("\n");
+    // if mouse line number is provided make it 0-indexed
+    // otherwise choose the last line
+    let patchLine =
+      mouseLineNumber > 0 ? mouseLineNumber - 1 : lines.length - 1;
+
+    // prepend a line break, except on empty lines
+    if (lines[patchLine] !== "") patch = "\n" + patch;
+
+    // insert the patch after the line content
+    let index = lines.slice(0, patchLine + 1).join().length;
+
+    file.insert(index, patch);
   }
 };

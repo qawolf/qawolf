@@ -1,9 +1,12 @@
 import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
+import * as Y from "yjs";
+import { WebsocketProvider } from "y-websocket";
 
+import { MonacoBinding } from "../hooks/MonacoBinding";
 import { File } from "../../../lib/types";
-import { VersionedMap } from "../../../lib/VersionedMap";
+import { JWT_KEY } from "../../../lib/client";
 
 export type BindOptions = {
   editor: editorNs.IStandaloneCodeEditor;
@@ -12,24 +15,24 @@ export type BindOptions = {
 
 export class FileModel extends EventEmitter {
   _contentKey?: string;
-  _editor?: editorNs.IStandaloneCodeEditor;
   _disposeHooks = [];
+  _doc = new Y.Doc();
+  _editorBinding: any;
+  _editor?: editorNs.IStandaloneCodeEditor;
   _file?: File;
-  _state: VersionedMap;
+  _fileMap = this._doc.getMap("file");
+  _provider?: WebsocketProvider;
+  _text = this._doc.getText("file.monaco");
 
-  constructor(state: VersionedMap) {
+  constructor() {
     super();
 
-    this._state = state;
+    this._text.observe(() => {
+      this.emit("changed", { key: "content", value: this.content });
+    });
 
-    this._state.on("changed", ({ key, value }) => {
-      if (key === this._contentKey && this._editor) {
-        const currentValue = this._editor.getValue();
-        if (currentValue !== value) this._editor.setValue(value);
-        this.emit("changed", { key: "content", value });
-      } else if (key === "path" && this._contentKey !== "helpers_code") {
-        this.emit("changed", { key, value });
-      }
+    this._fileMap.observe(() => {
+      this.emit("changed", { key: "path", value: this.path });
     });
   }
 
@@ -45,67 +48,56 @@ export class FileModel extends EventEmitter {
     return () => this.off("changed", onChange);
   }
 
-  bindEditor({ editor }: BindOptions): void {
+  bindEditor({ editor, monaco }: BindOptions): void {
     this._editor = editor;
 
-    editor.setValue(this.content);
+    this._editorBinding?.destroy();
 
-    const disposable = editor.onDidChangeModelContent(() => {
-      this._state.set(this._contentKey, editor.getValue());
-    });
-
-    this._disposeHooks.push(() => disposable.dispose());
-  }
-
-  changes(): Partial<File> {
-    if (!this._file) return null;
-
-    const changes: Partial<File> = {};
-    const { content, path } = this._file;
-
-    if (this.content !== content) changes.content = this.content;
-    if (this.path !== path && this._contentKey !== "helpers_code")
-      changes.path = this.path;
-
-    return Object.keys(changes).length ? changes : null;
+    this._editorBinding = new MonacoBinding(
+      monaco,
+      this._text,
+      this._editor.getModel(),
+      new Set([this._editor]),
+      this._provider.awareness
+    );
   }
 
   get content(): string {
-    return this._state.get(this._contentKey) || this._file?.content || "";
+    return this._text.toJSON();
   }
 
-  set content(value: string) {
-    this._state.set(this._contentKey, value);
+  delete(index: number, length: number): void {
+    this._text.delete(index, length);
   }
 
   dispose(): void {
     this.removeAllListeners();
-    this._disposeHooks.forEach((dispose) => dispose());
-    this._disposeHooks = [];
+    this._editorBinding?.destroy();
+    this._editorBinding = null;
   }
 
   get id(): string | undefined {
     return this._file?.id;
   }
 
+  insert(index: number, text: string): void {
+    this._doc.getText("file.monaco").insert(index, text);
+  }
+
   get isReadOnly(): boolean {
     return !!this._file?.is_read_only;
   }
 
-  get path(): string | undefined {
-    return this._state.get("path") || this._file?.path || "";
+  get path(): string {
+    return this._fileMap.get("path") || this._file?.path || "";
   }
 
   set path(value: string) {
-    this._state.set("path", value);
+    this._fileMap.set("path", value);
   }
 
   setFile(file: File): void {
     this._file = file;
-
-    this._contentKey = file.id.startsWith("helpers")
-      ? "helpers_code"
-      : "test_code";
 
     this.emit("changed", { key: "content", value: this.content });
     this.emit("changed", { key: "path", value: this.path });
@@ -114,5 +106,14 @@ export class FileModel extends EventEmitter {
     // use this.content since state might be set with a newer version
     const value = this.content;
     if (this._editor?.getValue() !== value) this._editor?.setValue(value);
+
+    this._provider?.destroy();
+
+    this._provider = new WebsocketProvider(
+      `${location.protocol === "http:" ? "ws:" : "wss:"}//localhost:1234`,
+      this._file.id,
+      this._doc,
+      { params: { authorization: localStorage.getItem(JWT_KEY) } }
+    );
   }
 }
