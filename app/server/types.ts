@@ -512,11 +512,15 @@ export type RunTestStatus = {
   pass: boolean;
 };
 
-export type SaveEditorMutation = {
-  branch?: string | null;
+export type CommitEditor = {
+  helpers: File;
+  test: File;
+};
+
+export type CommitEditorMutation = {
+  branch: string;
   code?: string | null;
   helpers?: string | null;
-  name?: string | null;
   path?: string | null;
   test_id: string;
 };
@@ -635,18 +639,6 @@ export type UseTestSessionMutation = {
 export type CurrentUser = User & {
   intercom_hash: string;
   teams: Team[];
-};
-
-export type Editor = {
-  helpers: string;
-  run?: RunResult | null;
-  test: Test;
-};
-
-export type EditorQuery = {
-  branch?: string | null;
-  run_id?: string | null;
-  test_id?: string | null;
 };
 
 export type EmailQuery = {

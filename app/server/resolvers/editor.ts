@@ -1,33 +1,20 @@
 import isNil from "lodash/isNil";
 
 import { ClientError } from "../errors";
-import { findRunResult } from "../models/run";
-import { findSuite } from "../models/suite";
-import { updateTeam } from "../models/team";
 import { findTest, updateTest } from "../models/test";
 import { BLOB_MODE, createCommit, Tree } from "../services/gitHub/sync";
+import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
-  buildHelpersForFiles,
-  findFilesForBranch,
-  HELPERS_PATH,
-} from "../services/gitHub/tree";
-import {
+  CommitEditor,
+  CommitEditorMutation,
   Context,
-  Editor,
-  EditorQuery,
   GitHubFile,
   ModelOptions,
-  RunResult,
-  SaveEditorMutation,
   Team,
   Test,
 } from "../types";
+import { formatHelpersFile, formatTestFile } from "./file";
 import { ensureTeamAccess, ensureTestAccess } from "./utils";
-
-type BuildTestCode = {
-  files: GitHubFile[] | null;
-  test: Test;
-};
 
 type BuildTreeForCommit = {
   code?: string | null;
@@ -48,46 +35,6 @@ type CommitTestAndHelpers = {
   path?: string | null;
   team: Team;
   test: Test;
-};
-
-type FindHelpersForEditor = {
-  files: GitHubFile[] | null;
-  run: RunResult | null;
-  team: Team;
-};
-
-type TestUpdates = {
-  code?: string | null;
-  id: string;
-  name?: string | null;
-};
-
-type UpdateTestAndHelpers = {
-  code?: string | null;
-  helpers?: string | null;
-  name?: string | null;
-  team: Team;
-  test: Test;
-};
-
-export const buildTestCode = (
-  { files, test }: BuildTestCode,
-  { logger }: ModelOptions
-): string => {
-  const log = logger.prefix("buildTestCode");
-
-  if (!files) {
-    log.debug("no files");
-    return test.code;
-  }
-
-  const gitTest = files.find((f) => f.path === test.path);
-  if (!gitTest) {
-    log.alert(`test ${test.id} not found`);
-    throw new ClientError(`Test ${test.path} not found in git`);
-  }
-
-  return gitTest.text;
 };
 
 export const buildTreeForCommit = ({
@@ -136,7 +83,7 @@ export const buildTreeForCommit = ({
 export const commitTestAndHelpers = async (
   { branch, code, helpers, path, team, test }: CommitTestAndHelpers,
   { db, logger }: ModelOptions
-): Promise<Editor> => {
+): Promise<CommitEditor> => {
   const log = logger.prefix("commitTestAndHelpers");
 
   return db.transaction(async (trx) => {
@@ -171,115 +118,32 @@ export const commitTestAndHelpers = async (
     await createCommit({ branch, message, team, tree }, options);
 
     return {
-      helpers: isNil(helpers) ? helpersFile.text : helpers,
-      test: { ...updatedTest, code: isNil(code) ? testFile.text : code },
+      helpers: formatHelpersFile({
+        ...team,
+        helpers: isNil(helpers) ? helpersFile.text : helpers,
+      }),
+      test: formatTestFile({
+        ...updatedTest,
+        code: isNil(code) ? testFile.text : code,
+      }),
     };
   });
 };
 
-export const findHelpersForEditor = async (
-  { files, run, team }: FindHelpersForEditor,
-  options: ModelOptions
-): Promise<string> => {
-  if (run?.suite_id) {
-    const suite = await findSuite(run.suite_id, options);
-    return suite.helpers;
-  }
-
-  if (files) {
-    return buildHelpersForFiles(files, options);
-  }
-
-  return team.helpers;
-};
-
-export const updateTestAndHelpers = async (
-  { code, helpers, name, team, test }: UpdateTestAndHelpers,
-  { db, logger }: ModelOptions
-): Promise<Editor> => {
-  return db.transaction(async (trx) => {
-    const options = { db: trx, logger };
-    let updatedTest = test;
-
-    if (!isNil(code) || !isNil(name)) {
-      const updates: TestUpdates = { id: test.id };
-      if (!isNil(code)) updates.code = code;
-      if (!isNil(name)) updates.name = name;
-
-      updatedTest = await updateTest(updates, options);
-    }
-
-    if (!isNil(helpers)) {
-      await updateTeam({ helpers, id: test.team_id }, options);
-    }
-
-    return {
-      helpers: isNil(helpers) ? team.helpers : helpers,
-      test: updatedTest,
-    };
-  });
-};
-
-export const editorResolver = async (
+export const commitEditorResolver = async (
   _: Record<string, unknown>,
-  { branch, run_id, test_id }: EditorQuery,
+  { branch, code, helpers, path, test_id }: CommitEditorMutation,
   { db, logger, teams }: Context
-): Promise<Editor> => {
-  const log = logger.prefix("editorResolver");
-  log.debug("test", test_id, "run", run_id);
-
-  if (!run_id && !test_id) {
-    log.error("no run or test id passed");
-    throw new ClientError("Must provide test_id or run_id");
-  }
-
-  const run = run_id ? await findRunResult(run_id, { db, logger }) : null;
-  const test = await findTest(run?.test_id || test_id, { db, logger });
-  const team = await ensureTestAccess({ teams, test }, { db, logger });
-
-  let files: GitHubFile[] | null = null;
-
-  if (branch && team.git_sync_integration_id) {
-    const branchFiles = await findFilesForBranch(
-      { branch, integrationId: team.git_sync_integration_id },
-      { db, logger }
-    );
-    files = branchFiles.files;
-  }
-
-  const helpers = await findHelpersForEditor(
-    { files, run, team },
-    { db, logger }
-  );
-
-  return {
-    helpers,
-    run,
-    test: { ...test, code: buildTestCode({ files, test }, { db, logger }) },
-  };
-};
-
-export const saveEditorResolver = async (
-  _: Record<string, unknown>,
-  { branch, code, helpers, name, path, test_id }: SaveEditorMutation,
-  { db, logger, teams }: Context
-): Promise<Editor> => {
-  const log = logger.prefix("saveEditorResolver");
+): Promise<CommitEditor> => {
+  const log = logger.prefix("commitEditorResolver");
   log.debug("test", test_id, "branch", branch);
 
   const test = await findTest(test_id, { db, logger });
   await ensureTestAccess({ teams, test }, { db, logger });
   const team = ensureTeamAccess({ logger, team_id: test.team_id, teams });
 
-  if (branch && team.git_sync_integration_id) {
-    return commitTestAndHelpers(
-      { branch, code, helpers, path, team, test },
-      { db, logger }
-    );
-  }
-
-  return updateTestAndHelpers(
-    { code, helpers, name, team, test },
+  return commitTestAndHelpers(
+    { branch, code, helpers, path, team, test },
     { db, logger }
   );
 };

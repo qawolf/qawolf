@@ -27,7 +27,7 @@ type BuildTestContent = {
 
 const fileDelimiter = ".";
 
-const formatHelpersFile = ({ helpers, id }: Team): File => {
+export const formatHelpersFile = ({ helpers, id }: Team): File => {
   return {
     content: helpers,
     id: `helpers.${id}`,
@@ -36,7 +36,7 @@ const formatHelpersFile = ({ helpers, id }: Team): File => {
   };
 };
 
-const formatTestFile = (test: Test): File => {
+export const formatTestFile = (test: Test): File => {
   return {
     content: test.code,
     id: `test.${test.id}`,

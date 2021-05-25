@@ -22,6 +22,15 @@ type AuthenticatedUser {
   user: User!
 }
 
+"Return type for committing the editor state"
+type CommitEditor {
+  "The team helpers"
+  helpers: File!
+
+  "The test"
+  test: File!
+}
+
 "Provider for a deployment"
 enum DeploymentProvider {
   "Netlify"
@@ -32,18 +41,6 @@ enum DeploymentProvider {
 
   "Vercel"
   vercel
-}
-
-"Test, run, and helpers for the editor"
-type Editor {
-  "The helpers"
-  helpers: String!
-
-  "The test run"
-  run: Run
-
-  "The test"
-  test: Test!
 }
 
 "An email sent to a test email address"
@@ -615,6 +612,28 @@ type Mutation {
   ): Invite!
 
   """
+  Commit an editor state.
+
+  Requires that you have access to the team.
+  """
+  commitEditor(
+    "Git branch"
+    branch: String!
+
+    "Test code"
+    code: String
+
+    "Helpers"
+    helpers: String
+
+    "Test path"
+    path: String
+
+    "Test ID"
+    test_id: ID!
+  ): CommitEditor!
+
+  """
   Create an environment.
 
   Requires that you have access to the team.
@@ -972,31 +991,6 @@ type Mutation {
     """
     ids: [ID!]!
   ): [Test!]!
-
-  """
-  Update test and helpers in the editor.
-
-  Requires that you have access to the team that owns each test.
-  """
-  saveEditor(
-    "Git branch"
-    branch: String
-
-    "Test code"
-    code: String
-
-    "Helpers"
-    helpers: String
-
-    "Test name"
-    name: String
-
-    "Test path"
-    path: String
-
-    "Test ID"
-    test_id: ID!
-  ): Editor!
 
   """
   Send a test email and create an associated record in the database.
@@ -1375,23 +1369,6 @@ type Query {
   Returns the user associated with the request authentication token, or null if not logged in
   """
   currentUser: User
-
-  """
-  Returns test and helpers code for a test. Must provide one of
-  run ID or test ID.
-
-  Requires that you have access to the team that owns the test.
-  """
-  editor(
-    "The git branch"
-    branch: String
-
-    "The run id"
-    run_id: ID
-
-    "The test id"
-    test_id: ID
-  ): Editor!
 
   """
   Returns the latest email that matches the criteria.

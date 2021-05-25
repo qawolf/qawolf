@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import { buildTestsPath } from "../components/Dashboard/helpers";
 import {
   acceptInviteMutation,
+  commitEditorMutation,
   createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
@@ -69,6 +70,19 @@ type AcceptInviteData = {
 
 type AcceptInviteVariables = {
   id: string;
+};
+
+type CommitEditorData = {
+  helpers: File;
+  test: File;
+};
+
+type CommitEditorVariables = {
+  branch: string;
+  code?: string | null;
+  helpers?: string | null;
+  path?: string | null;
+  test_id: string;
 };
 
 type CreateEnvironmentData = {
@@ -434,6 +448,16 @@ export const useAcceptInvite = (): MutationTuple<
       onError,
       refetchQueries: ["currentUser"],
     }
+  );
+};
+
+export const useCommitEditor = (): MutationTuple<
+  CommitEditorData,
+  CommitEditorVariables
+> => {
+  return useMutation<CommitEditorData, CommitEditorVariables>(
+    commitEditorMutation,
+    { onError }
   );
 };
 

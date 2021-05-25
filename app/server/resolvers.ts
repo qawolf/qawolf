@@ -1,5 +1,5 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
-import { editorResolver, saveEditorResolver } from "./resolvers/editor";
+import { commitEditorResolver } from "./resolvers/editor";
 import { emailResolver, sendEmailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
@@ -99,6 +99,7 @@ export const resolvers = {
   },
   Mutation: {
     acceptInvite: acceptInviteResolver,
+    commitEditor: commitEditorResolver,
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
@@ -119,7 +120,6 @@ export const resolvers = {
     deleteTag: deleteTagResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
-    saveEditor: saveEditorResolver,
     sendEmail: sendEmailResolver,
     sendLoginCode: sendLoginCodeResolver,
     sendSlackUpdate: sendSlackUpdateResolver,
@@ -139,7 +139,6 @@ export const resolvers = {
   },
   Query: {
     currentUser: currentUserResolver,
-    editor: editorResolver,
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
