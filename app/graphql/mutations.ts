@@ -24,6 +24,32 @@ export const acceptInviteMutation = gql`
   ${inviteFragment}
 `;
 
+export const commitEditorMutation = gql`
+  mutation commitEditor(
+    $branch: String!
+    $code: String
+    $helpers: String
+    $path: String
+    $test_id: ID!
+  ) {
+    commitEditor(
+      branch: $branch
+      code: $code
+      helpers: $helpers
+      path: $path
+      test_id: $test_id
+    ) {
+      helpers {
+        ...FileFragment
+      }
+      test {
+        ...FileFragment
+      }
+    }
+  }
+  ${fileFragment}
+`;
+
 export const createEnvironmentMutation = gql`
   mutation createEnvironment($name: String!, $team_id: ID!) {
     createEnvironment(name: $name, team_id: $team_id) {
