@@ -262,15 +262,6 @@ type DeleteTriggerVariables = {
   id: string;
 };
 
-export type SaveEditorVariables = {
-  branch?: string | null;
-  code?: string | null;
-  helpers?: string | null;
-  name?: string | null;
-  path?: string | null;
-  test_id: string;
-};
-
 type SendLoginCodeData = {
   sendLoginCode: {
     email: string;
@@ -366,7 +357,6 @@ type UpdateTeamData = {
 type UpdateTeamVariables = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
-  helpers?: string;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string;

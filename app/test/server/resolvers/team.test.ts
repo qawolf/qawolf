@@ -101,19 +101,6 @@ describe("updateTeamResolver", () => {
     });
   });
 
-  it("updates a team helpers", async () => {
-    const team = await updateTeamResolver(
-      {},
-      { helpers: "helpers", id: "teamId" },
-      context
-    );
-
-    expect(team).toMatchObject({
-      api_key: "qawolf_api_key",
-      helpers: "helpers",
-    });
-  });
-
   it("updates a team name", async () => {
     const team = await updateTeamResolver(
       {},

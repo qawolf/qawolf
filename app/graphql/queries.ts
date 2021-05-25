@@ -13,7 +13,6 @@ import {
   tagFragment,
   tagsForTestFragment,
   teamFragment,
-  testFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -27,22 +26,6 @@ export const currentUserQuery = gql`
     }
   }
   ${userFragment}
-`;
-
-export const editorQuery = gql`
-  query editor($branch: String, $run_id: ID, $test_id: ID) {
-    editor(branch: $branch, run_id: $run_id, test_id: $test_id) {
-      helpers
-      run {
-        ...RunFragment
-      }
-      test {
-        ...TestFragment
-      }
-    }
-  }
-  ${runFragment}
-  ${testFragment}
 `;
 
 export const environmentsQuery = gql`

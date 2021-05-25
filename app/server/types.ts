@@ -603,7 +603,6 @@ export type UpdateTagTestsMutation = {
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
-  helpers?: string | null;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;

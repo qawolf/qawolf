@@ -1,10 +1,9 @@
-import { ApolloError, QueryResult, useQuery } from "@apollo/client";
+import { QueryResult, useQuery } from "@apollo/client";
 import noop from "lodash/noop";
 import { useRouter } from "next/router";
 
 import {
   currentUserQuery,
-  editorQuery,
   environmentsQuery,
   environmentVariablesQuery,
   fileQuery,
@@ -30,7 +29,6 @@ import { isServer } from "../lib/detection";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
-  Editor,
   Environment,
   EnvironmentVariable,
   File,
@@ -55,16 +53,6 @@ import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
   currentUser: User;
-};
-
-type EditorData = {
-  editor: Editor;
-};
-
-type EditorVariables = {
-  branch?: string;
-  run_id?: string | null;
-  test_id?: string | null;
 };
 
 type EnvironmentsData = {
@@ -244,35 +232,6 @@ export const useCurrentUser = (): QueryResult<CurrentUserData> => {
     },
     onError,
     skip: isServer() || !localStorage.getItem(JWT_KEY),
-  });
-};
-
-export const useEditor = (
-  variables: EditorVariables,
-  { teamId }: { teamId: string }
-): QueryResult<EditorData, EditorVariables> => {
-  const { replace } = useRouter();
-
-  return useQuery<EditorData, EditorVariables>(editorQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onCompleted: (response) => {
-      const { editor } = response || {};
-      // set correct team id if needed
-      if (editor?.test?.team_id && editor.test.team_id !== teamId) {
-        state.setTeamId(editor.test.team_id);
-      }
-    },
-    onError: (error: ApolloError) => {
-      if (
-        error.message.includes("cannot access") ||
-        error.message.includes("not found")
-      ) {
-        replace(routes.tests);
-      }
-    },
-    skip: !variables.run_id && !variables.test_id,
-    variables,
   });
 };
 
