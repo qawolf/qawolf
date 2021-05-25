@@ -1,4 +1,5 @@
 import { MailDataRequired } from "@sendgrid/mail";
+import * as EmailValidator from "email-validator";
 
 import { Logger } from "../../Logger";
 import { deleteInvite, findInvite } from "../../models/invite";
@@ -32,9 +33,11 @@ type SendEmailForSuite = {
   user: User;
 };
 
-const buildFrom = (wolfName: string): MailDataRequired["from"] => {
+export const buildFrom = (wolfName: string): MailDataRequired["from"] => {
+  const wolfEmail = `${wolfName.toLowerCase()}@qawolf.com`;
+
   return {
-    email: `${wolfName.toLowerCase()}@qawolf.com`,
+    email: EmailValidator.validate(wolfEmail) ? wolfEmail : "hello@qawolf.com",
     name: `${wolfName} the QA Wolf`,
   };
 };

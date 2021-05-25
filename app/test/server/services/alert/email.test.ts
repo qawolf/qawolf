@@ -22,6 +22,22 @@ const user = buildUser({});
 const db = prepareTestDb();
 const options = { db, logger };
 
+describe("buildFrom", () => {
+  it("returns wolf email if possible", () => {
+    expect(email.buildFrom("Oscar")).toEqual({
+      email: "oscar@qawolf.com",
+      name: "Oscar the QA Wolf",
+    });
+  });
+
+  it("returns default email otherwise", () => {
+    expect(email.buildFrom("This is invalid")).toEqual({
+      email: "hello@qawolf.com",
+      name: "This is invalid the QA Wolf",
+    });
+  });
+});
+
 describe("sendEmailAlert", () => {
   beforeAll(async () => {
     jest.spyOn(email, "sendEmailForSuite").mockResolvedValue();
