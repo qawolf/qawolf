@@ -95,6 +95,7 @@ describe("commitTestAndHelpers", () => {
       id: "helpers.teamId",
       is_read_only: false,
       path: treeService.HELPERS_PATH,
+      team_id: "teamId",
     });
     expect(updatedTest.path).toBe("qawolf/renamed.test.js");
 
@@ -146,12 +147,14 @@ describe("commitEditorResolver", () => {
       id: "helpers.teamId",
       is_read_only: false,
       path: treeService.HELPERS_PATH,
+      team_id: "teamId",
     });
     expect(test).toEqual({
       content: "new code",
       id: "test.testId",
       is_read_only: false,
       path: "qawolf/renamed.test",
+      team_id: "teamId",
     });
   });
 });
