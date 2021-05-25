@@ -14,12 +14,18 @@ export type FileHook = {
 };
 
 type UseFile = {
+  autoSave: boolean;
   branch?: string;
   id: string;
   state: VersionedMap;
 };
 
-export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
+export const useFileModel = ({
+  autoSave,
+  branch,
+  id,
+  state,
+}: UseFile): FileHook => {
   const modelRef = useRef<FileModel>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
@@ -51,9 +57,8 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
   }, [file]);
 
   useEffect(() => {
-    // do not autosave for git branches
     // listen for changes to save after the file is loaded
-    if (branch || !isLoaded || !updateFile) return;
+    if (!autoSave || !isLoaded || !updateFile) return;
 
     const fileModel = modelRef.current;
 
@@ -69,7 +74,7 @@ export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
     fileModel.on("changed", onChanged);
 
     return () => fileModel.off("changed", onChanged);
-  }, [branch, isLoaded, updateFile]);
+  }, [autoSave, branch, isLoaded, updateFile]);
 
   return { fileModel: modelRef.current, isLoaded, isReadOnly, path };
 };

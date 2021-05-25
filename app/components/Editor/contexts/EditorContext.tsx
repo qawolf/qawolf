@@ -49,7 +49,10 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
+  const autoSave = !branch && !runId;
+
   const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel({
+    autoSave,
     branch,
     id: `helpers.${teamId}`,
     state,
@@ -58,9 +61,10 @@ export const EditorProvider: FC = ({ children }) => {
   const {
     fileModel: testModel,
     isLoaded: isTestLoaded,
-    isReadOnly,
+    isReadOnly: isTestReadOnly,
     path: testPath,
   } = useFileModel({
+    autoSave,
     branch,
     id: runId ? `run.${runId}` : `test.${testId}`,
     state,
@@ -80,7 +84,8 @@ export const EditorProvider: FC = ({ children }) => {
         hasChanges,
         helpersModel,
         isLoaded: isHelpersLoaded && isTestLoaded,
-        isReadOnly,
+        // do not allow editing if the test is deleted or for a run
+        isReadOnly: isTestReadOnly || !!runId,
         run,
         runId,
         suite,

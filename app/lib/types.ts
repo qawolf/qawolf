@@ -326,8 +326,8 @@ export type RunProgress = {
 };
 
 export type Selection = {
-  startLine: number;
   endLine: number;
+  startLine: number;
 };
 
 // State Types

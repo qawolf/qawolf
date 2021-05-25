@@ -1,4 +1,4 @@
-import { QueryResult, useQuery } from "@apollo/client";
+import { ApolloError, QueryResult, useQuery } from "@apollo/client";
 import noop from "lodash/noop";
 import { useRouter } from "next/router";
 
@@ -280,9 +280,24 @@ export const useEnvironmentVariables = (
 export const useFile = (
   variables: FileVariables
 ): QueryResult<FileData, FileVariables> => {
+  const { replace } = useRouter();
+
   return useQuery(fileQuery, {
     fetchPolicy,
-    onError,
+    // onCompleted: (response) => {
+    //   const { file } = response || {};
+    //   if (!file) return;
+    //   // set correct team id if needed
+    //   if (file.team_id !== teamId) state.setTeamId(file.team_id);
+    // },
+    onError: (error: ApolloError) => {
+      if (
+        error.message.includes("cannot access") ||
+        error.message.includes("not found")
+      ) {
+        replace(routes.tests);
+      }
+    },
     skip: !variables.id,
     variables,
   });

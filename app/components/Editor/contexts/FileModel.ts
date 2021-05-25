@@ -2,18 +2,12 @@ import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 
+import { File } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 
 export type BindOptions = {
   editor: editorNs.IStandaloneCodeEditor;
   monaco: typeof monacoEditor;
-};
-
-type File = {
-  content: string;
-  id: string;
-  is_read_only: boolean;
-  path: string;
 };
 
 export class FileModel extends EventEmitter {
