@@ -1259,11 +1259,6 @@ type Mutation {
     alert_only_on_failure: Boolean
 
     """
-    Team helpers
-    """
-    helpers: String
-
-    """
     Team ID
     """
     id: ID!

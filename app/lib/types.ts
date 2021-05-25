@@ -6,12 +6,6 @@ export type AuthenticatedUser = {
 
 export type DeploymentProvider = "netlify" | "render" | "vercel";
 
-export type Editor = {
-  helpers: string;
-  run?: Run | null;
-  test: Test;
-};
-
 export type Env = { [name: string]: string };
 
 export type Environment = {
