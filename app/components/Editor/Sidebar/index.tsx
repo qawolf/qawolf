@@ -32,9 +32,7 @@ const enable = {
 export default function Sidebar(): JSX.Element {
   const { push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
-  const { isTestLoaded, run, runId, suite, testModel } = useContext(
-    EditorContext
-  );
+  const { isLoaded, isReadOnly, run, runId, suite } = useContext(EditorContext);
   const {
     elementChooserValue,
     progress,
@@ -46,8 +44,7 @@ export default function Sidebar(): JSX.Element {
   const [selected, setSelected] = useState<NavigationOption>("code");
 
   const isChooserActive = elementChooserValue.isActive;
-  const isActionDisabled =
-    !isTestLoaded || testModel.isReadOnly || isChooserActive;
+  const isActionDisabled = !isLoaded || isReadOnly || isChooserActive;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);

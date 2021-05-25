@@ -105,12 +105,15 @@ export class FileModel extends EventEmitter {
   setFile(file: File): void {
     this._file = file;
 
-    this._contentKey = file.path.includes("helpers")
+    this._contentKey = file.id.startsWith("helpers")
       ? "helpers_code"
       : "test_code";
 
+    this.emit("changed", { key: "isReadOnly", value: this.isReadOnly });
+
     // use this.content since state might be set with a newer version
-    this._editor?.setValue(this.content);
+    const value = this.content;
+    if (this._editor?.getValue() !== value) this._editor?.setValue(value);
   }
 
   // content helpers

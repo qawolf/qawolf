@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-import { useEditor, useTeam } from "../../../hooks/queries";
+import { useTeam } from "../../../hooks/queries";
 import { Run, Suite, Team } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
@@ -21,9 +21,8 @@ type EditorContextValue = {
   commitEditor?: () => Promise<void>;
   hasChanges: boolean;
   helpersModel?: FileModel;
-  isHelpersLoaded: boolean;
   isLoaded: boolean;
-  isTestLoaded: boolean;
+  isReadOnly: boolean;
   run: Run | null;
   runId?: string;
   suite: Suite | null;
@@ -36,9 +35,8 @@ type EditorContextValue = {
 
 export const EditorContext = createContext<EditorContextValue>({
   hasChanges: false,
-  isHelpersLoaded: true,
   isLoaded: false,
-  isTestLoaded: true,
+  isReadOnly: false,
   run: null,
   state: new VersionedMap(),
   suite: null,
@@ -54,33 +52,26 @@ export const EditorProvider: FC = ({ children }) => {
   const { current: state } = useRef(new VersionedMap());
   const [hasChanges, setHasChanges] = useState(false);
 
-  const { data, loading } = useEditor(
-    { branch, run_id: runId, test_id: testId },
-    { teamId }
-  );
-  const editor = data?.editor || null;
-
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
 
-  const { run } = useRun({ branch, runId, teamId });
+  const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
   const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel({
-    autoSave: !branch,
+    branch,
     id: `helpers.${teamId}`,
-    editor,
     state,
   });
 
   const {
     fileModel: testModel,
     isLoaded: isTestLoaded,
+    isReadOnly,
     path: testPath,
   } = useFileModel({
-    autoSave: !branch,
+    branch,
     id: runId ? `run.${runId}` : `test.${testId}`,
-    editor,
     state,
   });
 
@@ -121,12 +112,8 @@ export const EditorProvider: FC = ({ children }) => {
         commitEditor,
         hasChanges,
         helpersModel,
-        isHelpersLoaded,
-        // only consider the test loading the first time it loads (when there is no test data)
-        // this prevents the loading placeholder from flashing every poll
-        // TODO update this for 2 queries
-        isLoaded: !data && loading,
-        isTestLoaded,
+        isLoaded: isHelpersLoaded && isTestLoaded,
+        isReadOnly,
         run,
         runId,
         suite,

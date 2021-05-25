@@ -1,91 +1,71 @@
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import { useFile } from "../../../hooks/queries";
 
-import { Editor } from "../../../lib/types";
 import { VersionedMap } from "../../../lib/VersionedMap";
 import { FileModel } from "../contexts/FileModel";
 
 export type FileHook = {
   fileModel: FileModel;
   isLoaded: boolean;
+  isReadOnly: boolean;
   path: string;
 };
 
 type UseFile = {
-  autoSave: boolean;
-  editor: Editor;
+  branch?: string;
   id: string;
   state: VersionedMap;
 };
 
-export const useFileModel = ({
-  autoSave,
-  editor,
-  id,
-  state,
-}: UseFile): FileHook => {
-  const ref = useRef<FileModel>();
+export const useFileModel = ({ branch, id, state }: UseFile): FileHook => {
+  const modelRef = useRef<FileModel>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
+  const [isReadOnly, setIsReadOnly] = useState(false);
+
+  const { data } = useFile({ branch, id });
+  const file = data?.file || null;
 
   useEffect(() => {
     if (!state) return;
 
-    ref.current = new FileModel(state);
+    modelRef.current = new FileModel(state);
 
-    ref.current.bind("path", setPath);
+    modelRef.current.bind("isReadOnly", setIsReadOnly);
 
-    return () => ref.current.dispose();
+    modelRef.current.bind("path", setPath);
+
+    return () => modelRef.current.dispose();
   }, [state]);
 
   useEffect(() => {
-    if (!editor) return;
+    if (!file) return;
 
-    const file = ref.current;
-
-    const [type] = id.split(".");
-    // TODO this should be a query instead
-    if (type === "helpers") {
-      file.setFile({
-        content: editor?.helpers,
-        id,
-        is_read_only: false,
-        path: "helpers",
-      });
-    } else if (type === "run") {
-      file.setFile({
-        content: editor.run.code,
-        id,
-        is_read_only: true,
-        path: editor.test.path || editor.test.name,
-      });
-    } else if (type === "test") {
-      const { code, deleted_at, name, path } = editor.test;
-      file.setFile({
-        content: code,
-        id,
-        is_read_only: !!deleted_at,
-        path: path || name,
-      });
-    }
-
+    modelRef.current.setFile(file);
     setIsLoaded(true);
-
     setPath(file.path);
+  }, [file]);
+
+  useEffect(() => {
+    // do not autosave for git branches
+    if (branch) return;
 
     // listen for changes to save after the file is loaded
-    if (autoSave) {
-      const onChanged = debounce(() => {
-        if (file.isReadOnly) return;
+    if (!isLoaded) return;
 
-        console.log("todo updateFile mutation", file.content);
-      }, 100);
+    const fileModel = modelRef.current;
 
-      file.on("changed", onChanged);
+    const onChanged = debounce(() => {
+      if (fileModel.isReadOnly) return;
 
-      return () => file.off("changed", onChanged);
-    }
-  }, [autoSave, editor, id]);
+      console.log("todo updateFile mutation", fileModel.content);
+    }, 100);
 
-  return { fileModel: ref.current, isLoaded, path };
+    fileModel.on("changed", onChanged);
+
+    return () => fileModel.off("changed", onChanged);
+  }, [branch, isLoaded]);
+
+  return { fileModel: modelRef.current, isLoaded, isReadOnly, path };
 };
