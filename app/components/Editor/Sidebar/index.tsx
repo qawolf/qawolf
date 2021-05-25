@@ -44,7 +44,8 @@ export default function Sidebar(): JSX.Element {
   const [selected, setSelected] = useState<NavigationOption>("code");
 
   const isChooserActive = elementChooserValue.isActive;
-  const isActionDisabled = !isLoaded || isReadOnly || isChooserActive;
+  const isActionDisabled =
+    !isLoaded || (isReadOnly && !runId) || isChooserActive;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
