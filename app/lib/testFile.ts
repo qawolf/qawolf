@@ -30,7 +30,7 @@ export const toggleCodeGeneration = (
   if (includesHandle) {
     // replace up to one leading newline
     const regex = new RegExp(`\n?${PATCH_HANDLE}`, "g");
-    file.content.replace(regex, "");
+    file.content = file.content.replace(regex, "");
   } else {
     const lines = file.content.split("\n");
     const insertIndex = mouseLineNumber ? mouseLineNumber - 1 : lines.length;
