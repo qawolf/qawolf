@@ -23,6 +23,7 @@ export const fileFragment = gql`
     id
     is_read_only
     path
+    team_id
   }
 `;
 

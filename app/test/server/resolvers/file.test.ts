@@ -81,6 +81,7 @@ describe("fileResolver", () => {
       id: "helpers.teamId",
       is_read_only: false,
       path: treeService.HELPERS_PATH,
+      team_id: "teamId",
     });
   });
 
@@ -92,6 +93,7 @@ describe("fileResolver", () => {
       id: "run.runId",
       is_read_only: true,
       path: test.path,
+      team_id: "teamId",
     });
   });
 
@@ -105,6 +107,7 @@ describe("fileResolver", () => {
       id: "test.test2Id",
       is_read_only: false,
       path: test2.name,
+      team_id: "teamId",
     });
 
     expect(treeService.findFilesForBranch).not.toBeCalled();
@@ -126,6 +129,7 @@ describe("fileResolver", () => {
       id: "test.testId",
       is_read_only: false,
       path: test.path,
+      team_id: "teamId",
     });
 
     expect(treeService.findFilesForBranch).toBeCalled();
@@ -155,6 +159,7 @@ describe("updateFileResolver", () => {
       id: "helpers.teamId",
       is_read_only: false,
       path: treeService.HELPERS_PATH,
+      team_id: "teamId",
     });
 
     await updateTeam({ helpers: oldHelpers, id: "teamId" }, options);
@@ -174,6 +179,7 @@ describe("updateFileResolver", () => {
       id: "test.test2Id",
       is_read_only: false,
       path: test2.name,
+      team_id: "teamId",
     });
 
     await updateTest({ code: oldCode, id: "test2Id" }, options);
@@ -193,6 +199,7 @@ describe("updateFileResolver", () => {
       id: "test.test2Id",
       is_read_only: false,
       path: "new name",
+      team_id: "teamId",
     });
 
     await updateTest({ id: "test2Id", name: oldName }, options);

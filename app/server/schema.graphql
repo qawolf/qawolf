@@ -123,6 +123,9 @@ type File {
 
   "The name or path of the file"
   path: String!
+
+  "The id of the team that owns the file"
+  team_id: ID!
 }
 
 "A GitHub branch"

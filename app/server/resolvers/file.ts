@@ -33,6 +33,7 @@ export const formatHelpersFile = ({ helpers, id }: Team): File => {
     id: `helpers.${id}`,
     is_read_only: false,
     path: HELPERS_PATH,
+    team_id: id,
   };
 };
 
@@ -42,6 +43,7 @@ export const formatTestFile = (test: Test): File => {
     id: `test.${test.id}`,
     is_read_only: false,
     path: test.name || test.path,
+    team_id: test.team_id,
   };
 };
 
@@ -78,6 +80,7 @@ const buildFileForRun = async (
     id: `run.${id}`,
     is_read_only: true,
     path: test.path || test.name,
+    team_id: test.team_id,
   };
 };
 
