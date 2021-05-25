@@ -1,11 +1,9 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
-import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
-import { useEnvTypes } from "./CodeEditor/hooks/envTypes";
+import { EditorContext } from "../contexts/EditorContext";
+import { BindOptions } from "../contexts/FileModel";
 import EditorComponent from "./Editor";
-import { includeTypes } from "./helpers";
 
 type Props = {
   isVisible: boolean;
@@ -16,28 +14,19 @@ export default function HelpersEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
-  const { env } = useContext(RunnerContext);
-  const { controller, hasWriteAccess } = useContext(TestContext);
+  const { helpersModel, isLoaded, isReadOnly } = useContext(EditorContext);
 
-  const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
-
-  useEnvTypes({ env, monaco });
-
-  const editorDidMount = ({ editor, monaco }) => {
-    controller.setHelpersEditor(editor);
-    setMonaco(monaco);
-    includeTypes(monaco);
+  const editorDidMount = (options: BindOptions) => {
+    helpersModel.bindEditor(options);
   };
 
   return (
     <EditorComponent
       a11yTitle="helpers code"
       editorDidMount={editorDidMount}
+      initializeOptions={isLoaded ? { isReadOnly } : null}
       isVisible={isVisible}
       onKeyDown={onKeyDown}
-      options={{
-        readOnly: !hasWriteAccess,
-      }}
     />
   );
 }

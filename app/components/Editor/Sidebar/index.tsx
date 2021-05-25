@@ -8,8 +8,8 @@ import { state } from "../../../lib/state";
 import { NavigationOption } from "../../../lib/types";
 import { copy } from "../../../theme/copy";
 import { StateContext } from "../../StateContext";
+import { EditorContext } from "../contexts/EditorContext";
 import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
 import Buttons from "./Buttons";
 import CodeEditor from "./CodeEditor";
@@ -30,10 +30,9 @@ const enable = {
 };
 
 export default function Sidebar(): JSX.Element {
-  const { query, push } = useRouter();
+  const { push } = useRouter();
   const { editorSidebarWidth } = useContext(StateContext);
-
-  const { controller, run, suite, test } = useContext(TestContext);
+  const { isLoaded, isReadOnly, run, runId, suite } = useContext(EditorContext);
   const {
     elementChooserValue,
     progress,
@@ -45,34 +44,27 @@ export default function Sidebar(): JSX.Element {
   const [selected, setSelected] = useState<NavigationOption>("code");
 
   const isChooserActive = elementChooserValue.isActive;
-  const isTestDeleted = !!test?.deleted_at;
-  const isActionDisabled = isTestDeleted || isChooserActive;
+  const isActionDisabled = !isLoaded || isReadOnly || isChooserActive;
 
   const handleResizeStop: ResizeCallback = (_, __, ___, delta): void => {
     state.setEditorSidebarWidth(editorSidebarWidth + delta.width);
   };
 
-  const isRunning = query.test_id && progress && !progress?.completed_at;
+  const isRunning = progress && !progress?.completed_at;
 
   const handleAction = (): void => {
     if (isActionDisabled) return;
 
-    if (run) {
+    if (runId) {
       // edit the test
       push(buildTestHref({ run, suite }));
       return;
     }
 
-    if (test) {
-      if (isRunning) {
-        stopTest();
-      } else {
-        runTest({
-          code: controller.code,
-          helpers: controller.helpers,
-          selection,
-        });
-      }
+    if (isRunning) {
+      stopTest();
+    } else {
+      runTest(selection);
     }
   };
 
@@ -112,7 +104,7 @@ export default function Sidebar(): JSX.Element {
         {!isChooserActive && (
           <Buttons
             isActionDisabled={isActionDisabled}
-            isRun={!!query.run_id}
+            isRun={!!runId}
             isRunLoading={!run}
             isRunning={isRunning}
             onAction={handleAction}

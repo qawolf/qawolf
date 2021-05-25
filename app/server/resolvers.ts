@@ -1,5 +1,5 @@
 import { createGitHubSignInUrlResolver } from "./resolvers/auth";
-import { editorResolver, saveEditorResolver } from "./resolvers/editor";
+import { commitEditorResolver } from "./resolvers/editor";
 import { emailResolver, sendEmailResolver } from "./resolvers/email";
 import {
   createEnvironmentResolver,
@@ -13,6 +13,7 @@ import {
   environmentVariablesResolver,
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
+import { fileResolver, updateFileResolver } from "./resolvers/file";
 import {
   createGitHubIntegrationsResolver,
   gitHubBranchesResolver,
@@ -26,6 +27,7 @@ import {
 import { onboardingResolver } from "./resolvers/onboarding";
 import {
   runCountResolver,
+  runResolver,
   statusCountsResolver,
   suiteRunsResolver,
   testHistoryResolver,
@@ -97,6 +99,7 @@ export const resolvers = {
   },
   Mutation: {
     acceptInvite: acceptInviteResolver,
+    commitEditor: commitEditorResolver,
     createEnvironment: createEnvironmentResolver,
     createEnvironmentVariable: createEnvironmentVariableResolver,
     createGitHubIntegrations: createGitHubIntegrationsResolver,
@@ -117,7 +120,6 @@ export const resolvers = {
     deleteTag: deleteTagResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,
-    saveEditor: saveEditorResolver,
     sendEmail: sendEmailResolver,
     sendLoginCode: sendLoginCodeResolver,
     sendSlackUpdate: sendSlackUpdateResolver,
@@ -125,6 +127,7 @@ export const resolvers = {
     signInWithGitHub: signInWithGitHubResolver,
     updateEnvironment: updateEnvironmentResolver,
     updateEnvironmentVariable: updateEnvironmentVariableResolver,
+    updateFile: updateFileResolver,
     updateRun: updateRunResolver,
     updateRunner: updateRunnerResolver,
     updateTag: updateTagResolver,
@@ -136,13 +139,14 @@ export const resolvers = {
   },
   Query: {
     currentUser: currentUserResolver,
-    editor: editorResolver,
     email: emailResolver,
     environments: environmentsResolver,
     environmentVariables: environmentVariablesResolver,
+    file: fileResolver,
     gitHubBranches: gitHubBranchesResolver,
     integrations: integrationsResolver,
     onboarding: onboardingResolver,
+    run: runResolver,
     runner: runnerResolver,
     runCount: runCountResolver,
     suite: suiteResolver,

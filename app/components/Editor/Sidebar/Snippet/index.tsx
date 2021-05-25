@@ -2,10 +2,10 @@ import { Box } from "grommet";
 import { useContext, useState } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
-import { PATCH_HANDLE } from "../../../../lib/code";
+import { insertSnippet } from "../../../../lib/testFile";
 import { border } from "../../../../theme/theme";
+import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
-import { TestContext } from "../../contexts/TestContext";
 import Action from "./Action";
 import Buttons from "./Buttons";
 import ChooseElement from "./ChooseElement";
@@ -19,7 +19,7 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   const { elementChooserValue, runTest, stopElementChooser } = useContext(
     RunnerContext
   );
-  const { controller } = useContext(TestContext);
+  const { testModel } = useContext(EditorContext);
 
   const [action, setAction] = useState<ActionType>(null);
   const [selector, setSelector] = useState<string>(null);
@@ -33,32 +33,15 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   );
 
   const addRunSnippet = () => {
-    if (!hasChosenElement) return;
+    if (!hasChosenElement || !testModel) return;
 
-    // patch at the handle or the bottom if there is no patch handle
-    const codeLines = controller.code.split("\n");
-    let patchIndex = codeLines.findIndex((l) => l.includes(PATCH_HANDLE));
-    if (patchIndex < 0) patchIndex = codeLines.length;
-
-    // insert the snippet
-    const snippetLines = snippetCode.split("\n");
-    codeLines.splice(patchIndex, 0, ...snippetLines);
-
-    const updatedCode = codeLines.join("\n");
-    controller.updateCode(updatedCode);
+    const selection = insertSnippet(testModel, snippetCode);
 
     // this will enable code generation so make sure to call it before
     // run test which will disable code generation
     stopElementChooser();
 
-    runTest({
-      code: updatedCode,
-      helpers: controller.helpers,
-      selection: {
-        startLine: patchIndex + 1,
-        endLine: patchIndex + 1 + snippetLines.length,
-      },
-    });
+    runTest(selection);
   };
 
   useOnHotKey({ hotKey: "Enter", onHotKey: addRunSnippet, requireMeta: true });

@@ -7,24 +7,18 @@ import WolfButton from "../../shared/icons/WolfButton";
 import WolfSitting from "../../shared/icons/WolfSitting";
 import Text from "../../shared/Text";
 import { UserContext } from "../../UserContext";
+import { EditorContext } from "../contexts/EditorContext";
 import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
-import { Mode } from "../hooks/mode";
 
 type Props = {
   height?: number;
-  mode: Mode;
   width?: number;
 };
 
 const iconProps = { color: "white", size: "large" };
 
-export default function Placeholder({
-  height,
-  mode,
-  width,
-}: Props): JSX.Element {
-  const { isTestLoading } = useContext(TestContext);
+export default function Placeholder({ height, width }: Props): JSX.Element {
+  const { isLoaded, runId } = useContext(EditorContext);
   const { isUserLoading, wolf } = useContext(UserContext);
   const { isRunnerConnected, requestTestRunner } = useContext(RunnerContext);
 
@@ -41,12 +35,7 @@ export default function Placeholder({
   }
 
   // ask the user to run the test if there is no runner connected or pending
-  if (
-    mode === "test" &&
-    !isRunnerConnected &&
-    !isTestLoading &&
-    !requestTestRunner
-  ) {
+  if (isLoaded && !runId && !isRunnerConnected && !requestTestRunner) {
     iconHtml = <WolfButton color={wolf?.variant} />;
     message = copy.placeholderRunTest;
   }

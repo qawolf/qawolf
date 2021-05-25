@@ -9,8 +9,8 @@ import {
   ListRowRenderer,
 } from "react-virtualized";
 
+import { EditorContext } from "../contexts/EditorContext";
 import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
 import { useLogs } from "../hooks/logs";
 import LogLine from "./LogLine";
 
@@ -52,7 +52,7 @@ const rowRenderer: ListRowRenderer = function ({
 
 export default function RunLogs({ isVisible }: Props): JSX.Element {
   const { apiKey, wsUrl } = useContext(RunnerContext);
-  const { run } = useContext(TestContext);
+  const { run } = useContext(EditorContext);
   const { logs } = useLogs({ apiKey, run, wsUrl });
   const [list, setList] = useState<List>(null);
 

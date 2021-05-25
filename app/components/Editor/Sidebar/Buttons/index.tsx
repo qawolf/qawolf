@@ -3,13 +3,13 @@ import { useContext } from "react";
 
 import { useOnHotKey } from "../../../../hooks/onHotKey";
 import { state } from "../../../../lib/state";
+import { Selection } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
 import { borderSize, edgeSize } from "../../../../theme/theme";
 import Button from "../../../shared/AppButton";
 import Environments from "../../../shared/Environments";
 import Stop from "../../../shared/icons/Stop";
 import { StateContext } from "../../../StateContext";
-import { Selection } from "../../hooks/selection";
 import RunButton from "./RunButton";
 
 const width = `calc(50% - (${edgeSize.xxsmall} / 2))`;

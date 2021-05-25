@@ -4,29 +4,27 @@ import React, { FC } from "react";
 import { useWindowSize } from "../../hooks/windowSize";
 import { breakpoints } from "../../theme/theme";
 import Application from "./Application";
+import { EditorProvider } from "./contexts/EditorContext";
 import { RunnerProvider } from "./contexts/RunnerContext";
-import { TestProvider } from "./contexts/TestContext";
 import EditorMobile from "./EditorMobile";
 import Header from "./Header";
-import { useMode } from "./hooks/mode";
 import Sidebar from "./Sidebar";
 
 const WithProviders: FC = ({ children }): JSX.Element => {
   return (
-    <TestProvider>
+    <EditorProvider>
       <RunnerProvider>{children}</RunnerProvider>
-    </TestProvider>
+    </EditorProvider>
   );
 };
 
 export default function Editor(): JSX.Element {
-  const mode = useMode();
   const { width } = useWindowSize();
 
   return (
     <WithProviders>
       {width && width < breakpoints.small.value ? (
-        <EditorMobile mode={mode} />
+        <EditorMobile />
       ) : (
         <Box
           background="gray0"
@@ -34,10 +32,10 @@ export default function Editor(): JSX.Element {
           height="100vh"
           overflow="hidden"
         >
-          <Header mode={mode} />
+          <Header />
           <Box direction="row" fill justify="between">
             <Sidebar />
-            <Application mode={mode} />
+            <Application />
           </Box>
         </Box>
       )}

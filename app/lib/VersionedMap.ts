@@ -21,7 +21,7 @@ export class VersionedMap extends EventEmitter {
 
     this._values.set(key, value);
     this._versions.set(key, version);
-    this.emit("changed", { key, sender: false, value });
+    this.emit("changed", { key, value });
     return true;
   }
 
@@ -39,6 +39,6 @@ export class VersionedMap extends EventEmitter {
     }
 
     this.emit("keychanged", { key, value, version: version || 0 });
-    this.emit("changed", { key, sender: true, value });
+    this.emit("changed", { key, value });
   }
 }

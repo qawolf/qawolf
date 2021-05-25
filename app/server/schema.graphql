@@ -22,6 +22,15 @@ type AuthenticatedUser {
   user: User!
 }
 
+"Return type for committing the editor state"
+type CommitEditor {
+  "The team helpers"
+  helpers: File!
+
+  "The test"
+  test: File!
+}
+
 "Provider for a deployment"
 enum DeploymentProvider {
   "Netlify"
@@ -32,18 +41,6 @@ enum DeploymentProvider {
 
   "Vercel"
   vercel
-}
-
-"Test, run, and helpers for the editor"
-type Editor {
-  "The helpers"
-  helpers: String!
-
-  "The test run"
-  run: Run
-
-  "The test"
-  test: Test!
 }
 
 "An email sent to a test email address"
@@ -111,6 +108,24 @@ type EnvironmentVariables {
   All environment variable records for the environment.
   """
   variables: [EnvironmentVariable!]!
+}
+
+"A file for the test editor"
+type File {
+  "The text content of the file"
+  content: String!
+
+  "The id of the file"
+  id: ID!
+
+  "Whether the current user can edit the file"
+  is_read_only: Boolean!
+
+  "The name or path of the file"
+  path: String!
+
+  "The id of the team that owns the file"
+  team_id: ID!
 }
 
 "A GitHub branch"
@@ -600,6 +615,28 @@ type Mutation {
   ): Invite!
 
   """
+  Commit an editor state.
+
+  Requires that you have access to the team.
+  """
+  commitEditor(
+    "Git branch"
+    branch: String!
+
+    "Test code"
+    code: String
+
+    "Helpers"
+    helpers: String
+
+    "Test path"
+    path: String
+
+    "Test ID"
+    test_id: ID!
+  ): CommitEditor!
+
+  """
   Create an environment.
 
   Requires that you have access to the team.
@@ -959,31 +996,6 @@ type Mutation {
   ): [Test!]!
 
   """
-  Update test and helpers in the editor.
-
-  Requires that you have access to the team that owns each test.
-  """
-  saveEditor(
-    "Git branch"
-    branch: String
-
-    "Test code"
-    code: String
-
-    "Helpers"
-    helpers: String
-
-    "Test name"
-    name: String
-
-    "Test path"
-    path: String
-
-    "Test ID"
-    test_id: ID!
-  ): Editor!
-
-  """
   Send a test email and create an associated record in the database.
 
   Requires that you have access to the team that owns the inbox.
@@ -1121,6 +1133,22 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Updates a helpers or test file by ID.
+
+  Requires that you have access to the team that owns the helpers or test.
+  """
+  updateFile(
+    "The file content"
+    content: String
+
+    "The file ID"
+    id: ID!
+
+    "The test name"
+    path: String
+  ): File!
+
+  """
   Updates information about a test run by run ID. A runner service calls
   this to provide status updates.
 
@@ -1234,11 +1262,6 @@ type Mutation {
     alert_only_on_failure: Boolean
 
     """
-    Team helpers
-    """
-    helpers: String
-
-    """
     Team ID
     """
     id: ID!
@@ -1346,23 +1369,6 @@ type Query {
   currentUser: User
 
   """
-  Returns test and helpers code for a test. Must provide one of
-  run ID or test ID.
-
-  Requires that you have access to the team that owns the test.
-  """
-  editor(
-    "The git branch"
-    branch: String
-
-    "The run id"
-    run_id: ID
-
-    "The test id"
-    test_id: ID
-  ): Editor!
-
-  """
   Returns the latest email that matches the criteria.
 
   You must be on the team that owns the test email address.
@@ -1393,6 +1399,13 @@ type Query {
   ): EnvironmentVariables!
 
   """
+  Returns file for the test editor by id.
+
+  Requires that you have access to the team.
+  """
+  file("The  git branch" branch: String, "The file ID" id: ID!): File!
+
+  """
   Returns GitHub branches for a team by team ID.
   If the team does not have a GitHub sync integration, null is returned.
 
@@ -1413,6 +1426,13 @@ type Query {
   Requires that you have access to the team.
   """
   onboarding("The team ID" team_id: ID!): Onboarding!
+
+  """
+  Returns run by run ID.
+
+  Requires that you have access to the team that owns the test.
+  """
+  run("The run ID" id: ID!): Run!
 
   """
   Returns the runner for the run or test.

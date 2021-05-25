@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import { buildTestsPath } from "../components/Dashboard/helpers";
 import {
   acceptInviteMutation,
+  commitEditorMutation,
   createEnvironmentMutation,
   createEnvironmentVariableMutation,
   createGitHubIntegrationsMutation,
@@ -31,6 +32,7 @@ import {
   signInWithGitHubMutation,
   updateEnvironmentMutation,
   updateEnvironmentVariableMutation,
+  updateFileMutation,
   updateTagMutation,
   updateTagTestsMutation,
   updateTeamMutation,
@@ -46,6 +48,7 @@ import {
   AuthenticatedUser,
   Environment,
   EnvironmentVariable,
+  File,
   Integration,
   Invite,
   State,
@@ -67,6 +70,19 @@ type AcceptInviteData = {
 
 type AcceptInviteVariables = {
   id: string;
+};
+
+type CommitEditorData = {
+  helpers: File;
+  test: File;
+};
+
+export type CommitEditorVariables = {
+  branch: string;
+  code?: string | null;
+  helpers?: string | null;
+  path?: string | null;
+  test_id: string;
 };
 
 type CreateEnvironmentData = {
@@ -246,15 +262,6 @@ type DeleteTriggerVariables = {
   id: string;
 };
 
-export type SaveEditorVariables = {
-  branch?: string | null;
-  code?: string | null;
-  helpers?: string | null;
-  name?: string | null;
-  path?: string | null;
-  test_id: string;
-};
-
 type SendLoginCodeData = {
   sendLoginCode: {
     email: string;
@@ -314,6 +321,16 @@ type UpdateEnvironmentVariableVariables = {
   value: string;
 };
 
+type UpdateFileData = {
+  updateFile: File;
+};
+
+type UpdateFileVariables = {
+  content?: string | null;
+  id: string;
+  path?: string | null;
+};
+
 type UpdateTagData = {
   updateTag: Tag;
 };
@@ -340,7 +357,6 @@ type UpdateTeamData = {
 type UpdateTeamVariables = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
-  helpers?: string;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string;
@@ -422,6 +438,16 @@ export const useAcceptInvite = (): MutationTuple<
       onError,
       refetchQueries: ["currentUser"],
     }
+  );
+};
+
+export const useCommitEditor = (): MutationTuple<
+  CommitEditorData,
+  CommitEditorVariables
+> => {
+  return useMutation<CommitEditorData, CommitEditorVariables>(
+    commitEditorMutation,
+    { onError }
   );
 };
 
@@ -834,6 +860,15 @@ export const useUpdateEnvironmentVariable = (): MutationTuple<
     awaitRefetchQueries: true,
     onError,
     refetchQueries: ["environmentVariables"],
+  });
+};
+
+export const useUpdateFile = (): MutationTuple<
+  UpdateFileData,
+  UpdateFileVariables
+> => {
+  return useMutation<UpdateFileData, UpdateFileVariables>(updateFileMutation, {
+    onError,
   });
 };
 

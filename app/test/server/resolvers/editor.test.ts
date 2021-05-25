@@ -1,15 +1,11 @@
 import {
-  buildTestCode,
   buildTreeForCommit,
+  commitEditorResolver,
   commitTestAndHelpers,
-  editorResolver,
-  findHelpersForEditor,
-  saveEditorResolver,
-  updateTestAndHelpers,
 } from "../../../server/resolvers/editor";
 import * as syncService from "../../../server/services/gitHub/sync";
 import * as treeService from "../../../server/services/gitHub/tree";
-import { Editor, RunResult } from "../../../server/types";
+import { CommitEditor } from "../../../server/types";
 import { prepareTestDb } from "../db";
 import {
   buildIntegration,
@@ -54,26 +50,6 @@ beforeAll(async () => {
   await db("runs").insert(run);
 });
 
-describe("buildTestCode", () => {
-  it("returns code from git files if possible", () => {
-    const code = buildTestCode({ files, test }, options);
-
-    expect(code).toBe("git code");
-  });
-
-  it("returns test code if no files", () => {
-    const code = buildTestCode({ files: null, test }, options);
-
-    expect(code).toBe("test code");
-  });
-
-  it("throws an error if files but test not found", () => {
-    expect(() => {
-      buildTestCode({ files: [], test }, options);
-    }).toThrowError("not found");
-  });
-});
-
 describe("buildTreeForCommit", () => {
   it("handles renaming the file", () => {
     expect(
@@ -114,7 +90,13 @@ describe("commitTestAndHelpers", () => {
       options
     );
 
-    expect(helpers).toBe("git helpers");
+    expect(helpers).toEqual({
+      content: "git helpers",
+      id: "helpers.teamId",
+      is_read_only: false,
+      path: treeService.HELPERS_PATH,
+      team_id: "teamId",
+    });
     expect(updatedTest.path).toBe("qawolf/renamed.test.js");
 
     await db("tests").where({ id: test.id }).update({ path: test.path });
@@ -122,7 +104,7 @@ describe("commitTestAndHelpers", () => {
 
   it("throws an error if test or helpers not found", async () => {
     await expect(
-      (): Promise<Editor> => {
+      (): Promise<CommitEditor> => {
         return commitTestAndHelpers(
           {
             branch: "feature",
@@ -137,184 +119,42 @@ describe("commitTestAndHelpers", () => {
   });
 });
 
-describe("editorResolver", () => {
-  afterEach(() => jest.clearAllMocks());
-
-  it("returns helpers, run, and test without branch", async () => {
-    jest.spyOn(treeService, "findFilesForBranch");
-
-    const { helpers, run, test } = await editorResolver(
-      {},
-      { branch: null, test_id: "testId" },
-      context
-    );
-
-    expect(helpers).toBe("team helpers");
-    expect(run).toBeNull();
-    expect(test).toMatchObject({ code: "test code", id: "testId" });
-
-    expect(treeService.findFilesForBranch).not.toBeCalled();
-  });
-
-  it("returns helpers, run, and test for a run", async () => {
-    const { helpers, run, test } = await editorResolver(
-      {},
-      { branch: null, run_id: "runId" },
-      context
-    );
-
-    expect(helpers).toBe("suite helpers");
-    expect(run).toMatchObject({ id: "runId" });
-    expect(test).toMatchObject({ code: "test code", id: "testId" });
-
-    expect(treeService.findFilesForBranch).not.toBeCalled();
-  });
-
-  it("returns helpers, run, and test with branch", async () => {
+describe("commitEditorResolver", () => {
+  beforeEach(() => {
     jest
       .spyOn(treeService, "findFilesForBranch")
       .mockResolvedValue({ files, owner: "qawolf", repo: "repo" });
 
-    const { helpers, run, test } = await editorResolver(
-      {},
-      { branch: "feature", test_id: "testId" },
-      context
-    );
-
-    expect(helpers).toBe("git helpers");
-    expect(run).toBeNull();
-    expect(test).toMatchObject({ code: "git code", id: "testId" });
-
-    expect(treeService.findFilesForBranch).toBeCalled();
+    jest.spyOn(syncService, "createCommit").mockResolvedValue();
   });
 
-  it("throws an error if no run or test id passed", async () => {
-    await expect(
-      async (): Promise<Editor> => {
-        return editorResolver({}, {}, context);
-      }
-    ).rejects.toThrowError("Must provide test_id or run_id");
-  });
-});
+  afterEach(() => jest.clearAllMocks());
 
-describe("findHelpersForEditor", () => {
-  it("returns helpers from suite if run passed", async () => {
-    const helpers = await findHelpersForEditor(
-      { files: null, run: run as RunResult, team },
-      options
-    );
-
-    expect(helpers).toBe("suite helpers");
-  });
-
-  it("returns helpers from files if files passed", async () => {
-    const helpers = await findHelpersForEditor(
-      { files, run: null, team },
-      options
-    );
-
-    expect(helpers).toBe("git helpers");
-  });
-
-  it("returns helpers from team otherwise", async () => {
-    const helpers = await findHelpersForEditor(
-      { files: null, run: null, team },
-      options
-    );
-
-    expect(helpers).toBe("team helpers");
-  });
-});
-
-describe("saveEditorResolver", () => {
-  it("updates test and helpers without branch", async () => {
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ name: "old name", path: null });
-
-    const { helpers, test: updatedTest } = await saveEditorResolver(
+  it("commits an editor state", async () => {
+    const { helpers, test } = await commitEditorResolver(
       {},
       {
+        branch: "feature",
         code: "new code",
-        helpers: "new helpers",
-        name: "new name",
+        path: "qawolf/renamed.test",
         test_id: "testId",
       },
       context
     );
 
-    expect(helpers).toBe("new helpers");
-    expect(updatedTest).toMatchObject({ code: "new code", name: "new name" });
-
-    await db("teams").where({ id: "teamId" }).update({ helpers: team.helpers });
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ code: test.code, name: null, path: test.path });
-  });
-});
-
-describe("updateTestAndHelpers", () => {
-  it("updates helpers", async () => {
-    const { helpers, test: updatedTest } = await updateTestAndHelpers(
-      { helpers: "new helpers", name: null, team, test },
-      options
-    );
-
-    expect(helpers).toBe("new helpers");
-    expect(updatedTest.code).toBe(test.code);
-    expect(updatedTest.name).toBe(test.name);
-
-    const updatedTeam = await db("teams").first();
-    expect(updatedTeam.helpers).toBe("new helpers");
-
-    await db("teams").where({ id: "teamId" }).update({ helpers: team.helpers });
-  });
-
-  it("updates test code and name", async () => {
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ name: "old name", path: null });
-
-    const { helpers, test: updatedTest } = await updateTestAndHelpers(
-      { code: "new code", name: "new name", team, test },
-      options
-    );
-
-    expect(helpers).toBe("team helpers");
-    expect(updatedTest).toMatchObject({ code: "new code", name: "new name" });
-
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ code: test.code, name: null, path: test.path });
-  });
-
-  it("updates test code only", async () => {
-    const { helpers, test: updatedTest } = await updateTestAndHelpers(
-      { code: "another code", team, test },
-      options
-    );
-
-    expect(helpers).toBe("team helpers");
-    expect(updatedTest).toMatchObject({ code: "another code" });
-
-    await db("tests").where({ id: "testId" }).update({ code: test.code });
-  });
-
-  it("updates test name only", async () => {
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ name: "old name", path: null });
-
-    const { helpers, test: updatedTest } = await updateTestAndHelpers(
-      { name: "another name", team, test },
-      options
-    );
-
-    expect(helpers).toBe("team helpers");
-    expect(updatedTest).toMatchObject({ name: "another name" });
-
-    await db("tests")
-      .where({ id: "testId" })
-      .update({ name: null, path: test.path });
+    expect(helpers).toEqual({
+      content: "git helpers",
+      id: "helpers.teamId",
+      is_read_only: false,
+      path: treeService.HELPERS_PATH,
+      team_id: "teamId",
+    });
+    expect(test).toEqual({
+      content: "new code",
+      id: "test.testId",
+      is_read_only: false,
+      path: "qawolf/renamed.test",
+      team_id: "teamId",
+    });
   });
 });

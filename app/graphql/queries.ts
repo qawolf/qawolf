@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import {
   environmentFragment,
   environmentVariableFragment,
+  fileFragment,
   integrationFragment,
   inviteFragment,
   runFragment,
@@ -12,7 +13,6 @@ import {
   tagFragment,
   tagsForTestFragment,
   teamFragment,
-  testFragment,
   triggerFragment,
   userFragment,
   wolfFragment,
@@ -26,22 +26,6 @@ export const currentUserQuery = gql`
     }
   }
   ${userFragment}
-`;
-
-export const editorQuery = gql`
-  query editor($branch: String, $run_id: ID, $test_id: ID) {
-    editor(branch: $branch, run_id: $run_id, test_id: $test_id) {
-      helpers
-      run {
-        ...RunFragment
-      }
-      test {
-        ...TestFragment
-      }
-    }
-  }
-  ${runFragment}
-  ${testFragment}
 `;
 
 export const environmentsQuery = gql`
@@ -63,6 +47,15 @@ export const environmentVariablesQuery = gql`
     }
   }
   ${environmentVariableFragment}
+`;
+
+export const fileQuery = gql`
+  query file($branch: String, $id: ID!) {
+    file(branch: $branch, id: $id) {
+      ...FileFragment
+    }
+  }
+  ${fileFragment}
 `;
 
 export const gitHubBranchesQuery = gql`
@@ -92,6 +85,15 @@ export const onboardingQuery = gql`
       has_trigger
     }
   }
+`;
+
+export const runQuery = gql`
+  query run($id: ID!) {
+    run(id: $id) {
+      ...RunFragment
+    }
+  }
+  ${runFragment}
 `;
 
 export const runCountQuery = gql`

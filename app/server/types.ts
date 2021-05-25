@@ -21,7 +21,6 @@ export type Context = {
 };
 
 // GitHub types
-
 export type GitHubBranch = {
   is_default: boolean;
   name: string;
@@ -116,6 +115,14 @@ export type EnvironmentVariable = {
   team_id: string;
   value: string;
   updated_at?: string;
+};
+
+export type File = {
+  content: string;
+  id: string;
+  is_read_only: boolean;
+  path: string;
+  team_id: string;
 };
 
 export type FormattedVariables = { [name: string]: string };
@@ -506,11 +513,15 @@ export type RunTestStatus = {
   pass: boolean;
 };
 
-export type SaveEditorMutation = {
-  branch?: string | null;
+export type CommitEditor = {
+  helpers: File;
+  test: File;
+};
+
+export type CommitEditorMutation = {
+  branch: string;
   code?: string | null;
   helpers?: string | null;
-  name?: string | null;
   path?: string | null;
   test_id: string;
 };
@@ -554,6 +565,12 @@ export type UpdateEnvironmentMutation = {
   name: string;
 };
 
+export type UpdateFileMutation = {
+  content?: string | null;
+  id: string;
+  path?: string | null;
+};
+
 export type UpdateRunMutation = {
   error?: string;
   current_line: number | null;
@@ -587,7 +604,6 @@ export type UpdateTagTestsMutation = {
 export type UpdateTeamMutation = {
   alert_integration_id?: string | null;
   alert_only_on_failure?: boolean;
-  helpers?: string | null;
   id: string;
   is_email_alert_enabled?: boolean;
   name?: string | null;
@@ -625,18 +641,6 @@ export type CurrentUser = User & {
   teams: Team[];
 };
 
-export type Editor = {
-  helpers: string;
-  run?: RunResult | null;
-  test: Test;
-};
-
-export type EditorQuery = {
-  branch?: string | null;
-  run_id?: string | null;
-  test_id?: string | null;
-};
-
 export type EmailQuery = {
   created_after: string;
   to: string;
@@ -644,6 +648,11 @@ export type EmailQuery = {
 
 export type EnvironmentIdQuery = {
   environment_id: string;
+};
+
+export type FileQuery = {
+  branch?: string | null;
+  id: string;
 };
 
 export type IdQuery = {

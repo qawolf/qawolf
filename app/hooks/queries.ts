@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 
 import {
   currentUserQuery,
-  editorQuery,
   environmentsQuery,
   environmentVariablesQuery,
+  fileQuery,
   gitHubBranchesQuery,
   integrationsQuery,
   onboardingQuery,
@@ -29,17 +29,19 @@ import { isServer } from "../lib/detection";
 import { routes } from "../lib/routes";
 import { state } from "../lib/state";
 import {
-  Editor,
   Environment,
   EnvironmentVariable,
+  File,
   GitHubBranch,
   Integration,
   Onboarding,
+  Run,
   Runner,
   ShortTest,
   Suite,
   SuiteSummary,
   Tag,
+  TagsForTest,
   TeamWithUsers,
   TestHistoryRun,
   TestSummary,
@@ -47,21 +49,10 @@ import {
   User,
   Wolf,
 } from "../lib/types";
-import { TagsForTest } from "../server/types";
 import { useLogOut } from "./onLogOut";
 
 type CurrentUserData = {
   currentUser: User;
-};
-
-type EditorData = {
-  editor: Editor;
-};
-
-type EditorVariables = {
-  branch?: string;
-  run_id?: string | null;
-  test_id?: string | null;
 };
 
 type EnvironmentsData = {
@@ -91,6 +82,15 @@ type GitHubBranchesVariables = {
   team_id: string;
 };
 
+type FileData = {
+  file: File;
+};
+
+type FileVariables = {
+  branch?: string | null;
+  id: string;
+};
+
 type IntegrationsData = {
   integrations: Integration[];
 };
@@ -105,6 +105,14 @@ type OnboardingData = {
 
 type OnboardingVariables = {
   team_id: string;
+};
+
+type RunData = {
+  run: Run;
+};
+
+type RunVariables = {
+  id: string;
 };
 
 type RunCountData = {
@@ -227,35 +235,6 @@ export const useCurrentUser = (): QueryResult<CurrentUserData> => {
   });
 };
 
-export const useEditor = (
-  variables: EditorVariables,
-  { teamId }: { teamId: string }
-): QueryResult<EditorData, EditorVariables> => {
-  const { replace } = useRouter();
-
-  return useQuery<EditorData, EditorVariables>(editorQuery, {
-    fetchPolicy,
-    nextFetchPolicy,
-    onCompleted: (response) => {
-      const { editor } = response || {};
-      // set correct team id if needed
-      if (editor?.test?.team_id && editor.test.team_id !== teamId) {
-        state.setTeamId(editor.test.team_id);
-      }
-    },
-    onError: (error: ApolloError) => {
-      if (
-        error.message.includes("cannot access") ||
-        error.message.includes("not found")
-      ) {
-        replace(routes.tests);
-      }
-    },
-    skip: !variables.run_id && !variables.test_id,
-    variables,
-  });
-};
-
 export const useEnvironments = (
   variables: EnvironmentsVariables,
   { environmentId }: { environmentId: string | null }
@@ -298,6 +277,33 @@ export const useEnvironmentVariables = (
   );
 };
 
+export const useFile = (
+  variables: FileVariables
+): QueryResult<FileData, FileVariables> => {
+  const { replace } = useRouter();
+
+  return useQuery(fileQuery, {
+    fetchPolicy,
+    onCompleted: (response) => {
+      const { file } = response || {};
+      if (!file) return;
+
+      // set correct team id if needed
+      if (file.team_id !== state.state.teamId) state.setTeamId(file.team_id);
+    },
+    onError: (error: ApolloError) => {
+      if (
+        error.message.includes("cannot access") ||
+        error.message.includes("not found")
+      ) {
+        replace(routes.tests);
+      }
+    },
+    skip: !variables.id,
+    variables,
+  });
+};
+
 export const useGitHubBranches = (
   variables: GitHubBranchesVariables,
   { skip }: { skip?: boolean } = {}
@@ -331,6 +337,17 @@ export const useOnboarding = (
     fetchPolicy: "network-only",
     onError,
     skip: !variables.team_id,
+    variables,
+  });
+};
+
+export const useRun = (
+  variables: RunVariables
+): QueryResult<RunData, RunVariables> => {
+  return useQuery<RunData, RunVariables>(runCountQuery, {
+    fetchPolicy,
+    onError,
+    skip: !variables.id,
     variables,
   });
 };

@@ -7,18 +7,17 @@ import { colors, edgeSize } from "../../../theme/theme";
 import GitBranch from "../../shared/GitBranch";
 import Check from "../../shared/icons/Check";
 import Tooltip from "../../shared/Tooltip";
-import { Mode } from "../hooks/mode";
 
 type Props = {
   branch: string | null;
   hasChanges: boolean;
-  mode: Mode;
+  isRun: boolean;
 };
 
 export default function Branch({
   branch,
   hasChanges,
-  mode,
+  isRun,
 }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
@@ -31,7 +30,7 @@ export default function Branch({
 
   return (
     <Box align="center" direction="row" margin={{ right: "small" }}>
-      {mode === "test" && (
+      {!isRun && (
         <Box
           align="center"
           direction="row"

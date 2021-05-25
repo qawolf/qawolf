@@ -6,15 +6,11 @@ import NoMobile from "../NoMobile";
 import StatusBadge from "../shared/StatusBadge";
 import Text from "../shared/Text";
 import TestVideo from "./Canvas/TestVideo";
-import { TestContext } from "./contexts/TestContext";
-import { Mode } from "./hooks/mode";
+import { EditorContext } from "./contexts/EditorContext";
 
-type Props = { mode: Mode };
-
-export default function EditorMobile({ mode }: Props): JSX.Element {
-  const { run, test } = useContext(TestContext);
-
-  if (mode !== "run") return <NoMobile />;
+export default function EditorMobile(): JSX.Element {
+  const { run, runId, testPath } = useContext(EditorContext);
+  if (!runId) return <NoMobile />;
 
   const videoUrl = run?.video_url;
 
@@ -33,7 +29,7 @@ export default function EditorMobile({ mode }: Props): JSX.Element {
           size="componentHeader"
           style={overflowStyle}
         >
-          {test?.name || ""}
+          {testPath || ""}
         </Text>
         <StatusBadge status={run?.status} />
       </Box>

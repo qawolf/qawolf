@@ -3,21 +3,18 @@ import { useContext, useEffect } from "react";
 
 import { RunnerContext } from "../contexts/RunnerContext";
 import { useBrowser } from "../hooks/browser";
-import { Mode } from "../hooks/mode";
 import Placeholder from "./Placeholder";
 import Screencast from "./Screencast";
 import TestVideo from "./TestVideo";
 
 type Props = {
   height: number | null;
-  mode: Mode;
   videoUrl?: string;
   width: number | null;
 };
 
 export default function Canvas({
   height,
-  mode,
   videoUrl,
   width,
 }: Props): JSX.Element {
@@ -35,9 +32,7 @@ export default function Canvas({
   return (
     <>
       <Box alignSelf="center" background="gray9">
-        {showPlaceholder && (
-          <Placeholder height={height} mode={mode} width={width} />
-        )}
+        {showPlaceholder && <Placeholder height={height} width={width} />}
         <Screencast
           browser={browser}
           height={height}

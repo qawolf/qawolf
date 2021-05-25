@@ -5,7 +5,7 @@ import { state } from "../../../lib/state";
 import { copy } from "../../../theme/copy";
 import Button from "../../shared/AppButton";
 import Tag from "../../shared/icons/Tag";
-import { TestContext } from "../contexts/TestContext";
+import { EditorContext } from "../contexts/EditorContext";
 
 type Props = {
   branch: string | null;
@@ -13,12 +13,12 @@ type Props = {
 };
 
 export default function TestButtons({ branch, testId }: Props): JSX.Element {
-  const { hasChanges, controller } = useContext(TestContext);
+  const { hasChanges, commitChanges } = useContext(EditorContext);
   const [loading, setLoading] = useState(false);
 
   const handleCommitClick = async (): Promise<void> => {
     setLoading(true);
-    await controller.save();
+    await commitChanges();
     setLoading(false);
   };
 

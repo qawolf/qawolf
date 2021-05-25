@@ -78,12 +78,16 @@ const getGlyphs = ({
 };
 
 type UseGlyphs = {
-  code: string;
   editor: monacoEditor.editor.IStandaloneCodeEditor | null;
   progress: RunProgress;
+  testContent: string;
 };
 
-export const useGlyphs = ({ code, editor, progress }: UseGlyphs): void => {
+export const useGlyphs = ({
+  editor,
+  progress,
+  testContent,
+}: UseGlyphs): void => {
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const glyphsRef = useRef<string[]>([]);
 
@@ -118,7 +122,7 @@ export const useGlyphs = ({ code, editor, progress }: UseGlyphs): void => {
     };
 
     // clear the glyphs when the progress is different than the code
-    if (progress && progress.code !== code) {
+    if (progress && progress.code !== testContent) {
       updateGlyphs([]);
       return;
     }
@@ -131,5 +135,5 @@ export const useGlyphs = ({ code, editor, progress }: UseGlyphs): void => {
     });
 
     updateGlyphs(glyphs);
-  }, [code, editor, isEditorLoaded, progress]);
+  }, [editor, isEditorLoaded, progress, testContent]);
 };

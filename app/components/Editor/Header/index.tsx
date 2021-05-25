@@ -1,5 +1,4 @@
 import { Box } from "grommet";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import { timeToText } from "../../../lib/helpers";
@@ -11,10 +10,9 @@ import Edit from "../../shared/icons/Edit";
 import StatusBadge from "../../shared/StatusBadge";
 import Text from "../../shared/Text";
 import { StateContext } from "../../StateContext";
+import { EditorContext } from "../contexts/EditorContext";
 import { RunnerContext } from "../contexts/RunnerContext";
-import { TestContext } from "../contexts/TestContext";
 import { buildTestHref } from "../helpers";
-import { Mode } from "../hooks/mode";
 import BackButton from "./BackButton";
 import Branch from "./Branch";
 import RunSummary from "./RunSummary";
@@ -22,21 +20,13 @@ import TestButtons from "./TestButtons";
 import TestHistory from "./TestHistory";
 import TestName from "./TestName";
 
-type Props = { mode: Mode };
-
-export default function Header({ mode }: Props): JSX.Element {
-  const {
-    query: { test_id },
-  } = useRouter();
-
+export default function Header(): JSX.Element {
   const { progress } = useContext(RunnerContext);
   const { branch: stateBranch } = useContext(StateContext);
-  const { hasChanges, run, suite, test } = useContext(TestContext);
+  const { hasChanges, run, runId, suite, testId } = useContext(EditorContext);
 
   const runBranch = suite?.branch || null;
   const testBranch = stateBranch || null;
-
-  const testId = test_id as string;
 
   return (
     <>
@@ -51,7 +41,7 @@ export default function Header({ mode }: Props): JSX.Element {
       >
         <Box align="center" direction="row">
           <BackButton />
-          <TestName disabled={mode !== "test"} test={test} />
+          <TestName disabled={!!runId} />
           {!!run && (
             <Text color="gray7" margin={{ right: "small" }} size="component">
               {timeToText(run.created_at)}
@@ -62,23 +52,21 @@ export default function Header({ mode }: Props): JSX.Element {
         <Box align="center" direction="row">
           <Branch
             hasChanges={hasChanges}
-            branch={mode === "test" ? testBranch : runBranch}
-            mode={mode}
+            branch={runId ? runBranch : testBranch}
+            isRun={!!runId}
           />
-          <TestHistory testId={test?.id || null} />
+          <TestHistory testId={testId} />
           <Divider
             height={edgeSize.large}
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {mode === "test" && (
-            <TestButtons branch={testBranch} testId={testId} />
-          )}
+          {!runId && <TestButtons branch={testBranch} testId={testId} />}
           {run?.test_id && (
             <Button
               IconComponent={Edit}
               href={buildTestHref({ run, suite })}
-              isDisabled={!run?.test_id || !!test?.deleted_at}
+              isDisabled={!run?.test_id}
               label={copy.editTest}
               type="primary"
             />

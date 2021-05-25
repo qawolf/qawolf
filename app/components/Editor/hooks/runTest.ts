@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { runAndSetInterval } from "../../../lib/helpers";
 import { RunnerClient } from "../../../lib/runner";
 import { state } from "../../../lib/state";
-import { Env, RunOptions } from "../../../lib/types";
+import { Env, RunOptions, Selection } from "../../../lib/types";
 import { minutesFromNow } from "../../../shared/utils";
-import { Selection } from "./selection";
-
-type RunTestOptions = {
-  code: string;
-  helpers?: string;
-  selection: Selection | null;
-};
+import { EditorContext } from "../contexts/EditorContext";
 
 export type RunTest = {
   requestTestRunner: boolean;
-  runTest: (options: RunTestOptions) => void;
+  runTest: (selection?: Selection | null) => void;
   stopTest: () => void;
 };
 
@@ -30,6 +24,8 @@ export const useRunTest = ({
   resetProgress,
   runner,
 }: UseRunTest): RunTest => {
+  const { helpersModel, testModel } = useContext(EditorContext);
+
   const [requestTestRunner, setRequestTestRunner] = useState(
     !!state.pendingRun
   );
@@ -46,14 +42,16 @@ export const useRunTest = ({
     return () => clearInterval(interval);
   }, [ranAt]);
 
-  const runTest = async ({ code, helpers, selection }: RunTestOptions) => {
-    resetProgress(code);
+  const runTest = async (selection?: Selection) => {
+    const testContent = testModel.content;
+
+    resetProgress(testContent);
     setRanAt(new Date());
 
     const options: RunOptions = {
-      code,
+      code: testContent,
       env: env || {},
-      helpers: helpers || "",
+      helpers: helpersModel.content,
       restart: !selection || selection.startLine === 1,
     };
 

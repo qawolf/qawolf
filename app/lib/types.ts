@@ -6,12 +6,6 @@ export type AuthenticatedUser = {
 
 export type DeploymentProvider = "netlify" | "render" | "vercel";
 
-export type Editor = {
-  helpers: string;
-  run?: Run | null;
-  test: Test;
-};
-
 export type Env = { [name: string]: string };
 
 export type Environment = {
@@ -25,6 +19,14 @@ export type EnvironmentVariable = {
   id: string;
   name: string;
   value: string;
+};
+
+export type File = {
+  content: string;
+  id: string;
+  is_read_only: boolean;
+  path: string;
+  team_id: string;
 };
 
 export type GitHubBranch = {
@@ -322,6 +324,11 @@ export type RunProgress = {
   run_id?: string;
   start_line?: number;
   status: RunStatus;
+};
+
+export type Selection = {
+  endLine: number;
+  startLine: number;
 };
 
 // State Types
