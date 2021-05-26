@@ -96,7 +96,7 @@ export const getBrowserName = (name?: string): BrowserName => {
     return providedName as BrowserName;
   }
 
-  return "chromium";
+  return "chrome";
 };
 
 export const launch = async (
