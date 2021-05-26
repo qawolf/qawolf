@@ -17,19 +17,19 @@ describe("parseBrowserName", () => {
     expect(name).toBe("chromium");
   });
 
-  it("returns chromium for null", () => {
+  it("returns chrome for null", () => {
     const name = parseBrowserName(null);
-    expect(name).toBe("chromium");
+    expect(name).toBe("chrome");
   });
 
-  it("returns chromium for undefined", () => {
+  it("returns chrome for undefined", () => {
     const name = parseBrowserName();
-    expect(name).toBe("chromium");
+    expect(name).toBe("chrome");
   });
 
-  it("returns chromium for foo", () => {
+  it("returns chrome for foo", () => {
     const name = parseBrowserName("foo");
-    expect(name).toBe("chromium");
+    expect(name).toBe("chrome");
   });
 });
 
