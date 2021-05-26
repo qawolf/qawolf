@@ -41,11 +41,11 @@ export type LaunchResult = {
 };
 
 export const parseBrowserName = (name?: string): BrowserName => {
-  if (name === "chromium" || name === "firefox" || name === "webkit") {
+  if (name === "firefox" || name === "webkit") {
     return name;
   }
 
-  return "chrome";
+  return "chromium";
 };
 
 export const getBrowserType = (
