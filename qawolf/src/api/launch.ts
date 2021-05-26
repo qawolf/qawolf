@@ -25,7 +25,7 @@ const CONTEXT_OPTIONS = [
   "isMobile",
 ] as const;
 
-type BrowserName = "chromium" | "firefox" | "webkit";
+type BrowserName = "chrome" | "chromium" | "firefox" | "webkit";
 
 export type QAWolfLaunchOptions = Pick<
   BrowserContextOptions,
@@ -41,8 +41,11 @@ export type LaunchResult = {
 };
 
 export const parseBrowserName = (name?: string): BrowserName => {
-  if (name === "firefox" || name === "webkit") return name;
-  return "chromium";
+  if (name === "chromium" || name === "firefox" || name === "webkit") {
+    return name;
+  }
+
+  return "chrome";
 };
 
 export const getBrowserType = (

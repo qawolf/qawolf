@@ -69,7 +69,7 @@ Pick<import("playwright").LaunchOptions,
 "slowMo" |
 "timeout"> & {
   allowTracking?: boolean;
-  browser?: "chromium" | "firefox" | "webkit";
+  browser?: "chrome" | "chromium" | "firefox" | "webkit";
   headless?: boolean;
 };
 
