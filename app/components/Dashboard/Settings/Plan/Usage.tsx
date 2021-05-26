@@ -15,7 +15,7 @@ const getMaxRuns = (plan: TeamWithUsers["plan"], runCount: number): number => {
   if (plan !== "business") return 100;
   if (runCount <= 1000) return 1000;
 
-  return Math.ceil(runCount / 500) * 1000;
+  return Math.ceil(runCount / 500) * 500;
 };
 
 export default function Usage({ team }: Props): JSX.Element {
