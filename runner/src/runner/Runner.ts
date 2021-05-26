@@ -99,6 +99,13 @@ export class Runner extends EventEmitter {
   async run(options: RunOptions): Promise<void> {
     this._hooks = [];
 
+    // XXX change this when we switch to documents
+    // overwrite the code value with the run value
+    // this is needed for a new test before keystrokes
+    if (options.restart) {
+      this._codeModel.setValue(options.code);
+    }
+
     if (!this._environment || options.restart) {
       this._environment = await this._createEnvironment();
       // create new hooks for restarted runs
