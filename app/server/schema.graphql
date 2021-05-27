@@ -126,6 +126,9 @@ type File {
 
   "The id of the team that owns the file"
   team_id: ID!
+
+  "The websocket URL of the file"
+  url: String!
 }
 
 "A GitHub branch"

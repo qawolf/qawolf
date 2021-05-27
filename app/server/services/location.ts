@@ -89,7 +89,7 @@ export const getUserLocation = async ({
   }
 };
 
-const sortLocationsByDistance = (
+export const sortLocationsByDistance = (
   locations: RunnerLocations,
   userLocation: Location
 ): ((a: string, b: string) => number) => {

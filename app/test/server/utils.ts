@@ -7,6 +7,7 @@ import {
   Email,
   Environment,
   EnvironmentVariable,
+  FileModel,
   GitHubCommitStatus,
   Integration,
   IntegrationType,
@@ -52,6 +53,11 @@ type BuildEnvironmentVariable = {
   name?: string;
   team_id?: string;
   value?: string;
+};
+
+type BuildFile = {
+  i?: number;
+  url?: string;
 };
 
 type BuildGitHubCommitStatus = {
@@ -255,6 +261,15 @@ export const buildEnvironmentVariable = ({
     name: name || `ENV_VARIABLE${finalI === 1 ? "" : "_" + i}`,
     team_id: team_id || "teamId",
     value: encrypt(value || "secret"),
+  };
+};
+
+export const buildFile = ({ i, url }: BuildFile): FileModel => {
+  const finalI = i || 1;
+
+  return {
+    id: `file${finalI === 1 ? "" : i}Id`,
+    url: url || "fileUrl",
   };
 };
 

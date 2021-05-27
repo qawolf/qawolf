@@ -117,9 +117,13 @@ export type EnvironmentVariable = {
   updated_at?: string;
 };
 
-export type File = {
-  content: string;
+export type FileModel = {
   id: string;
+  url: string;
+};
+
+export type File = FileModel & {
+  content: string;
   is_read_only: boolean;
   path: string;
   team_id: string;
@@ -243,6 +247,7 @@ export type RunnerLocation = {
   latitude: number;
   longitude: number;
   reserved: number;
+  url: string;
 };
 
 export type RunnerLocations = Record<string, RunnerLocation>;
