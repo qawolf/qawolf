@@ -40,6 +40,7 @@ describe("createDefaultTeam", () => {
         alert_integration_id: null,
         api_key: expect.any(String),
         base_price: null,
+        file_url: null,
         helpers: "",
         id: expect.any(String),
         inbox: expect.any(String),

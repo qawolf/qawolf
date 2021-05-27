@@ -320,6 +320,7 @@ export type Team = {
   created_at?: string;
   default_branches?: string | null;
   deleted_at?: string | null;
+  file_url?: string | null;
   forward_email?: string | null;
   git_sync_integration_id?: string | null;
   id: string;
@@ -352,6 +353,7 @@ export type Test = {
   creator_id: string | null;
   code: string;
   deleted_at: string | null;
+  file_url?: string | null;
   guide?: string | null;
   id: string;
   is_enabled: boolean;
