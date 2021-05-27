@@ -1,12 +1,12 @@
 import { EventEmitter } from "events";
 import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
+import * as Y from "yjs";
 
-import { MonacoBinding } from "../hooks/MonacoBinding";
-import { File } from "../../../lib/types";
 import { JWT_KEY } from "../../../lib/client";
+import { File } from "../../../lib/types";
+import { MonacoBinding } from "../hooks/MonacoBinding";
 
 export type BindOptions = {
   editor: editorNs.IStandaloneCodeEditor;
@@ -17,7 +17,7 @@ export class FileModel extends EventEmitter {
   _contentKey?: string;
   _disposeHooks = [];
   _doc = new Y.Doc();
-  _editorBinding: any;
+  _editorBinding: MonacoBinding;
   _editor?: editorNs.IStandaloneCodeEditor;
   _file?: File;
   _fileMap = this._doc.getMap("file");
@@ -28,11 +28,11 @@ export class FileModel extends EventEmitter {
     super();
 
     this._text.observe(() => {
-      this.emit("changed", { key: "content", value: this.content });
+      this.emit("changed", { key: "content" });
     });
 
     this._fileMap.observe(() => {
-      this.emit("changed", { key: "path", value: this.path });
+      this.emit("changed", { key: "path" });
     });
   }
 
@@ -99,9 +99,9 @@ export class FileModel extends EventEmitter {
   setFile(file: File): void {
     this._file = file;
 
-    this.emit("changed", { key: "content", value: this.content });
-    this.emit("changed", { key: "path", value: this.path });
-    this.emit("changed", { key: "isReadOnly", value: this.isReadOnly });
+    this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "path" });
+    this.emit("changed", { key: "isReadOnly" });
 
     // use this.content since state might be set with a newer version
     const value = this.content;

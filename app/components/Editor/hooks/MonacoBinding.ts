@@ -1,6 +1,8 @@
-import * as Y from "yjs";
+/* eslint-disable */
+// XXX rewrite monaco import and use this library directly
 import * as error from "lib0/error.js";
 import { createMutex } from "lib0/mutex.js";
+import * as Y from "yjs";
 
 class RelativeSelection {
   /**
@@ -245,6 +247,12 @@ export class MonacoBinding {
     });
     if (awareness) {
       editors.forEach((editor) => {
+        editor.onDidBlurEditorText(() => {
+          if (editor.getModel() === monacoModel) {
+            awareness.setLocalStateField("selection", null);
+          }
+        });
+
         editor.onDidChangeCursorSelection(() => {
           if (editor.getModel() === monacoModel) {
             const sel = editor.getSelection();

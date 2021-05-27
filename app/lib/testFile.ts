@@ -41,14 +41,14 @@ export const toggleCodeGeneration = (
 
     // if mouse line number is provided make it 0-indexed
     // otherwise choose the last line
-    let patchLine =
+    const patchLine =
       mouseLineNumber > 0 ? mouseLineNumber - 1 : lines.length - 1;
 
     // prepend a line break, except on empty lines
     if (lines[patchLine] !== "") patch = "\n" + patch;
 
     // insert the patch after the line content
-    let index = lines.slice(0, patchLine + 1).join().length;
+    const index = lines.slice(0, patchLine + 1).join().length;
 
     file.insert(index, patch);
   }

@@ -2,6 +2,7 @@ import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect, useRef, useState } from "react";
 
 import { RunProgress, RunStatus } from "../../../../../lib/types";
+import { FileModel } from "../../../contexts/FileModel";
 import styles from "../CodeEditor.module.css";
 
 type GetGlyphs = {
@@ -80,16 +81,15 @@ const getGlyphs = ({
 type UseGlyphs = {
   editor: monacoEditor.editor.IStandaloneCodeEditor | null;
   progress: RunProgress;
-  testContent: string;
+  testModel: FileModel;
 };
 
-export const useGlyphs = ({
-  editor,
-  progress,
-  testContent,
-}: UseGlyphs): void => {
+export const useGlyphs = ({ editor, progress, testModel }: UseGlyphs): void => {
+  const [testContent, setTestContent] = useState("");
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const glyphsRef = useRef<string[]>([]);
+
+  useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
 
   // wait until content set because editor mounts
   // before glyphs can be rendered

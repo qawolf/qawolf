@@ -1,5 +1,4 @@
 import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
-import { useEffect } from "react";
 import { useContext, useState } from "react";
 
 import { EditorContext } from "../../contexts/EditorContext";
@@ -23,20 +22,14 @@ export default function CodeEditor({
   const [editor, setEditor] = useState<Editor | null>(null);
   const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
 
-  const [testContent, setTestContent] = useState("");
-  const [helpers, setHelpers] = useState("");
-
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
   const { helpersModel, isReadOnly, isLoaded, testModel } = useContext(
     EditorContext
   );
 
   useEnvTypes({ env, monaco });
-  useHelpersTypes({ helpers, monaco });
-  useGlyphs({ editor, progress, testContent });
-
-  useEffect(() => helpersModel?.bind("content", setHelpers), [helpersModel]);
-  useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
+  useHelpersTypes({ helpersModel, monaco });
+  useGlyphs({ editor, progress, testModel });
 
   const editorDidMount = ({ editor, monaco }) => {
     testModel.bindEditor({ editor, monaco });

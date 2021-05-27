@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useEffect } from "react";
+import { createContext, FC, useContext } from "react";
 
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
