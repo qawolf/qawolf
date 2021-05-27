@@ -14,7 +14,6 @@ export type BindOptions = {
 };
 
 export class FileModel extends EventEmitter {
-  _contentKey?: string;
   _disposeHooks = [];
   _doc = new Y.Doc();
   _editorBinding: MonacoBinding;
@@ -103,17 +102,10 @@ export class FileModel extends EventEmitter {
     this.emit("changed", { key: "isReadOnly" });
     this.emit("changed", { key: "path" });
 
-    // use this.content since state might be set with a newer version
-    const value = this.content;
-    if (this._editor?.getValue() !== value) this._editor?.setValue(value);
-
     this._provider?.destroy();
 
-    this._provider = new WebsocketProvider(
-      `${location.protocol === "http:" ? "ws:" : "wss:"}//localhost:1234`,
-      this._file.id,
-      this._doc,
-      { params: { authorization: localStorage.getItem(JWT_KEY) } }
-    );
+    this._provider = new WebsocketProvider(file.url, file.id, this._doc, {
+      params: { authorization: localStorage.getItem(JWT_KEY) },
+    });
   }
 }
