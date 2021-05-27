@@ -6,41 +6,14 @@ import {
   findFile,
 } from "../../../server/models/file";
 import { prepareTestDb } from "../db";
-import { buildEnvironmentVariable, buildFile, logger } from "../utils";
+import { buildFile, createRunnerLocations, logger } from "../utils";
 
 const db = prepareTestDb();
 const options = { db, logger };
 
-const createRunnerLocations = async (isHttps = true): Promise<void> => {
-  const prefix = isHttps ? "https" : "http";
-
-  return db("environment_variables").insert({
-    ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
-    environment_id: null,
-    is_system: true,
-    team_id: null,
-    value: JSON.stringify({
-      westus2: {
-        buffer: 1,
-        latitude: 47.233,
-        longitude: -119.852,
-        reserved: 0,
-        url: `${prefix}://westus2.qawolf.com`,
-      },
-      eastus2: {
-        buffer: 1,
-        latitude: 36.6681,
-        longitude: -78.3889,
-        reserved: 0,
-        url: `${prefix}://eastus2.qawolf.com`,
-      },
-    }),
-  });
-};
-
 describe("buildFileUrl", () => {
   beforeAll(async () => {
-    await createRunnerLocations();
+    await createRunnerLocations(db);
     return db("files").insert(buildFile({}));
   });
 
@@ -96,7 +69,7 @@ describe("findClosestUrl", () => {
   afterEach(() => db("environment_variables").del());
 
   it("returns closest url for https", async () => {
-    await createRunnerLocations();
+    await createRunnerLocations(db);
 
     const url = await findClosestUrl(null, options);
 
@@ -104,7 +77,7 @@ describe("findClosestUrl", () => {
   });
 
   it("returns closest url for http", async () => {
-    await createRunnerLocations(false);
+    await createRunnerLocations(db, false);
 
     const url = await findClosestUrl(null, options);
 

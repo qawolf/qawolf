@@ -118,6 +118,9 @@ type File {
   "The id of the file"
   id: ID!
 
+  "Whether this file was deleted"
+  is_deleted: Boolean!
+
   "Whether the current user can edit the file"
   is_read_only: Boolean!
 

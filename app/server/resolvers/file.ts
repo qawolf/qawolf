@@ -1,4 +1,5 @@
 import { ClientError } from "../errors";
+import { buildFileUrl } from "../models/file";
 import { findRun } from "../models/run";
 import { updateTeam } from "../models/team";
 import { findTest, updateTest } from "../models/test";
@@ -27,23 +28,37 @@ type BuildTestContent = {
 
 const fileDelimiter = ".";
 
-export const formatHelpersFile = ({ helpers, id }: Team): File => {
+export const formatHelpersFile = async (
+  { helpers, id: team_id }: Team,
+  { db, ip, logger }: Context
+): Promise<File> => {
+  const id = `helpers.${team_id}`;
+
   return {
     content: helpers,
-    id: `helpers.${id}`,
+    id,
+    is_deleted: false,
     is_read_only: false,
     path: HELPERS_PATH,
-    team_id: id,
+    team_id,
+    url: await buildFileUrl({ id, ip }, { db, logger }),
   };
 };
 
-export const formatTestFile = (test: Test): File => {
+export const formatTestFile = async (
+  test: Test,
+  { db, ip, logger }: Context
+): Promise<File> => {
+  const id = `test.${test.id}`;
+
   return {
     content: test.code,
-    id: `test.${test.id}`,
+    id,
+    is_deleted: !!test.deleted_at,
     is_read_only: false,
     path: test.name || test.path,
     team_id: test.team_id,
+    url: await buildFileUrl({ id, ip }, { db, logger }),
   };
 };
 
@@ -69,34 +84,41 @@ export const buildTestContent = (
 
 const buildFileForRun = async (
   id: string,
-  { db, logger, teams }: Context
+  { db, ip, logger, teams }: Context
 ): Promise<File> => {
   const run = await findRun(id, { db, logger });
   const test = await findTest(run.test_id, { db, logger });
   await ensureTestAccess({ teams, test }, { db, logger });
 
+  const fileId = `run.${id}`;
+
   return {
     content: run.code,
-    id: `run.${id}`,
+    id: fileId,
+    is_deleted: false,
     is_read_only: true,
     path: test.path || test.name,
     team_id: test.team_id,
+    url: await buildFileUrl({ id: fileId, ip }, { db, logger }),
   };
 };
 
 const buildFileForTeam = async (
   id: string,
-  { logger, teams }: Context
+  context: Context
 ): Promise<File> => {
+  const { logger, teams } = context;
   const team = ensureTeamAccess({ logger, team_id: id, teams });
 
-  return formatHelpersFile(team);
+  return formatHelpersFile(team, context);
 };
 
 const buildFileForTest = async (
   { branch, id }: BuildFileForTest,
-  { db, logger, teams }: Context
+  context: Context
 ): Promise<File> => {
+  const { db, logger, teams } = context;
+
   const test = await findTest(id, { db, logger });
   const team = await ensureTestAccess({ test, teams }, { db, logger });
 
@@ -111,7 +133,7 @@ const buildFileForTest = async (
   }
 
   return {
-    ...formatTestFile(test),
+    ...(await formatTestFile(test, context)),
     content: buildTestContent({ files, test }, { db, logger }),
   };
 };
@@ -144,8 +166,9 @@ export const fileResolver = async (
 export const updateFileResolver = async (
   _: Record<string, unknown>,
   { content, id: fileId, path }: UpdateFileMutation,
-  { db, logger, teams }: Context
+  context: Context
 ): Promise<File> => {
+  const { db, logger, teams } = context;
   const log = logger.prefix("updateFileResolver");
   log.debug("file", fileId);
 
@@ -155,7 +178,7 @@ export const updateFileResolver = async (
     ensureTeamAccess({ logger, team_id: id, teams });
     const team = await updateTeam({ helpers: content, id }, { db, logger });
 
-    return formatHelpersFile(team);
+    return formatHelpersFile(team, context);
   }
   if (type === "test") {
     await ensureTestAccess({ teams, test_id: id }, { db, logger });
@@ -164,7 +187,7 @@ export const updateFileResolver = async (
       { db, logger }
     );
 
-    return formatTestFile(test);
+    return formatTestFile(test, context);
   }
 
   const message = `invalid file type ${type}`;

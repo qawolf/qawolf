@@ -15,6 +15,7 @@ import {
   buildTest,
   buildTrigger,
   buildUser,
+  createRunnerLocations,
   testContext,
 } from "../utils";
 
@@ -32,9 +33,10 @@ const test = buildTest({ code: "test code", path: "qawolf/myTest.test.js" });
 
 const db = prepareTestDb();
 const context = { ...testContext, db, teams: [team] };
-const options = { db, logger: context.logger };
 
 beforeAll(async () => {
+  await createRunnerLocations(db);
+
   await db("teams").insert({ ...team, git_sync_integration_id: null });
   await db("users").insert(buildUser({}));
 
@@ -87,15 +89,17 @@ describe("commitTestAndHelpers", () => {
         team,
         test,
       },
-      options
+      context
     );
 
     expect(helpers).toEqual({
       content: "git helpers",
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
     expect(updatedTest.path).toBe("qawolf/renamed.test.js");
 
@@ -112,7 +116,7 @@ describe("commitTestAndHelpers", () => {
             team,
             test: { ...test, path: "qawolf/oops.test.js" },
           },
-          options
+          context
         );
       }
     ).rejects.toThrowError("No helpers or test file");
@@ -145,16 +149,20 @@ describe("commitEditorResolver", () => {
     expect(helpers).toEqual({
       content: "git helpers",
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
     expect(test).toEqual({
       content: "new code",
       id: "test.testId",
+      is_deleted: false,
       is_read_only: false,
       path: "qawolf/renamed.test",
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
   });
 });

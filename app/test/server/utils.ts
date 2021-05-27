@@ -14,6 +14,7 @@ import {
   Invite,
   Job,
   JobName,
+  ModelOptions,
   PullRequestComment,
   Run,
   Runner,
@@ -626,6 +627,36 @@ export const buildUser = ({ i, is_enabled }: BuildUser): User => {
     wolf_number: finalI,
     wolf_variant: "brown",
   };
+};
+
+export const createRunnerLocations = async (
+  db: ModelOptions["db"],
+  isHttps = true
+): Promise<void> => {
+  const prefix = isHttps ? "https" : "http";
+
+  return db("environment_variables").insert({
+    ...buildEnvironmentVariable({ name: "RUNNER_LOCATIONS" }),
+    environment_id: null,
+    is_system: true,
+    team_id: null,
+    value: JSON.stringify({
+      westus2: {
+        buffer: 1,
+        latitude: 47.233,
+        longitude: -119.852,
+        reserved: 0,
+        url: `${prefix}://westus2.qawolf.com`,
+      },
+      eastus2: {
+        buffer: 1,
+        latitude: 36.6681,
+        longitude: -78.3889,
+        reserved: 0,
+        url: `${prefix}://eastus2.qawolf.com`,
+      },
+    }),
+  });
 };
 
 export const deleteUser = async (

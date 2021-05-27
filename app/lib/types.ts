@@ -24,9 +24,11 @@ export type EnvironmentVariable = {
 export type File = {
   content: string;
   id: string;
+  is_deleted: boolean;
   is_read_only: boolean;
   path: string;
   team_id: string;
+  url: string;
 };
 
 export type GitHubBranch = {

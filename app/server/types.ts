@@ -124,6 +124,7 @@ export type FileModel = {
 
 export type File = FileModel & {
   content: string;
+  is_deleted: boolean;
   is_read_only: boolean;
   path: string;
   team_id: string;

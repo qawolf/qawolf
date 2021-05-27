@@ -21,9 +21,11 @@ export const fileFragment = gql`
   fragment FileFragment on File {
     content
     id
+    is_deleted
     is_read_only
     path
     team_id
+    url
   }
 `;
 

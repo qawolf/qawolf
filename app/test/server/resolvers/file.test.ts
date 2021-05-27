@@ -16,6 +16,7 @@ import {
   buildTest,
   buildTrigger,
   buildUser,
+  createRunnerLocations,
   testContext,
 } from "../utils";
 
@@ -37,6 +38,8 @@ const context = { ...testContext, db, teams: [team] };
 const options = { db, logger: context.logger };
 
 beforeAll(async () => {
+  await createRunnerLocations(db);
+
   await db("teams").insert({ ...team, git_sync_integration_id: null });
   await db("users").insert(buildUser({}));
 
@@ -79,9 +82,11 @@ describe("fileResolver", () => {
     expect(file).toEqual({
       content: team.helpers,
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -91,9 +96,11 @@ describe("fileResolver", () => {
     expect(file).toEqual({
       content: run.code,
       id: "run.runId",
+      is_deleted: false,
       is_read_only: true,
       path: test.path,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -105,9 +112,11 @@ describe("fileResolver", () => {
     expect(file).toEqual({
       content: test2.code,
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).not.toBeCalled();
@@ -127,9 +136,11 @@ describe("fileResolver", () => {
     expect(file).toEqual({
       content: "git code",
       id: "test.testId",
+      is_deleted: false,
       is_read_only: false,
       path: test.path,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).toBeCalled();
@@ -157,9 +168,11 @@ describe("updateFileResolver", () => {
     expect(file).toEqual({
       content: "new helpers",
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTeam({ helpers: oldHelpers, id: "teamId" }, options);
@@ -177,9 +190,11 @@ describe("updateFileResolver", () => {
     expect(file).toEqual({
       content: "new code",
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ code: oldCode, id: "test2Id" }, options);
@@ -197,9 +212,11 @@ describe("updateFileResolver", () => {
     expect(file).toEqual({
       content: test2.code,
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: "new name",
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ id: "test2Id", name: oldName }, options);
