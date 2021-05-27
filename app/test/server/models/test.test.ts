@@ -141,7 +141,6 @@ describe("createTest", () => {
       code: "code",
       creator_id: "userId",
       deleted_at: null,
-      file_url: null,
       guide: null,
       id: expect.any(String),
       is_enabled: true,

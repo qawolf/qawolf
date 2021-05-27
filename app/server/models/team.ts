@@ -30,11 +30,6 @@ type UpdateTeam = {
   stripe_subscription_id?: string;
 };
 
-type UpdateTeamFileUrl = {
-  file_url: string | null;
-  id: string;
-};
-
 type ValidateApiKeyForTeam = {
   api_key: string;
   team_id: string;
@@ -248,24 +243,6 @@ export const updateTeam = async (
   log.debug("updated", id, updates);
 
   return { ...team, ...updates };
-};
-
-export const updateTeamFileUrl = async (
-  { file_url, id }: UpdateTeamFileUrl,
-  { db, logger }: ModelOptions
-): Promise<Team> => {
-  const log = logger.prefix("updateTeamFileUrl");
-  log.debug("team", id, "file url", file_url);
-
-  const where: Partial<Team> = { id };
-  if (file_url) where.file_url = null;
-
-  const updatedTeams = await db("teams").where(where).update({ file_url }, "*");
-  const team = updatedTeams[0];
-
-  if (team) return team;
-
-  return findTeam(id, { db, logger });
 };
 
 export const validateApiKeyForTeam = async (

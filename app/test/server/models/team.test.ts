@@ -8,7 +8,6 @@ import {
   findTeamsForUser,
   findTeamsToSync,
   updateTeam,
-  updateTeamFileUrl,
   validateApiKeyForTeam,
 } from "../../../server/models/team";
 import { minutesFromNow } from "../../../shared/utils";
@@ -41,7 +40,6 @@ describe("createDefaultTeam", () => {
         alert_integration_id: null,
         api_key: expect.any(String),
         base_price: null,
-        file_url: null,
         helpers: "",
         id: expect.any(String),
         inbox: expect.any(String),
@@ -421,53 +419,6 @@ describe("updateTeam", () => {
     await expect(
       updateTeam({ id: "fakeId", name: "name" }, options)
     ).rejects.toThrowError("not found");
-  });
-});
-
-describe("updateTeamFileUrl", () => {
-  beforeAll(() => db("teams").insert(buildTeam({})));
-
-  afterAll(() => db("teams").del());
-
-  it("sets file url", async () => {
-    const team = await updateTeamFileUrl(
-      { file_url: "fileUrl", id: "teamId" },
-      options
-    );
-    const updatedTeam = await db.select("*").from("teams").first();
-
-    expect(team.file_url).toBe("fileUrl");
-    expect(updatedTeam.file_url).toBe("fileUrl");
-
-    await db("teams").update({ file_url: null });
-  });
-
-  it("does not overwrite existing file url", async () => {
-    await db("teams").update({ file_url: "fileUrl" });
-
-    const team = await updateTeamFileUrl(
-      { file_url: "newFileUrl", id: "teamId" },
-      options
-    );
-    const updatedTeam = await db.select("*").from("teams").first();
-
-    expect(team.file_url).toBe("fileUrl");
-    expect(updatedTeam.file_url).toBe("fileUrl");
-
-    await db("teams").update({ file_url: null });
-  });
-
-  it("clears existing file url", async () => {
-    await db("teams").update({ file_url: "fileUrl" });
-
-    const team = await updateTeamFileUrl(
-      { file_url: null, id: "teamId" },
-      options
-    );
-    const updatedTeam = await db.select("*").from("teams").first();
-
-    expect(team.file_url).toBeNull();
-    expect(updatedTeam.file_url).toBeNull();
   });
 });
 
