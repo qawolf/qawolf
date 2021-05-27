@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ExternalLink from "../../components/Docs/ExternalLink";
 import Header from "../../components/Docs/Header";
 import Image from "../../components/Docs/Image";
 import Layout from "../../components/Docs/Layout";
@@ -9,52 +10,52 @@ import SubHeader from "../../components/Docs/SubHeader";
 
 <Header>Use localhost</Header>
 
-In this tutorial, we'll create a test with `localhost`.
+In this tutorial, we'll create a test on `localhost`. For now, you should use a service like <ExternalLink href="https://ngrok.com/">ngrok</ExternalLink> or <ExternalLink href="https://github.com/localtunnel/localtunnel">localtunnel</ExternalLink> to do this.
 
 This is helpful for:
 
 - testing a new feature while you are developing it
 - adding test attributes like `data-qa=search-button` to your site while creating a test
 
-<SubHeader>Local Runner</SubHeader>
+We are considering making testing `localhost` easier. If this is something you're interested in, please <ExternalLink href="https://slack.qawolf.com">contact us</ExternalLink>.
+
+<SubHeader>Start localtunnel</SubHeader>
+
+First, we need to install a service like <ExternalLink href="https://ngrok.com/">ngrok</ExternalLink> or <ExternalLink href="https://github.com/localtunnel/localtunnel">localtunnel</ExternalLink>. Install localtunnel with the following command:
+
+```bash
+npm install -g localtunnel
+```
 
 First we need to start a local runner.
 
-Make sure you have <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker</a> and <a href="https://nodejs.org/en/download/" target="_blank">Node.js</a> installed on your computer.
+Now create a URL to your site by running the following command. This will create a URL that points to `localhost:3000`:
 
-Now run `npx qawolf@latest` to start the runner.
+```bash
+lt --port 3000
+```
+
+The result of this command is a URL you can use to create your test.
 
 <Image
-  alt="Start the runner"
-  height={247}
-  src="/docs/use-localhost/start-runner.png"
-  width={800}
+  alt="Localtunnel URL"
+  height={86}
+  src="/docs/use-localhost/localtunnel-url.png"
+  width={524}
 />
 
-To stop the runner, press `CTRL+C`.
+To stop running localtunnel, press `CTRL+C`.
 
 <SubHeader>Test localhost</SubHeader>
 
-To connect to the runner add `?local=1` to the test URL.
+To create a test on `localhost`, use the tunnel URL in your test.
 
-For example change `https://www.qawolf.com/test/ckk4tp4qp00053w3q0j5xd9cd` to `http://qawolf.com/test/ckk4tp4qp00053w3q0j5xd9cd?local=1`.
+```js
+const { context } = await launch();
+const page = await context.newPage();
+await page.goto("https://dry-sloth-7.loca.lt");
+```
 
-When you enter `localhost` into the URL prompt, we automatically add `?local=1` for you.
-
-<Image
-  alt="Enter the localhost URL"
-  height={204}
-  src="/docs/use-localhost/enter-url.png"
-  width={400}
-/>
-
-Now we can create our test on `localhost`. 🎉
-
-<Image
-  alt="Test localhost"
-  height={715}
-  src="/docs/use-localhost/editor-localhost.png"
-  width={1600}
-/>
+Now we are creating our test on `localhost`. 🎉
 
 </Layout>

@@ -1,9 +1,8 @@
 import { platform } from "os";
-import playwrightCore, {
+import playwright, {
   Browser,
   BrowserContext,
   BrowserContextOptions,
-  BrowserType,
   LaunchOptions,
 } from "playwright";
 import { pick } from "../utils";
@@ -25,7 +24,7 @@ const CONTEXT_OPTIONS = [
   "isMobile",
 ] as const;
 
-type BrowserName = "chromium" | "firefox" | "webkit";
+type BrowserName = "chrome" | "chromium" | "firefox" | "webkit";
 
 export type QAWolfLaunchOptions = Pick<
   BrowserContextOptions,
@@ -41,31 +40,11 @@ export type LaunchResult = {
 };
 
 export const parseBrowserName = (name?: string): BrowserName => {
-  if (name === "firefox" || name === "webkit") return name;
-  return "chromium";
-};
-
-export const getBrowserType = (
-  browserName: BrowserName
-): BrowserType<Browser> => {
-  // We must use the browser type from the installed `playwright` or `playwright-browser` package,
-  // and not `playwright-core` since they store different browser binaries.
-  // See https://github.com/microsoft/playwright/issues/1191 for more details.
-  let playwright: typeof playwrightCore;
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    playwright = require("playwright");
-  } catch (error) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      playwright = require(`playwright-${browserName}`);
-    } catch (error) {
-      throw new Error("qawolf requires playwright to be installed");
-    }
+  if (name === "chromium" || name === "firefox" || name === "webkit") {
+    return name;
   }
 
-  return playwright[browserName];
+  return "chrome";
 };
 
 export const getLaunchOptions = (
@@ -78,7 +57,7 @@ export const getLaunchOptions = (
 
   const defaultArgs: string[] = [];
 
-  if (browserName === "chromium" && platform() === "linux") {
+  if (["chrome", "chromium"].includes(browserName) && platform() === "linux") {
     // We use --no-sandbox because we cannot change the USER for certain CIs (like GitHub).
     // "Ensure your Dockerfile does not set the USER instruction, otherwise you will not be able to access GITHUB_WORKSPACE"
     defaultArgs.push("--no-sandbox");
@@ -99,7 +78,8 @@ export const launch = async (
   );
   const launchOptions = getLaunchOptions(browserName, options);
 
-  const browser = await getBrowserType(browserName).launch(launchOptions);
+  const browserType = browserName === "chrome" ? "chromium" : browserName;
+  const browser = await playwright[browserType].launch(launchOptions);
 
   const context = await browser.newContext(pick(options, CONTEXT_OPTIONS));
 

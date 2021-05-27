@@ -13,7 +13,7 @@ Launch a Playwright <Playwright browser /> and <Playwright context />.
 By default, we block Google Analytics and Google Tag Manager to avoid interfering with your analytics. <MessageUs/> and we can block other analytics providers.
 
 ```js
-// launch a chromium browser and context
+// launch a chrome browser and context
 const { browser, context } = await launch();
 // create a page in the context to use in our test
 const page = await context.newPage();
@@ -51,7 +51,7 @@ You can use any option available on <Playwright launch /> or <Playwright newCont
 
 - [allowTracking] (boolean): Enable analytics tracking. Default: `false`
 - [args] (Array<string\>): Arguments to pass to the browser launch. Useful for testing the camera. Default: `[]`
-- [browser] ("chrome" | "chromium" | "firefox" | "webkit"): Type of browser to launch. Default: `"chromium"`
+- [browser] ("chrome" | "chromium" | "firefox" | "webkit"): Type of browser to launch. Default: `"chrome"`
 - [devtools] (boolean): Open devtools. Default: `false`
 - [permissions] (Array<string\>): Accept <Playwright permission /> prompts. Default: `[]`
 - [slowMo] (number): Slow down each action by a number of milliseconds. Default: `0`
