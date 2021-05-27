@@ -100,8 +100,8 @@ export class FileModel extends EventEmitter {
     this._file = file;
 
     this.emit("changed", { key: "content" });
-    this.emit("changed", { key: "path" });
     this.emit("changed", { key: "isReadOnly" });
+    this.emit("changed", { key: "path" });
 
     // use this.content since state might be set with a newer version
     const value = this.content;

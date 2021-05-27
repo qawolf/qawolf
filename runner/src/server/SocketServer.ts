@@ -38,7 +38,6 @@ export class SocketServer {
       event: "elementchooser",
       to: "elementchooser",
     });
-    this._publish(this._runner, { event: "keychanged", to: "editor" });
     this._publish(this._runner, { event: "logs", to: "logs" });
     this._publish(this._runner, { event: "logscreated", to: "logs" });
     this._publish(this._runner, { event: "runprogress", to: "run" });
@@ -51,11 +50,6 @@ export class SocketServer {
     );
   }
 
-  _emitUsers(): void {
-    const data = this._subscriptions.data("users");
-    this._subscriptions.emit("users", { data, event: "users" });
-  }
-
   _onConnect(socket: Socket): void {
     if (!this._authenticate(socket)) {
       debug(`socket unauthorized ${socket.id}`);
@@ -65,7 +59,6 @@ export class SocketServer {
 
     debug(`socket connected ${socket.id}`);
     socket.on("disconnect", () => this._onDisconnect(socket));
-    socket.on("keychanged", (message) => this._runner._editor.receive(message));
     socket.on("run", (message) => this._runner.run(message));
     socket.on("startelementchooser", () => this._runner.startElementChooser());
     socket.on("stop", async () => {
@@ -80,21 +73,13 @@ export class SocketServer {
   _onDisconnect(socket: Socket): void {
     debug(`socket disconnected ${socket.id}`);
     this._subscriptions.disconnect(socket);
-    this._emitUsers();
   }
 
   _onSubscribe(socket: Socket, message: SubscribeMessage): void {
     this._subscriptions.subscribe(socket, message);
 
     const { type } = message;
-    if (type === "editor") {
-      // emit keychanged for each editor map
-      const editor = this._runner._editor;
-      editor._values.forEach((value, key) => {
-        const version = this._runner._editor._versions.get(key);
-        socket.emit("keychanged", { key, value, version });
-      });
-    } else if (type === "elementchooser") {
+    if (type === "elementchooser") {
       const chooser = this._runner._environment?.elementChooser;
       if (chooser) socket.emit("elementchooser", chooser.value);
     } else if (type === "logs") {
@@ -103,16 +88,11 @@ export class SocketServer {
     } else if (type === "run" && this._runner.progress()) {
       // send current progress if the run is started
       socket.emit("runprogress", this._runner.progress());
-    } else if (type === "users") {
-      // update the current users
-      this._emitUsers();
     }
   }
 
   _onUnsubscribe(socket: Socket, { type }: SubscribeMessage): void {
     this._subscriptions.unsubscribe(socket, type);
-
-    if (type === "users") this._emitUsers();
   }
 
   _publish(

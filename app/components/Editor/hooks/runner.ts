@@ -13,7 +13,6 @@ export const useRunner = (): RunnerHook => {
 
   useEffect(() => {
     const client = new RunnerClient();
-    client.subscribe({ type: "code" });
     client.subscribe({ type: "editor" });
     client.subscribe({ type: "elementchooser" });
     client.subscribe({ type: "run" });

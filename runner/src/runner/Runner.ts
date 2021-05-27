@@ -1,8 +1,7 @@
 import { EventEmitter } from "events";
 
-import { CodeModel } from "../code/CodeModel";
+import { FileModel } from "../code/FileModel";
 import { Environment } from "../environment/Environment";
-import { VersionedMap } from "../server/VersionedMap";
 import { Log } from "../services/Logger";
 import {
   CodeUpdate,
@@ -37,31 +36,14 @@ export const createHooks = (
 };
 
 export class Runner extends EventEmitter {
-  _codeModel = new CodeModel();
-  _editor = new VersionedMap();
   _environment?: Environment;
   _hooks: RunHook[] = [];
-
-  constructor() {
-    super();
-
-    this._codeModel.on("codeupdated", (update: CodeUpdate) => {
-      this._editor.set("test_code", update.code);
-    });
-
-    this._editor.on("keychanged", (event) => {
-      if (event.key === "test_code") {
-        this._codeModel.setValue(event.value);
-      }
-
-      this.emit("keychanged", event);
-    });
-  }
+  _testModel = new FileModel();
 
   async _createEnvironment(): Promise<Environment> {
     await this._environment?.close();
 
-    const environment = new Environment({ codeModel: this._codeModel });
+    const environment = new Environment({ testModel: this._testModel });
 
     // reset the logs when a new environment is created
     this.emit("logs", environment.logger.logs);
@@ -98,13 +80,6 @@ export class Runner extends EventEmitter {
 
   async run(options: RunOptions): Promise<void> {
     this._hooks = [];
-
-    // XXX change this when we switch to documents
-    // overwrite the code value with the run value
-    // this is needed for a new test before keystrokes
-    if (options.restart) {
-      this._codeModel.setValue(options.code);
-    }
 
     if (!this._environment || options.restart) {
       this._environment = await this._createEnvironment();

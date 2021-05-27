@@ -1,7 +1,7 @@
 import waitUntil from "async-wait-until";
 import { Browser } from "playwright";
 
-import { CodeModel } from "../../src/code/CodeModel";
+import { CodeModel } from "../../src/code/FileModel";
 import { Environment } from "../../src/environment/Environment";
 import { RunOptions, RunProgress } from "../../src/types";
 import { FixturesServer, serveFixtures, sleep } from "../utils";

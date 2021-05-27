@@ -247,11 +247,11 @@ export class MonacoBinding {
     });
     if (awareness) {
       editors.forEach((editor) => {
-        editor.onDidBlurEditorText(() => {
-          if (editor.getModel() === monacoModel) {
-            awareness.setLocalStateField("selection", null);
-          }
-        });
+        // editor.onDidBlurEditorText(() => {
+        //   if (editor.getModel() === monacoModel) {
+        //     awareness.setLocalStateField("selection", null);
+        //   }
+        // });
 
         editor.onDidChangeCursorSelection(() => {
           if (editor.getModel() === monacoModel) {
