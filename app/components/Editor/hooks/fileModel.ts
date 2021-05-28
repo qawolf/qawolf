@@ -10,17 +10,11 @@ export type FileHook = {
   path: string;
 };
 
-type UseFile = {
-  branch?: string;
-  id: string;
-};
-
-export const useFileModel = ({ branch, id }: UseFile): FileHook => {
+export const useFileModel = (id: string): FileHook => {
   const modelRef = useRef<FileModel>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
   const [isReadOnly, setIsReadOnly] = useState(false);
-  // TODO: include branch in id
   const { data } = useFile({ id });
   const file = data?.file || null;
 

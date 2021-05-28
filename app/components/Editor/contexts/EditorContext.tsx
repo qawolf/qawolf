@@ -46,20 +46,16 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
-  const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel({
-    branch,
-    id: `helpers.${teamId}`,
-  });
+  const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel(
+    runId ? `runhelpers.${suite?.id}` : `helpers.${teamId}`
+  );
 
   const {
     fileModel: testModel,
     isLoaded: isTestLoaded,
     isReadOnly: isTestReadOnly,
     path: testPath,
-  } = useFileModel({
-    branch,
-    id: runId ? `run.${runId}` : `test.${testId}`,
-  });
+  } = useFileModel(runId ? `run.${runId}` : `test.${testId}`);
 
   const { commitChanges, hasChanges } = useCommitChanges({
     branch,

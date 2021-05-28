@@ -299,7 +299,7 @@ export const useFile = (
         replace(routes.tests);
       }
     },
-    skip: !variables.id,
+    skip: !variables.id || variables.id.includes("undefined"),
     variables,
   });
 };
