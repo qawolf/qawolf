@@ -10,7 +10,7 @@ export default function SuiteApiExample(): JSX.Element {
 
   const apiKey = team?.api_key || copy.apiKeyHere;
   const url = isServer() ? "https://www.qawolf.com" : window.location.origin;
-  const apiUrl = new URL("/api/suite/:id", url).href;
+  const apiUrl = new URL("/api/suites/:id", url).href;
 
   return (
     <CodeBlock
