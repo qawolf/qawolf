@@ -22,6 +22,7 @@ export type EnvironmentVariable = {
 };
 
 export type File = {
+  branch: string | null;
   content: string;
   id: string;
   is_deleted: boolean;

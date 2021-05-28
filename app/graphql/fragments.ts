@@ -19,6 +19,7 @@ export const environmentVariableFragment = gql`
 
 export const fileFragment = gql`
   fragment FileFragment on File {
+    branch
     content
     id
     is_deleted

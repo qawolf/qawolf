@@ -120,15 +120,21 @@ export const commitTestAndHelpers = async (
     return {
       helpers: await formatHelpersFile(
         {
-          ...team,
-          helpers: isNil(helpers) ? helpersFile.text : helpers,
+          branch,
+          team: {
+            ...team,
+            helpers: isNil(helpers) ? helpersFile.text : helpers,
+          },
         },
         context
       ),
       test: await formatTestFile(
         {
-          ...updatedTest,
-          code: isNil(code) ? testFile.text : code,
+          branch,
+          test: {
+            ...updatedTest,
+            code: isNil(code) ? testFile.text : code,
+          },
         },
         context
       ),

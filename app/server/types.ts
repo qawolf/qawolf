@@ -123,6 +123,7 @@ export type FileModel = {
 };
 
 export type File = FileModel & {
+  branch: string | null;
   content: string;
   is_deleted: boolean;
   is_read_only: boolean;
@@ -654,11 +655,6 @@ export type EmailQuery = {
 
 export type EnvironmentIdQuery = {
   environment_id: string;
-};
-
-export type FileQuery = {
-  branch?: string | null;
-  id: string;
 };
 
 export type IdQuery = {

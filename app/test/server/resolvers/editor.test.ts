@@ -93,8 +93,9 @@ describe("commitTestAndHelpers", () => {
     );
 
     expect(helpers).toEqual({
+      branch: "feature",
       content: "git helpers",
-      id: "helpers.teamId",
+      id: "helpers.teamId.feature",
       is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
@@ -147,8 +148,9 @@ describe("commitEditorResolver", () => {
     );
 
     expect(helpers).toEqual({
+      branch: "feature",
       content: "git helpers",
-      id: "helpers.teamId",
+      id: "helpers.teamId.feature",
       is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
@@ -156,8 +158,9 @@ describe("commitEditorResolver", () => {
       url: "wss://eastus2.qawolf.com",
     });
     expect(test).toEqual({
+      branch: "feature",
       content: "new code",
-      id: "test.testId",
+      id: "test.testId.feature",
       is_deleted: false,
       is_read_only: false,
       path: "qawolf/renamed.test",

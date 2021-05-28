@@ -30,8 +30,8 @@ export const useFileModel = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
   const [isReadOnly, setIsReadOnly] = useState(false);
-
-  const { data } = useFile({ branch, id });
+  // TODO: include branch in id
+  const { data } = useFile({ id });
   const file = data?.file || null;
 
   const [updateFile] = useUpdateFile();
