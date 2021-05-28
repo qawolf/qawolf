@@ -15,9 +15,10 @@ const users = [
 export default function Cursors(): JSX.Element {
   if (!users.length) return null;
 
-  const cursorsHtml = users.map((user) => {
+  const cursorsHtml = users.map((user, i) => {
     return (
       <Box
+        key={i}
         style={{ left: user.x, position: "absolute", top: user.y, zIndex: 2 }}
       >
         <Cursor color={user.color} size="16" />
