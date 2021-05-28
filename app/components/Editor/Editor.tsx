@@ -4,8 +4,10 @@ import React, { FC } from "react";
 import { useWindowSize } from "../../hooks/windowSize";
 import { breakpoints } from "../../theme/theme";
 import Application from "./Application";
+import Container from "./Container";
 import { EditorProvider } from "./contexts/EditorContext";
 import { RunnerProvider } from "./contexts/RunnerContext";
+import Cursors from "./Cursors";
 import EditorMobile from "./EditorMobile";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -26,18 +28,14 @@ export default function Editor(): JSX.Element {
       {width && width < breakpoints.small.value ? (
         <EditorMobile />
       ) : (
-        <Box
-          background="gray0"
-          data-hj-suppress
-          height="100vh"
-          overflow="hidden"
-        >
+        <Container cursorColor="#4545E5">
+          <Cursors />
           <Header />
           <Box direction="row" fill justify="between">
             <Sidebar />
             <Application />
           </Box>
-        </Box>
+        </Container>
       )}
     </WithProviders>
   );
