@@ -1,4 +1,5 @@
-import { createContext, FC, useContext } from "react";
+import { createContext, FC, useContext, useEffect } from "react";
+import { JWT_KEY } from "../../../lib/client";
 
 import { RunProgress } from "../../../lib/types";
 import { ConnectRunnerHook, useConnectRunner } from "../hooks/connectRunner";
@@ -44,7 +45,9 @@ export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { run, suite, team } = useContext(EditorContext);
+  const { isLoaded: isTestLoaded, run, suite, team, testModel } = useContext(
+    EditorContext
+  );
 
   const {
     elementChooserValue,
@@ -71,6 +74,16 @@ export const RunnerProvider: FC = ({ children }) => {
     requestTestRunner,
     runner,
   });
+
+  useEffect(() => {
+    if (!isRunnerConnected || !isTestLoaded) return;
+
+    runner._socket?.emit("connecttest", {
+      authorization: localStorage.getItem(JWT_KEY),
+      id: testModel._file?.id,
+      url: testModel._file?.url,
+    });
+  }, [isRunnerConnected, isTestLoaded, runner, testModel]);
 
   const value = {
     apiKey,

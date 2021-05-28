@@ -58,6 +58,9 @@ export class SocketServer {
     }
 
     debug(`socket connected ${socket.id}`);
+    socket.on("connecttest", (message) =>
+      this._runner.testModel.connect(message)
+    );
     socket.on("disconnect", () => this._onDisconnect(socket));
     socket.on("run", (message) => this._runner.run(message));
     socket.on("startelementchooser", () => this._runner.startElementChooser());

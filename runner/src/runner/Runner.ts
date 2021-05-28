@@ -108,4 +108,8 @@ export class Runner extends EventEmitter {
       this._environment?.updater.enable(),
     ]);
   }
+
+  get testModel(): FileModel {
+    return this._testModel;
+  }
 }

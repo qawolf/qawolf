@@ -7,27 +7,28 @@ import { TextOperation } from "../types";
 
 const debug = Debug("qawolf:FileModel");
 
+type ConnectOptions = {
+  authorization: string;
+  id: string;
+  url: string;
+};
+
 export class FileModel extends EventEmitter {
+  _connected = false;
   _doc = new Y.Doc();
   _provider?: WebsocketProvider;
   _text = this._doc.getText("file.monaco");
 
-  constructor() {
-    super();
-    this.connect();
-  }
+  connect({ authorization, id, url }: ConnectOptions): void {
+    // XXX create a separate authentication method for runners
+    if (this._provider) return;
 
-  connect(): void {
-    // TODO provide connection details in connect
-    this._provider = new WebsocketProvider(
-      `ws://host.docker.internal:1234`,
-      "test.ckp5ypiw40003653q1xc96ys7",
-      this._doc,
-      {
-        params: { authorization: process.env.TEMP_AUTH! },
-        WebSocketPolyfill: ws as any,
-      }
-    );
+    const adjustedUrl = url.replace("localhost", "host.docker.internal");
+
+    this._provider = new WebsocketProvider(adjustedUrl, id, this._doc, {
+      params: { authorization },
+      WebSocketPolyfill: ws as any,
+    });
   }
 
   get content(): string {
