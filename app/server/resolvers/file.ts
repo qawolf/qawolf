@@ -1,3 +1,5 @@
+import { isNil } from "lodash";
+
 import { ClientError } from "../errors";
 import { buildFileUrl } from "../models/file";
 import { findRun } from "../models/run";
@@ -8,7 +10,6 @@ import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
   Context,
   File,
-  GitHubFile,
   IdQuery,
   ModelOptions,
   Team,
@@ -19,18 +20,13 @@ import { ensureSuiteAccess, ensureTeamAccess, ensureTestAccess } from "./utils";
 
 type BuildFileForTest = {
   branch?: string | null;
-  files: GitHubFile[] | null;
   id: string;
 };
 
-type BuildHelpersContent = {
-  files: GitHubFile[] | null;
+type FindFileForTeam = {
+  branch: string;
+  path: string;
   team: Team;
-};
-
-type BuildTestContent = {
-  files: GitHubFile[] | null;
-  test: Test;
 };
 
 type FormatHelpersFile = {
@@ -44,6 +40,27 @@ type FormatTestFile = {
 };
 
 const fileDelimiter = ".";
+
+const findFileForTeam = async (
+  { branch, path, team }: FindFileForTeam,
+  { db, logger }: ModelOptions
+): Promise<string | null> => {
+  const log = logger.prefix("findFileForTeam");
+  if (!branch || !team.git_sync_integration_id) return null;
+
+  const { files } = await findFilesForBranch(
+    { branch, integrationId: team.git_sync_integration_id },
+    { db, logger }
+  );
+
+  const file = files.find((f) => f.path === path);
+  if (!file) {
+    log.alert(`file ${path} not found`);
+    throw new ClientError(`File ${path} not found in git`);
+  }
+
+  return file.text;
+};
 
 export const formatHelpersFile = async (
   { branch, team }: FormatHelpersFile,
@@ -79,46 +96,6 @@ export const formatTestFile = async (
     team_id: test.team_id,
     url: await buildFileUrl({ id, ip }, { db, logger }),
   };
-};
-
-export const buildHelpersContent = (
-  { files, team }: BuildHelpersContent,
-  { logger }: ModelOptions
-): string => {
-  const log = logger.prefix("buildTestContent");
-
-  if (!files) {
-    log.debug("no files");
-    return team.helpers;
-  }
-
-  const gitHelpers = files.find((f) => f.path === HELPERS_PATH);
-  if (!gitHelpers) {
-    log.alert(`helpers for team ${team.id} not found`);
-    throw new ClientError("Helpers not found in git");
-  }
-
-  return gitHelpers.text;
-};
-
-export const buildTestContent = (
-  { files, test }: BuildTestContent,
-  { logger }: ModelOptions
-): string => {
-  const log = logger.prefix("buildTestContent");
-
-  if (!files) {
-    log.debug("no files");
-    return test.code;
-  }
-
-  const gitTest = files.find((f) => f.path === test.path);
-  if (!gitTest) {
-    log.alert(`test ${test.id} not found`);
-    throw new ClientError(`Test ${test.path} not found in git`);
-  }
-
-  return gitTest.text;
 };
 
 const buildFileForRun = async (
@@ -165,31 +142,42 @@ const buildFileForSuite = async (
 };
 
 const buildFileForTeam = async (
-  { branch, files, id }: BuildFileForTest,
+  { branch, id }: BuildFileForTest,
   context: Context
 ): Promise<File> => {
   const { db, logger, teams } = context;
-
   const team = ensureTeamAccess({ logger, team_id: id, teams });
+
+  const gitContent = await findFileForTeam(
+    { branch, path: HELPERS_PATH, team },
+    { db, logger }
+  );
+  const content = isNil(gitContent) ? team.helpers : gitContent;
 
   return {
     ...(await formatHelpersFile({ branch, team }, context)),
-    content: buildHelpersContent({ files, team }, { db, logger }),
+    content,
   };
 };
 
 const buildFileForTest = async (
-  { branch, files, id }: BuildFileForTest,
+  { branch, id }: BuildFileForTest,
   context: Context
 ): Promise<File> => {
   const { db, logger, teams } = context;
 
   const test = await findTest(id, { db, logger });
-  await ensureTestAccess({ test, teams }, { db, logger });
+  const team = await ensureTestAccess({ test, teams }, { db, logger });
+
+  const gitContent = await findFileForTeam(
+    { branch, path: test.path, team },
+    { db, logger }
+  );
+  const content = isNil(gitContent) ? test.code : gitContent;
 
   return {
     ...(await formatTestFile({ branch, test }, context)),
-    content: buildTestContent({ files, test }, { db, logger }),
+    content,
   };
 };
 
@@ -198,37 +186,22 @@ export const fileResolver = async (
   { id: fileId }: IdQuery,
   context: Context
 ): Promise<File> => {
-  const { db, logger, teams } = context;
-  const log = logger.prefix("fileResolver");
+  const log = context.logger.prefix("fileResolver");
   log.debug("file", fileId);
 
   const [type, id, branch] = fileId.split(fileDelimiter);
 
+  if (type === "helpers") {
+    return buildFileForTeam({ branch, id }, context);
+  }
   if (type === "run") {
     return buildFileForRun(id, context);
   }
   if (type === "runhelpers") {
     return buildFileForSuite(id, context);
   }
-
-  const test = await findTest(id, { db, logger });
-  const team = await ensureTestAccess({ test, teams }, { db, logger });
-
-  let files: GitHubFile[] | null = null;
-
-  if (branch && team.git_sync_integration_id) {
-    const branchFiles = await findFilesForBranch(
-      { branch, integrationId: team.git_sync_integration_id },
-      { db, logger }
-    );
-    files = branchFiles.files;
-  }
-
-  if (type === "helpers") {
-    return buildFileForTeam({ branch, files, id }, context);
-  }
   if (type === "test") {
-    return buildFileForTest({ branch, files, id }, context);
+    return buildFileForTest({ branch, id }, context);
   }
 
   const message = `invalid file type ${type}`;
