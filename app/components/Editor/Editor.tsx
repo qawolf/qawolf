@@ -28,7 +28,7 @@ export default function Editor(): JSX.Element {
       {width && width < breakpoints.small.value ? (
         <EditorMobile />
       ) : (
-        <Container cursorColor="#4545E5">
+        <Container>
           <Cursors />
           <Header />
           <Box direction="row" fill justify="between">
