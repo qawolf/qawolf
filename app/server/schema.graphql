@@ -112,6 +112,9 @@ type EnvironmentVariables {
 
 "A file for the test editor"
 type File {
+  "The git branch"
+  branch: String
+
   "The text content of the file"
   content: String!
 
@@ -1409,7 +1412,7 @@ type Query {
 
   Requires that you have access to the team.
   """
-  file("The  git branch" branch: String, "The file ID" id: ID!): File!
+  file("The file ID" id: ID!): File!
 
   """
   Returns GitHub branches for a team by team ID.

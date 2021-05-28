@@ -1,24 +1,31 @@
 import { ClientError } from "../errors";
 import { buildFileUrl } from "../models/file";
 import { findRun } from "../models/run";
+import { findSuite } from "../models/suite";
 import { updateTeam } from "../models/team";
 import { findTest, updateTest } from "../models/test";
 import { findFilesForBranch, HELPERS_PATH } from "../services/gitHub/tree";
 import {
   Context,
   File,
-  FileQuery,
   GitHubFile,
+  IdQuery,
   ModelOptions,
   Team,
   Test,
   UpdateFileMutation,
 } from "../types";
-import { ensureTeamAccess, ensureTestAccess } from "./utils";
+import { ensureSuiteAccess, ensureTeamAccess, ensureTestAccess } from "./utils";
 
 type BuildFileForTest = {
   branch?: string | null;
+  files: GitHubFile[] | null;
   id: string;
+};
+
+type BuildHelpersContent = {
+  files: GitHubFile[] | null;
+  team: Team;
 };
 
 type BuildTestContent = {
@@ -26,32 +33,44 @@ type BuildTestContent = {
   test: Test;
 };
 
+type FormatHelpersFile = {
+  branch?: string | null;
+  team: Team;
+};
+
+type FormatTestFile = {
+  branch?: string | null;
+  test: Test;
+};
+
 const fileDelimiter = ".";
 
 export const formatHelpersFile = async (
-  { helpers, id: team_id }: Team,
+  { branch, team }: FormatHelpersFile,
   { db, ip, logger }: Context
 ): Promise<File> => {
-  const id = `helpers.${team_id}`;
+  const id = `helpers.${team.id}${branch ? `.${branch}` : ""}`;
 
   return {
-    content: helpers,
+    branch: branch || null,
+    content: team.helpers,
     id,
     is_deleted: false,
     is_read_only: false,
     path: HELPERS_PATH,
-    team_id,
+    team_id: team.id,
     url: await buildFileUrl({ id, ip }, { db, logger }),
   };
 };
 
 export const formatTestFile = async (
-  test: Test,
+  { branch, test }: FormatTestFile,
   { db, ip, logger }: Context
 ): Promise<File> => {
-  const id = `test.${test.id}`;
+  const id = `test.${test.id}${branch ? `.${branch}` : ""}`;
 
   return {
+    branch: branch || null,
     content: test.code,
     id,
     is_deleted: !!test.deleted_at,
@@ -60,6 +79,26 @@ export const formatTestFile = async (
     team_id: test.team_id,
     url: await buildFileUrl({ id, ip }, { db, logger }),
   };
+};
+
+export const buildHelpersContent = (
+  { files, team }: BuildHelpersContent,
+  { logger }: ModelOptions
+): string => {
+  const log = logger.prefix("buildTestContent");
+
+  if (!files) {
+    log.debug("no files");
+    return team.helpers;
+  }
+
+  const gitHelpers = files.find((f) => f.path === HELPERS_PATH);
+  if (!gitHelpers) {
+    log.alert(`helpers for team ${team.id} not found`);
+    throw new ClientError("Helpers not found in git");
+  }
+
+  return gitHelpers.text;
 };
 
 export const buildTestContent = (
@@ -93,6 +132,7 @@ const buildFileForRun = async (
   const fileId = `run.${id}`;
 
   return {
+    branch: null,
     content: run.code,
     id: fileId,
     is_deleted: false,
@@ -103,21 +143,73 @@ const buildFileForRun = async (
   };
 };
 
-const buildFileForTeam = async (
+const buildFileForSuite = async (
   id: string,
-  context: Context
+  { db, ip, logger, teams }: Context
 ): Promise<File> => {
-  const { logger, teams } = context;
-  const team = ensureTeamAccess({ logger, team_id: id, teams });
+  await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
+  const suite = await findSuite(id, { db, logger });
 
-  return formatHelpersFile(team, context);
+  const fileId = `runhelpers.${id}`;
+
+  return {
+    branch: null,
+    content: suite.helpers,
+    id: fileId,
+    is_deleted: false,
+    is_read_only: true,
+    path: HELPERS_PATH,
+    team_id: suite.team_id,
+    url: await buildFileUrl({ id: fileId, ip }, { db, logger }),
+  };
 };
 
-const buildFileForTest = async (
-  { branch, id }: BuildFileForTest,
+const buildFileForTeam = async (
+  { branch, files, id }: BuildFileForTest,
   context: Context
 ): Promise<File> => {
   const { db, logger, teams } = context;
+
+  const team = ensureTeamAccess({ logger, team_id: id, teams });
+
+  return {
+    ...(await formatHelpersFile({ branch, team }, context)),
+    content: buildHelpersContent({ files, team }, { db, logger }),
+  };
+};
+
+const buildFileForTest = async (
+  { branch, files, id }: BuildFileForTest,
+  context: Context
+): Promise<File> => {
+  const { db, logger, teams } = context;
+
+  const test = await findTest(id, { db, logger });
+  await ensureTestAccess({ test, teams }, { db, logger });
+
+  return {
+    ...(await formatTestFile({ branch, test }, context)),
+    content: buildTestContent({ files, test }, { db, logger }),
+  };
+};
+
+export const fileResolver = async (
+  _: Record<string, unknown>,
+  { id: fileId }: IdQuery,
+  context: Context
+): Promise<File> => {
+  const { db, logger, teams } = context;
+  const log = logger.prefix("fileResolver");
+  log.debug("file", fileId);
+
+  const [type, id, branch] = fileId.split(fileDelimiter);
+
+  if (type === "run") {
+    return buildFileForRun(id, context);
+  }
+  if (type === "runhelpers") {
+    return buildFileForSuite(id, context);
+  }
 
   const test = await findTest(id, { db, logger });
   const team = await ensureTestAccess({ test, teams }, { db, logger });
@@ -132,30 +224,11 @@ const buildFileForTest = async (
     files = branchFiles.files;
   }
 
-  return {
-    ...(await formatTestFile(test, context)),
-    content: buildTestContent({ files, test }, { db, logger }),
-  };
-};
-
-export const fileResolver = async (
-  _: Record<string, unknown>,
-  { branch, id: fileId }: FileQuery,
-  context: Context
-): Promise<File> => {
-  const log = context.logger.prefix("fileResolver");
-  log.debug("file", fileId);
-
-  const [type, id] = fileId.split(fileDelimiter);
-
   if (type === "helpers") {
-    return buildFileForTeam(id, context);
-  }
-  if (type === "run") {
-    return buildFileForRun(id, context);
+    return buildFileForTeam({ branch, files, id }, context);
   }
   if (type === "test") {
-    return buildFileForTest({ branch, id }, context);
+    return buildFileForTest({ branch, files, id }, context);
   }
 
   const message = `invalid file type ${type}`;
@@ -178,7 +251,7 @@ export const updateFileResolver = async (
     ensureTeamAccess({ logger, team_id: id, teams });
     const team = await updateTeam({ helpers: content, id }, { db, logger });
 
-    return formatHelpersFile(team, context);
+    return formatHelpersFile({ team }, context);
   }
   if (type === "test") {
     await ensureTestAccess({ teams, test_id: id }, { db, logger });
@@ -187,7 +260,7 @@ export const updateFileResolver = async (
       { db, logger }
     );
 
-    return formatTestFile(test, context);
+    return formatTestFile({ test }, context);
   }
 
   const message = `invalid file type ${type}`;
