@@ -2,7 +2,7 @@ import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useContext } from "react";
 
 import { EditorContext } from "../contexts/EditorContext";
-import { BindOptions } from "../contexts/FileModel";
+import { useBindEditor } from "../hooks/bindEditor";
 import EditorComponent from "./Editor";
 
 type Props = {
@@ -16,9 +16,7 @@ export default function HelpersEditor({
 }: Props): JSX.Element {
   const { helpersModel, isLoaded, isReadOnly } = useContext(EditorContext);
 
-  const editorDidMount = (options: BindOptions) => {
-    helpersModel.bindEditor(options);
-  };
+  const editorDidMount = useBindEditor(helpersModel);
 
   return (
     <EditorComponent

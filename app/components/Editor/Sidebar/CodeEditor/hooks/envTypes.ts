@@ -1,5 +1,5 @@
-import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect } from "react";
+import { Monaco } from "..";
 
 import { Env } from "../../../../../lib/types";
 import { FileModel } from "../../../contexts/FileModel";
@@ -28,12 +28,12 @@ declare var process: NodeJS.Process;`;
 
 type UseEnvTypes = {
   env: Env;
-  monaco: typeof monacoEditor | null;
+  monaco: Monaco | null;
 };
 
 type UseHelpersTypes = {
   helpersModel: FileModel;
-  monaco: typeof monacoEditor | null;
+  monaco: Monaco | null;
 };
 
 export const useEnvTypes = ({ env, monaco }: UseEnvTypes): void => {

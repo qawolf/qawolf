@@ -3,12 +3,20 @@ import { useContext, useState } from "react";
 
 import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
+import { useBindEditor } from "../../hooks/bindEditor";
 import EditorComponent from "../Editor";
 import { includeTypes } from "../helpers";
 import { useEnvTypes, useHelpersTypes } from "./hooks/envTypes";
 import { useGlyphs } from "./hooks/glyphs";
 
-type Editor = monacoEditor.editor.IStandaloneCodeEditor;
+export type MonacoEditor = monacoEditor.editor.IStandaloneCodeEditor;
+
+export type Monaco = typeof monacoEditor;
+
+export type EditorDidMount = {
+  editor: MonacoEditor;
+  monaco: Monaco;
+};
 
 type Props = {
   isVisible: boolean;
@@ -20,7 +28,7 @@ export default function CodeEditor({
   onKeyDown,
 }: Props): JSX.Element {
   const [editor, setEditor] = useState<Editor | null>(null);
-  const [monaco, setMonaco] = useState<typeof monacoEditor | null>(null);
+  const [monaco, setMonaco] = useState<Monaco | null>(null);
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);
   const { helpersModel, isReadOnly, isLoaded, testModel } = useContext(
@@ -31,8 +39,10 @@ export default function CodeEditor({
   useHelpersTypes({ helpersModel, monaco });
   useGlyphs({ editor, progress, testModel });
 
+  const bindEditor = useBindEditor(testModel);
+
   const editorDidMount = ({ editor, monaco }) => {
-    testModel.bindEditor({ editor, monaco });
+    bindEditor({ editor, monaco });
 
     setEditor(editor);
     setMonaco(monaco);

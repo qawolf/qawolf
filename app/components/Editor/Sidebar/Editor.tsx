@@ -1,7 +1,6 @@
 import { monaco } from "@monaco-editor/react";
 import { Box } from "grommet";
-import { editor, IKeyboardEvent } from "monaco-editor";
-import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
+import { IKeyboardEvent } from "monaco-editor";
 import React, { useEffect, useRef, useState } from "react";
 import { AutoSizer } from "react-virtualized";
 
@@ -11,13 +10,9 @@ import {
   themeReadOnly,
   themeReadWrite,
 } from "../../../theme/codeEditor";
+import { EditorDidMount, Monaco, MonacoEditor } from "./CodeEditor";
 
 const language = "javascript";
-
-type EditorDidMount = {
-  editor: editor.IStandaloneCodeEditor;
-  monaco: typeof monacoEditor;
-};
 
 type InitializeOptions = {
   isReadOnly: boolean;
@@ -40,8 +35,8 @@ export default function Editor({
 }: Props): JSX.Element {
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [isMonacoMounting, setIsMonacoMounting] = useState(true);
-  const editorRef = useRef<editor.IStandaloneCodeEditor>();
-  const monacoRef = useRef<typeof monacoEditor>();
+  const editorRef = useRef<MonacoEditor>();
+  const monacoRef = useRef<Monaco>();
   const containerRef = useRef();
 
   useEffect(() => {

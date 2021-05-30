@@ -1,36 +1,28 @@
 import { EventEmitter } from "events";
-import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
-import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
 
 import { JWT_KEY } from "../../../lib/client";
 import { File } from "../../../lib/types";
-import { MonacoBinding } from "../hooks/MonacoBinding";
 
-export type BindOptions = {
-  editor: editorNs.IStandaloneCodeEditor;
-  monaco: typeof monacoEditor;
-};
-
+// TODO update all paths
 export class FileModel extends EventEmitter {
-  _disposeHooks = [];
   _doc = new Y.Doc();
-  _editorBinding: MonacoBinding;
-  _editor?: editorNs.IStandaloneCodeEditor;
+  _content = this._doc.getText("file.monaco");
   _file?: File;
-  _fileMap = this._doc.getMap("file");
+  _metadata = this._doc.getMap("file");
   _provider?: WebsocketProvider;
-  _text = this._doc.getText("file.monaco");
 
   constructor() {
     super();
 
-    this._text.observe(() => {
+    this._content.observe(() => {
       this.emit("changed", { key: "content" });
     });
 
-    this._fileMap.observe(() => {
+    this._metadata.observe(() => {
+      console.log("metadata changed");
+      this.emit("changed", { key: "isInitialized" });
       this.emit("changed", { key: "path" });
     });
   }
@@ -47,36 +39,29 @@ export class FileModel extends EventEmitter {
     return () => this.off("changed", onChange);
   }
 
-  bindEditor({ editor, monaco }: BindOptions): void {
-    this._editor = editor;
-
-    this._editorBinding?.destroy();
-
-    this._editorBinding = new MonacoBinding(
-      monaco,
-      this._text,
-      this._editor.getModel(),
-      new Set([this._editor]),
-      this._provider.awareness
-    );
-  }
-
   get content(): string {
-    return this._text.toJSON();
+    return this.isInitialized
+      ? this._content.toJSON()
+      : this._file?.content || "";
   }
 
   delete(index: number, length: number): void {
-    this._text.delete(index, length);
+    this._content.delete(index, length);
   }
 
   dispose(): void {
+    this._doc.destroy();
+    this._provider?.destroy();
+    this._provider = null;
     this.removeAllListeners();
-    this._editorBinding?.destroy();
-    this._editorBinding = null;
   }
 
   get id(): string | undefined {
     return this._file?.id;
+  }
+
+  get isInitialized(): boolean {
+    return !!this._metadata.get("initialized");
   }
 
   insert(index: number, text: string): void {
@@ -88,17 +73,18 @@ export class FileModel extends EventEmitter {
   }
 
   get path(): string {
-    return this._fileMap.get("path") || this._file?.path || "";
+    return this._metadata.get("path") || this._file?.path || "";
   }
 
   set path(value: string) {
-    this._fileMap.set("path", value);
+    this._metadata.set("path", value);
   }
 
   setFile(file: File): void {
     this._file = file;
 
     this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "isInitialized" });
     this.emit("changed", { key: "isReadOnly" });
     this.emit("changed", { key: "path" });
 
