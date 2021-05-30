@@ -8,9 +8,9 @@ import { File } from "../../../lib/types";
 // TODO update all paths
 export class FileModel extends EventEmitter {
   _doc = new Y.Doc();
-  _content = this._doc.getText("file.monaco");
+  _content = this._doc.getText("file.content");
   _file?: File;
-  _metadata = this._doc.getMap("file");
+  _metadata = this._doc.getMap("file.metadata");
   _provider?: WebsocketProvider;
 
   constructor() {
@@ -21,7 +21,6 @@ export class FileModel extends EventEmitter {
     });
 
     this._metadata.observe(() => {
-      console.log("metadata changed");
       this.emit("changed", { key: "isInitialized" });
       this.emit("changed", { key: "path" });
     });
@@ -61,11 +60,11 @@ export class FileModel extends EventEmitter {
   }
 
   get isInitialized(): boolean {
-    return !!this._metadata.get("initialized");
+    return !!this._metadata.get("is_initialized");
   }
 
   insert(index: number, text: string): void {
-    this._doc.getText("file.monaco").insert(index, text);
+    this._content.insert(index, text);
   }
 
   get isReadOnly(): boolean {

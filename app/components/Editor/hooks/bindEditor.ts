@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { FileModel } from "../contexts/FileModel";
-import { EditorDidMount, Monaco, MonacoEditor } from "../Sidebar/CodeEditor";
+import { EditorDidMount } from "../Sidebar/CodeEditor";
 import { MonacoBinding } from "./MonacoBinding";
 
 export const useBindEditor = (
