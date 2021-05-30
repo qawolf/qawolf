@@ -1,7 +1,7 @@
 import { isNil } from "lodash";
 
 import { ClientError } from "../errors";
-import { buildFileUrl } from "../models/file";
+import { buildFileUrl, deleteFile } from "../models/file";
 import { findRun } from "../models/run";
 import { findSuite } from "../models/suite";
 import { updateTeam } from "../models/team";
@@ -40,6 +40,30 @@ type FormatTestFile = {
 };
 
 const fileDelimiter = ".";
+
+const ensureFileAccess = async (
+  fileId: string,
+  { db, logger, teams }: Context
+): Promise<void> => {
+  const [type, id] = fileId.split(fileDelimiter);
+
+  if (type === "helpers") {
+    ensureTeamAccess({ logger, team_id: id, teams });
+  }
+
+  if (type === "run") {
+    const run = await findRun(id, { db, logger });
+    await ensureTestAccess({ teams, test_id: run.test_id }, { db, logger });
+  }
+
+  if (type === "runhelpers") {
+    await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
+  }
+
+  if (type === "test") {
+    await ensureTestAccess({ teams, test_id: id }, { db, logger });
+  }
+};
 
 const findFileForTeam = async (
   { branch, path, team }: FindFileForTeam,
@@ -181,6 +205,21 @@ const buildFileForTest = async (
   };
 };
 
+export const deleteFileResolver = async (
+  _: Record<string, unknown>,
+  { id: fileId }: IdQuery,
+  context: Context
+): Promise<string> => {
+  const { db, logger } = context;
+  const log = logger.prefix("fileResolver");
+  log.debug("file", deleteFileResolver);
+
+  await ensureFileAccess(fileId, context);
+  const deletedFile = await deleteFile(fileId, { db, logger });
+
+  return deletedFile.id;
+};
+
 export const fileResolver = async (
   _: Record<string, unknown>,
   { id: fileId }: IdQuery,
@@ -218,16 +257,15 @@ export const updateFileResolver = async (
   const log = logger.prefix("updateFileResolver");
   log.debug("file", fileId);
 
+  await ensureFileAccess(fileId, context);
   const [type, id] = fileId.split(fileDelimiter);
 
   if (type === "helpers") {
-    ensureTeamAccess({ logger, team_id: id, teams });
     const team = await updateTeam({ helpers: content, id }, { db, logger });
 
     return formatHelpersFile({ team }, context);
   }
   if (type === "test") {
-    await ensureTestAccess({ teams, test_id: id }, { db, logger });
     const test = await updateTest(
       { code: content, id, name: path },
       { db, logger }
