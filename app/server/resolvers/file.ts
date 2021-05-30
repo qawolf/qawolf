@@ -91,7 +91,7 @@ export const formatTestFile = async (
     content: test.code,
     id,
     is_deleted: !!test.deleted_at,
-    is_read_only: false,
+    is_read_only: !!test.deleted_at,
     path: test.name || test.path,
     team_id: test.team_id,
     url: await buildFileUrl({ id, ip }, { db, logger }),
