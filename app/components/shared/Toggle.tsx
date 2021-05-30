@@ -78,6 +78,8 @@ const StyledToggle = styled(Toggle)`
         props.isOn ? colors.primaryDark : colors.gray6};
     }
   }
+
+  ${(props) => props.isDisabled && "cursor: not-allowed;"}
 `;
 
 export default StyledToggle;
