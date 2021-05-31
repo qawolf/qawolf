@@ -52,6 +52,7 @@ export const buildCommentForSuite = ({
   const passingRuns = runs.filter((r) => r.status === "pass");
 
   if (!inProgressRuns.length) emoji = failingRuns.length ? "❌" : "✅";
+  const isPass = passingRuns.length === runs.length;
 
   const header = inProgressRuns.length
     ? `${inProgressRuns.length} test${
@@ -62,7 +63,7 @@ export const buildCommentForSuite = ({
   return `## ${emoji} QA Wolf - ${trigger.name}
 <img src="https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${
     user.wolf_variant
-  }-slack.png" width="24" /> ${
+  }${isPass ? "-party" : ""}-slack.png" width="32" /> ${
     user.wolf_name
   } here: ${header}, [see details here](${suiteUrl}).${buildDetailsForRuns(
     failingRuns
