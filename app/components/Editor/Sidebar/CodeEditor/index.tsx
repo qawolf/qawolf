@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 
 import { EditorContext } from "../../contexts/EditorContext";
 import { RunnerContext } from "../../contexts/RunnerContext";
-import { useBindEditor } from "../../hooks/bindEditor";
+import { EditorBinding } from "../../hooks/EditorBinding";
 import EditorComponent from "../Editor";
 import { includeTypes } from "../helpers";
 import { useEnvTypes, useHelpersTypes } from "./hooks/envTypes";
@@ -39,10 +39,10 @@ export default function CodeEditor({
   useHelpersTypes({ helpersModel, monaco });
   useGlyphs({ editor, progress, testModel });
 
-  const bindEditor = useBindEditor(testModel);
-
   const editorDidMount = ({ editor, monaco }) => {
-    bindEditor({ editor, monaco });
+    const binding = new EditorBinding({ editor, model: testModel, monaco });
+
+    editor.onDidDispose(() => binding.dispose());
 
     setEditor(editor);
     setMonaco(monaco);

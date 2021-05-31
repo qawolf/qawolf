@@ -5,7 +5,6 @@ import * as Y from "yjs";
 import { JWT_KEY } from "../../../lib/client";
 import { File } from "../../../lib/types";
 
-// TODO update all paths
 export class FileModel extends EventEmitter {
   _doc = new Y.Doc();
   _content = this._doc.getText("file.content");
@@ -20,9 +19,8 @@ export class FileModel extends EventEmitter {
       this.emit("changed", { key: "content" });
     });
 
-    this._metadata.observe(() => {
-      this.emit("changed", { key: "isInitialized" });
-      this.emit("changed", { key: "path" });
+    this._metadata.observe(({ keysChanged }) => {
+      keysChanged.forEach((key) => this.emit("changed", { key }));
     });
   }
 
@@ -39,7 +37,7 @@ export class FileModel extends EventEmitter {
   }
 
   get content(): string {
-    return this.isInitialized
+    return this.is_initialized
       ? this._content.toJSON()
       : this._file?.content || "";
   }
@@ -59,7 +57,7 @@ export class FileModel extends EventEmitter {
     return this._file?.id;
   }
 
-  get isInitialized(): boolean {
+  get is_initialized(): boolean {
     return !!this._metadata.get("is_initialized");
   }
 
@@ -83,7 +81,6 @@ export class FileModel extends EventEmitter {
     this._file = file;
 
     this.emit("changed", { key: "content" });
-    this.emit("changed", { key: "isInitialized" });
     this.emit("changed", { key: "isReadOnly" });
     this.emit("changed", { key: "path" });
 
