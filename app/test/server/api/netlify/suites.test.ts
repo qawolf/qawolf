@@ -155,6 +155,7 @@ describe("handleNetlifySuitesRequest", () => {
 
     expect(suites).toMatchObject([
       {
+        branch: null,
         environment_variables: encrypt(JSON.stringify({ URL: "url" })),
         trigger_id: "triggerId",
       },
@@ -193,6 +194,7 @@ describe("handleNetlifySuitesRequest", () => {
           committed_at,
           deployment_environment: "deploy-preview",
           deployment_url: "url",
+          git_branch: "feature",
           is_pull_request: "true",
           pull_request_id: 11,
           sha: "sha",
@@ -209,6 +211,7 @@ describe("handleNetlifySuitesRequest", () => {
 
     expect(suites).toMatchObject([
       {
+        branch: "feature",
         environment_variables: encrypt(JSON.stringify({ URL: "url" })),
         trigger_id: "triggerId",
       },

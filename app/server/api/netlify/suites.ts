@@ -32,6 +32,8 @@ const createSuite = async (
 
     const result = await createSuiteForTrigger(
       {
+        // https://github.com/qawolf/netlify-plugin-qawolf/blob/main/src/qawolf.js#L30
+        branch: req.body.git_branch,
         environment_variables: { URL: deployment_url },
         trigger,
       },
