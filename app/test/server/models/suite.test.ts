@@ -53,21 +53,11 @@ beforeAll(async () => {
 });
 
 describe("buildGitUrls", () => {
-  it("returns no urls if no integration", () => {
-    expect(
-      buildGitUrls({
-        integration: null,
-        pull_request_id: 123,
-        sha: "eff58eea5c2d5743f0cf924aa3cefac639efc0f9",
-      })
-    ).toEqual({});
-  });
-
   it("returns no urls if no github repo name", () => {
     expect(
       buildGitUrls({
-        integration: buildIntegration({}),
         pull_request_id: 123,
+        repo_name: null,
         sha: "eff58eea5c2d5743f0cf924aa3cefac639efc0f9",
       })
     ).toEqual({});
@@ -76,8 +66,8 @@ describe("buildGitUrls", () => {
   it("returns urls for commit without pull request", () => {
     expect(
       buildGitUrls({
-        integration: buildIntegration({ github_repo_name: "qawolf/example" }),
         pull_request_id: null,
+        repo_name: "qawolf/example",
         sha: "eff58eea5c2d5743f0cf924aa3cefac639efc0f9",
       })
     ).toEqual({
@@ -90,8 +80,8 @@ describe("buildGitUrls", () => {
   it("returns urls for commit with pull request", () => {
     expect(
       buildGitUrls({
-        integration: buildIntegration({ github_repo_name: "qawolf/example" }),
         pull_request_id: 123,
+        repo_name: "qawolf/example",
         sha: "eff58eea5c2d5743f0cf924aa3cefac639efc0f9",
       })
     ).toEqual({

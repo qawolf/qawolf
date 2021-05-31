@@ -43,7 +43,11 @@ const createSuite = async (
         commit_message: message,
         environment_variables: { URL: deployment_url },
         trigger,
-        ...buildGitUrls({ integration, pull_request_id, sha }),
+        ...buildGitUrls({
+          pull_request_id,
+          repo_name: integration?.github_repo_name,
+          sha,
+        }),
       },
       options
     );

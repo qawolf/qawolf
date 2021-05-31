@@ -8,7 +8,6 @@ import {
   CreatedSuite,
   FormattedVariables,
   GitHubFile,
-  Integration,
   ModelOptions,
   Suite,
   SuiteResult,
@@ -29,8 +28,8 @@ export type SuiteForTeam = Suite & {
 };
 
 type BuildGitUrls = {
-  integration: Integration | null;
   pull_request_id?: number | null;
+  repo_name?: string | null;
   sha: string;
 };
 
@@ -99,24 +98,23 @@ type GitUrls = {
 };
 
 export const buildGitUrls = ({
-  integration,
   pull_request_id,
+  repo_name,
   sha,
 }: BuildGitUrls): GitUrls => {
-  const repoName = integration?.github_repo_name;
-  if (!repoName) return {};
+  if (!repo_name) return {};
 
   const baseUrl = "https://github.com";
 
   return {
     commit_url: new URL(
       pull_request_id
-        ? `${repoName}/pull/${pull_request_id}/commits/${sha}`
-        : `${repoName}/commit/${sha}`,
+        ? `${repo_name}/pull/${pull_request_id}/commits/${sha}`
+        : `${repo_name}/commit/${sha}`,
       baseUrl
     ).href,
     pull_request_url: pull_request_id
-      ? new URL(`${repoName}/pull/${pull_request_id}`, baseUrl).href
+      ? new URL(`${repo_name}/pull/${pull_request_id}`, baseUrl).href
       : null,
   };
 };

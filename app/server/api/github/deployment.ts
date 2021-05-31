@@ -1,7 +1,7 @@
 import { logger } from "../../../test/server/utils";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findIntegration } from "../../models/integration";
-import { createSuiteForTests } from "../../models/suite";
+import { buildGitUrls, createSuiteForTests } from "../../models/suite";
 import { ensureTeamCanCreateSuite, findTeam } from "../../models/team";
 import { findEnabledTestsForTrigger } from "../../models/test";
 import { findTriggersForGitHubIntegration } from "../../models/trigger";
@@ -24,6 +24,7 @@ type CreateSuiteForDeployment = {
   deploymentUrl: string;
   environment?: string;
   installationId: number;
+  message: string | null;
   owner: string;
   pullRequestId: number | null;
   repo: string;
@@ -100,6 +101,7 @@ const createSuiteForDeployment = async (
     deploymentUrl,
     environment,
     installationId,
+    message,
     owner,
     pullRequestId,
     repo,
@@ -137,10 +139,16 @@ const createSuiteForDeployment = async (
   const { suite } = await createSuiteForTests(
     {
       branch,
+      commit_message: message,
       environment_variables: { URL: deploymentUrl },
       trigger_id: trigger.id,
       team_id: trigger.team_id,
       tests,
+      ...buildGitUrls({
+        pull_request_id: pullRequestId,
+        repo_name: `${owner}/${repo}`,
+        sha,
+      }),
     },
     options
   );
@@ -233,6 +241,7 @@ export const createSuitesForDeployment = async (
               }),
               environment,
               installationId,
+              message,
               owner,
               pullRequestId,
               repo,
