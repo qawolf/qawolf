@@ -47,13 +47,13 @@ export const buildMessageForSuite = ({
     return {
       type: "section",
       text: {
-        type: "mrkdwn",
         text: `<${environment.APP_URL}/run/${run.id}|${run.test_name}>`,
+        type: "mrkdwn",
       },
       accessory: {
-        type: "image",
-        image_url: run.gif_url,
         alt_text: run.test_name,
+        image_url: run.gif_url,
+        type: "image",
       },
     };
   });

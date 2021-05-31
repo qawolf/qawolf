@@ -202,7 +202,7 @@ export const createSuitesForDeployment = async (
 ): Promise<void> => {
   const [owner, repo] = repoFullName.split("/");
 
-  const { branch, pullRequestId } = await findBranchForCommit(
+  const { branch, message, pullRequestId } = await findBranchForCommit(
     {
       installationId,
       owner,
