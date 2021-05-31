@@ -97,7 +97,11 @@ describe("createSuitesForDeployment", () => {
   it("creates suites for a deployment", async () => {
     const findBranchesForCommitSpy = jest
       .spyOn(gitHubService, "findBranchForCommit")
-      .mockResolvedValue({ branch: "feature", pullRequestId: 123 });
+      .mockResolvedValue({
+        branch: "feature",
+        message: "initial commit",
+        pullRequestId: 123,
+      });
 
     const createCommitStatusSpy = jest
       .spyOn(gitHubService, "createCommitStatus")
@@ -120,7 +124,13 @@ describe("createSuitesForDeployment", () => {
 
     const suites = await db("suites").select("*");
     expect(suites).toMatchObject([
-      { team_id: "teamId", trigger_id: "triggerId" },
+      {
+        commit_message: "initial commit",
+        commit_url: "https://github.com/qawolf/repo/pull/123/commits/sha",
+        pull_request_url: "https://github.com/qawolf/repo/pull/123",
+        team_id: "teamId",
+        trigger_id: "triggerId",
+      },
     ]);
 
     const commitStatuses = await db("github_commit_statuses").select("*");
