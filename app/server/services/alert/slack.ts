@@ -1,4 +1,5 @@
 import { IncomingWebhook, IncomingWebhookSendArguments } from "@slack/webhook";
+import last from "lodash/last";
 
 import environment from "../../environment";
 import { findIntegration } from "../../models/integration";
@@ -23,6 +24,36 @@ type SendSlackAlert = {
   runs: SuiteRun[];
   suite: Suite;
   trigger: Trigger | null;
+};
+
+const buildSuiteDetailBlocks = (
+  suite: Suite,
+  isPass: boolean
+): IncomingWebhookSendArguments["blocks"] => {
+  if (!suite.commit_url) return [];
+
+  const emoji = isPass ? "✅" : "❌";
+  const sha = last(suite.commit_url.split("/")).slice(0, 7);
+  const pullRequestId = suite.pull_request_url
+    ? last(suite.pull_request_url.split("/"))
+    : null;
+
+  const branch = suite.branch ? `${suite.branch}, ` : "";
+  const pullRequest = pullRequestId
+    ? ` (<${suite.pull_request_url}|#${pullRequestId}>)`
+    : "";
+
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `${emoji} <${suite.commit_url}|${sha}>: ${branch}${
+          suite.commit_message || ""
+        }${pullRequest}`,
+      },
+    },
+  ];
 };
 
 export const buildMessageForSuite = ({
@@ -76,6 +107,7 @@ export const buildMessageForSuite = ({
           },
         ],
       },
+      ...buildSuiteDetailBlocks(suite, !failingRuns.length),
       ...runBlocks,
     ],
     text,
