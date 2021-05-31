@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { ApiAuthenticationError } from "../../errors";
 import { findIntegration } from "../../models/integration";
-import { createSuiteForTrigger } from "../../models/suite";
+import { buildGitUrls, createSuiteForTrigger } from "../../models/suite";
 import { ensureTeamCanCreateSuite, findTeamForApiKey } from "../../models/team";
 import { findTriggersForNetlifyIntegration } from "../../models/trigger";
 import { ModelOptions, Suite, Team, Trigger } from "../../types";
@@ -21,7 +21,13 @@ const createSuite = async (
   { integration_id, trigger }: CreateSuite,
   { db, logger }: ModelOptions
 ): Promise<Suite | null> => {
-  const { deployment_url } = req.body;
+  const {
+    deployment_url,
+    git_branch,
+    message,
+    pull_request_id,
+    sha,
+  } = req.body;
 
   const integration = integration_id
     ? await findIntegration(integration_id, { db, logger })
@@ -33,9 +39,11 @@ const createSuite = async (
     const result = await createSuiteForTrigger(
       {
         // https://github.com/qawolf/netlify-plugin-qawolf/blob/main/src/qawolf.js#L32
-        branch: req.body.git_branch,
+        branch: git_branch,
+        commit_message: message,
         environment_variables: { URL: deployment_url },
         trigger,
+        ...buildGitUrls({ integration, pull_request_id, sha }),
       },
       options
     );
@@ -51,7 +59,7 @@ const createSuite = async (
           {
             committed_at: req.body.committed_at,
             integration,
-            pull_request_id: req.body.pull_request_id,
+            pull_request_id,
             suite_id: result.suite.id,
             trigger,
           },

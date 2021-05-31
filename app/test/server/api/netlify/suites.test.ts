@@ -141,6 +141,7 @@ describe("handleNetlifySuitesRequest", () => {
         body: {
           deployment_environment: "production",
           deployment_url: "url",
+          message: "message",
           sha: "sha",
         },
         headers: { authorization: "qawolf_api_key" },
@@ -156,8 +157,11 @@ describe("handleNetlifySuitesRequest", () => {
     expect(suites).toMatchObject([
       {
         branch: null,
+        commit_message: "message",
+        commit_url: null,
         environment_variables: encrypt(JSON.stringify({ URL: "url" })),
         trigger_id: "triggerId",
+        pull_request_url: null,
       },
     ]);
     expect(send).toBeCalledWith({ suite_ids: [suites[0].id] });
@@ -196,6 +200,7 @@ describe("handleNetlifySuitesRequest", () => {
           deployment_url: "url",
           git_branch: "feature",
           is_pull_request: "true",
+          message: "message",
           pull_request_id: 11,
           sha: "sha",
         },
@@ -212,7 +217,10 @@ describe("handleNetlifySuitesRequest", () => {
     expect(suites).toMatchObject([
       {
         branch: "feature",
+        commit_message: "message",
+        commit_url: "https://github.com/owner/repo/pull/11/commits/sha",
         environment_variables: encrypt(JSON.stringify({ URL: "url" })),
+        pull_request_url: "https://github.com/owner/repo/pull/11",
         trigger_id: "triggerId",
       },
     ]);
