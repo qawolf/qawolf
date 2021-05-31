@@ -50,7 +50,7 @@ exports[`buildSuiteHtml builds html for failure email 1`] = `"<p><img src=\\"htt
 
 exports[`buildSuiteHtml builds html for success email 1`] = `"<p><img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-party-slack.png\\" width=\\"32\\" /> Wolf1 here: <a href='http://localhost:3000/suites/suiteId'>trigger1 tests</a> passed!</p>"`;
 
-exports[`buildSuiteHtml builds html for success email with git 1`] = `"<p><img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-party-slack.png\\" width=\\"32\\" /> Wolf1 here: <a href='http://localhost:3000/suites/suiteId'>trigger1 tests</a> passed!</p><br /><p><a href=\\"https://github.com/qawolf/repo/pull/123/commits/sha\\">sha</a>: feature, initial commit <a href=\\"https://github.com/qawolf/repo/pull/123\\">(#123)</a></p>"`;
+exports[`buildSuiteHtml builds html for success email with git 1`] = `"<p><img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-party-slack.png\\" width=\\"32\\" /> Wolf1 here: <a href='http://localhost:3000/suites/suiteId'>trigger1 tests</a> passed!</p><br /><p><a href=\\"https://github.com/qawolf/repo/pull/123/commits/abcdefghijk\\">abcdefg</a>: feature, initial commit <a href=\\"https://github.com/qawolf/repo/pull/123\\">(#123)</a></p>"`;
 
 exports[`buildSuiteHtml builds html for success email with no trigger 1`] = `"<p><img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-party-slack.png\\" width=\\"32\\" /> Wolf1 here: <a href='http://localhost:3000/suites/suiteId'>manually triggered tests</a> passed!</p>"`;
 

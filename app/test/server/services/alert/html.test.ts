@@ -105,7 +105,8 @@ describe("buildSuiteHtml", () => {
         ...suite,
         branch: "feature",
         commit_message: "initial commit",
-        commit_url: "https://github.com/qawolf/repo/pull/123/commits/sha",
+        commit_url:
+          "https://github.com/qawolf/repo/pull/123/commits/abcdefghijk",
         pull_request_url: "https://github.com/qawolf/repo/pull/123",
       },
       trigger,
