@@ -1,6 +1,7 @@
 import { updateTeam } from "../../../server/models/team";
 import { updateTest } from "../../../server/models/test";
 import {
+  deleteFileResolver,
   fileResolver,
   updateFileResolver,
 } from "../../../server/resolvers/file";
@@ -52,6 +53,20 @@ beforeAll(async () => {
 
   await db("tests").insert([test, test2]);
   await db("runs").insert(run);
+});
+
+describe("deleteFileResolver", () => {
+  beforeAll(() => db("files").insert({ id: "test.testId", url: "testUrl" }));
+
+  afterAll(() => db("files").del());
+
+  it("deletes a file", async () => {
+    const fileId = await deleteFileResolver({}, { id: "test.testId" }, context);
+    const files = await db("files");
+
+    expect(fileId).toBe("test.testId");
+    expect(files).toEqual([]);
+  });
 });
 
 describe("fileResolver", () => {

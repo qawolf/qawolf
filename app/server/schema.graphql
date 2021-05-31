@@ -964,6 +964,13 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Delete a file. Returns the deleted file ID.
+
+  Requires that you have access to the team that owns the file.
+  """
+  deleteFile("File ID" id: ID!): String!
+
+  """
   Delete a test tag. All tests in this tag will no longer be
   associated with it.
 
