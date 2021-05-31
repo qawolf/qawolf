@@ -41,27 +41,34 @@ type FormatTestFile = {
 
 const fileDelimiter = ".";
 
+const throwInvalidTypeError = (
+  logger: Context["logger"],
+  type: string
+): void => {
+  const message = `invalid file type ${type}`;
+  logger.alert(message);
+  throw new ClientError(message);
+};
+
 const ensureFileAccess = async (
   fileId: string,
   { db, logger, teams }: Context
 ): Promise<void> => {
+  const log = logger.prefix("ensureFileAccess");
   const [type, id] = fileId.split(fileDelimiter);
 
   if (type === "helpers") {
     ensureTeamAccess({ logger, team_id: id, teams });
-  }
-
-  if (type === "run") {
+  } else if (type === "run") {
     const run = await findRun(id, { db, logger });
     await ensureTestAccess({ teams, test_id: run.test_id }, { db, logger });
-  }
-
-  if (type === "runhelpers") {
+  } else if (type === "runhelpers") {
     await ensureSuiteAccess({ suite_id: id, teams }, { db, logger });
-  }
-
-  if (type === "test") {
+  } else if (type === "test") {
     await ensureTestAccess({ teams, test_id: id }, { db, logger });
+    return;
+  } else {
+    throwInvalidTypeError(log, type);
   }
 };
 
@@ -243,9 +250,7 @@ export const fileResolver = async (
     return buildFileForTest({ branch, id }, context);
   }
 
-  const message = `invalid file type ${type}`;
-  log.alert(message);
-  throw new ClientError(message);
+  throwInvalidTypeError(log, type);
 };
 
 export const updateFileResolver = async (
@@ -253,7 +258,7 @@ export const updateFileResolver = async (
   { content, id: fileId, path }: UpdateFileMutation,
   context: Context
 ): Promise<File> => {
-  const { db, logger, teams } = context;
+  const { db, logger } = context;
   const log = logger.prefix("updateFileResolver");
   log.debug("file", fileId);
 
@@ -274,7 +279,5 @@ export const updateFileResolver = async (
     return formatTestFile({ test }, context);
   }
 
-  const message = `invalid file type ${type}`;
-  log.alert(message);
-  throw new ClientError(message);
+  throwInvalidTypeError(log, type);
 };
