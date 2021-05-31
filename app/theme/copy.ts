@@ -48,6 +48,7 @@ export const copy = {
     "You have not committed your changes. If you go back now, your changes will be lost.",
   backToDashboard: "Back to dashboard",
   blog: "Blog",
+  branch: "Branch",
   branches: "Branches",
   branchesDetail: "Which branches do you want to test?",
   branchesPlaceholder: "Example: develop,main",

@@ -11,14 +11,9 @@ import Tooltip from "../../shared/Tooltip";
 type Props = {
   branch: string | null;
   hasChanges: boolean;
-  isRun: boolean;
 };
 
-export default function Branch({
-  branch,
-  hasChanges,
-  isRun,
-}: Props): JSX.Element {
+export default function Branch({ branch, hasChanges }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
 
@@ -30,25 +25,23 @@ export default function Branch({
 
   return (
     <Box align="center" direction="row" margin={{ right: "small" }}>
-      {!isRun && (
-        <Box
-          align="center"
-          direction="row"
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-          ref={ref}
-        >
-          <Box margin={{ left: "xxsmall" }}>
-            <IconComponent color={color} size={edgeSize.small} />
-          </Box>
-          <Tooltip
-            align={{ right: "left" }}
-            label={label}
-            isVisible={isHover}
-            target={ref.current}
-          />
+      <Box
+        align="center"
+        direction="row"
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        ref={ref}
+      >
+        <Box margin={{ left: "xxsmall" }}>
+          <IconComponent color={color} size={edgeSize.small} />
         </Box>
-      )}
+        <Tooltip
+          align={{ right: "left" }}
+          label={label}
+          isVisible={isHover}
+          target={ref.current}
+        />
+      </Box>
       <GitBranch branch={branch} />
     </Box>
   );

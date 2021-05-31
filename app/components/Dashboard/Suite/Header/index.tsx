@@ -34,7 +34,7 @@ export default function Header({
           <Search search={search} setSearch={setSearch} />
           <SelectStatus runs={suite.runs} />
         </Box>
-        <SuiteDetails suite={suite} />
+        <SuiteDetails isCommitLink suite={suite} />
       </Box>
     </Box>
   );

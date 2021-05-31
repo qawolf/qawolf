@@ -25,8 +25,7 @@ export default function Header(): JSX.Element {
   const { branch: stateBranch } = useContext(StateContext);
   const { hasChanges, run, runId, suite, testId } = useContext(EditorContext);
 
-  const runBranch = suite?.branch || null;
-  const testBranch = stateBranch || null;
+  const branch = stateBranch || null;
 
   return (
     <>
@@ -50,18 +49,14 @@ export default function Header(): JSX.Element {
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
         <Box align="center" direction="row">
-          <Branch
-            hasChanges={hasChanges}
-            branch={runId ? runBranch : testBranch}
-            isRun={!!runId}
-          />
+          {!!testId && <Branch hasChanges={hasChanges} branch={branch} />}
           <TestHistory testId={testId} />
           <Divider
             height={edgeSize.large}
             margin={{ horizontal: "small" }}
             width={borderSize.xsmall}
           />
-          {!runId && <TestButtons branch={testBranch} testId={testId} />}
+          {!runId && <TestButtons branch={branch} testId={testId} />}
           {run?.test_id && (
             <Button
               IconComponent={Edit}
