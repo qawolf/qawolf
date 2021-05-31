@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Monaco } from "..";
 
 import { Env } from "../../../../../lib/types";
 import { FileModel } from "../../../contexts/FileModel";
+import { Monaco } from "..";
 
 const ENV_FILE_NAME = "envTypes.d.ts";
 const HELPERS_FILE_NAME = "helpers.ts";
