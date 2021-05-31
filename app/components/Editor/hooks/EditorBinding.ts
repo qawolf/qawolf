@@ -23,10 +23,10 @@ export class EditorBinding {
       this._editor.setValue(this._model.content);
     });
 
-    const disposeIsInitialized = this._model.bind("is_initialized", () =>
+    const disposeIsInitialized = this._model.bind("is_initialized", () => {
       // set timeout to allow unbind to be set first
-      setTimeout(() => this._bindToDocument(), 0)
-    );
+      setTimeout(() => this._bindToDocument(), 0);
+    });
 
     this._unbindFile = () => {
       disposeContent();

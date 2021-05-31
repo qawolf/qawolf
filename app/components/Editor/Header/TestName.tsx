@@ -13,7 +13,7 @@ type Props = {
 export default function TestName({ disabled }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
 
-  const { testModel, testPath } = useContext(EditorContext);
+  const { test, testModel } = useContext(EditorContext);
 
   const handleSave = (value: string): void => {
     testModel.path = value;
@@ -27,7 +27,7 @@ export default function TestName({ disabled }: Props): JSX.Element {
         onSave={handleSave}
         placeholder={copy.testNamePlaceholder}
         setIsEdit={setIsEdit}
-        value={testPath || ""}
+        value={test.path}
       />
       <Divider
         height={edgeSize.large}

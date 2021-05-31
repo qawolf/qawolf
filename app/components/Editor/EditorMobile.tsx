@@ -9,7 +9,7 @@ import TestVideo from "./Canvas/TestVideo";
 import { EditorContext } from "./contexts/EditorContext";
 
 export default function EditorMobile(): JSX.Element {
-  const { run, runId, testPath } = useContext(EditorContext);
+  const { run, runId, test } = useContext(EditorContext);
   if (!runId) return <NoMobile />;
 
   const videoUrl = run?.video_url;
@@ -29,7 +29,7 @@ export default function EditorMobile(): JSX.Element {
           size="componentHeader"
           style={overflowStyle}
         >
-          {testPath || ""}
+          {test.path}
         </Text>
         <StatusBadge status={run?.status} />
       </Box>

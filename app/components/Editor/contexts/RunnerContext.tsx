@@ -45,9 +45,7 @@ export const RunnerProvider: FC = ({ children }) => {
   const { mouseLineNumber, onSelectionChange, selection } = useSelection();
   const { isRunnerConnected, runner } = useRunner();
 
-  const { isLoaded: isTestLoaded, run, suite, team, testModel } = useContext(
-    EditorContext
-  );
+  const { isLoaded, run, suite, team, testModel } = useContext(EditorContext);
 
   const {
     elementChooserValue,
@@ -76,14 +74,16 @@ export const RunnerProvider: FC = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!isRunnerConnected || !isTestLoaded) return;
+    if (!isRunnerConnected || !isLoaded) return;
+
+    const file = testModel._file;
 
     runner._socket?.emit("connecttest", {
       authorization: localStorage.getItem(JWT_KEY),
-      id: testModel._file?.id,
-      url: testModel._file?.url,
+      id: file?.id,
+      url: file?.url,
     });
-  }, [isRunnerConnected, isTestLoaded, runner, testModel]);
+  }, [isRunnerConnected, isLoaded, runner, testModel]);
 
   const value = {
     apiKey,

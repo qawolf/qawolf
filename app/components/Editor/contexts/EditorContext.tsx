@@ -5,7 +5,7 @@ import { useTeam } from "../../../hooks/queries";
 import { Team } from "../../../lib/types";
 import { StateContext } from "../../StateContext";
 import { CommitChangesHook, useCommitChanges } from "../hooks/commitChanges";
-import { useFileModel } from "../hooks/fileModel";
+import { defaultFileState, FileState, useFileModel } from "../hooks/fileModel";
 import { RunHook, useRun } from "../hooks/run";
 import { SuiteHook, useSuite } from "../hooks/suite";
 import { FileModel } from "./FileModel";
@@ -13,23 +13,22 @@ import { FileModel } from "./FileModel";
 type EditorContextValue = CommitChangesHook &
   RunHook &
   SuiteHook & {
+    helpers: FileState;
     helpersModel?: FileModel;
     isLoaded: boolean;
-    isReadOnly: boolean;
-    isTestDeleted: boolean;
     runId?: string;
     team?: Team;
     testId?: string;
+    test: FileState;
     testModel?: FileModel;
-    testPath?: string;
   };
 
 export const EditorContext = createContext<EditorContextValue>({
   hasChanges: false,
+  helpers: defaultFileState,
   isLoaded: false,
-  isReadOnly: false,
-  isTestDeleted: false,
   run: null,
+  test: defaultFileState,
   suite: null,
 });
 
@@ -46,16 +45,13 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
-  const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel(
+  const { file: helpers, model: helpersModel } = useFileModel(
     runId ? `runhelpers.${suite?.id}` : `helpers.${teamId}`
   );
 
-  const {
-    fileModel: testModel,
-    isLoaded: isTestLoaded,
-    isReadOnly: isTestReadOnly,
-    path: testPath,
-  } = useFileModel(runId ? `run.${runId}` : `test.${testId}`);
+  const { file: test, model: testModel } = useFileModel(
+    runId ? `run.${runId}` : `test.${testId}`
+  );
 
   const { commitChanges, hasChanges } = useCommitChanges({
     branch,
@@ -69,20 +65,16 @@ export const EditorProvider: FC = ({ children }) => {
       value={{
         commitChanges,
         hasChanges,
+        helpers,
         helpersModel,
-        isLoaded: isHelpersLoaded && isTestLoaded,
-        // TODO update to !!file.deleted_at
-        isTestDeleted: isTestReadOnly && !runId,
-        // TODO update to !!file.deleted_at
-        // do not allow editing if the test is deleted or for a run
-        isReadOnly: isTestReadOnly || !!runId,
+        isLoaded: helpers.isLoaded && test.isLoaded,
         run,
         runId,
         suite,
         team,
+        test,
         testId: testId || run?.test_id,
         testModel,
-        testPath,
       }}
     >
       {children}
