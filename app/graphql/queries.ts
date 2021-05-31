@@ -125,12 +125,14 @@ export const shortSuiteQuery = gql`
   query suite($id: ID!) {
     suite(id: $id) {
       branch
+      commit_url
       created_at
       environment_id
       environment_name
       environment_variables
       id
       is_api
+      tag_names
       team_id
       trigger {
         ...ShortTriggerFragment
@@ -153,6 +155,7 @@ export const suitesQuery = gql`
   query suites($team_id: ID!) {
     suites(team_id: $team_id) {
       branch
+      commit_url
       created_at
       environment_id
       environment_name
@@ -163,6 +166,7 @@ export const suitesQuery = gql`
         fail
         pass
       }
+      tag_names
       team_id
       trigger {
         ...ShortTriggerFragment

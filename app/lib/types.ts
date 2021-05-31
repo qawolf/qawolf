@@ -82,12 +82,14 @@ export type Runner = {
 
 export type ShortSuite = {
   branch: string | null;
+  commit_url: string | null;
   created_at: string;
   environment_id: string | null;
   environment_name: string | null;
   environment_variables: string | null;
   id: string;
   is_api: boolean;
+  tag_names: string | null;
   team_id: string;
   trigger: ShortTrigger | null;
 };

@@ -313,6 +313,9 @@ type Suite {
   "Associated git branch"
   branch: String
 
+  "Commit URL"
+  commit_url: String
+
   "Date and time at which the suite was created (trigger test run began)"
   created_at: String!
 
@@ -322,7 +325,7 @@ type Suite {
   "Associated environment name"
   environment_name: String
 
-  "A JSON object with key:value env variables, with decrypted values."
+  "A JSON object with key:value env variables, with decrypted values"
   environment_variables: String
 
   "Suite ID"
@@ -336,6 +339,9 @@ type Suite {
 
   "Count of runs with each status"
   status_counts: StatusCounts!
+
+  "Tag names, comma separated"
+  tag_names: String
 
   "ID of the team that owns the associated trigger"
   team_id: ID!
