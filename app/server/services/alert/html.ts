@@ -1,6 +1,7 @@
 import environment from "../../environment";
 import { WOLF_VARIANTS } from "../../models/wolfOptions";
-import { Invite, SuiteRun, Trigger, User } from "../../types";
+import { Invite, Suite, SuiteRun, Trigger, User } from "../../types";
+import { buildSuiteName } from "./utils";
 
 type BuildLoginCodeHtml = {
   login_code: string;
@@ -9,7 +10,7 @@ type BuildLoginCodeHtml = {
 
 type BuildSuiteHtml = {
   runs: SuiteRun[];
-  suite_id: string;
+  suite: Suite;
   trigger: Trigger | null;
 };
 
@@ -80,14 +81,14 @@ export const buildLoginCodeHtml = ({
 
 export const buildSuiteHtml = ({
   runs,
-  suite_id,
+  suite,
   trigger,
 }: BuildSuiteHtml): string => {
   const failingRuns = runs.filter((r) => r.status === "fail");
-  const triggerName = trigger?.name || "manually triggered";
+  const suiteName = buildSuiteName({ suite, trigger });
 
-  const suiteHref = new URL(`/suites/${suite_id}`, environment.APP_URL).href;
-  const anchor = `<a href='${suiteHref}'>${triggerName} tests</a>`;
+  const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
+  const anchor = `<a href='${suiteHref}'>${suiteName} tests</a>`;
 
   if (!failingRuns.length) {
     return `<p>All good! Your ${anchor} all passed.`;

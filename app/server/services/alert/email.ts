@@ -12,6 +12,7 @@ import {
   buildLoginCodeHtml,
   buildSuiteHtml,
 } from "./html";
+import { buildSuiteName } from "./utils";
 
 type SendEmailAlert = {
   runs: SuiteRun[];
@@ -28,7 +29,7 @@ type SendEmailForLoginCode = {
 type SendEmailForSuite = {
   logger: Logger;
   runs: SuiteRun[];
-  suite_id: string;
+  suite: Suite;
   trigger: Trigger | null;
   user: User;
 };
@@ -99,7 +100,7 @@ export const sendEmailForLoginCode = async ({
 export const sendEmailForSuite = async ({
   logger,
   runs,
-  suite_id,
+  suite,
   trigger,
   user,
 }: SendEmailForSuite): Promise<void> => {
@@ -107,16 +108,16 @@ export const sendEmailForSuite = async ({
   log.debug(user.email);
 
   const is_fail = runs.some((r) => r.status === "fail");
-  const triggerName = trigger?.name || "manually triggered";
+  const suiteName = buildSuiteName({ suite, trigger });
 
   const subject = is_fail
-    ? `🐺 Oh no! Your ${triggerName} tests failed.`
-    : `🎉 All good! Your ${triggerName} tests passed.`;
+    ? `❌ Your ${suiteName} tests failed.`
+    : `✅ Your ${suiteName} tests passed.`;
 
   try {
     await sendEmail({
       from: buildFrom(user.wolf_name),
-      html: buildSuiteHtml({ runs, suite_id, trigger }),
+      html: buildSuiteHtml({ runs, suite, trigger }),
       reply_to: "hello@qawolf.com",
       subject,
       to: user.email,
@@ -141,7 +142,7 @@ export const sendEmailAlert = async (
     sendEmailForSuite({
       logger: options.logger,
       runs,
-      suite_id: suite.id,
+      suite,
       trigger,
       user,
     })

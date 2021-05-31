@@ -6,6 +6,7 @@ import { findIntegration } from "../../models/integration";
 import { findUsersForTeam } from "../../models/user";
 import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
 import { randomChoice } from "../../utils";
+import { buildSuiteName } from "./utils";
 
 type BuildSuiteMessage = {
   runs: SuiteRun[];
@@ -68,7 +69,7 @@ export const buildMessageForSuite = ({
   const failingRuns = runs.filter((r) => r.status === "fail");
   const status = failingRuns.length ? "failed." : "passed!";
 
-  const suiteName = trigger?.name || suite.tag_names || "manually triggered";
+  const suiteName = buildSuiteName({ suite, trigger });
 
   const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
   const headline = `${wolfName} here: <${suiteHref}|${suiteName} tests> ${status}`;
