@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { useCommitEditor } from "../../../hooks/mutations";
+import {
+  CommitEditorVariables,
+  useCommitEditor,
+} from "../../../hooks/mutations";
 import { FileModel } from "../contexts/FileModel";
 
 export type CommitChangesHook = {
@@ -28,10 +31,12 @@ export const useCommitChanges = ({
     if (!branch || !helpersModel || !testModel) return;
 
     const updateHasChanges = () =>
-      setHasChanges(helpersModel.has_changes || testModel.has_changes);
+      setHasChanges(
+        helpersModel.changed_keys.length + testModel.changed_keys.length > 0
+      );
 
-    const unbindHelpers = helpersModel.bind("has_changes", updateHasChanges);
-    const unbindTest = testModel.bind("has_changes", updateHasChanges);
+    const unbindHelpers = helpersModel.bind("changed_keys", updateHasChanges);
+    const unbindTest = testModel.bind("changed_keys", updateHasChanges);
 
     return () => {
       unbindHelpers();
@@ -42,15 +47,24 @@ export const useCommitChanges = ({
   const commitChanges = async (): Promise<void> => {
     if (!branch || !helpersModel || !testModel) return;
 
-    await commitEditor({
-      variables: {
-        branch,
-        code: testModel.content,
-        helpers: helpersModel.content,
-        path: testModel.path,
-        test_id: testId,
-      },
-    });
+    const variables: CommitEditorVariables = { branch, test_id: testId };
+
+    if (testModel.changed_keys.includes("content")) {
+      variables.code = testModel.content;
+    }
+
+    if (testModel.changed_keys.includes("path")) {
+      variables.path = testModel.path;
+    }
+
+    if (helpersModel.changed_keys.includes("content")) {
+      variables.helpers = helpersModel.content;
+    }
+
+    if (Object.keys(variables).length < 3) return;
+
+    console.log("commit changes", variables);
+    await commitEditor({ variables });
 
     helpersModel.reload();
     testModel.reload();

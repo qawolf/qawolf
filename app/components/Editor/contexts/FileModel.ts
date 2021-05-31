@@ -53,8 +53,11 @@ export class FileModel extends EventEmitter {
     this.removeAllListeners();
   }
 
-  get has_changes(): boolean {
-    return !!this._metadata.get("has_changes");
+  get changed_keys(): string[] {
+    const keys = this._metadata.get("changed_keys") || "";
+    if (keys.length < 1) return [];
+
+    return keys.split(",");
   }
 
   get id(): string | undefined {
