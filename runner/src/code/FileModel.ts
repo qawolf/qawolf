@@ -13,11 +13,21 @@ type ConnectOptions = {
   url: string;
 };
 
+class WebSocketPolyfill extends ws {
+  constructor(address: any, protocol: any, options: any) {
+    super(address, protocol, options);
+
+    // listen to prevent unhandled exceptions
+    // since WebsocketProvider does not do this
+    this.on("error", () => {});
+  }
+}
+
 export class FileModel extends EventEmitter {
   _connected = false;
   _doc = new Y.Doc();
   _provider?: WebsocketProvider;
-  _text = this._doc.getText("file.monaco");
+  _text = this._doc.getText("file.content");
 
   connect({ authorization, id, url }: ConnectOptions): void {
     // XXX create a separate authentication method for runners
@@ -27,8 +37,10 @@ export class FileModel extends EventEmitter {
 
     this._provider = new WebsocketProvider(adjustedUrl, id, this._doc, {
       params: { authorization },
-      WebSocketPolyfill: ws as any,
+      WebSocketPolyfill: WebSocketPolyfill as any,
     });
+
+    (this._provider as any).ws.on("error", console.error);
   }
 
   get content(): string {
