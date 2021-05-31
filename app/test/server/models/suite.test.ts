@@ -167,11 +167,15 @@ describe("suite model", () => {
       expect(suites).toMatchObject([
         {
           branch: null,
+          commit_message: null,
+          commit_url: null,
           creator_id: null,
           environment_id: null,
           environment_variables: null,
           helpers: "// helpers",
           is_api: false,
+          pull_request_url: null,
+          tag_names: null,
           team_id: trigger.team_id,
           trigger_id: trigger.id,
           id: expect.any(String),
@@ -183,11 +187,16 @@ describe("suite model", () => {
       await createSuite(
         {
           branch: "feature",
+          commit_message: "update slack message",
+          commit_url:
+            "https://github.com/qawolf/qawolf/pull/1339/commits/65fedc6b1351dc66f31c90d521048f6f73ae26d8",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables,
           helpers: "// helpers",
           is_api: true,
+          pull_request_url: "https://github.com/qawolf/qawolf/pull/1339",
+          tag_names: "Account",
           team_id: trigger.team_id,
           trigger_id: trigger.id,
         },
@@ -198,12 +207,17 @@ describe("suite model", () => {
       expect(suites).toMatchObject([
         {
           branch: "feature",
+          commit_message: "update slack message",
+          commit_url:
+            "https://github.com/qawolf/qawolf/pull/1339/commits/65fedc6b1351dc66f31c90d521048f6f73ae26d8",
           creator_id: trigger.creator_id,
           environment_id: "environmentId",
           environment_variables: encrypt(JSON.stringify(environment_variables)),
           helpers: "// helpers",
           id: expect.any(String),
           is_api: true,
+          pull_request_url: "https://github.com/qawolf/qawolf/pull/1339",
+          tag_names: "Account",
           team_id: trigger.team_id,
           trigger_id: trigger.id,
         },

@@ -45,11 +45,15 @@ type BuildTestsForSuiteResult = {
 
 type CreateSuite = {
   branch?: string | null;
+  commit_message?: string | null;
+  commit_url?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
   helpers: string;
   is_api?: boolean;
+  pull_request_url?: string | null;
+  tag_names?: string | null;
   team_id: string;
   trigger_id: string;
 };
@@ -124,11 +128,15 @@ export const buildTestsForSuite = async (
 export const createSuite = async (
   {
     branch,
+    commit_message,
+    commit_url,
     creator_id,
     environment_id,
     environment_variables,
     helpers,
     is_api,
+    pull_request_url,
+    tag_names,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -145,6 +153,8 @@ export const createSuite = async (
 
   const suite = {
     branch: branch || null,
+    commit_message: commit_message || null,
+    commit_url: commit_url || null,
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_id: environment_id || null,
@@ -152,6 +162,8 @@ export const createSuite = async (
     helpers,
     id: cuid(),
     is_api: is_api || false,
+    pull_request_url: pull_request_url || null,
+    tag_names: tag_names || null,
     team_id,
     trigger_id,
     updated_at: timestamp,
