@@ -39,8 +39,6 @@ export class FileModel extends EventEmitter {
       params: { authorization },
       WebSocketPolyfill: WebSocketPolyfill as any,
     });
-
-    (this._provider as any).ws.on("error", console.error);
   }
 
   get content(): string {
