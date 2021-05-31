@@ -73,6 +73,7 @@ type CreateSuiteForTests = {
   environment_variables?: FormattedVariables | null;
   is_api?: boolean;
   pull_request_url?: string | null;
+  tag_names?: string | null;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
@@ -263,6 +264,7 @@ export const createSuiteForTests = async (
     environment_variables,
     is_api,
     pull_request_url,
+    tag_names,
     team_id,
     tests,
     trigger_id,
@@ -296,6 +298,7 @@ export const createSuiteForTests = async (
       helpers,
       is_api,
       pull_request_url,
+      tag_names,
       team_id,
       trigger_id,
     },
