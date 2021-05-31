@@ -1,16 +1,24 @@
 /* eslint-disable */
 // XXX rewrite monaco import and use this library directly
+import type monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as error from "lib0/error.js";
 import { createMutex } from "lib0/mutex.js";
 import * as Y from "yjs";
 
 class RelativeSelection {
+  start: any;
+  end: any;
+  direction: any;
   /**
    * @param {Y.RelativePosition} start
    * @param {Y.RelativePosition} end
    * @param {monaco.SelectionDirection} direction
    */
-  constructor(start, end, direction) {
+  constructor(
+    start: Y.RelativePosition,
+    end: Y.RelativePosition,
+    direction: monaco.SelectionDirection
+  ) {
     this.start = start;
     this.end = end;
     this.direction = direction;
@@ -22,7 +30,11 @@ class RelativeSelection {
  * @param {monaco.editor.ITextModel} monacoModel
  * @param {Y.Text} type
  */
-const createRelativeSelection = (editor, monacoModel, type) => {
+const createRelativeSelection = (
+  editor: monaco.editor.IStandaloneCodeEditor,
+  monacoModel: monaco.editor.ITextModel,
+  type: Y.Text
+) => {
   const sel = editor.getSelection();
   if (sel !== null) {
     const startPos = sel.getStartPosition();
@@ -48,12 +60,12 @@ const createRelativeSelection = (editor, monacoModel, type) => {
  * @return {null|monaco.Selection}
  */
 const createMonacoSelectionFromRelativeSelection = (
-  monaco,
-  editor,
-  type,
-  relSel,
-  doc
-) => {
+  monaco: any,
+  editor: monaco.editor.IEditor,
+  type: Y.Text,
+  relSel: RelativeSelection,
+  doc: Y.Doc
+): null | monaco.Selection => {
   const start = Y.createAbsolutePositionFromRelativePosition(relSel.start, doc);
   const end = Y.createAbsolutePositionFromRelativePosition(relSel.end, doc);
   if (
@@ -62,7 +74,7 @@ const createMonacoSelectionFromRelativeSelection = (
     start.type === type &&
     end.type === type
   ) {
-    const model = /** @type {monaco.editor.ITextModel} */ editor.getModel();
+    const model = editor.getModel() as any;
     const startPos = model.getPositionAt(start.index);
     const endPos = model.getPositionAt(end.index);
     return monaco.Selection.createWithDirection(
@@ -77,6 +89,19 @@ const createMonacoSelectionFromRelativeSelection = (
 };
 
 export class MonacoBinding {
+  monaco: any;
+  doc: any;
+  ytext: any;
+  monacoModel: any;
+  editors: Set<unknown>;
+  mux: any;
+  _savedSelections: Map<any, any>;
+  _beforeTransaction: () => void;
+  _decorations: Map<any, any>;
+  _rerenderDecorations: () => void;
+  _ytextObserver: (event: any) => void;
+  _monacoChangeHandler: any;
+  awareness: any;
   /**
    * @param {Y.Text} ytext
    * @param {monaco.editor.ITextModel} monacoModel
@@ -85,10 +110,10 @@ export class MonacoBinding {
    */
   constructor(
     monaco,
-    ytext,
-    monacoModel,
-    editors = new Set(),
-    awareness = null
+    ytext: Y.Text,
+    monacoModel: monaco.editor.ITextModel,
+    editors: Set<monaco.editor.IStandaloneCodeEditor> = new Set(),
+    awareness: any = null
   ) {
     this.monaco = monaco;
     this.doc = /** @type {Y.Doc} */ ytext.doc;

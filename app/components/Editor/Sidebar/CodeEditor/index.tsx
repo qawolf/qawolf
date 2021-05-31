@@ -27,7 +27,7 @@ export default function CodeEditor({
   isVisible,
   onKeyDown,
 }: Props): JSX.Element {
-  const [editor, setEditor] = useState<Editor | null>(null);
+  const [editor, setEditor] = useState<MonacoEditor | null>(null);
   const [monaco, setMonaco] = useState<Monaco | null>(null);
 
   const { env, progress, onSelectionChange } = useContext(RunnerContext);

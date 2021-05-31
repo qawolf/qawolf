@@ -1,4 +1,3 @@
-import isNil from "lodash/isNil";
 import { useEffect, useState } from "react";
 
 import {
@@ -33,8 +32,9 @@ export const useCommitChanges = ({
     if (!branch || !helpersModel || !testModel) return;
 
     const updateHasChanges = () => {
-      const changes = helpersModel.changes() || testModel.changes();
-      setHasChanges(!!changes);
+      // XXX
+      // const changes = helpersModel.changes() || testModel.changes();
+      setHasChanges(false);
     };
 
     helpersModel.on("changed", updateHasChanges);
@@ -53,16 +53,16 @@ export const useCommitChanges = ({
 
     const variables: CommitEditorVariables = { branch, test_id: testId };
 
-    const testChanges = testModel.changes();
-    if (testChanges) {
-      if (!isNil(testChanges.content)) variables.code = testChanges.content;
-      if (!isNil(testChanges.path)) variables.path = testChanges.path;
-    }
+    // const testChanges = testModel.changes();
+    // if (testChanges) {
+    //   if (!isNil(testChanges.content)) variables.code = testChanges.content;
+    //   if (!isNil(testChanges.path)) variables.path = testChanges.path;
+    // }
 
-    const helpersChanges = helpersModel.changes();
-    if (helpersChanges && !isNil(helpersChanges.content)) {
-      variables.helpers = helpersChanges.content;
-    }
+    // const helpersChanges = helpersModel.changes();
+    // if (helpersChanges && !isNil(helpersChanges.content)) {
+    //   variables.helpers = helpersChanges.content;
+    // }
 
     if (Object.keys(variables).length < 3) return;
 
