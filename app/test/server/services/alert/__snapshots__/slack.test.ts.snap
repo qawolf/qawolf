@@ -149,6 +149,28 @@ Object {
           "type": "image",
         },
         Object {
+          "text": "Wolf1 here: <http://localhost:3000/suites/suiteId|Sign up tests> passed!",
+          "type": "mrkdwn",
+        },
+      ],
+      "type": "context",
+    },
+  ],
+  "text": "Sign up tests passed!",
+}
+`;
+
+exports[`buildMessageForSuite builds a Slack message for a passing suite 3`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "elements": Array [
+        Object {
+          "alt_text": "Wolf1",
+          "image_url": "https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-brown-party-slack.png",
+          "type": "image",
+        },
+        Object {
           "text": "Wolf1 here: <http://localhost:3000/suites/suiteId|manually triggered tests> passed!",
           "type": "mrkdwn",
         },

@@ -80,6 +80,15 @@ describe("buildMessageForSuite", () => {
     ).toMatchSnapshot();
 
     expect(
+      buildMessageForSuite({
+        runs,
+        suite: { ...suite, tag_names: "Sign up" },
+        trigger: null,
+        user,
+      })
+    ).toMatchSnapshot();
+
+    expect(
       buildMessageForSuite({ runs, suite, trigger: null, user })
     ).toMatchSnapshot();
 

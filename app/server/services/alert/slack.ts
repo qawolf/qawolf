@@ -68,11 +68,11 @@ export const buildMessageForSuite = ({
   const failingRuns = runs.filter((r) => r.status === "fail");
   const status = failingRuns.length ? "failed." : "passed!";
 
-  const triggerName = trigger?.name || "manually triggered";
+  const suiteName = trigger?.name || suite.tag_names || "manually triggered";
 
   const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
-  const headline = `${wolfName} here: <${suiteHref}|${triggerName} tests> ${status}`;
-  const text = `${triggerName} tests ${status}`;
+  const headline = `${wolfName} here: <${suiteHref}|${suiteName} tests> ${status}`;
+  const text = `${suiteName} tests ${status}`;
 
   const runBlocks = failingRuns.map((run) => {
     return {
