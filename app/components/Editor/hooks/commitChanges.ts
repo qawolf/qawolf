@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 
-import {
-  CommitEditorVariables,
-  useCommitEditor,
-} from "../../../hooks/mutations";
+import { useCommitEditor } from "../../../hooks/mutations";
 import { FileModel } from "../contexts/FileModel";
 
 export type CommitChangesHook = {
@@ -25,48 +22,38 @@ export const useCommitChanges = ({
   testModel,
 }: UseCommitChanges): CommitChangesHook => {
   const [hasChanges, setHasChanges] = useState(false);
-
   const [commitEditor] = useCommitEditor();
 
   useEffect(() => {
     if (!branch || !helpersModel || !testModel) return;
 
-    const updateHasChanges = () => {
-      // XXX
-      // const changes = helpersModel.changes() || testModel.changes();
-      setHasChanges(false);
-    };
+    const updateHasChanges = () =>
+      setHasChanges(helpersModel.has_changes || testModel.has_changes);
 
-    helpersModel.on("changed", updateHasChanges);
-    testModel.on("changed", updateHasChanges);
-
-    updateHasChanges();
+    const unbindHelpers = helpersModel.bind("has_changes", updateHasChanges);
+    const unbindTest = testModel.bind("has_changes", updateHasChanges);
 
     return () => {
-      helpersModel.off("changed", updateHasChanges);
-      testModel.off("changed", updateHasChanges);
+      unbindHelpers();
+      unbindTest();
     };
   }, [branch, helpersModel, testModel]);
 
   const commitChanges = async (): Promise<void> => {
     if (!branch || !helpersModel || !testModel) return;
 
-    const variables: CommitEditorVariables = { branch, test_id: testId };
+    await commitEditor({
+      variables: {
+        branch,
+        code: testModel.content,
+        helpers: helpersModel.content,
+        path: testModel.path,
+        test_id: testId,
+      },
+    });
 
-    // const testChanges = testModel.changes();
-    // if (testChanges) {
-    //   if (!isNil(testChanges.content)) variables.code = testChanges.content;
-    //   if (!isNil(testChanges.path)) variables.path = testChanges.path;
-    // }
-
-    // const helpersChanges = helpersModel.changes();
-    // if (helpersChanges && !isNil(helpersChanges.content)) {
-    //   variables.helpers = helpersChanges.content;
-    // }
-
-    if (Object.keys(variables).length < 3) return;
-
-    await commitEditor({ variables });
+    helpersModel.reload();
+    testModel.reload();
   };
 
   return { commitChanges, hasChanges };

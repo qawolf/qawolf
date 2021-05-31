@@ -53,6 +53,10 @@ export class FileModel extends EventEmitter {
     this.removeAllListeners();
   }
 
+  get has_changes(): boolean {
+    return !!this._metadata.get("has_changes");
+  }
+
   get id(): string | undefined {
     return this._file?.id;
   }
@@ -75,6 +79,12 @@ export class FileModel extends EventEmitter {
 
   set path(value: string) {
     this._metadata.set("path", value);
+  }
+
+  reload(): void {
+    if (!this.is_initialized) return;
+
+    this._metadata.set("reload_at", Date.now());
   }
 
   setFile(file: File): void {
