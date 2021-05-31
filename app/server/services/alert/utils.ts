@@ -32,7 +32,10 @@ export const buildGitDetail = (suite: Suite): string => {
 };
 
 export const buildSuiteName = ({ suite, trigger }: BuildSuiteName): string => {
-  return trigger?.name || suite.tag_names || "manually triggered";
+  if (trigger?.name) return trigger.name;
+  if (suite.tag_names) return suite.tag_names;
+
+  return suite.is_api ? "API triggered" : "manually triggered";
 };
 
 export const buildWolfImage = ({ isPass, user }: BuildWolfImage): string => {
