@@ -3,9 +3,11 @@ import {
   buildLoginCodeHtml,
   buildSuiteHtml,
 } from "../../../../server/services/alert/html";
-import { buildInvite, buildTrigger, buildUser } from "../../utils";
+import { buildInvite, buildSuite, buildTrigger, buildUser } from "../../utils";
 
+const suite = buildSuite({});
 const trigger = buildTrigger({});
+const user = buildUser({});
 
 describe("buildInviteHtml", () => {
   it("builds html for invite", () => {
@@ -59,8 +61,9 @@ describe("buildSuiteHtml", () => {
           test_name: "logOut",
         },
       ],
-      suite_id: "suiteId",
+      suite,
       trigger,
+      user,
     });
 
     expect(html).toMatchSnapshot();
@@ -78,8 +81,35 @@ describe("buildSuiteHtml", () => {
           test_name: "logIn",
         },
       ],
-      suite_id: "suiteId",
+      suite,
       trigger,
+      user,
+    });
+
+    expect(html).toMatchSnapshot();
+  });
+
+  it("builds html for success email with git", () => {
+    const html = buildSuiteHtml({
+      runs: [
+        {
+          gif_url: "https://gif.gif",
+          id: "runId",
+          is_test_deleted: false,
+          status: "pass",
+          test_id: "testId",
+          test_name: "logIn",
+        },
+      ],
+      suite: {
+        ...suite,
+        branch: "feature",
+        commit_message: "initial commit",
+        commit_url: "https://github.com/qawolf/repo/pull/123/commits/sha",
+        pull_request_url: "https://github.com/qawolf/repo/pull/123",
+      },
+      trigger,
+      user,
     });
 
     expect(html).toMatchSnapshot();
@@ -97,8 +127,32 @@ describe("buildSuiteHtml", () => {
           test_name: "logIn",
         },
       ],
-      suite_id: "suiteId",
+      suite,
       trigger: null,
+      user,
+    });
+
+    expect(html).toMatchSnapshot();
+  });
+
+  it("builds html for success email with tag names", () => {
+    const html = buildSuiteHtml({
+      runs: [
+        {
+          gif_url: "https://gif.gif",
+          id: "runId",
+          is_test_deleted: false,
+          status: "pass",
+          test_id: "testId",
+          test_name: "logIn",
+        },
+      ],
+      suite: {
+        ...suite,
+        tag_names: "Sign up",
+      },
+      trigger: null,
+      user,
     });
 
     expect(html).toMatchSnapshot();

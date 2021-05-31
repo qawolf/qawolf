@@ -1,7 +1,7 @@
 import environment from "../../environment";
 import { WOLF_VARIANTS } from "../../models/wolfOptions";
 import { Invite, Suite, SuiteRun, Trigger, User } from "../../types";
-import { buildSuiteName } from "./utils";
+import { buildGitDetail, buildSuiteName, buildWolfImage } from "./utils";
 
 type BuildLoginCodeHtml = {
   login_code: string;
@@ -12,6 +12,7 @@ type BuildSuiteHtml = {
   runs: SuiteRun[];
   suite: Suite;
   trigger: Trigger | null;
+  user: User;
 };
 
 const buildFailingRunHtml = ({ gif_url, id, test_name }: SuiteRun): string => {
@@ -83,15 +84,21 @@ export const buildSuiteHtml = ({
   runs,
   suite,
   trigger,
+  user,
 }: BuildSuiteHtml): string => {
   const failingRuns = runs.filter((r) => r.status === "fail");
   const suiteName = buildSuiteName({ suite, trigger });
 
   const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
+
   const anchor = `<a href='${suiteHref}'>${suiteName} tests</a>`;
+  const git = buildGitDetail(suite);
+
+  const wolfImage = buildWolfImage({ isPass: !failingRuns.length, user });
+  const wolf = `${user.wolf_name} here:`;
 
   if (!failingRuns.length) {
-    return `<p>All good! Your ${anchor} all passed.`;
+    return `<p>${wolfImage} ${wolf} ${anchor} passed!</p>${git}`;
   }
 
   const failingRunsHtml = failingRuns.map((run) => {
@@ -99,7 +106,7 @@ export const buildSuiteHtml = ({
   });
 
   return (
-    `<p>Oh no! The following ${anchor} failed:<p><br />` +
+    `<p>${wolfImage} ${wolf} ${anchor} failed.</p>${git}<br />` +
     failingRunsHtml.join("<br />")
   );
 };

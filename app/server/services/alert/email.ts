@@ -117,7 +117,7 @@ export const sendEmailForSuite = async ({
   try {
     await sendEmail({
       from: buildFrom(user.wolf_name),
-      html: buildSuiteHtml({ runs, suite, trigger }),
+      html: buildSuiteHtml({ runs, suite, trigger, user }),
       reply_to: "hello@qawolf.com",
       subject,
       to: user.email,

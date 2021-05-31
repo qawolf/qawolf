@@ -96,7 +96,7 @@ describe("sendEmailAlert", () => {
           gif_url: expect.any(String),
         },
       ],
-      suite_id: "suiteId",
+      suite,
       user: {
         ...user,
         created_at: expect.any(Date),

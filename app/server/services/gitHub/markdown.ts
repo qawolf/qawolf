@@ -1,5 +1,6 @@
 import environment from "../../environment";
 import { SuiteRun, Trigger, User } from "../../types";
+import { buildWolfImage } from "../alert/utils";
 
 type BuildCommentForSuite = {
   runs: SuiteRun[];
@@ -60,10 +61,10 @@ export const buildCommentForSuite = ({
       } running`
     : `${runs.length} test${runs.length === 1 ? "" : "s"} ran`;
 
-  return `## ${emoji} QA Wolf - ${trigger.name}
-<img src="https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${
-    user.wolf_variant
-  }${isPass ? "-party" : ""}-slack.png" width="32" /> ${
+  return `## ${emoji} QA Wolf - ${trigger.name} ${buildWolfImage({
+    isPass,
+    user,
+  })} ${
     user.wolf_name
   } here: ${header}, [see details here](${suiteUrl}).${buildDetailsForRuns(
     failingRuns
