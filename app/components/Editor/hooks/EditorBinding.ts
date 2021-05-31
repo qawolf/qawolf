@@ -19,7 +19,8 @@ export class EditorBinding {
     this._monaco = monaco;
 
     const disposeContent = this._model.bind("content", () => {
-      console.log("manually set content");
+      if (this._model.is_initialized) return;
+
       this._editor.setValue(this._model.content);
     });
 
