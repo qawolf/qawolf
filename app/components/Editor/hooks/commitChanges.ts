@@ -63,7 +63,6 @@ export const useCommitChanges = ({
 
     if (Object.keys(variables).length < 3) return;
 
-    console.log("commit changes", variables);
     await commitEditor({ variables });
 
     helpersModel.reload();

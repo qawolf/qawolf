@@ -19,7 +19,11 @@ export default function TestButtons({ branch, testId }: Props): JSX.Element {
   const handleCommitClick = async (): Promise<void> => {
     setLoading(true);
     await commitChanges();
-    setLoading(false);
+
+    // give to reload and recalculate changed keys
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   const handleTagsClick = (): void => {
