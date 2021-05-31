@@ -61,10 +61,11 @@ export const buildCommentForSuite = ({
       } running`
     : `${runs.length} test${runs.length === 1 ? "" : "s"} ran`;
 
-  return `## ${emoji} QA Wolf - ${trigger.name} ${buildWolfImage({
-    isPass,
-    user,
-  })} ${
+  return `## ${emoji} QA Wolf - ${trigger.name}
+${buildWolfImage({
+  isPass,
+  user,
+})} ${
     user.wolf_name
   } here: ${header}, [see details here](${suiteUrl}).${buildDetailsForRuns(
     failingRuns
