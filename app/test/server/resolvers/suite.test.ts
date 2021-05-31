@@ -80,6 +80,7 @@ describe("createSuiteResolver", () => {
         branch: null,
         environment_id: null,
         environment_variables: "",
+        tag_names: null,
         test_ids: ["testId", "test2Id"],
       },
       context
@@ -92,6 +93,7 @@ describe("createSuiteResolver", () => {
       environment_id: null,
       environment_variables: null,
       helpers: "",
+      tag_names: null,
       team_id: teams[0].id,
       trigger_id: null,
     });
@@ -115,6 +117,7 @@ describe("createSuiteResolver", () => {
         branch: "feature",
         environment_id: null,
         environment_variables: "",
+        tag_names: "Account",
         test_ids: ["testId", "test2Id"],
       },
       context
@@ -124,6 +127,7 @@ describe("createSuiteResolver", () => {
     expect(suite).toMatchObject({
       branch: "feature",
       helpers: "branch helpers",
+      tag_names: "Account",
     });
 
     const runs = await db("runs").select("*").where({ suite_id: suite.id });
@@ -139,6 +143,7 @@ describe("createSuiteResolver", () => {
         branch: null,
         environment_id: "environmentId",
         environment_variables: JSON.stringify({ hello: "world" }),
+        tag_names: null,
         test_ids: ["testId"],
       },
       context
@@ -149,6 +154,7 @@ describe("createSuiteResolver", () => {
       branch: null,
       creator_id: user.id,
       environment_id: "environmentId",
+      tag_names: null,
       team_id: teams[0].id,
       trigger_id: null,
     });
@@ -169,6 +175,7 @@ describe("createSuiteResolver", () => {
           branch: null,
           environment_id: null,
           environment_variables: null,
+          tag_names: null,
           test_ids: ["testId"],
         },
         { ...context, teams: [{ ...teams[0], is_enabled: false }] }
@@ -184,6 +191,7 @@ describe("createSuiteResolver", () => {
           branch: null,
           environment_id: null,
           environment_variables: null,
+          tag_names: null,
           test_ids: [],
         },
         context
@@ -204,6 +212,7 @@ describe("createSuiteResolver", () => {
           branch: null,
           environment_id: null,
           environment_variables: null,
+          tag_names: null,
           test_ids: ["testId", "test10Id"],
         },
         { ...context, teams: [...teams, team2] }

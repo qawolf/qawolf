@@ -36,6 +36,7 @@ export const createSuiteResolver = async (
     branch,
     environment_id,
     environment_variables,
+    tag_names,
     test_ids,
   }: CreateSuiteMutation,
   { db, logger, teams, user: contextUser }: Context
@@ -82,6 +83,7 @@ export const createSuiteResolver = async (
         environment_id,
         environment_variables: formattedVariables,
         team_id: team.id,
+        tag_names,
         tests,
       },
       { db: trx, logger }

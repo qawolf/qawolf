@@ -830,8 +830,15 @@ type Mutation {
     """
     environment_id: ID
 
-    "A JSON object with key:value env variables, with decrypted values."
+    """
+    A JSON object with key:value env variables, with decrypted values
+    """
     environment_variables: String
+
+    """
+    A comma separated list of tag names, for display purposes
+    """
+    tag_names: String
 
     """
     List of test IDs to include in the suite. Only those that are

@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
+import { noTagName } from "../components/Dashboard/helpers";
 import { TagFilter } from "../lib/types";
 
 type UseTagQuery = {
   filter: TagFilter;
+  formattedTagNames: string | null;
   tagNames: string[];
 };
 
@@ -18,5 +20,11 @@ export const useTagQuery = (): UseTagQuery => {
     return { filter: filter as TagFilter, tagNames };
   }, [query]);
 
-  return { filter, tagNames };
+  const filteredTagNames = tagNames.filter((n) => n !== noTagName);
+
+  return {
+    filter,
+    formattedTagNames: filteredTagNames.join(", ") || null,
+    tagNames,
+  };
 };

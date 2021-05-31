@@ -185,6 +185,7 @@ type CreateSuiteVariables = {
   branch: string | null;
   environment_id: string | null;
   environment_variables?: string | null;
+  tag_names?: string | null;
   test_ids: string[];
 };
 

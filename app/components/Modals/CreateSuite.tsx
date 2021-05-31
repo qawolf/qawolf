@@ -4,6 +4,7 @@ import { ChangeEvent, useContext, useState } from "react";
 import { useCreateSuite } from "../../hooks/mutations";
 import { useOnHotKey } from "../../hooks/onHotKey";
 import { useEnvironments } from "../../hooks/queries";
+import { useTagQuery } from "../../hooks/tagQuery";
 import { copy } from "../../theme/copy";
 import { edgeSize } from "../../theme/theme";
 import Modal from "../shared/Modal";
@@ -26,6 +27,7 @@ export default function CreateSuite({
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState(
     environmentId
   );
+  const { formattedTagNames } = useTagQuery();
 
   const { data } = useEnvironments({ team_id: teamId }, { environmentId });
   const environments = data?.environments || null;
@@ -41,6 +43,7 @@ export default function CreateSuite({
       variables: {
         branch,
         environment_id: selectedEnvironmentId,
+        tag_names: formattedTagNames,
         test_ids: testIds,
       },
     })

@@ -170,12 +170,14 @@ export const createSuiteMutation = gql`
     $branch: String
     $environment_id: ID
     $environment_variables: String
+    $tag_names: String
     $test_ids: [ID!]!
   ) {
     createSuite(
       branch: $branch
       environment_id: $environment_id
       environment_variables: $environment_variables
+      tag_names: $tag_names
       test_ids: $test_ids
     )
   }
