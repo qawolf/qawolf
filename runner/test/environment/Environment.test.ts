@@ -1,10 +1,10 @@
 import waitUntil from "async-wait-until";
 import { Browser } from "playwright";
 
-import { CodeModel } from "../../src/code/FileModel";
+import { FileModel } from "../../src/code/FileModel";
 import { Environment } from "../../src/environment/Environment";
 import { RunOptions, RunProgress } from "../../src/types";
-import { FixturesServer, serveFixtures, sleep } from "../utils";
+import { FixturesServer, serveFixtures } from "../utils";
 
 const runOptions: RunOptions = {
   code: "",
@@ -15,7 +15,7 @@ const runOptions: RunOptions = {
 let environment: Environment;
 
 beforeEach(() => {
-  environment = new Environment({ codeModel: new CodeModel() });
+  environment = new Environment({ testModel: new FileModel() });
 });
 
 describe("close", () => {
@@ -51,26 +51,6 @@ describe("run", () => {
     await runPromise;
     expect(environment.updater._enabledAt).toBeTruthy();
 
-    await environment.close();
-  });
-
-  it("emits code as it is updated", async () => {
-    let updatedCode = "";
-
-    environment._updater._codeModel.on(
-      "codeupdated",
-      ({ code }) => (updatedCode = code)
-    );
-
-    const code = `const { context } = await launch({ headless: true });\nconst page = await context.newPage();\nawait page.goto("${server.url}/Environment");\n// 🐺 QA Wolf will create code here`;
-    environment._updater._codeModel.setValue(code);
-
-    await environment.run({ ...runOptions, code }, []);
-
-    await environment._variables.page.click("button");
-    await sleep(0);
-
-    expect(updatedCode).toContain('await page.click("text=Hello");');
     await environment.close();
   });
 

@@ -29,8 +29,8 @@ class WebSocketPolyfill extends ws {
 export class FileModel extends EventEmitter {
   _connected = false;
   _doc = new Y.Doc();
+  _content = this._doc.getText("file.content");
   _provider?: WebsocketProvider;
-  _text = this._doc.getText("file.content");
 
   connect({ authorization, id, url }: ConnectOptions): void {
     // XXX create a separate authentication method for runners
@@ -46,7 +46,7 @@ export class FileModel extends EventEmitter {
   }
 
   get content(): string {
-    return this._text.toJSON();
+    return this._content.toJSON();
   }
 
   update(operations: TextOperation[]): boolean {
@@ -56,8 +56,8 @@ export class FileModel extends EventEmitter {
     }
 
     operations.forEach((op) => {
-      if (op.type === "delete") this._text.delete(op.index, op.length);
-      else if (op.type === "insert") this._text.insert(op.index, op.value);
+      if (op.type === "delete") this._content.delete(op.index, op.length);
+      else if (op.type === "insert") this._content.insert(op.index, op.value);
     });
 
     return true;

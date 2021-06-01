@@ -14,8 +14,8 @@ import { VM } from "./VM";
 const debug = Debug("qawolf:Environment");
 
 type EnvironmentOptions = {
-  testModel: FileModel;
   logger?: Logger;
+  testModel: FileModel;
 };
 
 export class Environment extends EventEmitter {
