@@ -4,7 +4,6 @@ import { FileModel } from "../code/FileModel";
 import { Environment } from "../environment/Environment";
 import { Log } from "../services/Logger";
 import {
-  CodeUpdate,
   ElementChooserValue,
   RunHook,
   RunOptions,

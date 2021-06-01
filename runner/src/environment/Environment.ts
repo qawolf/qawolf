@@ -3,8 +3,8 @@ import { EventEmitter } from "events";
 import { without } from "lodash";
 import { Browser } from "playwright";
 
-import { FileModel } from "../code/FileModel";
 import { CodeUpdater } from "../code/CodeUpdater";
+import { FileModel } from "../code/FileModel";
 import { Logger } from "../services/Logger";
 import { RunHook, RunOptions, RunProgress, Variables } from "../types";
 import { ElementChooser } from "./ElementChooser";

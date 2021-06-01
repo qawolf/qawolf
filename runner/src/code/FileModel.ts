@@ -1,8 +1,9 @@
 import Debug from "debug";
 import { EventEmitter } from "events";
-import * as Y from "yjs";
-import { WebsocketProvider } from "y-websocket";
 import ws from "ws";
+import { WebsocketProvider } from "y-websocket";
+import * as Y from "yjs";
+
 import { TextOperation } from "../types";
 
 const debug = Debug("qawolf:FileModel");
@@ -14,12 +15,14 @@ type ConnectOptions = {
 };
 
 class WebSocketPolyfill extends ws {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(address: any, protocol: any, options: any) {
     super(address, protocol, options);
 
-    // listen to prevent unhandled exceptions
-    // since WebsocketProvider does not do this
-    this.on("error", () => {});
+    this.on("error", () => {
+      // listen to prevent unhandled exceptions
+      // since WebsocketProvider does not do this
+    });
   }
 }
 
@@ -37,6 +40,7 @@ export class FileModel extends EventEmitter {
 
     this._provider = new WebsocketProvider(adjustedUrl, id, this._doc, {
       params: { authorization },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       WebSocketPolyfill: WebSocketPolyfill as any,
     });
   }

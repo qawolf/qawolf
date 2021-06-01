@@ -4,8 +4,8 @@ import { omit } from "lodash";
 import { BrowserContext } from "playwright";
 
 import { ElementEvent, Variables, WindowEvent } from "../types";
-import { FileModel } from "./FileModel";
 import { ContextEventCollector } from "./ContextEventCollector";
+import { FileModel } from "./FileModel";
 import { parseActionExpressions } from "./parseCode";
 import { patchEvent } from "./patchEvent";
 
