@@ -4,6 +4,7 @@ import { useFile } from "../../../hooks/queries";
 import { FileModel } from "../contexts/FileModel";
 
 export type FileState = {
+  isDeleted: boolean;
   isInitialized: boolean;
   isLoaded: boolean;
   isReadOnly: boolean;
@@ -16,6 +17,7 @@ export type FileHook = {
 };
 
 export const defaultFileState = {
+  isDeleted: false,
   isInitialized: false,
   isLoaded: false,
   isReadOnly: true,
@@ -26,7 +28,6 @@ export const useFileModel = (id: string): FileHook => {
   const modelRef = useRef<FileModel>();
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isReadOnly, setIsReadOnly] = useState(true);
   const [path, setPath] = useState("");
   const { data } = useFile({ id });
   const file = data?.file || null;
@@ -34,7 +35,6 @@ export const useFileModel = (id: string): FileHook => {
   useEffect(() => {
     modelRef.current = new FileModel();
     modelRef.current.bind("is_initialized", setIsInitialized);
-    modelRef.current.bind("is_read_only", setIsReadOnly);
     modelRef.current.bind("path", setPath);
     return () => modelRef.current.dispose();
   }, []);
@@ -49,9 +49,10 @@ export const useFileModel = (id: string): FileHook => {
 
   return {
     file: {
+      isDeleted: file && file.is_deleted,
       isInitialized,
       isLoaded,
-      isReadOnly,
+      isReadOnly: !file || file.is_read_only,
       path,
     },
     model: modelRef.current,

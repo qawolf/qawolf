@@ -72,10 +72,6 @@ export class FileModel extends EventEmitter {
     this._content.insert(index, text);
   }
 
-  get is_read_only(): boolean {
-    return this._file ? this._file.is_read_only : true;
-  }
-
   get path(): string {
     return this._metadata.get("path") || this._file?.path || "";
   }
@@ -94,7 +90,6 @@ export class FileModel extends EventEmitter {
     this._file = file;
 
     this.emit("changed", { key: "content" });
-    this.emit("changed", { key: "is_read_only" });
     this.emit("changed", { key: "path" });
 
     this._provider?.destroy();
