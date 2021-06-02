@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { isServer } from "../lib/detection";
+import { Size } from "../lib/types";
 
-type WindowSize = {
-  height: number | null;
-  width: number | null;
-};
-
-export const useWindowSize = (): WindowSize => {
-  const [windowSize, setWindowSize] = useState<WindowSize>({
+export const useWindowSize = (): Size => {
+  const [windowSize, setWindowSize] = useState<Size>({
     height: isServer() ? null : window.innerHeight,
     width: isServer() ? null : window.innerWidth,
   });

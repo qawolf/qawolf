@@ -272,6 +272,16 @@ export type SelectedTest = {
 
 export type Side = "left" | "right";
 
+export type Size = {
+  height: number | null;
+  width: number | null;
+};
+
+export type Rect = Size & {
+  x: number | null;
+  y: number | null;
+};
+
 export type TriggerFields = {
   deployment_branches: string | null;
   deployment_environment: string | null;

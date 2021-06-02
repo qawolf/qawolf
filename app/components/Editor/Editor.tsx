@@ -1,7 +1,8 @@
 import { Box } from "grommet";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { useWindowSize } from "../../hooks/windowSize";
+import { Rect } from "../../lib/types";
 import { breakpoints } from "../../theme/theme";
 import Application from "./Application";
 import Container from "./Container";
@@ -21,19 +22,28 @@ const WithProviders: FC = ({ children }): JSX.Element => {
 };
 
 export default function Editor(): JSX.Element {
-  const { width } = useWindowSize();
+  const [canvasRect, setCanvasRect] = useState<Rect>({
+    height: null,
+    width: null,
+    x: null,
+    y: null,
+  });
+  const windowSize = useWindowSize();
 
   return (
     <WithProviders>
-      {width && width < breakpoints.small.value ? (
+      {windowSize.width && windowSize.width < breakpoints.small.value ? (
         <EditorMobile />
       ) : (
         <Container>
-          <Cursors />
+          <Cursors canvasRect={canvasRect} windowSize={windowSize} />
           <Header />
           <Box direction="row" fill justify="between">
             <Sidebar />
-            <Application />
+            <Application
+              canvasRect={canvasRect}
+              setCanvasRect={setCanvasRect}
+            />
           </Box>
         </Container>
       )}

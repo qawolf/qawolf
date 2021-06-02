@@ -6,12 +6,14 @@ import { buildColor } from "../../../shared/buildColor";
 
 export type UserState = {
   avatar_url: string | null;
+  canvas_x: number;
+  canvas_y: number;
   color: string;
   client_id: string;
   email: string;
   is_current_client: boolean;
-  x?: number;
-  y?: number;
+  window_x: number;
+  window_y: number;
   wolf_variant: string;
 };
 
@@ -44,6 +46,7 @@ export class UserAwareness extends EventEmitter {
     });
 
     this._users = users;
+    console.log("users", users);
 
     this.emit("changed", users);
   };
