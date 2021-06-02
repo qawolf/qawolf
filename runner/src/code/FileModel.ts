@@ -1,5 +1,4 @@
 import Debug from "debug";
-import { EventEmitter } from "events";
 import ws from "ws";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
@@ -26,7 +25,7 @@ class WebSocketPolyfill extends ws {
   }
 }
 
-export class FileModel extends EventEmitter {
+export class FileModel {
   _connected = false;
   _doc = new Y.Doc();
   _content = this._doc.getText("file.content");
