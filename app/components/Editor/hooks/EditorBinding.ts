@@ -18,6 +18,7 @@ export class EditorBinding {
     this._model = model;
     this._monaco = monaco;
 
+    // bind to the content before the document is initialized
     const disposeContent = this._model.bind("content", () => {
       if (this._model.is_initialized) return;
 
@@ -25,7 +26,8 @@ export class EditorBinding {
     });
 
     const disposeIsInitialized = this._model.bind("is_initialized", () => {
-      // set timeout to allow unbind to be set first
+      // call this in a timeout so this._unbindFile is set before it's called
+      // in case the document is already initialized
       setTimeout(() => this._bindToDocument(), 0);
     });
 
@@ -35,6 +37,7 @@ export class EditorBinding {
     };
   }
 
+  // once the document is initialized bind to it
   _bindToDocument(): void {
     if (this._binding || !this._model.is_initialized) return;
 

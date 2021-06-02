@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext } from "react";
+import { createContext, FC, useContext, useEffect, useState } from "react";
 
 import { useTeam } from "../../../hooks/queries";
 import { Team } from "../../../lib/types";
@@ -8,6 +8,7 @@ import { CommitChangesHook, useCommitChanges } from "../hooks/commitChanges";
 import { defaultFileState, FileState, useFileModel } from "../hooks/fileModel";
 import { RunHook, useRun } from "../hooks/run";
 import { SuiteHook, useSuite } from "../hooks/suite";
+import { UserAwareness } from "../hooks/useUserAwareness";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = CommitChangesHook &
@@ -21,6 +22,7 @@ type EditorContextValue = CommitChangesHook &
     testId?: string;
     test: FileState;
     testModel?: FileModel;
+    userAwareness?: UserAwareness;
   };
 
 export const EditorContext = createContext<EditorContextValue>({
@@ -38,6 +40,8 @@ export const EditorProvider: FC = ({ children }) => {
   const { query } = useRouter();
   const runId = query.run_id as string;
   const testId = query.test_id as string;
+
+  const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
@@ -62,6 +66,12 @@ export const EditorProvider: FC = ({ children }) => {
     testModel,
   });
 
+  useEffect(() => {
+    if (!testModel || !test.isInitialized) return;
+    setUserAwareness(new UserAwareness(testModel._provider.awareness));
+    return () => setUserAwareness(null);
+  }, [test.isInitialized, testModel]);
+
   return (
     <EditorContext.Provider
       value={{
@@ -77,6 +87,7 @@ export const EditorProvider: FC = ({ children }) => {
         test,
         testId: testId || run?.test_id,
         testModel,
+        userAwareness,
       }}
     >
       {children}

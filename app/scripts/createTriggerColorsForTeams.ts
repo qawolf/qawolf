@@ -1,7 +1,7 @@
 import { connectDb } from "../server/db";
 import { Logger } from "../server/Logger";
 import { findTriggersForTeam } from "../server/models/trigger";
-import { COLORS } from "../server/models/utils";
+import { COLORS } from "../shared/buildColor";
 
 (async () => {
   const db = connectDb();

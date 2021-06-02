@@ -6,17 +6,17 @@ import Avatar from "../../shared/Avatar";
 import Tooltip from "../../shared/Tooltip";
 
 type Props = {
-  avatarUrl?: string | null;
+  avatar_url?: string | null;
   color: string;
   email: string;
-  wolfColor: string;
+  wolf_variant: string;
 };
 
 export default function User({
-  avatarUrl,
+  avatar_url,
   color,
   email,
-  wolfColor,
+  wolf_variant,
 }: Props): JSX.Element {
   const [isHover, setIsHover] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ export default function User({
       ref={ref}
       round="full"
     >
-      <Avatar avatarUrl={avatarUrl} size="28px" wolfColor={wolfColor} />
+      <Avatar avatarUrl={avatar_url} size="28px" wolfColor={wolf_variant} />
       <Tooltip
         align={{ top: "bottom" }}
         isVisible={isHover}
