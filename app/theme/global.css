@@ -148,23 +148,73 @@ p {
   box-shadow: none;
 }
 
-.remoteSelection {
-  background: rgb(69, 69, 229, 0.32);
+/* Multiplayer text cursor styles */
+.remoteSelection4545E5 {
+  background: rgb(69, 69, 229, 0.24);
 }
 
-.remoteSelectionHead {
-  border: #4545e5 solid 2px;
+.remoteSelectionC54BDE {
+  background: rgb(197, 75, 222, 0.24);
+}
+
+.remoteSelection56BBD6 {
+  background: rgb(86, 187, 214, 0.24);
+}
+
+.remoteSelection8BC22D {
+  background: rgb(139, 194, 45, 0.24);
+}
+
+.remoteSelectionE59C59 {
+  background: rgb(229, 156, 89, 0.24);
+}
+
+.remoteSelectionHead4545E5,
+.remoteSelectionHeadC54BDE,
+.remoteSelectionHead56BBD6,
+.remoteSelectionHead8BC22D,
+.remoteSelectionHeadE59C59 {
+  border: solid 2px transparent;
   border-right: none;
   box-sizing: border-box;
   height: 100%;
   position: absolute;
 }
 
-.remoteSelectionHead::after {
-  border: 3px solid #4545e5;
+.remoteSelectionHead4545E5::after,
+.remoteSelectionHeadC54BDE::after,
+.remoteSelectionHead56BBD6::after,
+.remoteSelectionHead8BC22D::after,
+.remoteSelectionHeadE59C59::after {
+  border: 3px solid transparent;
   border-radius: 4px;
   content: " ";
   left: -4px;
   position: absolute;
   top: -5px;
+}
+
+.remoteSelectionHead4545E5,
+.remoteSelectionHead4545E5::after {
+  border-color: #4545e5;
+}
+
+.remoteSelectionHeadC54BDE,
+.remoteSelectionHeadC54BDE::after {
+  border-color: #c54bde;
+}
+
+.remoteSelectionHead56BBD6,
+.remoteSelectionHead56BBD6::after {
+  border-color: #56bbd6;
+}
+
+.remoteSelectionHead8BC22D,
+.remoteSelectionHead8BC22D::after {
+  border-color: #8bc22d;
+}
+
+.remoteSelectionHeadE59C59,
+.remoteSelectionHeadE59C59::after {
+  border-color: #e59c59;
 }
