@@ -151,8 +151,10 @@ export class MonacoBinding {
               clientID !== this.doc.clientID &&
               state.selection != null &&
               state.selection.anchor != null &&
-              state.selection.head != null
+              state.selection.head != null &&
+              state.user != null
             ) {
+              const color = state.user.color.replace("#", "");
               const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
                 state.selection.anchor,
                 this.doc
@@ -171,13 +173,13 @@ export class MonacoBinding {
                 if (anchorAbs.index < headAbs.index) {
                   start = monacoModel.getPositionAt(anchorAbs.index);
                   end = monacoModel.getPositionAt(headAbs.index);
-                  afterContentClassName = "remoteSelectionHead";
+                  afterContentClassName = `remoteSelectionHead${color}`;
                   beforeContentClassName = null;
                 } else {
                   start = monacoModel.getPositionAt(headAbs.index);
                   end = monacoModel.getPositionAt(anchorAbs.index);
                   afterContentClassName = null;
-                  beforeContentClassName = "remoteSelectionHead";
+                  beforeContentClassName = `remoteSelectionHead${color}`;
                 }
                 newDecorations.push({
                   range: new monaco.Range(
@@ -187,7 +189,7 @@ export class MonacoBinding {
                     end.column
                   ),
                   options: {
-                    className: "remoteSelection",
+                    className: `remoteSelection${color}`,
                     afterContentClassName,
                     beforeContentClassName,
                   },

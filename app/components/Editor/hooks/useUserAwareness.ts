@@ -46,7 +46,6 @@ export class UserAwareness extends EventEmitter {
     });
 
     this._users = users;
-    console.log("users", users);
 
     this.emit("changed", users);
   };

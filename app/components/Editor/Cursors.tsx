@@ -34,7 +34,7 @@ export default function Cursors({
         top: user.window_y * windowSize.height,
       };
     },
-    [canvasRect]
+    [canvasRect, windowSize]
   );
 
   useEffect(() => {
