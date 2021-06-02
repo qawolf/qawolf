@@ -171,13 +171,13 @@ export class MonacoBinding {
                 if (anchorAbs.index < headAbs.index) {
                   start = monacoModel.getPositionAt(anchorAbs.index);
                   end = monacoModel.getPositionAt(headAbs.index);
-                  afterContentClassName = "yRemoteSelectionHead";
+                  afterContentClassName = "remoteSelectionHead";
                   beforeContentClassName = null;
                 } else {
                   start = monacoModel.getPositionAt(headAbs.index);
                   end = monacoModel.getPositionAt(anchorAbs.index);
                   afterContentClassName = null;
-                  beforeContentClassName = "yRemoteSelectionHead";
+                  beforeContentClassName = "remoteSelectionHead";
                 }
                 newDecorations.push({
                   range: new monaco.Range(
@@ -187,7 +187,7 @@ export class MonacoBinding {
                     end.column
                   ),
                   options: {
-                    className: "yRemoteSelection",
+                    className: "remoteSelection",
                     afterContentClassName,
                     beforeContentClassName,
                   },
@@ -272,11 +272,11 @@ export class MonacoBinding {
     });
     if (awareness) {
       editors.forEach((editor) => {
-        editor.onDidBlurEditorText(() => {
-          if (editor.getModel() === monacoModel) {
-            awareness.setLocalStateField("selection", null);
-          }
-        });
+        // editor.onDidBlurEditorText(() => {
+        //   if (editor.getModel() === monacoModel) {
+        //     awareness.setLocalStateField("selection", null);
+        //   }
+        // });
 
         editor.onDidChangeCursorSelection(() => {
           if (editor.getModel() === monacoModel) {
