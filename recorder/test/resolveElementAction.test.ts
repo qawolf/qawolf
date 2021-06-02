@@ -19,6 +19,26 @@ describe("resolveAction", () => {
     expect(resolveAction("input", "INPUT")).toEqual("fill");
   });
 
+  it("returns check for change/input on a checkbox input that is checked", async () => {
+    expect(resolveAction("change", "INPUT", "checkbox", true)).toEqual("check");
+    expect(resolveAction("input", "INPUT", "checkbox", true)).toEqual("check");
+  });
+
+  it("returns check for change/input on a radio input that is checked", async () => {
+    expect(resolveAction("change", "INPUT", "radio", true)).toEqual("check");
+    expect(resolveAction("input", "INPUT", "radio", true)).toEqual("check");
+  });
+
+  it("returns check for change/input on a checkbox input that is not checked", async () => {
+    expect(resolveAction("change", "INPUT", "checkbox", false)).toEqual("uncheck");
+    expect(resolveAction("input", "INPUT", "checkbox", false)).toEqual("uncheck");
+  });
+
+  it("returns check for change/input on a radio input that is not checked", async () => {
+    expect(resolveAction("change", "INPUT", "radio", false)).toEqual("uncheck");
+    expect(resolveAction("input", "INPUT", "radio", false)).toEqual("uncheck");
+  });
+
   it("returns press for keydown", async () => {
     expect(resolveAction("keydown", "HTML")).toEqual("press");
   });

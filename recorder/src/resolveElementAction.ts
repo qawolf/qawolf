@@ -5,8 +5,9 @@ import {
   getTopmostEditableElement,
   isVisible,
 } from "./element";
+import { getSelector } from "./generateSelectors";
 import { EventSequence } from "./EventSequence";
-import { Action, ElementAction } from "./types";
+import { Action, ElementAction, EventDescriptor, RankedSelector, Rect } from "./types";
 
 /**
  * The full list:
@@ -53,19 +54,25 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
 
 export const resolveAction = (
   type: string,
-  targetTagName: string
+  targetDescriptor: ElementDescriptor
 ): Action | undefined => {
   let action: Action;
 
   if (type === "change" || type === "input") {
-    action = targetTagName === "SELECT" ? "selectOption" : "fill";
+    if (targetDescriptor.tag === "select") {
+      action = "selectOption";
+    } else if (['checkbox', 'radio'].includes(targetDescriptor.inputType)) {
+      action = targetDescriptor.inputIsChecked === true ? "check" : "uncheck";
+    } else {
+      action = "fill";
+    }
   } else if (type === "click") {
     action = "click";
   } else if (type === "keydown") {
     action = "press";
   }
 
-  if (targetTagName === "SELECT" && action !== "selectOption") {
+  if (targetDescriptor.tag === "select" && action !== "selectOption") {
     debug(`resolveAction: skip ${action} on select`);
     action = undefined;
   }
@@ -74,7 +81,8 @@ export const resolveAction = (
 };
 
 export const resolveElementAction = (
-  events: EventSequence
+  events: EventSequence,
+  selectorCache: Map<HTMLElement, RankedSelector>
 ): ElementAction | undefined => {
   const event = events.last;
   if (!event.isTrusted && !allowUntrustedEvents) {
@@ -82,11 +90,8 @@ export const resolveElementAction = (
     return;
   }
 
-  let action = resolveAction(event.type, event.target.tagName);
-  if (!action) return;
-
-  if (events.isDuplicateChangeOrInput()) {
-    debug(`resolveAction: skip duplicate ${action}`);
+  if (events.isDuplicateChangeOrInput() || events.isDuplicateClick()) {
+    debug(`resolveAction: skip duplicate ${event.type}`);
     return;
   }
 
@@ -96,19 +101,24 @@ export const resolveElementAction = (
 
   const targetDescriptor = getDescriptor(target);
 
+  let action = resolveAction(event.type, targetDescriptor);
+  if (!action) return;
+
+  let { value } = event;
+
   if (action === "press") {
-    action = resolvePress(event.value, targetDescriptor);
+    action = resolvePress(value, targetDescriptor);
 
     if (!action) {
       debug(
-        `resolveAction: skip press ${event.value} on ${targetDescriptor.tag}`
+        `resolveAction: skip press ${value} on ${targetDescriptor.tag}`
       );
       return;
     }
 
     // skip the target visibility check for keyboard.press which has no target
     if (action === "keyboard.press") {
-      return { action, selector: "", value: event.value, time: event.time };
+      return { action, selector: "", value, time: event.time };
     }
   }
 
@@ -131,7 +141,9 @@ export const resolveElementAction = (
     }
   }
 
-  if (!isTargetVisible) {
+  // Don't worry if check/uncheck target is visible because often invisible
+  // inputs are used as bound to visible components
+  if (!["check", "uncheck"].includes(action) && !isTargetVisible) {
     debug(`resolveAction: skip ${action} on invisible target`);
     return;
   }
@@ -145,11 +157,64 @@ export const resolveElementAction = (
     return;
   }
 
+  // Build the selector. We store it on the event, too, for deduping click/check/uncheck
+  if (!event.selector) {
+    event.selector = getSelector(
+      target,
+      1000,
+      selectorCache
+    );
+  }
+
+  let relatedClickSelector: string | undefined;
+  if (["check", "uncheck"].includes(action)) {
+    // value of checkbox or radio isn't needed by Playwright
+    value = undefined;
+
+    // If there is a previous click with the same selector as a check/uncheck input,
+    // or with a selector that points to the related label or one of its descendants,
+    // we assume that the click should be replaced by the check/uncheck in the generated
+    // code.
+    const clickEvents = events.getMostRecentClicks();
+    let foundClickEvent: EventDescriptor | null = null;
+    for (const clickEvent of clickEvents) {
+      if (clickEvent.target === target) {
+        debug("resolveAction: [check/uncheck] found click event with the same target");
+        foundClickEvent = clickEvent;
+        break;
+      } else {
+        const clickLabel = clickEvent.target.closest("label");
+        if (clickLabel) {
+          for (const relatedLabel of (target as HTMLInputElement).labels) {
+            if (relatedLabel === clickLabel) {
+              debug("resolveAction: [check/uncheck] found click event that descends from a related label");
+              foundClickEvent = clickEvent
+              break;
+            }
+          }
+          if (foundClickEvent) break;
+        }
+      }
+    }
+    if (foundClickEvent) {
+      // Some clicks do not have a selector because they were duplicate, in which
+      // case we want to use the selector from the same moment in time
+      if (foundClickEvent.selector) {
+        relatedClickSelector = foundClickEvent.selector;
+      } else {
+        const dupClickEventWithSelector = clickEvents.find((event) => event.eventTimeStamp === foundClickEvent.eventTimeStamp && event.selector);
+        if (dupClickEventWithSelector) relatedClickSelector = dupClickEventWithSelector.selector;
+      }
+      debug(`resolveAction: [check/uncheck] related click selector (to replace) is ${relatedClickSelector}`);
+    }
+  }
+
   return {
     action,
+    relatedClickSelector,
     selector: event.selector,
     time: event.time,
-    value: event.value,
+    value,
   };
 };
 
@@ -178,10 +243,8 @@ export const resolvePress = (
 };
 
 export const shouldTrackFill = (target: ElementDescriptor): boolean => {
-  // Some inputs emit "change" with a value but really can't or shouldn't be
-  // "filled in" with that value. Checkbox and radio should work without filling
-  // because there will be click events. File isn't supported.
-  if (["checkbox", "radio", "file"].includes(target.inputType)) return false;
+  // File isn't supported.
+  if (["file"].includes(target.inputType)) return false;
 
   // Track value changes for all input and textarea
   if (["input", "textarea"].includes(target.tag)) return true;

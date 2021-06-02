@@ -3,6 +3,7 @@ export type Evaluator = {
 };
 
 export type Action =
+  | "check"
   | "click"
   | "fill"
   | "goBack"
@@ -11,7 +12,8 @@ export type Action =
   | "keyboard.press"
   | "press"
   | "reload"
-  | "selectOption";
+  | "selectOption"
+  | "uncheck";
 
 export type Callback<S = void, T = void> = (data?: S) => T;
 
@@ -38,6 +40,7 @@ export type CueSet = {
 
 export interface ElementAction {
   action: Action;
+  relatedClickSelector?: string;
   selector: string;
   time: number;
   value?: string;
@@ -50,6 +53,7 @@ export interface ElementChosen {
 }
 
 export type EventDescriptor = {
+  eventTimeStamp: number;
   isTrusted: boolean;
   selector?: string;
   target: HTMLElement;

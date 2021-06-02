@@ -61,20 +61,11 @@ export class ActionRecorder {
 
     this._events.add(event);
 
-    const elementAction = resolveElementAction(this._events);
+    const elementAction = resolveElementAction(this._events, this._selectorCache);
 
     // If no action was returned, this isn't an event we care about
     // so we can skip building a selector and emitting it.
     if (!elementAction) return;
-
-    // Build the selector
-    if (elementAction.action !== "keyboard.press" && !elementAction.selector) {
-      elementAction.selector = getSelector(
-        event.target as HTMLElement,
-        1000,
-        this._selectorCache
-      );
-    }
 
     debug(
       `ActionRecorder: ${elementAction.action} action recorded:`,

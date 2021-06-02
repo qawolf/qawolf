@@ -27,11 +27,13 @@ export interface CustomVideoMetadata {
 }
 
 export type ElementAction =
+  | "check"
   | "click"
   | "fill"
   | "keyboard.press"
   | "press"
-  | "selectOption";
+  | "selectOption"
+  | "uncheck";
 
 export interface ElementChosen {
   isFillable: boolean;
@@ -48,6 +50,7 @@ export interface ElementEvent {
   page: Page;
   frame?: Frame;
   frameSelector?: string;
+  relatedClickSelector?: string;
   selector: string;
   time: number;
   value?: string | null;
