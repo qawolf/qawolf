@@ -1,4 +1,5 @@
 import { EventEmitter } from "events";
+import { Awareness } from "y-protocols/awareness";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
 
@@ -24,6 +25,10 @@ export class FileModel extends EventEmitter {
     });
   }
 
+  get awareness(): Awareness | undefined {
+    return this._provider?.awareness;
+  }
+
   bind<T>(key: string, callback: (value: T) => void): () => void {
     const onChange = (event: { key: string }) => {
       if (event.key === key) callback(this[key]);
@@ -34,6 +39,13 @@ export class FileModel extends EventEmitter {
     callback(this[key]);
 
     return () => this.off("changed", onChange);
+  }
+
+  get changed_keys(): string[] {
+    const keys = this._metadata.get("changed_keys") || "";
+    if (keys.length < 1) return [];
+
+    return keys.split(",");
   }
 
   get content(): string {
@@ -51,13 +63,6 @@ export class FileModel extends EventEmitter {
     this._provider?.destroy();
     this._provider = null;
     this.removeAllListeners();
-  }
-
-  get changed_keys(): string[] {
-    const keys = this._metadata.get("changed_keys") || "";
-    if (keys.length < 1) return [];
-
-    return keys.split(",");
   }
 
   get id(): string | undefined {

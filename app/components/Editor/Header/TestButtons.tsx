@@ -20,7 +20,7 @@ export default function TestButtons({ branch, testId }: Props): JSX.Element {
     setLoading(true);
     await commitChanges();
 
-    // give to reload and recalculate changed keys
+    // give time to reload and recalculate changed keys
     setTimeout(() => {
       setLoading(false);
     }, 1000);

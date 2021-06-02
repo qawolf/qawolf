@@ -67,9 +67,15 @@ export const EditorProvider: FC = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!testModel || !test.isInitialized) return;
-    setUserAwareness(new UserAwareness(testModel._provider.awareness));
-    return () => setUserAwareness(null);
+    if (!testModel?.awareness) return;
+
+    const userAwareness = new UserAwareness(testModel.awareness);
+    setUserAwareness(userAwareness);
+
+    return () => {
+      setUserAwareness(null);
+      userAwareness.dispose();
+    };
   }, [test.isInitialized, testModel]);
 
   return (

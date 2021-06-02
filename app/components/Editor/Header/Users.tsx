@@ -11,6 +11,7 @@ export default function Users(): JSX.Element {
   const { users } = useUserAwareness(userAwareness);
 
   const usersHtml = users
+    // show the current user first
     .sort((a, b) => Number(b.is_current_client) - Number(a.is_current_client))
     .map((user) => {
       return <User key={user.client_id} {...user} />;

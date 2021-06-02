@@ -48,12 +48,11 @@ export class EditorBinding {
       this._model._content,
       this._editor.getModel(),
       new Set([this._editor]),
-      this._model._provider.awareness
+      this._model.awareness
     );
   }
 
   dispose(): void {
     this._unbindFile();
-    this._binding?.destroy();
   }
 }

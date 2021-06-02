@@ -105,7 +105,7 @@ export default function Editor({
     );
 
     monaco.editor.setTheme(themeName);
-  }, [isReadOnly, isEditorReady]);
+  }, [isEditorReady, isReadOnly]);
 
   // set read only
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function Editor({
 
     const readOnly = isReadOnly || !isInitialized;
     editorRef.current.updateOptions({ readOnly });
-  }, [isEditorReady, isReadOnly, isInitialized]);
+  }, [isEditorReady, isInitialized, isReadOnly]);
 
   const style = {
     height: isVisible ? "100%" : "0%",
