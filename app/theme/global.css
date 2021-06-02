@@ -148,23 +148,23 @@ p {
   box-shadow: none;
 }
 
-/* very temp */
-.yRemoteSelection {
-  background-color: rgb(250, 129, 0, 0.5);
+.remoteSelection {
+  background: rgb(69, 69, 229, 0.32);
 }
-.yRemoteSelectionHead {
-  position: absolute;
-  border-left: orange solid 2px;
-  border-top: orange solid 2px;
-  border-bottom: orange solid 2px;
-  height: 100%;
+
+.remoteSelectionHead {
+  border: #4545e5 solid 2px;
+  border-right: none;
   box-sizing: border-box;
-}
-.yRemoteSelectionHead::after {
+  height: 100%;
   position: absolute;
-  content: " ";
-  border: 3px solid orange;
+}
+
+.remoteSelectionHead::after {
+  border: 3px solid #4545e5;
   border-radius: 4px;
+  content: " ";
   left: -4px;
+  position: absolute;
   top: -5px;
 }
