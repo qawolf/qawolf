@@ -10,8 +10,8 @@ export type UserState = {
   client_id: string;
   email: string;
   is_current_client: boolean;
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   wolf_variant: string;
 };
 

@@ -1,5 +1,6 @@
 import { Box } from "grommet";
 import { useContext, useEffect } from "react";
+import { useWindowSize } from "../../hooks/windowSize";
 
 import Cursor from "../shared/icons/Cursor";
 import { UserContext } from "../UserContext";
@@ -11,16 +12,24 @@ export default function Cursors(): JSX.Element {
   const { user } = useContext(UserContext);
   const { users } = useUserAwareness(userAwareness);
 
+  const windowSize = useWindowSize();
+
   useEffect(() => {
     if (!user || !userAwareness) return;
 
+    const userProps = {
+      avatar_url: user.avatar_url,
+      email: user.email,
+      wolf_variant: user.wolf_variant,
+    };
+
+    userAwareness.setUserState(userProps);
+
     const updateMousePosition = (event: MouseEvent) => {
       userAwareness.setUserState({
-        avatar_url: user.avatar_url,
-        email: user.email,
-        x: event.clientX / window.innerWidth,
-        y: event.clientY / window.innerHeight,
-        wolf_variant: user.wolf_variant,
+        ...userProps,
+        x: event.clientX / windowSize.width,
+        y: event.clientY / windowSize.height,
       });
     };
 
@@ -28,20 +37,20 @@ export default function Cursors(): JSX.Element {
 
     return () =>
       document.removeEventListener("mousemove", updateMousePosition, true);
-  }, [user, userAwareness]);
+  }, [user, userAwareness, windowSize]);
 
   if (!users.length) return null;
 
   const cursorsHtml = users
-    .filter((user) => !user.is_current_client)
+    .filter((user) => !user.is_current_client && typeof user.x != "undefined")
     .map((user) => {
       return (
         <Box
           key={user.client_id}
           style={{
-            left: user.x * window.innerWidth,
+            left: user.x * windowSize.width,
             position: "absolute",
-            top: user.y * window.innerHeight,
+            top: user.y * windowSize.height,
             zIndex: 2,
           }}
         >

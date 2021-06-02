@@ -7,7 +7,6 @@ type WindowSize = {
   width: number | null;
 };
 
-// https://stackoverflow.com/a/63408216
 export const useWindowSize = (): WindowSize => {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     height: isServer() ? null : window.innerHeight,
@@ -15,21 +14,19 @@ export const useWindowSize = (): WindowSize => {
   });
 
   useEffect(() => {
-    if (!isServer()) {
-      const handleResize = () => {
-        setWindowSize({
-          height: window.innerHeight,
-          width: window.innerWidth,
-        });
-      };
+    const setSize = () => {
+      setWindowSize({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
+    };
 
-      window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("resize", setSize, { passive: true });
 
-      // call handler right away so state gets updated with initial window size
-      handleResize();
+    // call handler right away so state gets updated with initial window size
+    setSize();
 
-      return () => window.removeEventListener("resize", handleResize);
-    }
+    return () => window.removeEventListener("resize", setSize);
   }, []);
 
   return windowSize;
