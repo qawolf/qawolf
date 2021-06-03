@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Awareness } from "y-protocols/awareness";
 
 import { buildColor } from "../../../shared/buildColor";
+import { FileModel } from "../contexts/FileModel";
+import { FileState } from "./fileModel";
 
 export type UserState = {
   avatar_url: string | null;
@@ -17,48 +19,52 @@ export type UserState = {
   wolf_variant: string;
 };
 
+export type UserStatesHook = {
+  userStates: UserState[];
+};
+
 export class UserAwareness extends EventEmitter {
   _awareness: Awareness;
   _color?: string;
-  _users: UserState[] = [];
+  _userStates: UserState[] = [];
 
   constructor(awareness: Awareness) {
     super();
 
     this._awareness = awareness;
-    this._awareness.on("change", this._updateUsers);
-    this._updateUsers();
+    this._awareness.on("change", this._updateUserStates);
+    this._updateUserStates();
   }
 
-  _updateUsers = (): void => {
-    const users = [];
+  _updateUserStates = (): void => {
+    const userStates = [];
 
     const currentId = this._awareness.clientID;
 
     this._awareness.getStates().forEach((state, clientId) => {
       if (!state.user) return;
 
-      users.push({
+      userStates.push({
         ...state.user,
         client_id: clientId,
         is_current_client: clientId === currentId,
       });
     });
 
-    this._users = users;
+    this._userStates = userStates;
 
-    this.emit("changed", users);
+    this.emit("changed", userStates);
   };
 
   dispose(): void {
-    this._awareness.off("change", this._updateUsers);
+    this._awareness.off("change", this._updateUserStates);
   }
 
   setUserState(
     position: Omit<UserState, "client_id" | "color" | "is_current_client">
   ): void {
     if (!this._color) {
-      this._color = buildColor(this._users.map((u) => u.color));
+      this._color = buildColor(this._userStates.map((u) => u.color));
     }
 
     this._awareness.setLocalStateField("user", {
@@ -67,29 +73,44 @@ export class UserAwareness extends EventEmitter {
     });
   }
 
-  get users(): UserState[] {
-    return this._users;
+  get userStates(): UserState[] {
+    return this._userStates;
   }
 }
 
-type UserAwarenessHook = {
-  users: UserState[];
-};
-
 export const useUserAwareness = (
-  awareness?: UserAwareness
-): UserAwarenessHook => {
-  const [users, setUsers] = useState<UserState[]>([]);
+  file: FileState,
+  fileModel: FileModel
+): UserAwareness => {
+  const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   useEffect(() => {
-    if (!awareness) return;
+    if (!fileModel?.awareness) return;
 
-    setUsers(awareness.users);
+    const userAwareness = new UserAwareness(fileModel.awareness);
+    setUserAwareness(userAwareness);
 
-    awareness.on("changed", setUsers);
+    return () => {
+      setUserAwareness(null);
+      userAwareness.dispose();
+    };
+  }, [file.isInitialized, fileModel]);
 
-    return () => awareness.off("changed", setUsers);
-  }, [awareness]);
+  return userAwareness;
+};
 
-  return { users };
+export const useUserStates = (userAwareness: UserAwareness): UserStatesHook => {
+  const [userStates, setUserStates] = useState<UserState[]>([]);
+
+  useEffect(() => {
+    if (!userAwareness) return;
+
+    setUserStates(userAwareness.userStates);
+
+    userAwareness.on("changed", setUserStates);
+
+    return () => userAwareness.off("changed", setUserStates);
+  }, [userAwareness]);
+
+  return { userStates };
 };

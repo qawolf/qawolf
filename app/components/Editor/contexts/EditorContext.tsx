@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import { createContext, FC, useContext } from "react";
 
 import { useTeam } from "../../../hooks/queries";
 import { Team } from "../../../lib/types";
@@ -8,7 +8,7 @@ import { CommitChangesHook, useCommitChanges } from "../hooks/commitChanges";
 import { defaultFileState, FileState, useFileModel } from "../hooks/fileModel";
 import { RunHook, useRun } from "../hooks/run";
 import { SuiteHook, useSuite } from "../hooks/suite";
-import { UserAwareness } from "../hooks/useUserAwareness";
+import { UserAwareness, useUserAwareness } from "../hooks/useUserAwareness";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = CommitChangesHook &
@@ -41,8 +41,6 @@ export const EditorProvider: FC = ({ children }) => {
   const runId = query.run_id as string;
   const testId = query.test_id as string;
 
-  const [userAwareness, setUserAwareness] = useState<UserAwareness>();
-
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
 
@@ -59,24 +57,14 @@ export const EditorProvider: FC = ({ children }) => {
     runId ? `run.${runId}` : `test.${testId}${branchPart}`
   );
 
+  const userAwareness = useUserAwareness(test, testModel);
+
   const { commitChanges, hasChanges } = useCommitChanges({
     branch,
     helpersModel,
     testId,
     testModel,
   });
-
-  useEffect(() => {
-    if (!testModel?.awareness) return;
-
-    const userAwareness = new UserAwareness(testModel.awareness);
-    setUserAwareness(userAwareness);
-
-    return () => {
-      setUserAwareness(null);
-      userAwareness.dispose();
-    };
-  }, [test.isInitialized, testModel]);
 
   return (
     <EditorContext.Provider

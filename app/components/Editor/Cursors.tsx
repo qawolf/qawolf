@@ -5,7 +5,7 @@ import { Rect, Size } from "../../lib/types";
 import Cursor from "../shared/icons/Cursor";
 import { UserContext } from "../UserContext";
 import { EditorContext } from "./contexts/EditorContext";
-import { UserState, useUserAwareness } from "./hooks/useUserAwareness";
+import { UserState, useUserStates } from "./hooks/useUserAwareness";
 
 type Props = {
   canvasRect: Rect;
@@ -18,7 +18,7 @@ export default function Cursors({
 }: Props): JSX.Element {
   const { userAwareness } = useContext(EditorContext);
   const { user } = useContext(UserContext);
-  const { users } = useUserAwareness(userAwareness);
+  const { userStates } = useUserStates(userAwareness);
 
   const getCursorPosition = useCallback(
     (user: UserState): { left: number; top: number } => {
@@ -38,7 +38,7 @@ export default function Cursors({
   );
 
   useEffect(() => {
-    if (!canvasRect || !user || !userAwareness || !windowSize) return;
+    if (!canvasRect || !user || !windowSize) return;
 
     const userState = {
       avatar_url: user.avatar_url,
@@ -91,9 +91,9 @@ export default function Cursors({
       document.removeEventListener("mousemove", updateMousePosition, true);
   }, [canvasRect, user, userAwareness, windowSize]);
 
-  if (!users.length) return null;
+  if (!userStates.length) return null;
 
-  const cursorsHtml = users
+  const cursorsHtml = userStates
     .filter((user) => !user.is_current_client && user.window_x > -1)
     .map((user) => {
       return (
