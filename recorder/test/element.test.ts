@@ -71,14 +71,14 @@ describe("getDescriptor", () => {
 
     expect(await getDescriptor("input#checked")).toEqual({
       inputIsChecked: true,
-      inputType: "text",
+      inputType: "checkbox",
       isContentEditable: false,
       tag: "input",
     });
 
     expect(await getDescriptor("input#cleared")).toEqual({
       inputIsChecked: false,
-      inputType: "text",
+      inputType: "checkbox",
       isContentEditable: false,
       tag: "input",
     });
