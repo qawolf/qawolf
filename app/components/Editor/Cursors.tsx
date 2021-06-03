@@ -38,7 +38,7 @@ export default function Cursors({
   );
 
   useEffect(() => {
-    if (!canvasRect || !user || !windowSize) return;
+    if (!canvasRect || !user || !userAwareness || !windowSize) return;
 
     const userState = {
       avatar_url: user.avatar_url,

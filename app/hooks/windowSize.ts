@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { isServer } from "../lib/detection";
+import { isWindowDefined } from "../lib/detection";
 import { Size } from "../lib/types";
 
 export const useWindowSize = (): Size => {
   const [windowSize, setWindowSize] = useState<Size>({
-    height: isServer() ? null : window.innerHeight,
-    width: isServer() ? null : window.innerWidth,
+    height: isWindowDefined() ? null : window.innerHeight,
+    width: isWindowDefined() ? null : window.innerWidth,
   });
 
   useEffect(() => {

@@ -1,14 +1,16 @@
 export const isMac: boolean =
   typeof navigator !== "undefined" && !!/mac/i.exec(navigator.platform);
 
-export const isServer = (): boolean => {
-  return typeof window === "undefined";
-};
+export const isServer = (): boolean => isWindowDefined();
 
 export const isSafari = (): boolean => {
   if (isServer()) return false;
 
   return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+};
+
+export const isWindowDefined = (): boolean => {
+  return typeof window === "undefined";
 };
 
 export const isWindows: boolean =

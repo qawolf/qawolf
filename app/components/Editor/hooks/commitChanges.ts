@@ -35,12 +35,15 @@ export const useCommitChanges = ({
         helpersModel.changed_keys.length + testModel.changed_keys.length > 0
       );
 
-    const unbindHelpers = helpersModel.bind("changed_keys", updateHasChanges);
-    const unbindTest = testModel.bind("changed_keys", updateHasChanges);
+    const unbindHelpersChanged = helpersModel.bind(
+      "changed_keys",
+      updateHasChanges
+    );
+    const unbindTestChanged = testModel.bind("changed_keys", updateHasChanges);
 
     return () => {
-      unbindHelpers();
-      unbindTest();
+      unbindHelpersChanged();
+      unbindTestChanged();
     };
   }, [branch, helpersModel, testModel]);
 

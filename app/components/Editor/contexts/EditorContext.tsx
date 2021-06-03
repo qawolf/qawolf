@@ -47,14 +47,19 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
-  const branchPart = branch ? `.${branch}` : "";
+  const branchId = branch ? `.${branch}` : "";
+
+  const helpersId = runId
+    ? `runhelpers.${suite?.id}`
+    : `helpers.${teamId}${branchId}`;
 
   const { file: helpers, model: helpersModel } = useFileModel(
-    runId ? `runhelpers.${suite?.id}` : `helpers.${teamId}${branchPart}`
+    // if the suite is not loaded, return null
+    helpersId.includes("undefined") ? null : helpersId
   );
 
   const { file: test, model: testModel } = useFileModel(
-    runId ? `run.${runId}` : `test.${testId}${branchPart}`
+    runId ? `run.${runId}` : `test.${testId}${branchId}`
   );
 
   const userAwareness = useUserAwareness(test, testModel);

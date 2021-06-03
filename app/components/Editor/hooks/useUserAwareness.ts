@@ -85,6 +85,7 @@ export const useUserAwareness = (
   const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   useEffect(() => {
+    // this should be set when the file is loaded
     if (!fileModel?.awareness) return;
 
     const userAwareness = new UserAwareness(fileModel.awareness);
@@ -94,7 +95,7 @@ export const useUserAwareness = (
       setUserAwareness(null);
       userAwareness.dispose();
     };
-  }, [file.isInitialized, fileModel]);
+  }, [file.isLoaded, fileModel]);
 
   return userAwareness;
 };
