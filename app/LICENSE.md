@@ -3,7 +3,7 @@ Business Source License 1.1
 Parameters
 
 Licensor: QA Wolf, Inc.
-Licensed Work: QA Wolf 2.16
+Licensed Work: QA Wolf 2.20
 The Licensed Work is (c) 2021 QA Wolf, Inc.
 Additional Use Grant: You may make use of the Licensed Work, provided that you do
 not use the Licensed Work for an Application Testing
@@ -15,9 +15,9 @@ Service.
                       Work so that such third parties directly benefit from the
                       testing, error-reporting or application monitoring features of the Licensed Work.
 
-Change Date: 2024-04-20
+Change Date: Change date is four years from release date.
 
-Change License: Apache License, Version 2.0
+Change License: Version 3 or later of the GNU General Public License as published by the Free Software Foundation.
 
 For information about alternative licensing arrangements for the Software,
 please visit: https://www.qawolf.com/pricing

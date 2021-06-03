@@ -17,7 +17,7 @@
   },
   "keywords": [],
   "author": "QA Wolf Inc. <info@qawolf.com>",
-  "license": "Apache-2.0",
+  "license": "Business-Source-License-1.1",
   "devDependencies": {
     "@types/async-retry": "^1.4.2",
     "@types/cors": "^2.8.9",

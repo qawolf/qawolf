@@ -5,8 +5,8 @@ import { Size } from "../lib/types";
 
 export const useWindowSize = (): Size => {
   const [windowSize, setWindowSize] = useState<Size>({
-    height: isWindowDefined() ? null : window.innerHeight,
-    width: isWindowDefined() ? null : window.innerWidth,
+    height: isWindowDefined() ? window.innerHeight : null,
+    width: isWindowDefined() ? window.innerWidth : null,
   });
 
   useEffect(() => {
