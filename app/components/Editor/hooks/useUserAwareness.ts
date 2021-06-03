@@ -66,6 +66,10 @@ export class UserAwareness extends EventEmitter {
       color: this._color,
     });
   }
+
+  get users(): UserState[] {
+    return this._users;
+  }
 }
 
 type UserAwarenessHook = {
@@ -79,6 +83,8 @@ export const useUserAwareness = (
 
   useEffect(() => {
     if (!awareness) return;
+
+    setUsers(awareness.users);
 
     awareness.on("changed", setUsers);
 
