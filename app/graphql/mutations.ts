@@ -367,15 +367,6 @@ export const updateEnvironmentVariableMutation = gql`
   ${environmentVariableFragment}
 `;
 
-export const updateFileMutation = gql`
-  mutation updateFile($content: String, $id: ID!, $path: String) {
-    updateFile(content: $content, id: $id, path: $path) {
-      ...FileFragment
-    }
-  }
-  ${fileFragment}
-`;
-
 export const updateTagMutation = gql`
   mutation updateTag($id: ID!, $name: String!) {
     updateTag(id: $id, name: $name) {

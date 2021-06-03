@@ -1,8 +1,8 @@
 import cuid from "cuid";
 
+import { buildColor } from "../../shared/buildColor";
 import { ClientError } from "../errors";
 import { ModelOptions, Tag, TagsForTest } from "../types";
-import { buildColor } from "./utils";
 
 type CreateTag = {
   name: string;

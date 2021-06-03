@@ -3,9 +3,12 @@ import { Box } from "grommet";
 import { edgeSize } from "../../../theme/theme";
 import WolfHead from "../icons/WolfHead";
 
-type Props = { color: string };
+type Props = {
+  color: string;
+  size?: string | null;
+};
 
-export default function DefaultAvatar({ color }: Props): JSX.Element {
+export default function DefaultAvatar({ color, size }: Props): JSX.Element {
   return (
     <Box
       align="center"
@@ -14,7 +17,7 @@ export default function DefaultAvatar({ color }: Props): JSX.Element {
       fill
       justify="center"
     >
-      <WolfHead color={color} width={edgeSize.small} />
+      <WolfHead color={color} width={size || edgeSize.small} />
     </Box>
   );
 }

@@ -1,0 +1,316 @@
+/* eslint-disable */
+// XXX rewrite monaco import and use this library directly
+import type monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as error from "lib0/error.js";
+import { createMutex } from "lib0/mutex.js";
+import * as Y from "yjs";
+import { buildUserStates } from "./useUserAwareness";
+
+class RelativeSelection {
+  start: any;
+  end: any;
+  direction: any;
+  /**
+   * @param {Y.RelativePosition} start
+   * @param {Y.RelativePosition} end
+   * @param {monaco.SelectionDirection} direction
+   */
+  constructor(
+    start: Y.RelativePosition,
+    end: Y.RelativePosition,
+    direction: monaco.SelectionDirection
+  ) {
+    this.start = start;
+    this.end = end;
+    this.direction = direction;
+  }
+}
+
+/**
+ * @param {monaco.editor.IStandaloneCodeEditor} editor
+ * @param {monaco.editor.ITextModel} monacoModel
+ * @param {Y.Text} type
+ */
+const createRelativeSelection = (
+  editor: monaco.editor.IStandaloneCodeEditor,
+  monacoModel: monaco.editor.ITextModel,
+  type: Y.Text
+) => {
+  const sel = editor.getSelection();
+  if (sel !== null) {
+    const startPos = sel.getStartPosition();
+    const endPos = sel.getEndPosition();
+    const start = Y.createRelativePositionFromTypeIndex(
+      type,
+      monacoModel.getOffsetAt(startPos)
+    );
+    const end = Y.createRelativePositionFromTypeIndex(
+      type,
+      monacoModel.getOffsetAt(endPos)
+    );
+    return new RelativeSelection(start, end, sel.getDirection());
+  }
+  return null;
+};
+
+/**
+ * @param {monaco.editor.IEditor} editor
+ * @param {Y.Text} type
+ * @param {RelativeSelection} relSel
+ * @param {Y.Doc} doc
+ * @return {null|monaco.Selection}
+ */
+const createMonacoSelectionFromRelativeSelection = (
+  monaco: any,
+  editor: monaco.editor.IEditor,
+  type: Y.Text,
+  relSel: RelativeSelection,
+  doc: Y.Doc
+): null | monaco.Selection => {
+  const start = Y.createAbsolutePositionFromRelativePosition(relSel.start, doc);
+  const end = Y.createAbsolutePositionFromRelativePosition(relSel.end, doc);
+  if (
+    start !== null &&
+    end !== null &&
+    start.type === type &&
+    end.type === type
+  ) {
+    const model = editor.getModel() as any;
+    const startPos = model.getPositionAt(start.index);
+    const endPos = model.getPositionAt(end.index);
+    return monaco.Selection.createWithDirection(
+      startPos.lineNumber,
+      startPos.column,
+      endPos.lineNumber,
+      endPos.column,
+      relSel.direction
+    );
+  }
+  return null;
+};
+
+export class MonacoBinding {
+  monaco: any;
+  doc: any;
+  ytext: any;
+  monacoModel: any;
+  editors: Set<unknown>;
+  mux: any;
+  _savedSelections: Map<any, any>;
+  _beforeTransaction: () => void;
+  _decorations: Map<any, any>;
+  _rerenderDecorations: () => void;
+  _ytextObserver: (event: any) => void;
+  _monacoChangeHandler: any;
+  awareness: any;
+  /**
+   * @param {Y.Text} ytext
+   * @param {monaco.editor.ITextModel} monacoModel
+   * @param {Set<monaco.editor.IStandaloneCodeEditor>} [editors]
+   * @param {Awareness?} [awareness]
+   */
+  constructor(
+    monaco,
+    ytext: Y.Text,
+    monacoModel: monaco.editor.ITextModel,
+    editors: Set<monaco.editor.IStandaloneCodeEditor> = new Set(),
+    awareness: any = null
+  ) {
+    this.monaco = monaco;
+    this.doc = /** @type {Y.Doc} */ ytext.doc;
+    this.ytext = ytext;
+    this.monacoModel = monacoModel;
+    this.editors = editors;
+    this.mux = createMutex();
+    /**
+     * @type {Map<monaco.editor.IStandaloneCodeEditor, RelativeSelection>}
+     */
+    this._savedSelections = new Map();
+    this._beforeTransaction = () => {
+      this.mux(() => {
+        this._savedSelections = new Map();
+        editors.forEach((editor) => {
+          if (editor.getModel() === monacoModel) {
+            const rsel = createRelativeSelection(editor, monacoModel, ytext);
+            if (rsel !== null) {
+              this._savedSelections.set(editor, rsel);
+            }
+          }
+        });
+      });
+    };
+    this.doc.on("beforeAllTransactions", this._beforeTransaction);
+    this._decorations = new Map();
+    this._rerenderDecorations = () => {
+      editors.forEach((editor) => {
+        if (awareness && editor.getModel() === monacoModel) {
+          // render decorations
+          const currentDecorations = this._decorations.get(editor) || [];
+          const newDecorations = [];
+          buildUserStates(awareness).forEach((state) => {
+            if (
+              !state.is_current_client &&
+              state.selection != null &&
+              state.selection.anchor != null &&
+              state.selection.head != null
+            ) {
+              const color = (state.color || "#").replace("#", "");
+              const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
+                state.selection.anchor,
+                this.doc
+              );
+              const headAbs = Y.createAbsolutePositionFromRelativePosition(
+                state.selection.head,
+                this.doc
+              );
+              if (
+                anchorAbs !== null &&
+                headAbs !== null &&
+                anchorAbs.type === ytext &&
+                headAbs.type === ytext
+              ) {
+                let start, end, afterContentClassName, beforeContentClassName;
+                if (anchorAbs.index < headAbs.index) {
+                  start = monacoModel.getPositionAt(anchorAbs.index);
+                  end = monacoModel.getPositionAt(headAbs.index);
+                  afterContentClassName = `remoteSelectionHead${color}`;
+                  beforeContentClassName = null;
+                } else {
+                  start = monacoModel.getPositionAt(headAbs.index);
+                  end = monacoModel.getPositionAt(anchorAbs.index);
+                  afterContentClassName = null;
+                  beforeContentClassName = `remoteSelectionHead${color}`;
+                }
+                newDecorations.push({
+                  range: new monaco.Range(
+                    start.lineNumber,
+                    start.column,
+                    end.lineNumber,
+                    end.column
+                  ),
+                  options: {
+                    className: `remoteSelection${color}`,
+                    afterContentClassName,
+                    beforeContentClassName,
+                  },
+                });
+              }
+            }
+          });
+          this._decorations.set(
+            editor,
+            editor.deltaDecorations(currentDecorations, newDecorations)
+          );
+        } else {
+          // ignore decorations
+          this._decorations.delete(editor);
+        }
+      });
+    };
+    this._ytextObserver = (event) => {
+      this.mux(() => {
+        let index = 0;
+        event.delta.forEach((op) => {
+          if (op.retain !== undefined) {
+            index += op.retain;
+          } else if (op.insert !== undefined) {
+            const pos = monacoModel.getPositionAt(index);
+            const range = new monaco.Selection(
+              pos.lineNumber,
+              pos.column,
+              pos.lineNumber,
+              pos.column
+            );
+            monacoModel.applyEdits([{ range, text: op.insert }]);
+            index += op.insert.length;
+          } else if (op.delete !== undefined) {
+            const pos = monacoModel.getPositionAt(index);
+            const endPos = monacoModel.getPositionAt(index + op.delete);
+            const range = new monaco.Selection(
+              pos.lineNumber,
+              pos.column,
+              endPos.lineNumber,
+              endPos.column
+            );
+            monacoModel.applyEdits([{ range, text: "" }]);
+          } else {
+            throw error.unexpectedCase();
+          }
+        });
+        this._savedSelections.forEach((rsel, editor) => {
+          const sel = createMonacoSelectionFromRelativeSelection(
+            monaco,
+            editor,
+            ytext,
+            rsel,
+            this.doc
+          );
+          if (sel !== null) {
+            editor.setSelection(sel);
+          }
+        });
+      });
+      this._rerenderDecorations();
+    };
+    ytext.observe(this._ytextObserver);
+    monacoModel.setValue(ytext.toString());
+    this._monacoChangeHandler = monacoModel.onDidChangeContent((event) => {
+      // apply changes from right to left
+      this.mux(() => {
+        this.doc.transact(() => {
+          event.changes
+            .sort(
+              (change1, change2) => change2.rangeOffset - change1.rangeOffset
+            )
+            .forEach((change) => {
+              ytext.delete(change.rangeOffset, change.rangeLength);
+              ytext.insert(change.rangeOffset, change.text);
+            });
+        }, this);
+      });
+    });
+    monacoModel.onWillDispose(() => {
+      this.destroy();
+    });
+    if (awareness) {
+      editors.forEach((editor) => {
+        editor.onDidBlurEditorText(() => {
+          if (editor.getModel() === monacoModel) {
+            awareness.setLocalStateField("selection", null);
+          }
+        });
+
+        editor.onDidChangeCursorSelection(() => {
+          if (editor.getModel() === monacoModel) {
+            const sel = editor.getSelection();
+            if (sel === null) {
+              return;
+            }
+            let anchor = monacoModel.getOffsetAt(sel.getStartPosition());
+            let head = monacoModel.getOffsetAt(sel.getEndPosition());
+            if (sel.getDirection() === monaco.SelectionDirection.RTL) {
+              const tmp = anchor;
+              anchor = head;
+              head = tmp;
+            }
+            awareness.setLocalStateField("selection", {
+              anchor: Y.createRelativePositionFromTypeIndex(ytext, anchor),
+              head: Y.createRelativePositionFromTypeIndex(ytext, head),
+            });
+          }
+        });
+        awareness.on("change", this._rerenderDecorations);
+      });
+      this.awareness = awareness;
+    }
+  }
+
+  destroy() {
+    this._monacoChangeHandler.dispose();
+    this.ytext.unobserve(this._ytextObserver);
+    this.doc.off("beforeAllTransactions", this._beforeTransaction);
+    if (this.awareness !== null) {
+      this.awareness.off("change", this._rerenderDecorations);
+    }
+  }
+}

@@ -1,36 +1,32 @@
 import { EventEmitter } from "events";
-import type { editor as editorNs } from "monaco-editor/esm/vs/editor/editor.api";
-import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
+import { Awareness } from "y-protocols/awareness";
+import { WebsocketProvider } from "y-websocket";
+import * as Y from "yjs";
 
+import { JWT_KEY } from "../../../lib/client";
 import { File } from "../../../lib/types";
-import { VersionedMap } from "../../../lib/VersionedMap";
-
-export type BindOptions = {
-  editor: editorNs.IStandaloneCodeEditor;
-  monaco: typeof monacoEditor;
-};
 
 export class FileModel extends EventEmitter {
-  _contentKey?: string;
-  _editor?: editorNs.IStandaloneCodeEditor;
-  _disposeHooks = [];
+  _doc = new Y.Doc();
+  _content = this._doc.getText("file.content");
   _file?: File;
-  _state: VersionedMap;
+  _metadata = this._doc.getMap("file.metadata");
+  _provider?: WebsocketProvider;
 
-  constructor(state: VersionedMap) {
+  constructor() {
     super();
 
-    this._state = state;
-
-    this._state.on("changed", ({ key, value }) => {
-      if (key === this._contentKey && this._editor) {
-        const currentValue = this._editor.getValue();
-        if (currentValue !== value) this._editor.setValue(value);
-        this.emit("changed", { key: "content", value });
-      } else if (key === "path" && this._contentKey !== "helpers_code") {
-        this.emit("changed", { key, value });
-      }
+    this._content.observe(() => {
+      this.emit("changed", { key: "content" });
     });
+
+    this._metadata.observe(({ keysChanged }) => {
+      keysChanged.forEach((key) => this.emit("changed", { key }));
+    });
+  }
+
+  get awareness(): Awareness | undefined {
+    return this._provider?.awareness;
   }
 
   bind<T>(key: string, callback: (value: T) => void): () => void {
@@ -45,74 +41,66 @@ export class FileModel extends EventEmitter {
     return () => this.off("changed", onChange);
   }
 
-  bindEditor({ editor }: BindOptions): void {
-    this._editor = editor;
+  get changed_keys(): string[] {
+    const keys = this._metadata.get("changed_keys") || "";
+    if (keys.length < 1) return [];
 
-    editor.setValue(this.content);
-
-    const disposable = editor.onDidChangeModelContent(() => {
-      this._state.set(this._contentKey, editor.getValue());
-    });
-
-    this._disposeHooks.push(() => disposable.dispose());
-  }
-
-  changes(): Partial<File> {
-    if (!this._file) return null;
-
-    const changes: Partial<File> = {};
-    const { content, path } = this._file;
-
-    if (this.content !== content) changes.content = this.content;
-    if (this.path !== path && this._contentKey !== "helpers_code")
-      changes.path = this.path;
-
-    return Object.keys(changes).length ? changes : null;
+    return keys.split(",");
   }
 
   get content(): string {
-    return this._state.get(this._contentKey) || this._file?.content || "";
+    return this.is_initialized
+      ? this._content.toJSON()
+      : this._file?.content || "";
   }
 
-  set content(value: string) {
-    this._state.set(this._contentKey, value);
+  delete(index: number, length: number): void {
+    this._content.delete(index, length);
   }
 
   dispose(): void {
+    this._doc.destroy();
+    this._provider?.destroy();
+    this._provider = null;
     this.removeAllListeners();
-    this._disposeHooks.forEach((dispose) => dispose());
-    this._disposeHooks = [];
   }
 
   get id(): string | undefined {
     return this._file?.id;
   }
 
-  get isReadOnly(): boolean {
-    return !!this._file?.is_read_only;
+  get is_initialized(): boolean {
+    return !!this._metadata.get("is_initialized");
   }
 
-  get path(): string | undefined {
-    return this._state.get("path") || this._file?.path || "";
+  insert(index: number, text: string): void {
+    this._content.insert(index, text);
+  }
+
+  get path(): string {
+    return this._metadata.get("path") || this._file?.path || "";
   }
 
   set path(value: string) {
-    this._state.set("path", value);
+    this._metadata.set("path", value);
+  }
+
+  reload(): void {
+    if (!this.is_initialized) return;
+
+    this._metadata.set("reload_at", Date.now());
   }
 
   setFile(file: File): void {
     this._file = file;
 
-    this._contentKey = file.id.startsWith("helpers")
-      ? "helpers_code"
-      : "test_code";
+    this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "path" });
 
-    this.emit("changed", { key: "content", value: this.content });
-    this.emit("changed", { key: "path", value: this.path });
-    this.emit("changed", { key: "isReadOnly", value: this.isReadOnly });
+    this._provider?.destroy();
 
-    // use this.content since state might be set with a newer version
-    const value = this.content;
-    if (this._editor?.getValue() !== value) this._editor?.setValue(value);
+    this._provider = new WebsocketProvider(file.url, file.id, this._doc, {
+      params: { authorization: localStorage.getItem(JWT_KEY) },
+    });
   }
 }

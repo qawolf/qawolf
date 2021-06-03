@@ -1,7 +1,8 @@
 import axios from "axios";
-import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 
-export const includeTypes = (monaco: typeof monacoEditor): void => {
+import { Monaco } from "./CodeEditor";
+
+export const includeTypes = (monaco: Monaco): void => {
   axios.get("/types.txt").then(({ data: types }) => {
     const uri = monaco.Uri.file("qawolf/types.d.ts");
     if (monaco.editor.getModel(uri)) return;

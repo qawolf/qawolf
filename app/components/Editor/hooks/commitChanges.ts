@@ -1,4 +1,3 @@
-import isNil from "lodash/isNil";
 import { useEffect, useState } from "react";
 
 import {
@@ -26,25 +25,25 @@ export const useCommitChanges = ({
   testModel,
 }: UseCommitChanges): CommitChangesHook => {
   const [hasChanges, setHasChanges] = useState(false);
-
   const [commitEditor] = useCommitEditor();
 
   useEffect(() => {
     if (!branch || !helpersModel || !testModel) return;
 
-    const updateHasChanges = () => {
-      const changes = helpersModel.changes() || testModel.changes();
-      setHasChanges(!!changes);
-    };
+    const updateHasChanges = () =>
+      setHasChanges(
+        helpersModel.changed_keys.length + testModel.changed_keys.length > 0
+      );
 
-    helpersModel.on("changed", updateHasChanges);
-    testModel.on("changed", updateHasChanges);
-
-    updateHasChanges();
+    const unbindHelpersChanged = helpersModel.bind(
+      "changed_keys",
+      updateHasChanges
+    );
+    const unbindTestChanged = testModel.bind("changed_keys", updateHasChanges);
 
     return () => {
-      helpersModel.off("changed", updateHasChanges);
-      testModel.off("changed", updateHasChanges);
+      unbindHelpersChanged();
+      unbindTestChanged();
     };
   }, [branch, helpersModel, testModel]);
 
@@ -53,20 +52,24 @@ export const useCommitChanges = ({
 
     const variables: CommitEditorVariables = { branch, test_id: testId };
 
-    const testChanges = testModel.changes();
-    if (testChanges) {
-      if (!isNil(testChanges.content)) variables.code = testChanges.content;
-      if (!isNil(testChanges.path)) variables.path = testChanges.path;
+    if (testModel.changed_keys.includes("content")) {
+      variables.code = testModel.content;
     }
 
-    const helpersChanges = helpersModel.changes();
-    if (helpersChanges && !isNil(helpersChanges.content)) {
-      variables.helpers = helpersChanges.content;
+    if (testModel.changed_keys.includes("path")) {
+      variables.path = testModel.path;
+    }
+
+    if (helpersModel.changed_keys.includes("content")) {
+      variables.helpers = helpersModel.content;
     }
 
     if (Object.keys(variables).length < 3) return;
 
     await commitEditor({ variables });
+
+    helpersModel.reload();
+    testModel.reload();
   };
 
   return { commitChanges, hasChanges };

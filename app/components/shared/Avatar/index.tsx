@@ -6,21 +6,29 @@ import DefaultAvatar from "./DefaultAvatar";
 type Props = {
   avatarUrl?: string | null;
   wolfColor: string;
+  size?: string;
 };
 
-export default function Avatar({ avatarUrl, wolfColor }: Props): JSX.Element {
+export default function Avatar({
+  avatarUrl,
+  wolfColor,
+  size,
+}: Props): JSX.Element {
+  const finalSize = size || edgeSize.medium;
+  const avatarSize = size ? `calc(${size} - 8px)` : null;
+
   return (
     <Box
       flex={false}
-      height={edgeSize.medium}
+      height={finalSize}
       overflow="hidden"
       round="full"
-      width={edgeSize.medium}
+      width={finalSize}
     >
       {avatarUrl ? (
         <Image fit="contain" src={avatarUrl} />
       ) : (
-        <DefaultAvatar color={wolfColor} />
+        <DefaultAvatar color={wolfColor} size={avatarSize} />
       )}
     </Box>
   );

@@ -22,11 +22,14 @@ export type EnvironmentVariable = {
 };
 
 export type File = {
+  branch: string | null;
   content: string;
   id: string;
+  is_deleted: boolean;
   is_read_only: boolean;
   path: string;
   team_id: string;
+  url: string;
 };
 
 export type GitHubBranch = {
@@ -268,6 +271,16 @@ export type SelectedTest = {
 };
 
 export type Side = "left" | "right";
+
+export type Size = {
+  height: number | null;
+  width: number | null;
+};
+
+export type Rect = Size & {
+  x: number | null;
+  y: number | null;
+};
 
 export type TriggerFields = {
   deployment_branches: string | null;
