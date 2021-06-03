@@ -53,6 +53,7 @@ export interface ElementChosen {
 }
 
 export type EventDescriptor = {
+  eventScreenCoords?: string;
   eventTimeStamp: number;
   isTrusted: boolean;
   selector?: string;

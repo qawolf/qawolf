@@ -58,11 +58,26 @@ describe("getDescriptor", () => {
     );
 
   beforeAll(() =>
-    setBody(page, '<input type="text"><h1 contenteditable="true"></h1>')
+    setBody(page, '<input type="text"><input type="checkbox" id="checked" checked><input type="checkbox" id="cleared"><h1 contenteditable="true"></h1>')
   );
 
   it("gets a descriptor for an element", async () => {
-    expect(await getDescriptor("input")).toEqual({
+    expect(await getDescriptor("input[type=text]")).toEqual({
+      inputIsChecked: false,
+      inputType: "text",
+      isContentEditable: false,
+      tag: "input",
+    });
+
+    expect(await getDescriptor("input#checked")).toEqual({
+      inputIsChecked: true,
+      inputType: "text",
+      isContentEditable: false,
+      tag: "input",
+    });
+
+    expect(await getDescriptor("input#cleared")).toEqual({
+      inputIsChecked: false,
       inputType: "text",
       isContentEditable: false,
       tag: "input",

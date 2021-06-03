@@ -22,6 +22,7 @@ export class EventSequence {
     if (value !== undefined) value = typeof value === "string" ? value : "";
 
     this._events.unshift({
+      eventScreenCoords: (event as MouseEvent).screenX == null ? undefined : `${(event as MouseEvent).screenX}:${(event as MouseEvent).screenY}`,
       eventTimeStamp: event.timeStamp,
       isTrusted: event.isTrusted,
       selector,
@@ -71,7 +72,13 @@ export class EventSequence {
     if (!last || !previous) return false;
     if (last.type !== "click" || previous.type !== "click") return false;
 
-    return last.eventTimeStamp !== undefined && last.eventTimeStamp === previous.eventTimeStamp;
+    return (
+      // On firefox the timestamp can differ by a few MS even when the same mousedown
+      // caused both click events. But testing if the screen coordinates match seems
+      // to work as a fallback.
+      (last.eventTimeStamp !== undefined && last.eventTimeStamp === previous.eventTimeStamp) ||
+      (last.eventScreenCoords !== undefined && last.eventScreenCoords === previous.eventScreenCoords)
+    );
   }
 
   get last(): EventDescriptor {

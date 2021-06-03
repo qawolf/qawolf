@@ -8,48 +8,77 @@ import {
   shouldTrackFill,
 } from "../src/resolveElementAction";
 import { launch, LaunchResult } from "./utils";
+import { RankedSelector } from '../src/types';
+
+const mockDescriptor = (tag: string, others: Partial<ElementDescriptor> = {}): ElementDescriptor => {
+  return {
+    isContentEditable: false,
+    tag,
+    ...others
+  };
+}
 
 describe("resolveAction", () => {
   it("returns click for click", async () => {
-    expect(resolveAction("click", "A")).toEqual("click");
+    expect(resolveAction("click", mockDescriptor("a"))).toEqual("click");
   });
 
   it("returns fill for change/input on an input", async () => {
-    expect(resolveAction("change", "INPUT")).toEqual("fill");
-    expect(resolveAction("input", "INPUT")).toEqual("fill");
+    expect(resolveAction("change", mockDescriptor("input"))).toEqual("fill");
+    expect(resolveAction("input", mockDescriptor("input"))).toEqual("fill");
   });
 
-  it("returns check for change/input on a checkbox input that is checked", async () => {
-    expect(resolveAction("change", "INPUT", "checkbox", true)).toEqual("check");
-    expect(resolveAction("input", "INPUT", "checkbox", true)).toEqual("check");
+  it("returns check for change/input on a checkbox input that is checked and visible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: true }), true)).toEqual("check");
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: true }), true)).toEqual("check");
   });
 
-  it("returns check for change/input on a radio input that is checked", async () => {
-    expect(resolveAction("change", "INPUT", "radio", true)).toEqual("check");
-    expect(resolveAction("input", "INPUT", "radio", true)).toEqual("check");
+  it("returns undefined for change/input on a checkbox input that is checked and invisible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: true }), false)).toBe(undefined);
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: true }), false)).toBe(undefined);
   });
 
-  it("returns check for change/input on a checkbox input that is not checked", async () => {
-    expect(resolveAction("change", "INPUT", "checkbox", false)).toEqual("uncheck");
-    expect(resolveAction("input", "INPUT", "checkbox", false)).toEqual("uncheck");
+  it("returns check for change/input on a radio input that is checked and visible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "radio", inputIsChecked: true }), true)).toEqual("check");
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "radio", inputIsChecked: true }), true)).toEqual("check");
   });
 
-  it("returns check for change/input on a radio input that is not checked", async () => {
-    expect(resolveAction("change", "INPUT", "radio", false)).toEqual("uncheck");
-    expect(resolveAction("input", "INPUT", "radio", false)).toEqual("uncheck");
+  it("returns undefined for change/input on a radio input that is checked and invisible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "radio", inputIsChecked: true }), false)).toBe(undefined);
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "radio", inputIsChecked: true }), false)).toBe(undefined);
+  });
+
+  it("returns uncheck for change/input on a checkbox input that is unchecked and visible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: false }), true)).toEqual("uncheck");
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: false }), true)).toEqual("uncheck");
+  });
+
+  it("returns undefined for change/input on a checkbox input that is unchecked and invisible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: false }), false)).toBe(undefined);
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "checkbox", inputIsChecked: false }), false)).toBe(undefined);
+  });
+
+  it("returns uncheck for change/input on a radio input that is unchecked and visible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "radio", inputIsChecked: false }), true)).toEqual("uncheck");
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "radio", inputIsChecked: false }), true)).toEqual("uncheck");
+  });
+
+  it("returns undefined for change/input on a radio input that is unchecked and invisible", async () => {
+    expect(resolveAction("change", mockDescriptor("input", { inputType: "radio", inputIsChecked: false }), false)).toBe(undefined);
+    expect(resolveAction("input", mockDescriptor("input", { inputType: "radio", inputIsChecked: false }), false)).toBe(undefined);
   });
 
   it("returns press for keydown", async () => {
-    expect(resolveAction("keydown", "HTML")).toEqual("press");
+    expect(resolveAction("keydown", mockDescriptor("html"))).toEqual("press");
   });
 
   it("returns selectOption for change/input on a select", async () => {
-    expect(resolveAction("change", "SELECT")).toEqual("selectOption");
-    expect(resolveAction("input", "SELECT")).toEqual("selectOption");
+    expect(resolveAction("change", mockDescriptor("select"))).toEqual("selectOption");
+    expect(resolveAction("input", mockDescriptor("select"))).toEqual("selectOption");
   });
 
   it("returns undefined for click on a select", async () => {
-    expect(resolveAction("click", "SELECT")).toEqual(undefined);
+    expect(resolveAction("click", mockDescriptor("select"))).toEqual(undefined);
   });
 });
 
@@ -72,16 +101,19 @@ describe("resolveElementAction", () => {
   it("returns keyboard.press on invisible targets", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
       return qawolf.resolveElementAction(
         new qawolf.EventSequence([
           {
+            eventTimeStamp: Date.now(),
             isTrusted: true,
             target: document.getElementById("hidden-div"),
             time: Date.now(),
             type: "keydown",
             value: "Escape",
           },
-        ])
+        ]),
+        selectorCache
       );
     });
 
@@ -97,17 +129,20 @@ describe("resolveElementAction", () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
       const target = document.getElementById("hidden-div");
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
       return qawolf.resolveElementAction(
         new qawolf.EventSequence([
-          { isTrusted: true, target, type: "click", time: Date.now() },
+          { eventTimeStamp: Date.now(), isTrusted: true, target, type: "click", time: Date.now() },
           {
+            eventTimeStamp: Date.now(), 
             isTrusted: true,
             selector: "#hidden-div",
             target,
             time: Date.now(),
             type: "mousedown",
           },
-        ])
+        ]),
+        selectorCache
       );
     });
 
@@ -125,18 +160,22 @@ describe("resolveElementAction", () => {
       const target = document.querySelector('[type="hidden"]') as HTMLElement;
 
       const invisibleClick = {
+        eventTimeStamp: Date.now(),
         isTrusted: true,
         target,
         time: Date.now(),
         type: "click",
       };
 
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
+
       return [
-        qawolf.resolveElementAction(new qawolf.EventSequence([invisibleClick])),
+        qawolf.resolveElementAction(new qawolf.EventSequence([invisibleClick]), selectorCache),
         qawolf.resolveElementAction(
           new qawolf.EventSequence([
             { ...invisibleClick, type: "change", value: "value" },
-          ])
+          ]),
+          selectorCache
         ),
       ];
     });
@@ -150,6 +189,7 @@ describe("resolveElementAction", () => {
       const target = document.querySelector("select");
 
       const event = {
+        eventTimeStamp: Date.now(),
         isTrusted: true,
         target,
         time: Date.now(),
@@ -157,8 +197,11 @@ describe("resolveElementAction", () => {
         value: "value",
       };
 
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
+
       return qawolf.resolveElementAction(
-        new qawolf.EventSequence([event, event])
+        new qawolf.EventSequence([event, event]),
+        selectorCache
       );
     });
 
@@ -168,16 +211,19 @@ describe("resolveElementAction", () => {
   it("returns undefined for untrusted actions", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
       return qawolf.resolveElementAction(
         new qawolf.EventSequence([
           {
+            eventTimeStamp: Date.now(),
             isTrusted: false,
             target: document.querySelector("body"),
             time: Date.now(),
             type: "click",
             value: null,
           },
-        ])
+        ]),
+        selectorCache
       );
     });
 
@@ -187,16 +233,19 @@ describe("resolveElementAction", () => {
   it("returns undefined for clicks without a mousedown", async () => {
     const result = await page.evaluate(() => {
       const qawolf: QAWolfWeb = (window as any).qawolf;
+      const selectorCache = new Map<HTMLElement, RankedSelector>()
       return qawolf.resolveElementAction(
         new qawolf.EventSequence([
           {
+            eventTimeStamp: Date.now(),
             isTrusted: false,
             target: document.querySelector("body"),
             time: Date.now(),
             type: "click",
             value: null,
           },
-        ])
+        ]),
+        selectorCache
       );
     });
 
@@ -248,10 +297,8 @@ describe("fill and press helpers", () => {
   });
 
   describe("shouldTrackFill", () => {
-    it("clicking a checkbox/radio or picking a file inputs does not create a fill step", () => {
-      ["checkbox", "radio", "file"].forEach((type) => {
-        expect(shouldTrackFill(descriptor("input", false, type))).toBe(false);
-      });
+    it("picking a file does not create a fill step", () => {
+      expect(shouldTrackFill(descriptor("input", false, "file"))).toBe(false);
     });
 
     it("typing into inputs/textarea creates a fill step", () => {

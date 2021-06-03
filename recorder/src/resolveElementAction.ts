@@ -7,7 +7,7 @@ import {
 } from "./element";
 import { getSelector } from "./generateSelectors";
 import { EventSequence } from "./EventSequence";
-import { Action, ElementAction, EventDescriptor, RankedSelector, Rect } from "./types";
+import { Action, ElementAction, EventDescriptor, RankedSelector } from "./types";
 
 /**
  * The full list:
@@ -54,7 +54,8 @@ export const KEYS_TO_TRACK_FOR_NON_INPUT = new Set([
 
 export const resolveAction = (
   type: string,
-  targetDescriptor: ElementDescriptor
+  targetDescriptor: ElementDescriptor,
+  isTargetVisible= true
 ): Action | undefined => {
   let action: Action;
 
@@ -62,7 +63,12 @@ export const resolveAction = (
     if (targetDescriptor.tag === "select") {
       action = "selectOption";
     } else if (['checkbox', 'radio'].includes(targetDescriptor.inputType)) {
-      action = targetDescriptor.inputIsChecked === true ? "check" : "uncheck";
+      // check/uncheck will not work on a hidden checkbox or radio
+      if (isTargetVisible) {
+        action = targetDescriptor.inputIsChecked === true ? "check" : "uncheck";
+      } else {
+        action = undefined;
+      }
     } else {
       action = "fill";
     }
@@ -101,7 +107,9 @@ export const resolveElementAction = (
 
   const targetDescriptor = getDescriptor(target);
 
-  let action = resolveAction(event.type, targetDescriptor);
+  const isTargetVisible = isVisible(target, window.getComputedStyle(target));
+
+  let action = resolveAction(event.type, targetDescriptor, isTargetVisible);
   if (!action) return;
 
   let { value } = event;
@@ -121,8 +129,6 @@ export const resolveElementAction = (
       return { action, selector: "", value, time: event.time };
     }
   }
-
-  const isTargetVisible = isVisible(target, window.getComputedStyle(target));
 
   if (action === "click") {
     const mouseDown = events.getMouseDown();
