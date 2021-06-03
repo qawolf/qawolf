@@ -69,7 +69,7 @@ it("records click for hiding target", async () => {
   ]);
 });
 
-it("record only one click for PointerEvent clicks", async () => {
+it("records only one click for grommet checkbox", async () => {
   const page = await launched.context.newPage();
   await page.goto("http://localhost:9876/grommet");
 
@@ -83,6 +83,42 @@ it("record only one click for PointerEvent clicks", async () => {
   expect(actionsOfType("click").map((action) => action.selector)).toEqual([
     "text=interested?",
   ]);
+});
+
+it("records only check/uncheck for MUI checkbox", async () => {
+  const page = await launched.context.newPage();
+  await page.goto("http://localhost:9876/mui");
+
+  await page.click(".MuiCheckbox-root"); // check
+  await page.click(".MuiCheckbox-root"); // uncheck
+
+  await waitForExpect(() => {
+    expect(actions).toEqual([
+      {
+        action: "click",
+        selector: "[aria-label=\"primary checkbox\"]",
+        time: expect.any(Number)
+      },
+      {
+        action: "check",
+        relatedClickSelector: "[aria-label=\"primary checkbox\"]",
+        selector: "[aria-label=\"primary checkbox\"]",
+        time: expect.any(Number)
+      },
+      {
+        action: "click",
+        selector: "[aria-label=\"primary checkbox\"]",
+        time: expect.any(Number)
+      },
+      {
+        action: "uncheck",
+        relatedClickSelector: "[aria-label=\"primary checkbox\"]",
+        selector: "[aria-label=\"primary checkbox\"]",
+        time: expect.any(Number)
+      }
+    ]);
+  }, 10000);
+  await page.close();
 });
 
 it("records fill actions when typing", async () => {
