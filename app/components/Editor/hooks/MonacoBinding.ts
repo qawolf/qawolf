@@ -4,6 +4,7 @@ import type monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as error from "lib0/error.js";
 import { createMutex } from "lib0/mutex.js";
 import * as Y from "yjs";
+import { buildUserStates } from "./useUserAwareness";
 
 class RelativeSelection {
   start: any;
@@ -146,15 +147,14 @@ export class MonacoBinding {
           // render decorations
           const currentDecorations = this._decorations.get(editor) || [];
           const newDecorations = [];
-          awareness.getStates().forEach((state, clientID) => {
+          buildUserStates(awareness).forEach((state) => {
             if (
-              clientID !== this.doc.clientID &&
+              !state.is_current_client &&
               state.selection != null &&
               state.selection.anchor != null &&
-              state.selection.head != null &&
-              state.user != null
+              state.selection.head != null
             ) {
-              const color = state.user.color.replace("#", "");
+              const color = (state.color || "#").replace("#", "");
               const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
                 state.selection.anchor,
                 this.doc

@@ -40,7 +40,7 @@ export default function Cursors({
   useEffect(() => {
     if (!canvasRect || !user || !userAwareness || !windowSize) return;
 
-    const userState = {
+    const userPosition = {
       avatar_url: user.avatar_url,
       canvas_x: -1,
       canvas_y: -1,
@@ -51,7 +51,7 @@ export default function Cursors({
     };
 
     // set the initial state before the mouse moves
-    userAwareness.setUserState(userState);
+    userAwareness.setUserPosition(userPosition);
 
     function getStatePosition(x: number, y: number) {
       const coordinates = {
@@ -79,8 +79,8 @@ export default function Cursors({
     }
 
     const updateMousePosition = (event: MouseEvent) => {
-      userAwareness.setUserState({
-        ...userState,
+      userAwareness.setUserPosition({
+        ...userPosition,
         ...getStatePosition(event.clientX, event.clientY),
       });
     };
