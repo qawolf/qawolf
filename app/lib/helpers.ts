@@ -102,9 +102,9 @@ export const formatTimestamp = (timestamp: string): string => {
 
 export const isValidURL = (url: string): boolean => {
   try {
-    const parsed = new URL(url);
-
-    return ["https:", "http:"].includes(parsed.protocol);
+    const parsed = new URL(url).href;
+    // https://stackoverflow.com/a/49185442
+    return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(parsed);
   } catch (error) {
     return false;
   }
