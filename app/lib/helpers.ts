@@ -108,6 +108,7 @@ export const isValidURL = (url: string): boolean => {
       return false;
     }
     // https://stackoverflow.com/a/49185442
+    // eslint-disable-next-line no-useless-escape
     return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
       parsed.href
     );
