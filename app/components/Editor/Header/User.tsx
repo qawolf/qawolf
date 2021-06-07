@@ -1,7 +1,8 @@
 import { Box } from "grommet";
 import { useRef, useState } from "react";
+import styled from "styled-components";
 
-import { borderSize, edgeSize } from "../../../theme/theme";
+import { borderSize, edgeSize, transitionDuration } from "../../../theme/theme";
 import Avatar from "../../shared/Avatar";
 import Tooltip from "../../shared/Tooltip";
 
@@ -12,33 +13,55 @@ type Props = {
   wolf_variant: string;
 };
 
+const StyledBox = styled(Box)`
+  position: relative;
+
+  .user-tooltip {
+    opacity: 0;
+    transition: opacity ${transitionDuration};
+  }
+
+  &:hover {
+    .user-tooltip {
+      opacity: 1;
+    }
+  }
+`;
+
 export default function User({
   avatar_url,
   color,
   email,
   wolf_variant,
 }: Props): JSX.Element {
-  const [isHover, setIsHover] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Box
+    <StyledBox
       background={color}
       key={email}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
       pad={borderSize.small}
       ref={ref}
       round="full"
     >
       <Avatar avatarUrl={avatar_url} size="28px" wolfColor={wolf_variant} />
-      <Tooltip
-        align={{ top: "bottom" }}
-        isVisible={isHover}
-        label={email}
-        style={{ marginTop: edgeSize.xxxsmall }}
-        target={ref.current}
-      />
-    </Box>
+      <Box
+        background="gray9"
+        className="user-tooltip"
+        style={{ position: "absolute" }}
+        pad={{ horizontal: "xxsmall", vertical: "xxxsmall" }}
+        round={borderSize.small}
+      ></Box>
+      {/* {!!ref.current && (
+        <Tooltip
+          align={{ top: "bottom" }}
+          className="user-tooltip"
+          isVisible
+          label={email}
+          style={{ marginTop: edgeSize.xxxsmall }}
+          target={ref.current}
+        />
+      )} */}
+    </StyledBox>
   );
 }
