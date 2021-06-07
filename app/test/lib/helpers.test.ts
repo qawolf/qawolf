@@ -66,6 +66,8 @@ describe("isValidURL", () => {
     expect(isValidURL("invalid")).toBe(false);
     expect(isValidURL("javascript:void(0)")).toBe(false);
     expect(isValidURL("www.example.com")).toBe(false);
+    expect(isValidURL("https://login")).toBe(false);
+    expect(isValidURL("wss://www.example.com/socketserver")).toBe(false);
   });
 });
 
