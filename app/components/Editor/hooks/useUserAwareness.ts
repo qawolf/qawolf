@@ -74,6 +74,7 @@ export class UserAwareness extends EventEmitter {
   };
 
   dispose(): void {
+    this._awareness.setLocalStateField("user", null);
     this._awareness.off("change", this._updateUserStates);
   }
 
@@ -96,15 +97,14 @@ export const useUserAwareness = (
   const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   useEffect(() => {
-    // this should be set when the file is loaded
-    if (!fileModel?.awareness) return;
+    if (!file.isLoaded || !fileModel) return;
 
     const userAwareness = new UserAwareness(fileModel.awareness);
     setUserAwareness(userAwareness);
 
     return () => {
       setUserAwareness(null);
-      userAwareness.dispose();
+      userAwareness?.dispose();
     };
   }, [file.isLoaded, fileModel]);
 

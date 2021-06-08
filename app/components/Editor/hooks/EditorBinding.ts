@@ -19,27 +19,25 @@ export class EditorBinding {
     this._monaco = monaco;
 
     // bind to the content before the document is initialized
-    const disposeContent = this._model.bind("content", () => {
+    const disposeContentBinding = this._model.bind("content", () => {
       if (this._model.is_initialized) return;
 
       this._editor.setValue(this._model.content);
     });
 
-    const disposeIsInitialized = this._model.bind("is_initialized", () => {
-      // once the document is initialized bind to it
-      // call this in a timeout so this._unbindFile is set before it's called
-      // in case the document is already initialized
-      setTimeout(() => this._bindToDocument(), 0);
-    });
+    // once the document is initialized bind to it
+    const disposeIsInitializedBinding = this._model.bind("is_initialized", () =>
+      this._bindToDocument()
+    );
 
     this._unbindFile = () => {
-      disposeContent();
-      disposeIsInitialized();
+      disposeContentBinding();
+      disposeIsInitializedBinding();
     };
   }
 
   _bindToDocument(): void {
-    if (this._binding || !this._model.is_initialized) return;
+    if (this._binding || !this._model.awareness) return;
 
     this._unbindFile();
 

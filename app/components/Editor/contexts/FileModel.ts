@@ -8,10 +8,11 @@ import { File } from "../../../lib/types";
 
 export class FileModel extends EventEmitter {
   _doc = new Y.Doc();
-  _content = this._doc.getText("file.content");
   _file?: File;
-  _metadata = this._doc.getMap("file.metadata");
   _provider?: WebsocketProvider;
+
+  _content = this._doc.getText("file.content");
+  _metadata = this._doc.getMap("file.metadata");
 
   constructor() {
     super();
@@ -36,7 +37,8 @@ export class FileModel extends EventEmitter {
 
     this.on("changed", onChange);
 
-    callback(this[key]);
+    // allow time for the unbind to be set
+    setTimeout(() => callback(this[key]), 0);
 
     return () => this.off("changed", onChange);
   }
@@ -59,9 +61,9 @@ export class FileModel extends EventEmitter {
   }
 
   dispose(): void {
-    this._doc.destroy();
     this._provider?.destroy();
     this._provider = null;
+    this._doc.destroy();
     this.removeAllListeners();
   }
 
@@ -92,15 +94,16 @@ export class FileModel extends EventEmitter {
   }
 
   setFile(file: File): void {
+    // only set the file once
+    if (this._file) return;
+
     this._file = file;
-
-    this.emit("changed", { key: "content" });
-    this.emit("changed", { key: "path" });
-
-    this._provider?.destroy();
 
     this._provider = new WebsocketProvider(file.url, file.id, this._doc, {
       params: { authorization: localStorage.getItem(JWT_KEY) },
     });
+
+    this.emit("changed", { key: "content" });
+    this.emit("changed", { key: "path" });
   }
 }

@@ -38,7 +38,7 @@ export default function Cursors({
   );
 
   useEffect(() => {
-    if (!canvasRect || !user || !userAwareness || !windowSize) return;
+    if (!user || !userAwareness || !windowSize) return;
 
     const userPosition = {
       avatar_url: user.avatar_url,
@@ -61,8 +61,8 @@ export default function Cursors({
         window_y: y / windowSize.height,
       };
 
-      const canvasX = x - canvasRect.x;
-      const canvasY = y - canvasRect.y;
+      const canvasX = canvasRect ? x - canvasRect.x : -1;
+      const canvasY = canvasRect ? y - canvasRect.y : -1;
 
       // when inside the canvas send it's relative coordinates
       if (
