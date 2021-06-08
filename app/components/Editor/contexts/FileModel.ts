@@ -4,7 +4,7 @@ import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
 
 import { JWT_KEY } from "../../../lib/client";
-import { File } from "../../../lib/types";
+import { File, User } from "../../../lib/types";
 
 export class FileModel extends EventEmitter {
   _doc = new Y.Doc();
@@ -105,5 +105,15 @@ export class FileModel extends EventEmitter {
 
     this.emit("changed", { key: "content" });
     this.emit("changed", { key: "path" });
+  }
+
+  setUserState(user: User, created_at: number): void {
+    this._provider?.awareness.setLocalStateField("user", {
+      avatar_url: user.avatar_url,
+      // used to determine the color
+      created_at: created_at,
+      email: user.email,
+      wolf_variant: user.wolf_variant,
+    });
   }
 }

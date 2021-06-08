@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, FC, useContext } from "react";
+import { createContext, FC, useContext, useRef } from "react";
 
 import { useTeam } from "../../../hooks/queries";
 import { Team } from "../../../lib/types";
@@ -37,6 +37,7 @@ export const EditorContext = createContext<EditorContextValue>({
 export const EditorProvider: FC = ({ children }) => {
   const { branch, teamId } = useContext(StateContext);
 
+  const createdAtRef = useRef(Date.now());
   const { query } = useRouter();
   const runId = query.run_id as string;
   const testId = query.test_id as string;
@@ -55,11 +56,13 @@ export const EditorProvider: FC = ({ children }) => {
 
   const { file: helpers, model: helpersModel } = useFileModel(
     // if the suite is not loaded, return null
-    helpersId.includes("undefined") ? null : helpersId
+    helpersId.includes("undefined") ? null : helpersId,
+    createdAtRef.current
   );
 
   const { file: test, model: testModel } = useFileModel(
-    runId ? `run.${runId}` : `test.${testId}${branchId}`
+    runId ? `run.${runId}` : `test.${testId}${branchId}`,
+    createdAtRef.current
   );
 
   const userAwareness = useUserAwareness(test, testModel);

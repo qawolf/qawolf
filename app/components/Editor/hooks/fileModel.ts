@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useFile } from "../../../hooks/queries";
+import { UserContext } from "../../UserContext";
 import { FileModel } from "../contexts/FileModel";
 
 export type FileState = {
@@ -24,7 +25,9 @@ export const defaultFileState = {
   path: "",
 };
 
-export const useFileModel = (id: string): FileHook => {
+export const useFileModel = (id: string, createdAt: number): FileHook => {
+  const { user } = useContext(UserContext);
+
   const modelRef = useRef<FileModel>();
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -46,6 +49,12 @@ export const useFileModel = (id: string): FileHook => {
     setIsLoaded(true);
     setPath(file.path);
   }, [file]);
+
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+
+    modelRef.current.setUserState(user, createdAt);
+  }, [createdAt, isLoaded, user]);
 
   return {
     file: {

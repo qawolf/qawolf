@@ -3,7 +3,6 @@ import { useCallback, useContext, useEffect } from "react";
 
 import { Rect, Size } from "../../lib/types";
 import Cursor from "../shared/icons/Cursor";
-import { UserContext } from "../UserContext";
 import { EditorContext } from "./contexts/EditorContext";
 import { UserState, useUserStates } from "./hooks/useUserAwareness";
 
@@ -17,7 +16,6 @@ export default function Cursors({
   windowSize,
 }: Props): JSX.Element {
   const { userAwareness } = useContext(EditorContext);
-  const { user } = useContext(UserContext);
   const { userStates } = useUserStates(userAwareness);
 
   const getCursorPosition = useCallback(
@@ -38,20 +36,15 @@ export default function Cursors({
   );
 
   useEffect(() => {
-    if (!user || !userAwareness || !windowSize) return;
-
-    const userPosition = {
-      avatar_url: user.avatar_url,
-      canvas_x: -1,
-      canvas_y: -1,
-      email: user.email,
-      window_x: -1,
-      window_y: -1,
-      wolf_variant: user.wolf_variant,
-    };
+    if (!userAwareness || !windowSize) return;
 
     // set the initial state before the mouse moves
-    userAwareness.setUserPosition(userPosition);
+    userAwareness.setCursorPosition({
+      canvas_x: -1,
+      canvas_y: -1,
+      window_x: -1,
+      window_y: -1,
+    });
 
     function getStatePosition(x: number, y: number) {
       const coordinates = {
@@ -79,17 +72,16 @@ export default function Cursors({
     }
 
     const updateMousePosition = (event: MouseEvent) => {
-      userAwareness.setUserPosition({
-        ...userPosition,
-        ...getStatePosition(event.clientX, event.clientY),
-      });
+      userAwareness.setCursorPosition(
+        getStatePosition(event.clientX, event.clientY)
+      );
     };
 
     document.addEventListener("mousemove", updateMousePosition, true);
 
     return () =>
       document.removeEventListener("mousemove", updateMousePosition, true);
-  }, [canvasRect, user, userAwareness, windowSize]);
+  }, [canvasRect, userAwareness, windowSize]);
 
   if (!userStates.length) return null;
 
