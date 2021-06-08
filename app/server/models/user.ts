@@ -70,7 +70,7 @@ export const createUserWithEmail = async (
 
   const user = {
     avatar_url: null,
-    email: fields.email.toLowerCase(),
+    email: fields.email.trim().toLowerCase(),
     github_id: null,
     github_login: null,
     id: cuid(),
