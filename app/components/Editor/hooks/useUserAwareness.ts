@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Awareness } from "y-protocols/awareness";
 
 import { COLORS } from "../../../shared/buildColor";
-import { FileModel, UserState } from "../contexts/FileModel";
+import { FileModel } from "../contexts/FileModel";
 import { FileState } from "./fileModel";
 
 export type CursorPosition = {
