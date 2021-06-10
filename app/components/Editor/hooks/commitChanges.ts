@@ -68,8 +68,8 @@ export const useCommitChanges = ({
 
     await commitEditor({ variables });
 
-    helpersModel.reload();
-    testModel.reload();
+    helpersModel.didCommit();
+    testModel.didCommit();
   };
 
   return { commitChanges, hasChanges };

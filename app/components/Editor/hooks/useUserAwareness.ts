@@ -3,26 +3,26 @@ import { useEffect, useState } from "react";
 import { Awareness } from "y-protocols/awareness";
 
 import { COLORS } from "../../../shared/buildColor";
-import { FileModel } from "../contexts/FileModel";
+import { FileModel, UserState } from "../contexts/FileModel";
 import { FileState } from "./fileModel";
 
-export type UserPosition = {
-  avatar_url: string | null;
+export type CursorPosition = {
   canvas_x: number;
   canvas_y: number;
-  email: string;
   window_x: number;
   window_y: number;
-  wolf_variant: string;
 };
 
-export type UserState = UserPosition & {
+export type UserState = CursorPosition & {
+  avatar_url: string | null;
   client_id: string;
   color: string;
+  created_at: number;
+  email: string;
   is_current_client: boolean;
-  joined_at: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selection?: any;
+  wolf_variant: string;
 };
 
 export type UserStatesHook = {
@@ -38,6 +38,7 @@ export const buildUserStates = (awareness: Awareness): UserState[] => {
     if (!state.user) return;
 
     states.push({
+      ...state.cursor,
       ...state.user,
       client_id: clientId,
       is_current_client: clientId === currentId,
@@ -46,7 +47,7 @@ export const buildUserStates = (awareness: Awareness): UserState[] => {
   });
 
   return states
-    .sort((a, b) => a.joined_at - b.joined_at)
+    .sort((a, b) => a.created_at - b.created_at)
     .map((userState, index) => {
       return {
         ...userState,
@@ -74,14 +75,12 @@ export class UserAwareness extends EventEmitter {
   };
 
   dispose(): void {
+    this._awareness.setLocalStateField("user", null);
     this._awareness.off("change", this._updateUserStates);
   }
 
-  setUserPosition(position: UserPosition): void {
-    this._awareness.setLocalStateField("user", {
-      ...position,
-      joined_at: this._createdAt,
-    });
+  setCursorPosition(position: CursorPosition): void {
+    this._awareness.setLocalStateField("cursor", position);
   }
 
   get userStates(): UserState[] {
@@ -96,15 +95,14 @@ export const useUserAwareness = (
   const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   useEffect(() => {
-    // this should be set when the file is loaded
-    if (!fileModel?.awareness) return;
+    if (!file.isLoaded || !fileModel) return;
 
     const userAwareness = new UserAwareness(fileModel.awareness);
     setUserAwareness(userAwareness);
 
     return () => {
       setUserAwareness(null);
-      userAwareness.dispose();
+      userAwareness?.dispose();
     };
   }, [file.isLoaded, fileModel]);
 

@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useFile } from "../../../hooks/queries";
+import { state } from "../../../lib/state";
+import { UserContext } from "../../UserContext";
 import { FileModel } from "../contexts/FileModel";
 
 export type FileState = {
@@ -24,8 +26,11 @@ export const defaultFileState = {
   path: "",
 };
 
-export const useFileModel = (id: string): FileHook => {
+export const useFileModel = (id: string, createdAt: number): FileHook => {
+  const { user } = useContext(UserContext);
+
   const modelRef = useRef<FileModel>();
+  const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
@@ -34,6 +39,7 @@ export const useFileModel = (id: string): FileHook => {
 
   useEffect(() => {
     modelRef.current = new FileModel();
+    modelRef.current.bind("error", setError);
     modelRef.current.bind("is_initialized", setIsInitialized);
     modelRef.current.bind("path", setPath);
     return () => modelRef.current.dispose();
@@ -46,6 +52,18 @@ export const useFileModel = (id: string): FileHook => {
     setIsLoaded(true);
     setPath(file.path);
   }, [file]);
+
+  useEffect(() => {
+    if (!error) return;
+
+    state.setToast({ error: true, expiresIn: 3000, message: error });
+  }, [error]);
+
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+
+    modelRef.current.setUserState(user, createdAt);
+  }, [createdAt, isLoaded, user]);
 
   return {
     file: {

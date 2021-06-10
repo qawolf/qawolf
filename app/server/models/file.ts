@@ -39,8 +39,17 @@ export const createFile = async (
   const log = logger.prefix("createFile");
   log.debug("file", id, "url", url);
 
-  const files = await db("files").insert({ id, url }, "*");
-  return files[0];
+  try {
+    const files = await db("files").insert({ id, url }, "*");
+    return files[0];
+  } catch (error) {
+    if (error.message.includes("duplicate")) {
+      const existingFile = await findFile(id, { db, logger });
+      if (existingFile) return existingFile;
+    }
+
+    throw error;
+  }
 };
 
 export const deleteFile = async (
