@@ -56,8 +56,18 @@ export class FileModel extends EventEmitter {
       : this._file?.content || "";
   }
 
+  get error(): string {
+    return this._metadata.get("error") || "";
+  }
+
   delete(index: number, length: number): void {
     this._content.delete(index, length);
+  }
+
+  didCommit(): void {
+    if (!this.is_initialized) return;
+
+    this._metadata.set("committed_at", Date.now());
   }
 
   dispose(): void {
@@ -85,12 +95,6 @@ export class FileModel extends EventEmitter {
 
   set path(value: string) {
     this._metadata.set("path", value);
-  }
-
-  reload(): void {
-    if (!this.is_initialized) return;
-
-    this._metadata.set("reload_at", Date.now());
   }
 
   setFile(file: File): void {
