@@ -26,8 +26,13 @@ export class EditorBinding {
     });
 
     // once the document is initialized bind to it
-    const disposeIsInitializedBinding = this._model.bind("is_initialized", () =>
-      this._bindToDocument()
+    const disposeIsInitializedBinding = this._model.bind<boolean>(
+      "is_initialized",
+      (is_initialized) => {
+        if (!is_initialized) return;
+
+        this._bindToDocument();
+      }
     );
 
     this._unbindFile = () => {
