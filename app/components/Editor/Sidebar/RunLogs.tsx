@@ -1,6 +1,6 @@
 import { Box } from "grommet";
 import throttle from "lodash/throttle";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   AutoSizer,
   CellMeasurer,
@@ -51,6 +51,7 @@ const rowRenderer: ListRowRenderer = function ({
 };
 
 export default function RunLogs({ isVisible }: Props): JSX.Element {
+  const didUserScrollRef = useRef(false);
   const { apiKey, wsUrl } = useContext(RunnerContext);
   const { run } = useContext(EditorContext);
   const { logs } = useLogs({ apiKey, run, wsUrl });
@@ -62,9 +63,14 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
     setList(value);
   }, []);
 
-  useEffect(() => {
-    if (!list) return;
+  // do not listen to scroll events since those
+  // are fired when we call scrollToBottom
+  const onWheel = () => {
+    didUserScrollRef.current = true;
+  };
 
+  useEffect(() => {
+    if (didUserScrollRef.current || !list) return;
     scrollToBottom(list, logs.length);
   }, [list, logs.length]);
 
@@ -73,10 +79,15 @@ export default function RunLogs({ isVisible }: Props): JSX.Element {
     clearCache();
   }, [size]);
 
+  useEffect(() => {
+    // reset auto scroll when tabbing out
+    if (!isVisible) didUserScrollRef.current = false;
+  }, [isVisible]);
+
   if (!isVisible) return null;
 
   return (
-    <Box fill>
+    <Box fill onWheel={onWheel}>
       <AutoSizer>
         {({ height, width }) => {
           setSize(height + width);

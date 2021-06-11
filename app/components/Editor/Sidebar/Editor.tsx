@@ -65,11 +65,15 @@ export default function Editor({
     function createEditor() {
       const monaco = monacoRef.current;
 
+      monaco.editor.defineTheme("qawolf-read", themeReadOnly);
+      monaco.editor.defineTheme("qawolf-read-write", themeReadWrite);
+
       const editor = monaco.editor.create(containerRef.current, {
         ...baseOptions,
         automaticLayout: true,
         language,
         readOnly: true,
+        theme: "qawolf-read-write",
       });
       editorRef.current = editor;
 
@@ -97,14 +101,7 @@ export default function Editor({
 
     const monaco = monacoRef.current;
 
-    const themeName = isReadOnly ? "qawolf-read" : "qawolf-read-write";
-
-    monaco.editor.defineTheme(
-      themeName,
-      isReadOnly ? themeReadOnly : themeReadWrite
-    );
-
-    monaco.editor.setTheme(themeName);
+    monaco.editor.setTheme(isReadOnly ? "qawolf-read" : "qawolf-read-write");
   }, [isEditorReady, isReadOnly]);
 
   // set read only
@@ -121,7 +118,7 @@ export default function Editor({
   };
 
   return (
-    <Box aria-label={a11yTitle} background={background} fill style={style}>
+    <Box a11yTitle={a11yTitle} background={background} fill style={style}>
       <AutoSizer>
         {({ height, width }) => (
           <div ref={containerRef} style={{ height, width }} />

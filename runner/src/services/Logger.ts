@@ -35,11 +35,14 @@ export class Logger extends EventEmitter {
       if (pwIndex > -1) {
         // ignore some verbose logs
         if (
-          message.indexOf("browserContext.exposeBinding") > -1 ||
-          message.indexOf("cdpSession.send") > -1 ||
-          message.indexOf("chromiumBrowserContext.newCDPSession") > -1 ||
-          message.indexOf("route.abort") > -1 ||
-          message.indexOf("route.continue") > -1
+          [
+            "browserContext.exposeBinding",
+            "cdpSession.send",
+            "chromiumBrowserContext.newCDPSession",
+            "page.$eval",
+            "route.abort",
+            "route.continue",
+          ].find((ignore) => message.includes(ignore))
         )
           return;
 

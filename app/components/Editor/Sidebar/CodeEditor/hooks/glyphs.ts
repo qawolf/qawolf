@@ -2,7 +2,6 @@ import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect, useRef, useState } from "react";
 
 import { RunProgress, RunStatus } from "../../../../../lib/types";
-import { FileModel } from "../../../contexts/FileModel";
 import styles from "../CodeEditor.module.css";
 
 type GetGlyphs = {
@@ -15,8 +14,6 @@ type GetGlyphs = {
 type Glyph = monacoEditor.editor.IModelDeltaDecoration;
 
 const COLUMN = 1;
-
-const INTERVAL_MS = 100;
 
 const getGlyphClass = (status: RunStatus, readOnly: boolean): string => {
   if (status === "created") return styles.glyphInProgress;
@@ -81,43 +78,40 @@ const getGlyphs = ({
 type UseGlyphs = {
   editor: monacoEditor.editor.IStandaloneCodeEditor | null;
   progress: RunProgress;
-  testModel: FileModel;
 };
 
-export const useGlyphs = ({ editor, progress, testModel }: UseGlyphs): void => {
+export const useGlyphs = ({ editor, progress }: UseGlyphs): void => {
+  const [contentUpdatedAt, setContentUpdatedAt] = useState(0);
   const [testContent, setTestContent] = useState("");
-  const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const glyphsRef = useRef<string[]>([]);
 
-  useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
-
-  // wait until content set because editor mounts
-  // before glyphs can be rendered
-  // https://github.com/react-monaco-editor/react-monaco-editor/issues/150
+  // bind to the editor changes instead of the content directly
+  // since calling setValue will clear decorations
+  // so we want those to trigger re-renders
   useEffect(() => {
-    if (!editor) {
-      setIsEditorLoaded(false);
-      return;
-    }
+    if (!editor) return;
 
-    const checkLoadedInterval = setInterval(() => {
-      if (!editor.getValue().length) return;
+    setTestContent(editor.getModel().getValue());
 
-      setIsEditorLoaded(true);
-      clearInterval(checkLoadedInterval);
-    }, INTERVAL_MS);
+    const handle = editor.onDidChangeModelContent(() => {
+      setTestContent(editor.getModel().getValue());
+      // force a re-render of the glyphs
+      setContentUpdatedAt(Date.now());
+    });
 
-    return () => clearInterval(checkLoadedInterval);
+    return () => handle.dispose();
   }, [editor]);
 
   useEffect(() => {
-    if (!isEditorLoaded) return;
+    // wait until content set because editor mounts
+    // before glyphs can be rendered
+    // https://github.com/react-monaco-editor/react-monaco-editor/issues/150
+    if (!testContent.length) return;
 
     const updateGlyphs = (glyphs: Glyph[]) => {
       if (!editor) return;
 
       const previousGlyphs = editor.deltaDecorations(glyphsRef.current, glyphs);
-
       glyphsRef.current = previousGlyphs;
     };
 
@@ -135,5 +129,5 @@ export const useGlyphs = ({ editor, progress, testModel }: UseGlyphs): void => {
     });
 
     updateGlyphs(glyphs);
-  }, [editor, isEditorLoaded, progress, testContent]);
+  }, [contentUpdatedAt, editor, progress, testContent]);
 };

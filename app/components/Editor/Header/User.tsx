@@ -8,6 +8,7 @@ import Tooltip from "../../shared/Tooltip/Tooltip";
 type Props = {
   avatar_url?: string | null;
   color: string;
+  index: number;
   email: string;
   wolf_variant: string;
 };
@@ -35,11 +36,18 @@ const StyledBox = styled(Box)`
 export default function User({
   avatar_url,
   color,
+  index,
   email,
   wolf_variant,
 }: Props): JSX.Element {
   return (
-    <StyledBox background={color} key={email} pad={borderSize} round="full">
+    <StyledBox
+      a11yTitle={`avatar ${index + 1} ${email}`}
+      background={color}
+      key={email}
+      pad={borderSize}
+      round="full"
+    >
       <Avatar
         avatarUrl={avatar_url}
         size={avatarSize}

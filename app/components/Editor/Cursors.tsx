@@ -3,7 +3,6 @@ import { useCallback, useContext, useEffect } from "react";
 
 import { Rect, Size } from "../../lib/types";
 import Cursor from "../shared/icons/Cursor";
-import { UserContext } from "../UserContext";
 import { EditorContext } from "./contexts/EditorContext";
 import { UserState, useUserStates } from "./hooks/useUserAwareness";
 
@@ -17,7 +16,6 @@ export default function Cursors({
   windowSize,
 }: Props): JSX.Element {
   const { userAwareness } = useContext(EditorContext);
-  const { user } = useContext(UserContext);
   const { userStates } = useUserStates(userAwareness);
 
   const getCursorPosition = useCallback(
@@ -38,20 +36,15 @@ export default function Cursors({
   );
 
   useEffect(() => {
-    if (!canvasRect || !user || !userAwareness || !windowSize) return;
-
-    const userPosition = {
-      avatar_url: user.avatar_url,
-      canvas_x: -1,
-      canvas_y: -1,
-      email: user.email,
-      window_x: -1,
-      window_y: -1,
-      wolf_variant: user.wolf_variant,
-    };
+    if (!userAwareness || !windowSize) return;
 
     // set the initial state before the mouse moves
-    userAwareness.setUserPosition(userPosition);
+    userAwareness.setCursorPosition({
+      canvas_x: -1,
+      canvas_y: -1,
+      window_x: -1,
+      window_y: -1,
+    });
 
     function getStatePosition(x: number, y: number) {
       const coordinates = {
@@ -61,8 +54,8 @@ export default function Cursors({
         window_y: y / windowSize.height,
       };
 
-      const canvasX = x - canvasRect.x;
-      const canvasY = y - canvasRect.y;
+      const canvasX = canvasRect ? x - canvasRect.x : -1;
+      const canvasY = canvasRect ? y - canvasRect.y : -1;
 
       // when inside the canvas send it's relative coordinates
       if (
@@ -79,23 +72,22 @@ export default function Cursors({
     }
 
     const updateMousePosition = (event: MouseEvent) => {
-      userAwareness.setUserPosition({
-        ...userPosition,
-        ...getStatePosition(event.clientX, event.clientY),
-      });
+      userAwareness.setCursorPosition(
+        getStatePosition(event.clientX, event.clientY)
+      );
     };
 
     document.addEventListener("mousemove", updateMousePosition, true);
 
     return () =>
       document.removeEventListener("mousemove", updateMousePosition, true);
-  }, [canvasRect, user, userAwareness, windowSize]);
+  }, [canvasRect, userAwareness, windowSize]);
 
   if (!userStates.length) return null;
 
   const cursorsHtml = userStates
     .filter((user) => !user.is_current_client && user.window_x > -1)
-    .map((user) => {
+    .map((user, index) => {
       return (
         <Box
           key={user.client_id}
@@ -105,7 +97,7 @@ export default function Cursors({
             zIndex: 2,
           }}
         >
-          <Cursor color={user.color} size="16" />
+          <Cursor index={index} color={user.color} size="16" />
         </Box>
       );
     });

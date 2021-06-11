@@ -10,13 +10,13 @@ export const insertSnippet = (file: FileModel, snippet: string): Selection => {
   if (patchLine < 0) patchLine = lines.length;
 
   // insert the snippet
-  const index = lines.splice(0, patchLine).join("").length;
-  file.insert(index, snippet);
+  const index = lines.slice(0, patchLine).join("\n").length;
+  file.insert(index, `\n${snippet}`);
 
   const snippetLines = snippet.split("\n");
   const selection = {
     startLine: patchLine + 1,
-    endLine: patchLine + 1 + snippetLines.length,
+    endLine: patchLine + snippetLines.length,
   };
 
   return selection;
