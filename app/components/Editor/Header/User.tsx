@@ -1,10 +1,14 @@
 import { Box } from "grommet";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 
-import { borderSize, edgeSize, transitionDuration } from "../../../theme/theme";
+import {
+  borderSize as border,
+  edgeSize,
+  transitionDuration,
+} from "../../../theme/theme";
 import Avatar from "../../shared/Avatar";
-import Tooltip from "../../shared/Tooltip";
+import Tooltip from "../../shared/Tooltip/Tooltip";
 
 type Props = {
   avatar_url?: string | null;
@@ -13,17 +17,23 @@ type Props = {
   wolf_variant: string;
 };
 
+const avatarSize = "28px";
+const borderSize = border.small;
+const tooltipClass = "user-tooltip";
+
 const StyledBox = styled(Box)`
   position: relative;
 
-  .user-tooltip {
-    opacity: 0;
+  .${tooltipClass} {
+    display: none;
+    transform: translate(calc(-50% + ${avatarSize} / 2), 0);
     transition: opacity ${transitionDuration};
+    z-index: 1;
   }
 
   &:hover {
-    .user-tooltip {
-      opacity: 1;
+    .${tooltipClass} {
+      display: block;
     }
   }
 `;
@@ -40,28 +50,25 @@ export default function User({
     <StyledBox
       background={color}
       key={email}
-      pad={borderSize.small}
+      pad={borderSize}
       ref={ref}
       round="full"
     >
-      <Avatar avatarUrl={avatar_url} size="28px" wolfColor={wolf_variant} />
+      <Avatar
+        avatarUrl={avatar_url}
+        size={avatarSize}
+        wolfColor={wolf_variant}
+      />
       <Box
-        background="gray9"
-        className="user-tooltip"
-        style={{ position: "absolute" }}
-        pad={{ horizontal: "xxsmall", vertical: "xxxsmall" }}
-        round={borderSize.small}
-      ></Box>
-      {/* {!!ref.current && (
-        <Tooltip
-          align={{ top: "bottom" }}
-          className="user-tooltip"
-          isVisible
-          label={email}
-          style={{ marginTop: edgeSize.xxxsmall }}
-          target={ref.current}
-        />
-      )} */}
+        className={tooltipClass}
+        style={{
+          position: "fixed",
+          // relative to top of page so need to account for top padding
+          top: `calc(${edgeSize.small} + ${avatarSize} + 2 * ${borderSize} + ${edgeSize.xxxsmall})`,
+        }}
+      >
+        <Tooltip label={email} />
+      </Box>
     </StyledBox>
   );
 }
