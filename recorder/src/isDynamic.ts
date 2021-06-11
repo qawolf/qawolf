@@ -80,7 +80,9 @@ export const isDynamic = (value: string): boolean => {
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
-    if (allWords.has(token)) {
+    // This double word check is to prevent the "mark letter and number combinations as dynamic"
+    // check from catching a valid word followed by a single number, such as `address1` or `phone1`
+    if (allWords.has(token) || allWords.has(token.substr(0, token.length - 1))) {
       words += 1;
     } else if (!isNaN(Number(token))) {
       numbers += 1;
