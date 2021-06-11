@@ -35,7 +35,7 @@ export default function CodeEditor({
 
   useEnvTypes({ env, monaco });
   useHelpersTypes({ helpersModel, monaco });
-  useGlyphs({ editor, progress, testModel });
+  useGlyphs({ editor, progress });
 
   const editorDidMount = ({ editor, monaco }) => {
     const binding = new EditorBinding({ editor, model: testModel, monaco });

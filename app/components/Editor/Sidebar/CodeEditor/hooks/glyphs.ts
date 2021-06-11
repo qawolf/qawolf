@@ -2,7 +2,6 @@ import type * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect, useRef, useState } from "react";
 
 import { RunProgress, RunStatus } from "../../../../../lib/types";
-import { FileModel } from "../../../contexts/FileModel";
 import styles from "../CodeEditor.module.css";
 
 type GetGlyphs = {
@@ -81,15 +80,27 @@ const getGlyphs = ({
 type UseGlyphs = {
   editor: monacoEditor.editor.IStandaloneCodeEditor | null;
   progress: RunProgress;
-  testModel: FileModel;
 };
 
-export const useGlyphs = ({ editor, progress, testModel }: UseGlyphs): void => {
+export const useGlyphs = ({ editor, progress }: UseGlyphs): void => {
   const [testContent, setTestContent] = useState("");
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const glyphsRef = useRef<string[]>([]);
 
-  useEffect(() => testModel?.bind("content", setTestContent), [testModel]);
+  // bind to the editor changes instead of the content directly
+  // since calling setValue will clear decorations
+  // so we want those to trigger re-renders
+  useEffect(() => {
+    if (!editor) return;
+
+    setTestContent(editor.getModel().getValue());
+
+    const handle = editor.onDidChangeModelContent(() => {
+      setTestContent(editor.getModel().getValue());
+    });
+
+    return () => handle.dispose();
+  }, [editor]);
 
   // wait until content set because editor mounts
   // before glyphs can be rendered
@@ -117,7 +128,6 @@ export const useGlyphs = ({ editor, progress, testModel }: UseGlyphs): void => {
       if (!editor) return;
 
       const previousGlyphs = editor.deltaDecorations(glyphsRef.current, glyphs);
-
       glyphsRef.current = previousGlyphs;
     };
 
