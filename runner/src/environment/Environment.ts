@@ -23,7 +23,7 @@ export class Environment extends EventEmitter {
   readonly _vm: VM;
 
   _browser?: Browser;
-  _elementChooser = new ElementChooser();
+  _elementChooser: ElementChooser;
   _inProgress: Run[] = [];
   _variables: Variables = {};
   _updater: CodeUpdater;
@@ -35,6 +35,7 @@ export class Environment extends EventEmitter {
 
     this._updater = new CodeUpdater({ codeModel, variables: this._variables });
 
+    this._elementChooser = new ElementChooser({ variables: this._variables });
     this._elementChooser.on("elementchooser", (event) =>
       this.emit("elementchooser", event)
     );

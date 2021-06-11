@@ -43,42 +43,43 @@ export const buildActionOptions = (
 export const buildCode = (
   action: ActionType,
   selector: string,
-  text: string
+  text: string,
+  variable = "page"
 ): string => {
   if (action === "Assert element") {
-    return `await assertElement(page, ${formatArgument(selector)});`;
+    return `await assertElement(${variable}, ${formatArgument(selector)});`;
   }
 
   if (action === "Assert element text") {
-    return `await assertText(page, ${formatArgument(
+    return `await assertText(${variable}, ${formatArgument(
       text
     )}, { selector: ${formatArgument(selector)} });`;
   }
 
   if (action === "Assert page text") {
-    return `await assertText(page, ${formatArgument(text)});`;
+    return `await assertText(${variable}, ${formatArgument(text)});`;
   }
 
   const selectorArgument = formatArgument(selector);
 
-  if (action === "Click") return `await page.click(${selectorArgument});`;
+  if (action === "Click") return `await ${variable}.click(${selectorArgument});`;
 
   if (action === "Fill") {
-    return `await page.fill(${selectorArgument}, ${formatArgument(text)});`;
+    return `await ${variable}.fill(${selectorArgument}, ${formatArgument(text)});`;
   }
 
   if (action === "Fill test email") {
-    return `const { email, waitForMessage } = getInbox();\nawait page.fill(${selectorArgument}, email);\n// send the email then wait for the message\n// const message = await waitForMessage();`;
+    return `const { email, waitForMessage } = getInbox();\nawait ${variable}.fill(${selectorArgument}, email);\n// send the email then wait for the message\n// const message = await waitForMessage();`;
   }
 
   if (action === "Get element value") {
-    return `var value = await getValue(page, ${formatArgument(selector)});`;
+    return `var value = await getValue(${variable}, ${formatArgument(selector)});`;
   }
 
-  if (action === "Hover") return `await page.hover(${selectorArgument});`;
+  if (action === "Hover") return `await ${variable}.hover(${selectorArgument});`;
 
   if (action === "Upload image") {
-    return `page.once('filechooser', (chooser) => chooser.setFiles('/root/files/avatar.png'));\nawait page.click(${selectorArgument});`;
+    return `${variable}.once('filechooser', (chooser) => chooser.setFiles('/root/files/avatar.png'));\nawait ${variable}.click(${selectorArgument});`;
   }
 
   return "";

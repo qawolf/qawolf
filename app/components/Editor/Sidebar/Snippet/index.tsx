@@ -29,7 +29,8 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   const snippetCode = buildCode(
     action,
     selector,
-    elementChooserValue?.text || ""
+    elementChooserValue?.text || "",
+    elementChooserValue?.variable
   );
 
   const addRunSnippet = () => {

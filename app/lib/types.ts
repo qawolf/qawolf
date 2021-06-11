@@ -298,6 +298,7 @@ export interface ElementChooserValue {
   isFillable?: boolean;
   selectors?: string[];
   text?: string;
+  variable?: string;
 }
 
 export type Log = {

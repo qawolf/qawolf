@@ -36,13 +36,17 @@ export type ElementAction =
   | "uncheck";
 
 export interface ElementChosen {
+  frame?: Frame;
+  frameSelector?: string;
   isFillable: boolean;
+  page: Page;
   selectors: string[];
   text: string;
 }
 
 export type ElementChooserValue = Partial<ElementChosen> & {
   isActive: boolean;
+  variable?: string;
 };
 
 export interface ElementEvent {
