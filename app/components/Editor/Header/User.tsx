@@ -1,12 +1,7 @@
 import { Box } from "grommet";
-import { useRef } from "react";
 import styled from "styled-components";
 
-import {
-  borderSize as border,
-  edgeSize,
-  transitionDuration,
-} from "../../../theme/theme";
+import { borderSize as border, edgeSize } from "../../../theme/theme";
 import Avatar from "../../shared/Avatar";
 import Tooltip from "../../shared/Tooltip/Tooltip";
 
@@ -27,7 +22,6 @@ const StyledBox = styled(Box)`
   .${tooltipClass} {
     display: none;
     transform: translate(calc(-50% + ${avatarSize} / 2), 0);
-    transition: opacity ${transitionDuration};
     z-index: 1;
   }
 
@@ -44,16 +38,8 @@ export default function User({
   email,
   wolf_variant,
 }: Props): JSX.Element {
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
-    <StyledBox
-      background={color}
-      key={email}
-      pad={borderSize}
-      ref={ref}
-      round="full"
-    >
+    <StyledBox background={color} key={email} pad={borderSize} round="full">
       <Avatar
         avatarUrl={avatar_url}
         size={avatarSize}
