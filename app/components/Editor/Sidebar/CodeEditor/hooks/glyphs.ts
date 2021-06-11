@@ -15,8 +15,6 @@ type Glyph = monacoEditor.editor.IModelDeltaDecoration;
 
 const COLUMN = 1;
 
-const INTERVAL_MS = 100;
-
 const getGlyphClass = (status: RunStatus, readOnly: boolean): string => {
   if (status === "created") return styles.glyphInProgress;
   if (readOnly && status === "fail") return styles.glyphFailReadOnly;
@@ -83,8 +81,8 @@ type UseGlyphs = {
 };
 
 export const useGlyphs = ({ editor, progress }: UseGlyphs): void => {
+  const [contentUpdatedAt, setContentUpdatedAt] = useState(0);
   const [testContent, setTestContent] = useState("");
-  const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const glyphsRef = useRef<string[]>([]);
 
   // bind to the editor changes instead of the content directly
@@ -97,32 +95,18 @@ export const useGlyphs = ({ editor, progress }: UseGlyphs): void => {
 
     const handle = editor.onDidChangeModelContent(() => {
       setTestContent(editor.getModel().getValue());
+      // force a re-render of the glyphs
+      setContentUpdatedAt(Date.now());
     });
 
     return () => handle.dispose();
   }, [editor]);
 
-  // wait until content set because editor mounts
-  // before glyphs can be rendered
-  // https://github.com/react-monaco-editor/react-monaco-editor/issues/150
   useEffect(() => {
-    if (!editor) {
-      setIsEditorLoaded(false);
-      return;
-    }
-
-    const checkLoadedInterval = setInterval(() => {
-      if (!editor.getValue().length) return;
-
-      setIsEditorLoaded(true);
-      clearInterval(checkLoadedInterval);
-    }, INTERVAL_MS);
-
-    return () => clearInterval(checkLoadedInterval);
-  }, [editor]);
-
-  useEffect(() => {
-    if (!isEditorLoaded) return;
+    // wait until content set because editor mounts
+    // before glyphs can be rendered
+    // https://github.com/react-monaco-editor/react-monaco-editor/issues/150
+    if (!testContent.length) return;
 
     const updateGlyphs = (glyphs: Glyph[]) => {
       if (!editor) return;
@@ -145,5 +129,5 @@ export const useGlyphs = ({ editor, progress }: UseGlyphs): void => {
     });
 
     updateGlyphs(glyphs);
-  }, [editor, isEditorLoaded, progress, testContent]);
+  }, [contentUpdatedAt, editor, progress, testContent]);
 };
