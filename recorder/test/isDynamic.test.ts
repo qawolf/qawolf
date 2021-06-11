@@ -88,6 +88,7 @@ describe("isDynamic", () => {
     "svg",
     "toggle",
     "tnt__zipInput",
+    "address1"
   ])("is not dynamic: %s", (example) => {
     expect(isDynamic(example)).toBe(false);
   });

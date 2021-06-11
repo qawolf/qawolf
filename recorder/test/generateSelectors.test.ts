@@ -29,7 +29,7 @@ describe("generateSelectors", () => {
         const qawolf: QAWolfWeb = (window as any).qawolf;
 
         const generator = qawolf.generateSelectors(element as HTMLElement, 0);
-        for (let value of generator) {
+        for (const value of generator) {
           result.push(value);
           if (result.length >= limit) break;
         }
@@ -97,16 +97,19 @@ describe("getSelector", () => {
       await expectSelector("x-child-element", expected);
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("targets the better selector on the descendant despite having likely ancestor", async () => {
       await setBody(page, '<a><div><img id="child"></div></a>');
       await expectSelector("img", "#child");
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("targets the iframe always despite having likely ancestor", async () => {
       await setBody(page, "<a><iframe></iframe><a>");
       await expectSelector("iframe", "iframe");
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("targets a contenteditable/input/textarea despite having a likely ancestor", async () => {
       await setBody(page, '<a><div contenteditable="true"></div></a>');
       await expectSelector(
@@ -121,6 +124,7 @@ describe("getSelector", () => {
       await expectSelector("textarea", "textarea");
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("uses ancestor cues when required", async () => {
       await setBody(page, `<li><input></li><li><input></li>`);
       await expectSelector("li:nth-of-type(2) input");
@@ -128,11 +132,13 @@ describe("getSelector", () => {
   });
 
   describe("descendant cues", () => {
+    // eslint-disable-next-line jest/expect-expect
     it("does not pick a descendant across a click boundary", async () => {
       await setBody(page, `<div><button data-qa="hello">hello</button></div>`);
       await expectSelector("div");
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("picks a descendant with a better selector", async () => {
       await setBody(
         page,
@@ -142,11 +148,13 @@ describe("getSelector", () => {
     });
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it("escapes special characters", async () => {
     await setBody(page, `<div id="special:id"></div>`);
     await expectSelector("#special\\:id");
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it("includes :visible modifier when needed", async () => {
     // make the visible element untargetable by nth-of-type
     await setBody(
@@ -189,6 +197,7 @@ describe("getSelector", () => {
     expect(result2).toEqual("input");
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it("short circuits to html and body", async () => {
     await page.evaluate(() => {
       document.querySelector("html").setAttribute("data-qa", "main");
@@ -199,6 +208,7 @@ describe("getSelector", () => {
     await expectSelector("body");
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it("targets label and checkbox input", async () => {
     await setBody(
       page,
@@ -208,7 +218,27 @@ describe("getSelector", () => {
     await expectSelector('[value="dog"]', "#dog");
   });
 
+  // eslint-disable-next-line jest/expect-expect
+  it("always prefers input name over type attribute", async () => {
+    await setBody(
+      page,
+      `<input type="text" class="form-control" name="first_name" value="">
+       <input type="text" class="form-control" name="last_name" value="">
+       <input type="tel" class="form-control" name="phone1" value="">
+       <input type="tel" class="form-control" name="phone2" value="">
+       <input type="email" class="form-control" name="email1" value="">
+       <input type="email" class="form-control" name="email2" value="">`
+    );
+    await expectSelector('[name="first_name"]');
+    await expectSelector('[name="last_name"]');
+    await expectSelector('[name="phone1"]');
+    await expectSelector('[name="phone2"]');
+    await expectSelector('[name="email1"]');
+    await expectSelector('[name="email2"]');
+  });
+
   describe("test attributes", () => {
+    // eslint-disable-next-line jest/expect-expect
     it("includes ancestor test attributes", async () => {
       await setBody(
         page,
@@ -218,6 +248,7 @@ describe("getSelector", () => {
       await expectSelector('[data-qa="my-radio-group"] [value="cat"]');
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it("prefers test attributes", async () => {
       await setBody(page, `<button data-qa="html-button">Submit</button>`);
       await expectSelector('[data-qa="html-button"]');

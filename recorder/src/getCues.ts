@@ -37,7 +37,8 @@ const PENALTY_MAP = {
   tagnth: 31,
   text: 10,
   title: 10,
-  type: 10,
+  // `name` should be preferred over `type` for inputs, but `type` is better than `tag`
+  type: 14,
   value: 10,
   // prefer not to use it but sometimes we need to
   visible: 100,
