@@ -118,7 +118,7 @@ export default function Editor({
   };
 
   return (
-    <Box aria-label={a11yTitle} background={background} fill style={style}>
+    <Box a11yTitle={a11yTitle} background={background} fill style={style}>
       <AutoSizer>
         {({ height, width }) => (
           <div ref={containerRef} style={{ height, width }} />

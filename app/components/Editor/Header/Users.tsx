@@ -13,8 +13,8 @@ export default function Users(): JSX.Element {
   const usersHtml = userStates
     // show the current user first
     .sort((a, b) => Number(b.is_current_client) - Number(a.is_current_client))
-    .map((user) => {
-      return <User key={user.client_id} {...user} />;
+    .map((user, index) => {
+      return <User key={user.client_id} index={index} {...user} />;
     });
 
   return (

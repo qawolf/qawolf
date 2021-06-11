@@ -87,7 +87,7 @@ export default function Cursors({
 
   const cursorsHtml = userStates
     .filter((user) => !user.is_current_client && user.window_x > -1)
-    .map((user) => {
+    .map((user, index) => {
       return (
         <Box
           key={user.client_id}
@@ -97,7 +97,7 @@ export default function Cursors({
             zIndex: 2,
           }}
         >
-          <Cursor color={user.color} size="16" />
+          <Cursor index={index} color={user.color} size="16" />
         </Box>
       );
     });

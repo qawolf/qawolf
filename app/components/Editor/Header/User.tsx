@@ -8,6 +8,7 @@ import Tooltip from "../../shared/Tooltip";
 type Props = {
   avatar_url?: string | null;
   color: string;
+  index: number;
   email: string;
   wolf_variant: string;
 };
@@ -15,6 +16,7 @@ type Props = {
 export default function User({
   avatar_url,
   color,
+  index,
   email,
   wolf_variant,
 }: Props): JSX.Element {
@@ -23,6 +25,7 @@ export default function User({
 
   return (
     <Box
+      a11yTitle={`avatar ${index + 1} ${email}`}
       background={color}
       key={email}
       onMouseEnter={() => setIsHover(true)}
