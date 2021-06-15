@@ -6,10 +6,11 @@ type Props = { service: "netlify" | "render" | "vercel" };
 
 export default function InstallGitHubApp({ service }: Props): JSX.Element {
   const capitalizedService = capitalize(service);
+  const isGitHubRequired = ["heroku", "render", "vercel"].includes(service);
 
   return (
     <>
-      {["render", "vercel"].includes(service) && (
+      {isGitHubRequired && (
         <>
           <p>
             {`Select the "Deployment" tab on the right, and choose ${capitalizedService} as your
@@ -23,7 +24,7 @@ export default function InstallGitHubApp({ service }: Props): JSX.Element {
           />
         </>
       )}
-      {["render", "vercel"].includes(service) ? (
+      {isGitHubRequired ? (
         <p>
           Now we'll connect our GitHub repository (repo) to QA Wolf. Click the
           "Connect GitHub repository" button to get started.
