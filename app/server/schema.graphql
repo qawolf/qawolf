@@ -33,6 +33,9 @@ type CommitEditor {
 
 "Provider for a deployment"
 enum DeploymentProvider {
+  "Heroku"
+  heroku
+
   "Netlify"
   netlify
 

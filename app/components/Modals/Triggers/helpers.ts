@@ -67,7 +67,9 @@ export const buildTriggerFields = ({
   return {
     ...constantFields,
     deployment_branches:
-      deployBranches && deployProvider === "vercel" ? deployBranches : null,
+      deployBranches && ["heroku", "vercel"].includes(deployProvider)
+        ? deployBranches
+        : null,
     deployment_environment,
     deployment_integration_id: deployIntegrationId || null,
     deployment_preview_url:

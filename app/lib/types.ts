@@ -4,7 +4,7 @@ export type AuthenticatedUser = {
   user: User;
 };
 
-export type DeploymentProvider = "netlify" | "render" | "vercel";
+export type DeploymentProvider = "heroku" | "netlify" | "render" | "vercel";
 
 export type Env = { [name: string]: string };
 

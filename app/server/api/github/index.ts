@@ -45,6 +45,7 @@ export const handleGitHubRequest = async (
 
     switch (event) {
       case "deployment_status":
+        console.log("BODY", req.body);
         await handleDeploymentStatusEvent(req.body, options);
         break;
       default:

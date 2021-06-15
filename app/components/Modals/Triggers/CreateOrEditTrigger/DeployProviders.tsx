@@ -1,5 +1,5 @@
 import { Box } from "grommet";
-import { SiNetlify, SiZeit } from "react-icons/si";
+import { SiHeroku, SiNetlify, SiZeit } from "react-icons/si";
 
 import { DeploymentProvider } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
@@ -17,7 +17,7 @@ type Props = {
 const buttonProps = {
   justify: "center" as const,
   type: "secondary" as const,
-  width: `calc(33.33% - 2 / 3 * ${edgeSize.xxsmall})`,
+  width: `calc(25% - 3 / 4 * ${edgeSize.xxsmall})`,
 };
 
 export default function DeployProvider({
@@ -41,6 +41,13 @@ export default function DeployProvider({
           isSelected={provider === "netlify"}
           label={copy.netlify}
           onClick={() => setProvider("netlify")}
+        />
+        <Button
+          {...buttonProps}
+          IconComponent={SiHeroku}
+          isSelected={provider === "heroku"}
+          label={copy.heroku}
+          onClick={() => setProvider("heroku")}
         />
         <Button
           {...buttonProps}
