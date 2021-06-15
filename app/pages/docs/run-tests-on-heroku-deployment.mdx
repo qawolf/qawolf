@@ -13,28 +13,15 @@ import ViewRunHistory from "../../components/Docs/ViewRunHistory";
 
 <Layout>
 
-<Header>Run Tests on Vercel Deployment</Header>
+<Header>Run Tests on Heroku Deployment</Header>
 
-In this tutorial, we'll set up our tests to run when <a href="https://vercel.com/" target="_blank">Vercel</a> <a href="https://vercel.com/docs/platform/deployments" target="_blank">deploys</a> our site. This helps ensure our critical workflows don't break when we make changes.
+In this tutorial, we'll set up our tests to run when <a href="https://www.heroku.com/" target="_blank">Heroku</a> deploys our site. This helps ensure our critical workflows don't break when we make changes.
 
 <SubHeader>Create Deployment Trigger</SubHeader>
 
-<CreateTrigger description="on Vercel deployments" />
+<CreateTrigger description="on Heroku deployments" />
 
-<InstallGitHubApp service="vercel" />
-
-<SubHeader>Choose Deployment Type</SubHeader>
-
-Vercel has <a href="https://vercel.com/docs/platform/deployments#deployment-types" target="\_blank">two types of deployments</a>: **production** and **preview**. Production deployments happen when you merge to your production branch or run the `vercel --prod` command. Preview deployments are all other deployments, like deployments of commits in a GitHub pull request.
-
-QA Wolf allows you to run your tests on all deployments (preview and production), just preview deployments, or just production deployments. Choose which deployments you want to test in the popup. In our example, we choose to only test preview deployments.
-
-<Image
-  alt="Choose deployment"
-  height={74}
-  src="/docs/run-tests-on-vercel-deployment/choose-deployment.png"
-  width={488}
-/>
+<InstallGitHubApp service="heroku" />
 
 <SubHeader>Choose Branches (Optional)</SubHeader>
 
@@ -59,7 +46,7 @@ If you only want your tests to run on specific GitHub branches, choose "Select" 
 
 <SubHeader>Update Tests to Use Deployment URL</SubHeader>
 
-Because our Vercel deployment URL isn't known in advance, QA Wolf passes it as an <Link href="use-environment-variables">environment variable</Link> (`process.env.URL`) when a deployment succeeds.
+Because our Heroku deployment URL isn't known in advance, QA Wolf passes it as an <Link href="use-environment-variables">environment variable</Link> (`process.env.URL`) when a deployment succeeds.
 
 We need to update our tests to use this environment variable when specified.
 
@@ -68,7 +55,7 @@ Replace the URL in your tests with `process.env.URL`. For example, let's say our
 ```js
 const { context } = await launch();
 const page = await context.newPage();
-await page.goto("https://default.vercel.app/");
+await page.goto("https://example.herokuapp.com/");
 ```
 
 Let's update the `page.goto` call to go to `process.env.URL` if it exists, and our default URL otherwise:
@@ -77,22 +64,22 @@ Let's update the `page.goto` call to go to `process.env.URL` if it exists, and o
 const { context } = await launch();
 const page = await context.newPage();
 // go to process.env.URL if specified, and the default URL otherwise
-await page.goto(process.env.URL || "https://default.vercel.app/");
+await page.goto(process.env.URL || "https://example.herokuapp.com/");
 ```
 
 <SubHeader>See QA Wolf Results in GitHub</SubHeader>
 
-Now when you push a commit to GitHub, your tests will run after your Vercel deployment succeeds.
+Now when you push a commit to GitHub, your tests will run after your Heroku deployment succeeds.
 
 <Image
   alt="See QA Wolf results in GitHub"
-  height={202}
-  src="/docs/run-tests-on-vercel-deployment/github-checks.png"
-  width={600}
+  height={124}
+  src="/docs/run-tests-on-render-deployment/github-checks.png"
+  width={576}
 />
 
 <GitHubComment />
 
-<ViewRunHistory description="on Vercel deployments" />
+<ViewRunHistory description="on Heroku deployments" />
 
 </Layout>

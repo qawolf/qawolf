@@ -84,7 +84,7 @@ export type CreatedSuite = {
   suite: Suite;
 };
 
-export type DeploymentProvider = "netlify" | "render" | "vercel";
+export type DeploymentProvider = "heroku" | "netlify" | "render" | "vercel";
 
 export type Email = {
   created_at?: string;

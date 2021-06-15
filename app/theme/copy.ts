@@ -185,6 +185,7 @@ export const copy = {
   hasAny: "Has any",
   headline: "Ship confidently",
   helpers: "Helpers",
+  heroku: "Heroku",
   history: "History",
   hourly: "Hourly",
   iUnderstand: "I understand",

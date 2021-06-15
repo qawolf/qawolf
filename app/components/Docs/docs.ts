@@ -50,6 +50,10 @@ export const docs: Section[] = [
         name: "Run Tests on Netlify Deployment",
       },
       {
+        href: `${routes.docs}/run-tests-on-heroku-deployment`,
+        name: "Run Tests on Heroku Deployment",
+      },
+      {
         href: `${routes.docs}/run-tests-on-render-deployment`,
         name: "Run Tests on Render Deployment",
       },

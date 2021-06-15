@@ -1,5 +1,6 @@
 import { DeploymentProvider } from "../../../../lib/types";
 import { copy } from "../../../../theme/copy";
+import DeployBranches from "./DeployBranches";
 import DeployProviders from "./DeployProviders";
 import GitHubRepo from "./GitHubRepo";
 import NetlifyFields from "./NetlifyFields";
@@ -76,6 +77,21 @@ export default function DeployFields({
           deployIntegrationId={deployIntegrationId}
           label={copy.netlifyGitHub}
           setDeployIntegrationId={setDeployIntegrationId}
+        />
+      </>
+    );
+  }
+
+  if (deployProvider === "heroku") {
+    innerHtml = (
+      <>
+        <GitHubRepo
+          deployIntegrationId={deployIntegrationId}
+          setDeployIntegrationId={setDeployIntegrationId}
+        />
+        <DeployBranches
+          deployBranches={deployBranches}
+          setDeployBranches={setDeployBranches}
         />
       </>
     );
