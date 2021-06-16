@@ -29,7 +29,7 @@ export const useSuite = ({ run, team }: UseSuite): SuiteHook => {
       state.setEnvironmentId(suite.environment_id);
     }
 
-    if (suite?.branch && team.git_sync_integration_id) {
+    if (suite?.branch && team?.git_sync_integration_id) {
       state.setBranch(suite.branch);
     }
   }, [suite, team]);
