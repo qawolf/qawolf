@@ -19,6 +19,9 @@ import RunSummary from "./RunSummary";
 import TestButtons from "./TestButtons";
 import TestHistory from "./TestHistory";
 import TestName from "./TestName";
+import Users from "./Users";
+
+const sideWidth = "40%";
 
 export default function Header(): JSX.Element {
   const { progress } = useContext(RunnerContext);
@@ -39,7 +42,7 @@ export default function Header(): JSX.Element {
         pad="small"
         width="full"
       >
-        <Box align="center" direction="row">
+        <Box align="center" direction="row" width={sideWidth}>
           <BackButton />
           <TestName disabled={!!runId} />
           {!!run && (
@@ -49,7 +52,8 @@ export default function Header(): JSX.Element {
           )}
           <StatusBadge status={run ? null : progress?.status} />
         </Box>
-        <Box align="center" direction="row">
+        <Users />
+        <Box align="center" direction="row" justify="end" width={sideWidth}>
           <Branch
             hasChanges={hasChanges}
             branch={runId ? runBranch : testBranch}

@@ -171,25 +171,6 @@ describe("SocketServer", () => {
 
       progressMock.mockRestore();
     });
-
-    it("sends current users", async () => {
-      const spy = jest.fn();
-      socket.on("users", spy);
-
-      const user = {
-        email: "spirit@qawolf.com",
-        wolfName: "Spirit",
-        wolfVariant: "black",
-      };
-
-      socket.emit("subscribe", {
-        type: "users",
-        data: user,
-      });
-
-      await waitUntil(() => spy.mock.calls.length > 0);
-      expect(spy.mock.calls[0][0]).toEqual([user]);
-    });
   });
 
   it("publishes runner events", () => {

@@ -147,3 +147,107 @@ p {
   .algolia-docsearch-suggestion--highlight {
   box-shadow: none;
 }
+
+/* Multiplayer text cursor styles */
+.remoteSelectionHead4545E5,
+.remoteSelectionHeadC54BDE,
+.remoteSelectionHead56BBD6,
+.remoteSelectionHead8BC22D,
+.remoteSelectionHeadE59C59,
+.remoteSelectionHeadDA4E94,
+.remoteSelectionHeadABB3C2,
+.remoteSelectionHead667080 {
+  border: solid 2px transparent;
+  border-right: none;
+  box-sizing: border-box;
+  height: 100%;
+  position: absolute;
+}
+
+.remoteSelectionHead4545E5::after,
+.remoteSelectionHeadC54BDE::after,
+.remoteSelectionHead56BBD6::after,
+.remoteSelectionHead8BC22D::after,
+.remoteSelectionHeadE59C59::after,
+.remoteSelectionHeadDA4E94::after,
+.remoteSelectionHeadABB3C2::after,
+.remoteSelectionHead667080::after {
+  border: 3px solid transparent;
+  border-radius: 4px;
+  content: " ";
+  left: -4px;
+  position: absolute;
+  top: -5px;
+}
+
+.remoteSelection4545E5 {
+  background: rgb(69, 69, 229, 0.24);
+}
+
+.remoteSelectionC54BDE {
+  background: rgb(197, 75, 222, 0.24);
+}
+
+.remoteSelection56BBD6 {
+  background: rgb(86, 187, 214, 0.24);
+}
+
+.remoteSelection8BC22D {
+  background: rgb(139, 194, 45, 0.24);
+}
+
+.remoteSelectionE59C59 {
+  background: rgb(229, 156, 89, 0.24);
+}
+
+.remoteSelectionDA4E94 {
+  background: rgb(218, 78, 148, 0.24);
+}
+
+.remoteSelectionABB3C2 {
+  background: rgb(171, 179, 194, 0.24);
+}
+
+.remoteSelection667080 {
+  background: rgb(102, 112, 128, 0.24);
+}
+
+.remoteSelectionHead4545E5,
+.remoteSelectionHead4545E5::after {
+  border-color: #4545e5;
+}
+
+.remoteSelectionHeadC54BDE,
+.remoteSelectionHeadC54BDE::after {
+  border-color: #c54bde;
+}
+
+.remoteSelectionHead56BBD6,
+.remoteSelectionHead56BBD6::after {
+  border-color: #56bbd6;
+}
+
+.remoteSelectionHead8BC22D,
+.remoteSelectionHead8BC22D::after {
+  border-color: #8bc22d;
+}
+
+.remoteSelectionHeadE59C59,
+.remoteSelectionHeadE59C59::after {
+  border-color: #e59c59;
+}
+
+.remoteSelectionHeadDA4E94,
+.remoteSelectionHeadDA4E94::after {
+  border-color: #da4e94;
+}
+
+.remoteSelectionHeadABB3C2,
+.remoteSelectionHeadABB3C2::after {
+  border-color: #abb3c2;
+}
+
+.remoteSelectionHead667080,
+.remoteSelectionHead667080::after {
+  border-color: #667080;
+}

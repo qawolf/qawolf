@@ -26,19 +26,16 @@ describe("SubscriptionTracker", () => {
 
     it("unsubscribes each collection", () => {
       expect(unsubscribeSpy.mock.calls).toEqual([
-        [socket, "code"],
-        [socket, "editor"],
         [socket, "elementchooser"],
         [socket, "logs"],
         [socket, "run"],
-        [socket, "users"],
       ]);
     });
   });
 
   describe("subscribe", () => {
     beforeAll(() => {
-      tracker.subscribe(socket, { type: "code" });
+      tracker.subscribe(socket, { type: "elementchooser" });
     });
 
     it("stores the socket", () => {
@@ -46,26 +43,17 @@ describe("SubscriptionTracker", () => {
     });
 
     it("updates the subscription collection", () => {
-      const collection = tracker._subscriptions.get("code");
-      expect(collection?.ids).toEqual(["1"]);
-      expect(collection?.data).toEqual([undefined]);
-
-      // check it replaces the data
-      tracker.subscribe(socket, {
-        type: "code",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: 1 as any,
-      });
-      expect(collection?.data).toEqual([1]);
+      const collection = tracker._subscriptions.get("elementchooser");
+      if (!collection) throw new Error();
+      expect([...collection.values()]).toEqual(["1"]);
     });
 
     describe("unsubscribe", () => {
       it("remove the socket from the subscription collection", () => {
-        tracker.unsubscribe(socket, "code");
-
-        const collection = tracker._subscriptions.get("code");
-        expect(collection?.ids).toEqual([]);
-        expect(collection?.data).toEqual([]);
+        tracker.unsubscribe(socket, "elementchooser");
+        const collection = tracker._subscriptions.get("elementchooser");
+        if (!collection) throw new Error();
+        expect([...collection.values()]).toEqual([]);
       });
     });
   });

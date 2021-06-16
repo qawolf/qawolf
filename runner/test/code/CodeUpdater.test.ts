@@ -1,5 +1,5 @@
-import { CodeModel } from "../../src/code/CodeModel";
 import { CodeUpdater } from "../../src/code/CodeUpdater";
+import { FileModel } from "../../src/code/FileModel";
 import { WindowEvent } from "../../src/types";
 import {
   FixturesServer,
@@ -9,7 +9,7 @@ import {
   sleep,
 } from "../utils";
 
-const codeModel = new CodeModel();
+const testModel = new FileModel();
 let launched: LaunchResult;
 let server: FixturesServer;
 let updater: CodeUpdater;
@@ -18,7 +18,7 @@ beforeAll(async () => {
   launched = await launch();
   server = await serveFixtures();
 
-  updater = new CodeUpdater({ codeModel, variables: { page: launched.page } });
+  updater = new CodeUpdater({ testModel, variables: { page: launched.page } });
   updater.setContext(launched.context);
 
   await updater.enable();
@@ -27,7 +27,8 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  codeModel.setValue("// 🐺 QA Wolf will create code here");
+  testModel._content.delete(0, testModel.content.length);
+  testModel._content.insert(0, "// 🐺 QA Wolf will create code here");
 });
 
 afterAll(async () => {
@@ -57,7 +58,7 @@ it("updates code for a click", async () => {
 
   // we do not expect the code to create the page
   // since we enabled the updater after those steps
-  expect(codeModel.value).toMatchInlineSnapshot(`
+  expect(testModel._content.toJSON()).toMatchInlineSnapshot(`
     "await page.click(\\"text=Hello\\");
     // 🐺 QA Wolf will create code here"
   `);
@@ -76,7 +77,7 @@ it("updates code for a fill inside a frame", async () => {
 
   // we do not expect the code to create the page
   // since we enabled the updater after those steps
-  expect(codeModel.value).toMatchInlineSnapshot(`
+  expect(testModel._content.toJSON()).toMatchInlineSnapshot(`
     "const frame = await (await page.waitForSelector('[data-qa=\\"frame\\"]')).contentFrame();
     await frame.fill('[type=\\"text\\"]', \\"hello\\");
     // 🐺 QA Wolf will create code here"

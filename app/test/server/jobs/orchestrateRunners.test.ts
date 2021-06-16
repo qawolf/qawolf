@@ -37,8 +37,20 @@ describe("calculateRunnerPool", () => {
 
   it("includes the buffer", async () => {
     await insertRunnerLocations({
-      eastus2: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
-      japaneast: { buffer: 2, latitude: 0, longitude: 0, reserved: 2 },
+      eastus2: {
+        buffer: 1,
+        latitude: 0,
+        longitude: 0,
+        reserved: 1,
+        url: "url",
+      },
+      japaneast: {
+        buffer: 2,
+        latitude: 0,
+        longitude: 0,
+        reserved: 2,
+        url: "url",
+      },
     });
 
     countIncompleteTests.mockResolvedValue([]);
@@ -55,7 +67,13 @@ describe("calculateRunnerPool", () => {
 
   it("includes the incomplete tests", async () => {
     await insertRunnerLocations({
-      eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
+      eastus2: {
+        buffer: 0,
+        latitude: 0,
+        longitude: 0,
+        reserved: 0,
+        url: "url",
+      },
     });
 
     countIncompleteTests.mockResolvedValue([{ count: 3, location: "eastus2" }]);
@@ -69,7 +87,13 @@ describe("calculateRunnerPool", () => {
 
   it("includes the incomplete runs", async () => {
     await insertRunnerLocations({
-      eastus2: { buffer: 0, latitude: 0, longitude: 0, reserved: 0 },
+      eastus2: {
+        buffer: 0,
+        latitude: 0,
+        longitude: 0,
+        reserved: 0,
+        url: "url",
+      },
     });
 
     countIncompleteRuns.mockResolvedValue(3);

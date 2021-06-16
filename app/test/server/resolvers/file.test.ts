@@ -1,7 +1,7 @@
 import { updateTeam } from "../../../server/models/team";
 import { updateTest } from "../../../server/models/test";
 import {
-  buildTestContent,
+  deleteFileResolver,
   fileResolver,
   updateFileResolver,
 } from "../../../server/resolvers/file";
@@ -16,6 +16,7 @@ import {
   buildTest,
   buildTrigger,
   buildUser,
+  createRunnerLocations,
   testContext,
 } from "../utils";
 
@@ -37,6 +38,8 @@ const context = { ...testContext, db, teams: [team] };
 const options = { db, logger: context.logger };
 
 beforeAll(async () => {
+  await createRunnerLocations(db);
+
   await db("teams").insert({ ...team, git_sync_integration_id: null });
   await db("users").insert(buildUser({}));
 
@@ -52,23 +55,17 @@ beforeAll(async () => {
   await db("runs").insert(run);
 });
 
-describe("buildTestContent", () => {
-  it("returns code from git files if possible", () => {
-    const code = buildTestContent({ files, test }, options);
+describe("deleteFileResolver", () => {
+  beforeAll(() => db("files").insert({ id: "test.testId", url: "testUrl" }));
 
-    expect(code).toBe("git code");
-  });
+  afterAll(() => db("files").del());
 
-  it("returns test code if no files", () => {
-    const code = buildTestContent({ files: null, test }, options);
+  it("deletes a file", async () => {
+    const fileId = await deleteFileResolver({}, { id: "test.testId" }, context);
+    const files = await db("files");
 
-    expect(code).toBe("test code");
-  });
-
-  it("throws an error if files but test not found", () => {
-    expect(() => {
-      buildTestContent({ files: [], test }, options);
-    }).toThrowError("not found");
+    expect(fileId).toBe("test.testId");
+    expect(files).toEqual([]);
   });
 });
 
@@ -77,11 +74,14 @@ describe("fileResolver", () => {
     const file = await fileResolver({}, { id: "helpers.teamId" }, context);
 
     expect(file).toEqual({
+      branch: null,
       content: team.helpers,
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -89,11 +89,29 @@ describe("fileResolver", () => {
     const file = await fileResolver({}, { id: "run.runId" }, context);
 
     expect(file).toEqual({
+      branch: null,
       content: run.code,
       id: "run.runId",
+      is_deleted: false,
       is_read_only: true,
       path: test.path,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
+    });
+  });
+
+  it("returns a run helpers file", async () => {
+    const file = await fileResolver({}, { id: "runhelpers.suiteId" }, context);
+
+    expect(file).toEqual({
+      branch: null,
+      content: "suite helpers",
+      id: "runhelpers.suiteId",
+      is_deleted: false,
+      is_read_only: true,
+      path: treeService.HELPERS_PATH,
+      team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -103,11 +121,14 @@ describe("fileResolver", () => {
     const file = await fileResolver({}, { id: "test.test2Id" }, context);
 
     expect(file).toEqual({
+      branch: null,
       content: test2.code,
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).not.toBeCalled();
@@ -118,18 +139,17 @@ describe("fileResolver", () => {
       .spyOn(treeService, "findFilesForBranch")
       .mockResolvedValue({ files, owner: "qawolf", repo: "repo" });
 
-    const file = await fileResolver(
-      {},
-      { branch: "feature", id: "test.testId" },
-      context
-    );
+    const file = await fileResolver({}, { id: "test.testId.feature" }, context);
 
     expect(file).toEqual({
+      branch: "feature",
       content: "git code",
-      id: "test.testId",
+      id: "test.testId.feature",
+      is_deleted: false,
       is_read_only: false,
       path: test.path,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).toBeCalled();
@@ -155,11 +175,14 @@ describe("updateFileResolver", () => {
     );
 
     expect(file).toEqual({
+      branch: null,
       content: "new helpers",
       id: "helpers.teamId",
+      is_deleted: false,
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTeam({ helpers: oldHelpers, id: "teamId" }, options);
@@ -175,11 +198,14 @@ describe("updateFileResolver", () => {
     );
 
     expect(file).toEqual({
+      branch: null,
       content: "new code",
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ code: oldCode, id: "test2Id" }, options);
@@ -195,11 +221,14 @@ describe("updateFileResolver", () => {
     );
 
     expect(file).toEqual({
+      branch: null,
       content: test2.code,
       id: "test.test2Id",
+      is_deleted: false,
       is_read_only: false,
       path: "new name",
       team_id: "teamId",
+      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ id: "test2Id", name: oldName }, options);

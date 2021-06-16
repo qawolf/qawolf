@@ -1,8 +1,8 @@
-import { Box, Drop, DropProps } from "grommet";
+import { Drop, DropProps } from "grommet";
 import { CSSProperties } from "react";
 
-import { borderSize, edgeSize } from "../../theme/theme";
-import Text from "./Text";
+import { edgeSize } from "../../../theme/theme";
+import TooltipComponent from "./Tooltip";
 
 type Props = {
   align?: DropProps["align"];
@@ -25,18 +25,10 @@ export default function Tooltip({
     <Drop
       align={align || { bottom: "top" }}
       plain
-      style={style || { marginBottom: edgeSize.xxsmall }}
+      style={style || { marginBottom: edgeSize.xxxsmall }}
       target={target}
     >
-      <Box
-        background="gray9"
-        pad={{ horizontal: "xxsmall", vertical: "xxxsmall" }}
-        round={borderSize.small}
-      >
-        <Text color="gray0" size="componentSmall">
-          {label}
-        </Text>
-      </Box>
+      <TooltipComponent label={label} />
     </Drop>
   );
 }

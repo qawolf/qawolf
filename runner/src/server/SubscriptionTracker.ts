@@ -1,53 +1,25 @@
 import { Socket } from "socket.io";
 
-type EmitOptions = {
+type EmitOptions<T> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: T;
   event: string;
 };
 
-type User = {
-  email: string;
-  wolfName: string;
-  wolfVariant: string;
-};
-
-type SubscribeData = User | undefined;
-
-export type SubscribeType =
-  | "code"
-  | "editor"
-  | "elementchooser"
-  | "logs"
-  | "run"
-  | "users";
+export type SubscribeType = "elementchooser" | "logs" | "run";
 
 export type SubscribeMessage = {
   type: SubscribeType;
-  data?: SubscribeData;
-};
-
-type SubscriptionCollection = {
-  data: SubscribeData[];
-  ids: string[];
 };
 
 export class SubscriptionTracker {
   readonly _sockets = new Map<string, Socket>();
-  readonly _subscriptions = new Map<SubscribeType, SubscriptionCollection>();
+  readonly _subscriptions = new Map<SubscribeType, Set<string>>();
 
   constructor() {
-    this._subscriptions.set("code", { data: [], ids: [] });
-    this._subscriptions.set("editor", { data: [], ids: [] });
-    this._subscriptions.set("elementchooser", { data: [], ids: [] });
-    this._subscriptions.set("logs", { data: [], ids: [] });
-    this._subscriptions.set("run", { data: [], ids: [] });
-    this._subscriptions.set("users", { data: [], ids: [] });
-  }
-
-  data(type: SubscribeType): SubscribeData[] {
-    const collection = this._subscriptions.get(type);
-    return collection?.data || [];
+    this._subscriptions.set("elementchooser", new Set());
+    this._subscriptions.set("logs", new Set());
+    this._subscriptions.set("run", new Set());
   }
 
   disconnect(socket: Socket): void {
@@ -58,11 +30,11 @@ export class SubscriptionTracker {
     }
   }
 
-  emit(to: SubscribeType, { data, event }: EmitOptions): void {
-    const collection = this._subscriptions.get(to);
-    if (!collection) return;
+  emit<T>(to: SubscribeType, { data, event }: EmitOptions<T>): void {
+    const ids = this._subscriptions.get(to);
+    if (!ids) return;
 
-    collection.ids.forEach((id) => {
+    ids.forEach((id) => {
       this._sockets.get(id)?.emit(event, data);
     });
   }
@@ -70,26 +42,16 @@ export class SubscriptionTracker {
   subscribe(socket: Socket, message: SubscribeMessage): void {
     this._sockets.set(socket.id, socket);
 
-    const collection = this._subscriptions.get(message.type);
-    if (!collection) return;
+    const ids = this._subscriptions.get(message.type);
+    if (!ids) return;
 
-    const index = collection.ids.indexOf(socket.id);
-    if (index >= 0) {
-      collection.data[index] = message.data;
-    } else {
-      collection.data.push(message.data);
-      collection.ids.push(socket.id);
-    }
+    if (!ids.has(socket.id)) ids.add(socket.id);
   }
 
   unsubscribe(socket: Socket, type: SubscribeType): void {
-    const collection = this._subscriptions.get(type);
-    if (!collection) return;
+    const ids = this._subscriptions.get(type);
+    if (!ids) return;
 
-    const index = collection.ids.indexOf(socket.id);
-    if (index >= 0) {
-      collection.data.splice(index, 1);
-      collection.ids.splice(index, 1);
-    }
+    ids.delete(socket.id);
   }
 }

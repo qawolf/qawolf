@@ -33,6 +33,9 @@ type CommitEditor {
 
 "Provider for a deployment"
 enum DeploymentProvider {
+  "Heroku"
+  heroku
+
   "Netlify"
   netlify
 
@@ -112,11 +115,17 @@ type EnvironmentVariables {
 
 "A file for the test editor"
 type File {
+  "The git branch"
+  branch: String
+
   "The text content of the file"
   content: String!
 
   "The id of the file"
   id: ID!
+
+  "Whether this file was deleted"
+  is_deleted: Boolean!
 
   "Whether the current user can edit the file"
   is_read_only: Boolean!
@@ -126,6 +135,9 @@ type File {
 
   "The id of the team that owns the file"
   team_id: ID!
+
+  "The websocket URL of the file"
+  url: String!
 }
 
 "A GitHub branch"
@@ -962,6 +974,13 @@ type Mutation {
   ): EnvironmentVariable!
 
   """
+  Delete a file. Returns the deleted file ID.
+
+  Requires that you have access to the team that owns the file.
+  """
+  deleteFile("File ID" id: ID!): String!
+
+  """
   Delete a test tag. All tests in this tag will no longer be
   associated with it.
 
@@ -1410,7 +1429,7 @@ type Query {
 
   Requires that you have access to the team.
   """
-  file("The  git branch" branch: String, "The file ID" id: ID!): File!
+  file("The file ID" id: ID!): File!
 
   """
   Returns GitHub branches for a team by team ID.

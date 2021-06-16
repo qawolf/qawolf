@@ -44,7 +44,7 @@ function SelectButton({
         align={{ right: "right", top: "bottom" }}
         isVisible={isHover}
         label={isActive ? copy.cancel : copy.chooseElement}
-        style={{ marginTop: edgeSize.xxsmall }}
+        style={{ marginTop: edgeSize.xxxsmall }}
         target={ref.current}
       />
     </>

@@ -40,6 +40,7 @@ const generateSystemEnvVariables = async (): Promise<void> => {
           latitude: 36.6681,
           longitude: -78.3889,
           reserved: 0,
+          url: "http://localhost:1234",
         },
       }),
     },

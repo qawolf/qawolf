@@ -27,9 +27,15 @@ describe("calculateDistance", () => {
 describe("getPossibleLocations", () => {
   it("sorts possible locations by putting US first", () => {
     const locations = {
-      westus2: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
-      japan: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
-      eastus: { buffer: 1, latitude: 0, longitude: 0, reserved: 1 },
+      westus2: {
+        buffer: 1,
+        latitude: 0,
+        longitude: 0,
+        reserved: 1,
+        url: "url",
+      },
+      japan: { buffer: 1, latitude: 0, longitude: 0, reserved: 1, url: "url" },
+      eastus: { buffer: 1, latitude: 0, longitude: 0, reserved: 1, url: "url" },
     };
 
     expect(getPossibleLocations(locations)).toEqual([

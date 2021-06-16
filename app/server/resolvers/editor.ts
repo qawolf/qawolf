@@ -9,7 +9,6 @@ import {
   CommitEditorMutation,
   Context,
   GitHubFile,
-  ModelOptions,
   Team,
   Test,
 } from "../types";
@@ -82,8 +81,9 @@ export const buildTreeForCommit = ({
 
 export const commitTestAndHelpers = async (
   { branch, code, helpers, path, team, test }: CommitTestAndHelpers,
-  { db, logger }: ModelOptions
+  context: Context
 ): Promise<CommitEditor> => {
+  const { db, logger } = context;
   const log = logger.prefix("commitTestAndHelpers");
 
   return db.transaction(async (trx) => {
@@ -118,14 +118,26 @@ export const commitTestAndHelpers = async (
     await createCommit({ branch, message, team, tree }, options);
 
     return {
-      helpers: formatHelpersFile({
-        ...team,
-        helpers: isNil(helpers) ? helpersFile.text : helpers,
-      }),
-      test: formatTestFile({
-        ...updatedTest,
-        code: isNil(code) ? testFile.text : code,
-      }),
+      helpers: await formatHelpersFile(
+        {
+          branch,
+          team: {
+            ...team,
+            helpers: isNil(helpers) ? helpersFile.text : helpers,
+          },
+        },
+        context
+      ),
+      test: await formatTestFile(
+        {
+          branch,
+          test: {
+            ...updatedTest,
+            code: isNil(code) ? testFile.text : code,
+          },
+        },
+        context
+      ),
     };
   });
 };
@@ -133,8 +145,9 @@ export const commitTestAndHelpers = async (
 export const commitEditorResolver = async (
   _: Record<string, unknown>,
   { branch, code, helpers, path, test_id }: CommitEditorMutation,
-  { db, logger, teams }: Context
+  context: Context
 ): Promise<CommitEditor> => {
+  const { db, logger, teams } = context;
   const log = logger.prefix("commitEditorResolver");
   log.debug("test", test_id, "branch", branch);
 
@@ -144,6 +157,6 @@ export const commitEditorResolver = async (
 
   return commitTestAndHelpers(
     { branch, code, helpers, path, team, test },
-    { db, logger }
+    context
   );
 };

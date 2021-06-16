@@ -1,4 +1,4 @@
-import { buildColor } from "../../../server/models/utils";
+import { buildColor } from "../../shared/buildColor";
 
 describe("buildColor", () => {
   const colors = ["red", "blue", "green"];

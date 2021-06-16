@@ -2,6 +2,7 @@ import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { S3RequestPresigner } from "@aws-sdk/s3-request-presigner";
 import { createRequest } from "@aws-sdk/util-create-request";
 import { formatUrl } from "@aws-sdk/util-format-url";
+import { Readable } from "stream";
 
 import environment from "../../environment";
 import { SaveArtifacts } from "../../types";
@@ -69,4 +70,22 @@ export const getArtifactsOptions = async ({
       ? null
       : await createStorageWriteAccessUrl(videoFileName),
   };
+};
+
+async function streamToString(stream: Readable): Promise<string> {
+  return await new Promise((resolve, reject) => {
+    const chunks: Uint8Array[] = [];
+    stream.on("data", (chunk) => chunks.push(chunk));
+    stream.on("error", reject);
+    stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf-8")));
+  });
+}
+
+export const getS3Set = async (
+  bucket: string,
+  key: string
+): Promise<Set<string>> => {
+  const data = await client.getObject({ Bucket: bucket, Key: key });
+  const result = await streamToString(data.Body as Readable);
+  return new Set(result.split("\n"));
 };

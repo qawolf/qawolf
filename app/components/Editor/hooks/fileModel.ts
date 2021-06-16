@@ -1,52 +1,49 @@
-import debounce from "lodash/debounce";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
-import { useUpdateFile } from "../../../hooks/mutations";
 import { useFile } from "../../../hooks/queries";
-import { VersionedMap } from "../../../lib/VersionedMap";
+import { state } from "../../../lib/state";
+import { UserContext } from "../../UserContext";
 import { FileModel } from "../contexts/FileModel";
 
-export type FileHook = {
-  fileModel: FileModel;
+export type FileState = {
+  isDeleted: boolean;
+  isInitialized: boolean;
   isLoaded: boolean;
   isReadOnly: boolean;
   path: string;
 };
 
-type UseFile = {
-  autoSave: boolean;
-  branch?: string;
-  id: string;
-  state: VersionedMap;
+export type FileHook = {
+  file: FileState;
+  model: FileModel;
 };
 
-export const useFileModel = ({
-  autoSave,
-  branch,
-  id,
-  state,
-}: UseFile): FileHook => {
+export const defaultFileState = {
+  isDeleted: false,
+  isInitialized: false,
+  isLoaded: false,
+  isReadOnly: true,
+  path: "",
+};
+
+export const useFileModel = (id: string, createdAt: number): FileHook => {
+  const { user } = useContext(UserContext);
+
   const modelRef = useRef<FileModel>();
+  const [error, setError] = useState("");
+  const [isInitialized, setIsInitialized] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [path, setPath] = useState("");
-  const [isReadOnly, setIsReadOnly] = useState(false);
-
-  const { data } = useFile({ branch, id });
+  const { data } = useFile({ id });
   const file = data?.file || null;
 
-  const [updateFile] = useUpdateFile();
-
   useEffect(() => {
-    if (!state) return;
-
-    modelRef.current = new FileModel(state);
-
-    modelRef.current.bind("isReadOnly", setIsReadOnly);
-
+    modelRef.current = new FileModel();
+    modelRef.current.bind("error", setError);
+    modelRef.current.bind("is_initialized", setIsInitialized);
     modelRef.current.bind("path", setPath);
-
     return () => modelRef.current.dispose();
-  }, [state]);
+  }, []);
 
   useEffect(() => {
     if (!file) return;
@@ -57,24 +54,25 @@ export const useFileModel = ({
   }, [file]);
 
   useEffect(() => {
-    // listen for changes to save after the file is loaded
-    if (!autoSave || !isLoaded || !updateFile) return;
+    if (!error) return;
 
-    const fileModel = modelRef.current;
+    state.setToast({ error: true, expiresIn: 3000, message: error });
+  }, [error]);
 
-    const onChanged = debounce(() => {
-      if (fileModel.isReadOnly) return;
+  useEffect(() => {
+    if (!isLoaded || !user) return;
 
-      const changes = fileModel.changes();
-      if (!changes) return;
+    modelRef.current.setUserState(user, createdAt);
+  }, [createdAt, isLoaded, user]);
 
-      updateFile({ variables: { ...changes, id: fileModel.id } });
-    }, 100);
-
-    fileModel.on("changed", onChanged);
-
-    return () => fileModel.off("changed", onChanged);
-  }, [autoSave, branch, isLoaded, updateFile]);
-
-  return { fileModel: modelRef.current, isLoaded, isReadOnly, path };
+  return {
+    file: {
+      isDeleted: file && file.is_deleted,
+      isInitialized,
+      isLoaded,
+      isReadOnly: !file || file.is_read_only,
+      path,
+    },
+    model: modelRef.current,
+  };
 };
