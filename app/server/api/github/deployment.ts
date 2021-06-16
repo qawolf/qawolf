@@ -19,12 +19,12 @@ type BuildUrl = {
 };
 
 type CreateSuiteForDeployment = {
-  committedAt: string;
   branch: string;
+  commitMessage: string | null;
+  committedAt: string;
   deploymentUrl: string;
   environment?: string;
   installationId: number;
-  message: string | null;
   owner: string;
   pullRequestId: number | null;
   repo: string;
@@ -97,11 +97,11 @@ export const shouldRunTriggerOnDeployment = ({
 const createSuiteForDeployment = async (
   {
     branch,
+    commitMessage,
     committedAt,
     deploymentUrl,
     environment,
     installationId,
-    message,
     owner,
     pullRequestId,
     repo,
@@ -139,7 +139,7 @@ const createSuiteForDeployment = async (
   const { suite } = await createSuiteForTests(
     {
       branch,
-      commit_message: message,
+      commit_message: commitMessage,
       environment_variables: { URL: deploymentUrl },
       trigger_id: trigger.id,
       team_id: trigger.team_id,
@@ -210,7 +210,7 @@ export const createSuitesForDeployment = async (
 ): Promise<void> => {
   const [owner, repo] = repoFullName.split("/");
 
-  const { branch, message, pullRequestId } = await findBranchForCommit(
+  const { branch, commitMessage, pullRequestId } = await findBranchForCommit(
     {
       installationId,
       owner,
@@ -233,6 +233,7 @@ export const createSuitesForDeployment = async (
           createSuiteForDeployment(
             {
               branch,
+              commitMessage,
               committedAt,
               deploymentUrl: buildUrl({
                 deploymentUrl,
@@ -241,7 +242,6 @@ export const createSuitesForDeployment = async (
               }),
               environment,
               installationId,
-              message,
               owner,
               pullRequestId,
               repo,

@@ -20,7 +20,7 @@ export type GitHubRepos = RestEndpointMethodTypes["apps"]["listReposAccessibleTo
 
 type BranchForCommit = {
   branch: string;
-  message: string | null;
+  commitMessage: string | null;
   pullRequestId: number | null;
 };
 
@@ -106,13 +106,13 @@ export const findBranchForCommit = async (
 
   const suites = data.check_suites.filter((s) => s.head_branch === branch);
 
-  const message = suites[0] ? suites[0].head_commit.message : null;
+  const commitMessage = suites[0] ? suites[0].head_commit.message : null;
   const pullRequests = suites.find((s) => s.pull_requests.length)
     ?.pull_requests;
 
   const pullRequestId = pullRequests?.length ? pullRequests[0].number : null;
 
-  return { branch, message, pullRequestId };
+  return { branch, commitMessage, pullRequestId };
 };
 
 export const findGitHubReposForInstallation = async (
