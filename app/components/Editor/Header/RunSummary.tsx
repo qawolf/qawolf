@@ -54,7 +54,7 @@ export default function RunSummary({ run, suite }: Props): JSX.Element {
       <LabeledBox label={copy.duration}>
         <Text {...textProps}>{duration}</Text>
       </LabeledBox>
-      {!!suite.commit_url && (
+      {!!suite?.commit_url && (
         <LabeledBox label={copy.commit}>
           <GitCommit
             color={colors.gray9}
