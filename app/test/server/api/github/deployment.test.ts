@@ -99,7 +99,7 @@ describe("createSuitesForDeployment", () => {
       .spyOn(gitHubService, "findBranchForCommit")
       .mockResolvedValue({
         branch: "feature",
-        message: "initial commit",
+        commitMessage: "initial commit",
         pullRequestId: 123,
       });
 
