@@ -84,7 +84,7 @@ export type CreatedSuite = {
   suite: Suite;
 };
 
-export type DeploymentProvider = "netlify" | "render" | "vercel";
+export type DeploymentProvider = "heroku" | "netlify" | "render" | "vercel";
 
 export type Email = {
   created_at?: string;
@@ -117,9 +117,15 @@ export type EnvironmentVariable = {
   updated_at?: string;
 };
 
-export type File = {
-  content: string;
+export type FileModel = {
   id: string;
+  url: string;
+};
+
+export type File = FileModel & {
+  branch: string | null;
+  content: string;
+  is_deleted: boolean;
   is_read_only: boolean;
   path: string;
   team_id: string;
@@ -243,6 +249,7 @@ export type RunnerLocation = {
   latitude: number;
   longitude: number;
   reserved: number;
+  url: string;
 };
 
 export type RunnerLocations = Record<string, RunnerLocation>;
@@ -653,11 +660,6 @@ export type EmailQuery = {
 
 export type EnvironmentIdQuery = {
   environment_id: string;
-};
-
-export type FileQuery = {
-  branch?: string | null;
-  id: string;
 };
 
 export type IdQuery = {

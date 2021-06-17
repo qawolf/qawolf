@@ -3,7 +3,6 @@ import io from "socket.io-client";
 
 import { state } from "./state";
 import { RunOptions } from "./types";
-import { VersionedMap } from "./VersionedMap";
 
 type ConnectOptions = {
   apiKey: string | null;
@@ -44,19 +43,10 @@ export class RunnerClient extends EventEmitter {
   _apiKey: string | null = null;
   _browserReady = false;
   _socket: SocketIOClient.Socket | null = null;
-  _state: VersionedMap;
   _subscriptions: SubscriptionMessage[] = [];
   _wsUrl: string | null = null;
 
   _onConnect = (): void => {
-    // clear versions whenever we reconnect
-    this._state?._versions.clear();
-
-    // send our current version as 0 in case the runner has not been hydrated
-    this._state?._values.forEach((value, key) => {
-      this._socket?.emit("keychanged", { key, value, version: 0 });
-    });
-
     this._subscriptions.forEach((subscription) => {
       this._socket?.emit("subscribe", subscription);
     });
@@ -99,10 +89,6 @@ export class RunnerClient extends EventEmitter {
 
     this._socket.on("connect", this._onConnect);
 
-    this._socket.on("keychanged", (event) => {
-      this._state.receive(event);
-    });
-
     EVENTS.forEach((event) =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this._socket.on(event, (...args: any[]) => {
@@ -112,7 +98,6 @@ export class RunnerClient extends EventEmitter {
   }
 
   close(): void {
-    this._state?.removeAllListeners();
     this.removeAllListeners();
     this._socket?.close();
   }
@@ -145,15 +130,6 @@ export class RunnerClient extends EventEmitter {
   setBrowserReady(ready: boolean): void {
     this._browserReady = ready;
     this._sendRun();
-  }
-
-  syncState(state: VersionedMap): void {
-    if (this._state) return;
-    this._state = state;
-
-    state.on("keychanged", (event) => {
-      this._socket?.emit("keychanged", event);
-    });
   }
 
   subscribe(message: SubscriptionMessage): void {

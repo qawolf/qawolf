@@ -197,6 +197,7 @@ describe("updateJob", () => {
   it("updates job completed_at", async () => {
     await db("jobs").insert(buildJob({}));
 
+    await new Promise((r) => setTimeout(r, 10));
     const job = await updateJob({ completed_at, id: "jobId" }, options);
 
     expect(job).toMatchObject({

@@ -39,6 +39,7 @@ export default function CreateTest({ closeModal }: Props): JSX.Element {
   };
 
   const handleCreate = (): void => {
+    if (isLoading) return;
     setIsLoading(true);
 
     if (!url) {

@@ -1,11 +1,11 @@
 import { DateTime } from "luxon";
 import { Frequency, RRule } from "rrule";
 
+import { buildColor } from "../../shared/buildColor";
 import { minutesFromNow } from "../../shared/utils";
 import { ClientError } from "../errors";
 import { DeploymentProvider, ModelOptions, Trigger } from "../types";
 import { cuid } from "../utils";
-import { buildColor } from "./utils";
 
 type GetNextAt = {
   repeat_minutes?: number | null;

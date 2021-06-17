@@ -3,45 +3,44 @@ import { createContext, FC, useContext, useRef } from "react";
 
 import { useTeam } from "../../../hooks/queries";
 import { Team } from "../../../lib/types";
-import { VersionedMap } from "../../../lib/VersionedMap";
 import { StateContext } from "../../StateContext";
 import { CommitChangesHook, useCommitChanges } from "../hooks/commitChanges";
-import { useFileModel } from "../hooks/fileModel";
+import { defaultFileState, FileState, useFileModel } from "../hooks/fileModel";
 import { RunHook, useRun } from "../hooks/run";
 import { SuiteHook, useSuite } from "../hooks/suite";
+import { UserAwareness, useUserAwareness } from "../hooks/useUserAwareness";
 import { FileModel } from "./FileModel";
 
 type EditorContextValue = CommitChangesHook &
   RunHook &
   SuiteHook & {
+    helpers: FileState;
     helpersModel?: FileModel;
     isLoaded: boolean;
-    isReadOnly: boolean;
     runId?: string;
-    state: VersionedMap;
     team?: Team;
     testId?: string;
+    test: FileState;
     testModel?: FileModel;
-    testPath?: string;
+    userAwareness?: UserAwareness;
   };
 
 export const EditorContext = createContext<EditorContextValue>({
   hasChanges: false,
+  helpers: defaultFileState,
   isLoaded: false,
-  isReadOnly: false,
   run: null,
-  state: new VersionedMap(),
+  test: defaultFileState,
   suite: null,
 });
 
 export const EditorProvider: FC = ({ children }) => {
   const { branch, teamId } = useContext(StateContext);
 
+  const createdAtRef = useRef(Date.now());
   const { query } = useRouter();
   const runId = query.run_id as string;
   const testId = query.test_id as string;
-
-  const { current: state } = useRef(new VersionedMap());
 
   const { data: teamData } = useTeam({ id: teamId });
   const team = teamData?.team || null;
@@ -49,26 +48,24 @@ export const EditorProvider: FC = ({ children }) => {
   const { run } = useRun(runId);
   const { suite } = useSuite({ run, team });
 
-  const autoSave = !branch && !runId;
+  const branchId = branch ? `.${branch}` : "";
 
-  const { fileModel: helpersModel, isLoaded: isHelpersLoaded } = useFileModel({
-    autoSave,
-    branch,
-    id: `helpers.${teamId}`,
-    state,
-  });
+  const helpersId = runId
+    ? `runhelpers.${suite?.id}`
+    : `helpers.${teamId}${branchId}`;
 
-  const {
-    fileModel: testModel,
-    isLoaded: isTestLoaded,
-    isReadOnly: isTestReadOnly,
-    path: testPath,
-  } = useFileModel({
-    autoSave,
-    branch,
-    id: runId ? `run.${runId}` : `test.${testId}`,
-    state,
-  });
+  const { file: helpers, model: helpersModel } = useFileModel(
+    // if the suite is not loaded, return null
+    helpersId.includes("undefined") ? null : helpersId,
+    createdAtRef.current
+  );
+
+  const { file: test, model: testModel } = useFileModel(
+    runId ? `run.${runId}` : `test.${testId}${branchId}`,
+    createdAtRef.current
+  );
+
+  const userAwareness = useUserAwareness(test, testModel);
 
   const { commitChanges, hasChanges } = useCommitChanges({
     branch,
@@ -82,18 +79,17 @@ export const EditorProvider: FC = ({ children }) => {
       value={{
         commitChanges,
         hasChanges,
+        helpers,
         helpersModel,
-        isLoaded: isHelpersLoaded && isTestLoaded,
-        // do not allow editing if the test is deleted or for a run
-        isReadOnly: isTestReadOnly || !!runId,
+        isLoaded: helpers.isLoaded && test.isLoaded,
         run,
         runId,
         suite,
-        state,
         team,
+        test,
         testId: testId || run?.test_id,
         testModel,
-        testPath,
+        userAwareness,
       }}
     >
       {children}

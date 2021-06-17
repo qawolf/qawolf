@@ -9,7 +9,7 @@ type BuildSuiteName = {
 
 type BuildWolfImage = {
   isPass: boolean;
-  user: User;
+  user: User | null;
 };
 
 export const buildGitDetail = (suite: Suite): string => {
@@ -38,8 +38,12 @@ export const buildSuiteName = ({ suite, trigger }: BuildSuiteName): string => {
   return suite.is_api ? "API triggered" : "manually triggered";
 };
 
-export const buildWolfImage = ({ isPass, user }: BuildWolfImage): string => {
-  return `<img src="https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${
-    user.wolf_variant
-  }${isPass ? "-party" : ""}-slack.png" width="32" />`;
+export const buildWolfImage = (args: BuildWolfImage): string => {
+  return `<img src="${buildWolfImageUrl(args)}" width="32" />`;
+};
+
+export const buildWolfImageUrl = ({ isPass, user }: BuildWolfImage): string => {
+  return `https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${
+    user?.wolf_variant || "white"
+  }${isPass ? "-party" : ""}-slack.png`;
 };

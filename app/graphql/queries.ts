@@ -50,8 +50,8 @@ export const environmentVariablesQuery = gql`
 `;
 
 export const fileQuery = gql`
-  query file($branch: String, $id: ID!) {
-    file(branch: $branch, id: $id) {
+  query file($id: ID!) {
+    file(id: $id) {
       ...FileFragment
     }
   }

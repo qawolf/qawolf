@@ -104,7 +104,14 @@ export const isValidURL = (url: string): boolean => {
   try {
     const parsed = new URL(url);
 
-    return ["https:", "http:"].includes(parsed.protocol);
+    if (!["https:", "http:"].includes(parsed.protocol)) {
+      return false;
+    }
+    // https://stackoverflow.com/a/49185442
+    // eslint-disable-next-line no-useless-escape
+    return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
+      parsed.href
+    );
   } catch (error) {
     return false;
   }

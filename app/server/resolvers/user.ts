@@ -17,6 +17,7 @@ import {
 import { signAccessToken } from "../services/access";
 import { sendEmailForLoginCode } from "../services/alert/email";
 import { postMessageToSlack } from "../services/alert/slack";
+import { ensureEmailAllowed, ensureIpAllowed } from "../services/block";
 import { findGitHubFields } from "../services/gitHub/user";
 import { hashUserId } from "../services/intercom";
 import { trackSegmentEvent } from "../services/segment";
@@ -42,6 +43,7 @@ type CreateUserWithTeam = {
   emailFields?: CreateUserWithEmail;
   gitHubFields?: CreateUserWithGitHub;
   hasInvite?: boolean;
+  ip?: string;
   isSubscribed?: boolean;
 };
 
@@ -75,13 +77,24 @@ const postNewUserMessageToSlack = async (
 };
 
 const createUserWithTeam = async (
-  { emailFields, gitHubFields, hasInvite, isSubscribed }: CreateUserWithTeam,
+  {
+    emailFields,
+    gitHubFields,
+    hasInvite,
+    ip,
+    isSubscribed,
+  }: CreateUserWithTeam,
   { db, logger }: ModelOptions
 ): Promise<User> => {
   if (!emailFields && !gitHubFields) {
     logger.error("createUserWithTrigger: no fields provided");
     throw new Error("Could not create user");
   }
+
+  await Promise.all([
+    ensureEmailAllowed(emailFields?.email, logger),
+    ensureIpAllowed(ip, logger),
+  ]);
 
   postNewUserMessageToSlack(
     emailFields?.email || gitHubFields?.email,
@@ -125,7 +138,7 @@ const createUserWithTeam = async (
 export const currentUserResolver = async (
   _: Record<string, unknown>,
   __: Record<string, unknown>,
-  { db, logger, teams, user: contextUser }: Context
+  { db, ip, logger, teams, user: contextUser }: Context
 ): Promise<CurrentUser | null> => {
   const log = logger.prefix("currentUserResolver");
   if (!contextUser) {
@@ -135,7 +148,7 @@ export const currentUserResolver = async (
 
   const currentUser = { ...contextUser, teams: teams || [] };
 
-  log.debug("current user", currentUser.id);
+  log.debug(`current user ${currentUser.id} ip ${ip}`);
 
   const last_seen_at = await updateUserLastSeenAt(currentUser.id, {
     db,
@@ -155,10 +168,9 @@ export const currentUserResolver = async (
 export const sendLoginCodeResolver = async (
   _: Record<string, unknown>,
   { email, invite_id, is_subscribed }: SendLoginCodeMutation,
-  { db, logger }: Context
+  { db, ip, logger }: Context
 ): Promise<SendLoginCode> => {
   const log = logger.prefix("sendLoginCodeResolver");
-  log.debug(email);
 
   let user = await findUser({ email }, { db, logger });
   const login_code = buildLoginCode();
@@ -167,6 +179,8 @@ export const sendLoginCodeResolver = async (
     log.debug(`user ${email} already created`);
     user = await updateUser({ id: user.id, login_code }, { db, logger });
   } else {
+    log.debug(`create new user from email ${email} ip ${ip}`);
+
     const invite = invite_id
       ? await findInvite(invite_id, { db, logger })
       : null;
@@ -181,12 +195,13 @@ export const sendLoginCodeResolver = async (
           wolf_variant: invite?.wolf_variant,
         },
         hasInvite: !!invite,
+        ip,
         isSubscribed: is_subscribed,
       },
       { db, logger }
     );
 
-    log.debug(`create new user ${user.id} from email ${email}`);
+    log.debug(`created new user ${user.id} from email ${email}`);
   }
 
   await sendEmailForLoginCode({ logger, login_code, user });
@@ -238,9 +253,10 @@ export const signInWithGitHubResolver = async (
     invite_id,
     is_subscribed,
   }: SignInWithGitHubMutation,
-  { db, logger }: Context
+  { db, ip, logger }: Context
 ): Promise<AuthenticatedUser> => {
   const log = logger.prefix("signInWithGitHubResolver");
+
   const gitHubFields = await findGitHubFields({
     github_code,
     github_state,
@@ -264,9 +280,13 @@ export const signInWithGitHubResolver = async (
       logger,
     });
     log.debug(
-      `update existing user ${user.id} from GitHub ${user.github_login}`
+      `updated existing user ${user.id} from GitHub ${user.github_login}`
     );
   } else {
+    log.debug(
+      `create new user from GitHub ${gitHubFields.github_login} email ${gitHubFields.email} ip ${ip}`
+    );
+
     const invite = invite_id
       ? await findInvite(invite_id, { db, logger })
       : null;
@@ -280,12 +300,13 @@ export const signInWithGitHubResolver = async (
           wolf_variant: invite?.wolf_variant,
         },
         hasInvite: !!invite,
+        ip,
         isSubscribed: is_subscribed,
       },
       { db, logger }
     );
 
-    log.debug(`create new user ${user.id} from GitHub ${user.github_login}`);
+    log.debug(`created new user ${user.id} from GitHub ${user.github_login}`);
   }
 
   return buildAuthenticatedUser(user, { db, logger });

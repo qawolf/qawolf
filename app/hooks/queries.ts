@@ -88,7 +88,6 @@ type FileData = {
 };
 
 type FileVariables = {
-  branch?: string | null;
   id: string;
 };
 

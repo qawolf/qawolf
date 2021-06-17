@@ -32,7 +32,6 @@ import {
   signInWithGitHubMutation,
   updateEnvironmentMutation,
   updateEnvironmentVariableMutation,
-  updateFileMutation,
   updateTagMutation,
   updateTagTestsMutation,
   updateTeamMutation,
@@ -320,16 +319,6 @@ type UpdateEnvironmentVariableVariables = {
   id: string;
   name: string;
   value: string;
-};
-
-type UpdateFileData = {
-  updateFile: File;
-};
-
-type UpdateFileVariables = {
-  content?: string | null;
-  id: string;
-  path?: string | null;
 };
 
 type UpdateTagData = {
@@ -861,15 +850,6 @@ export const useUpdateEnvironmentVariable = (): MutationTuple<
     awaitRefetchQueries: true,
     onError,
     refetchQueries: ["environmentVariables"],
-  });
-};
-
-export const useUpdateFile = (): MutationTuple<
-  UpdateFileData,
-  UpdateFileVariables
-> => {
-  return useMutation<UpdateFileData, UpdateFileVariables>(updateFileMutation, {
-    onError,
   });
 };
 

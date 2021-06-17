@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "grommet";
 import { RiGitBranchLine } from "react-icons/ri";
 
-import { colors, edgeSize } from "../../theme/theme";
+import { colors, edgeSize, overflowStyle } from "../../theme/theme";
 import Text from "./Text";
 
 type Props = {
@@ -21,8 +21,15 @@ export default function GitBranch({
 
   return (
     <Box align="center" direction="row" margin={margin || { left: "small" }}>
-      <RiGitBranchLine color={finalColor} size={edgeSize.small} />
-      <Text color={finalColor} margin={{ left: "xxsmall" }} size="component">
+      <Box flex={false}>
+        <RiGitBranchLine color={finalColor} size={edgeSize.small} />
+      </Box>
+      <Text
+        color={finalColor}
+        margin={{ left: "xxsmall" }}
+        size="component"
+        style={overflowStyle}
+      >
         {branch}
       </Text>
     </Box>

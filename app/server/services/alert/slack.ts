@@ -6,7 +6,7 @@ import { findIntegration } from "../../models/integration";
 import { findUsersForTeam } from "../../models/user";
 import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
 import { randomChoice } from "../../utils";
-import { buildSuiteName } from "./utils";
+import { buildSuiteName, buildWolfImageUrl } from "./utils";
 
 type BuildSuiteMessage = {
   runs: SuiteRun[];
@@ -64,7 +64,6 @@ export const buildMessageForSuite = ({
   user,
 }: BuildSuiteMessage): IncomingWebhookSendArguments => {
   const wolfName = user?.wolf_name || "Spirit";
-  const wolfVariant = user?.wolf_variant || "white";
 
   const failingRuns = runs.filter((r) => r.status === "fail");
   const status = failingRuns.length ? "failed." : "passed!";
@@ -97,9 +96,7 @@ export const buildMessageForSuite = ({
         elements: [
           {
             type: "image",
-            image_url: `https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${wolfVariant}${
-              failingRuns.length ? "" : "-party"
-            }-slack.png`,
+            image_url: buildWolfImageUrl({ isPass: !failingRuns.length, user }),
             alt_text: wolfName,
           },
           {
