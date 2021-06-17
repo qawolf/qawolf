@@ -26,7 +26,6 @@ export const fileFragment = gql`
     is_read_only
     path
     team_id
-    url
   }
 `;
 

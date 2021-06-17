@@ -9,10 +9,12 @@ import azure from "ms-rest-azure";
 
 import environment from "../../environment";
 import { Logger } from "../../Logger";
-import { Runner } from "../../types";
+import { findSystemEnvironmentVariable } from "../../models/environment_variable";
+import { AzureEnv, ModelOptions, Runner } from "../../types";
 import { buildRunnerStatusUrl } from "../../utils";
 
 type CreateContainerGroup = {
+  azureEnv: AzureEnv;
   client: ContainerInstanceManagementClient;
   containers: Container[];
   ipAddress?: IpAddress;
@@ -22,24 +24,33 @@ type CreateContainerGroup = {
 };
 
 type CreateRunnerContainerGroup = {
+  azureEnv: AzureEnv;
   client: ContainerInstanceManagementClient;
   logger: Logger;
   runner: Runner;
 };
 
 type GetContainerGroup = {
+  azureEnv: AzureEnv;
   client: ContainerInstanceManagementClient;
   logger: Logger;
   name: string;
 };
 
+type GetRunnerContainerGroups = {
+  azureEnv: AzureEnv;
+  client: ContainerInstanceManagementClient;
+};
+
 type RestartRunnerContainerGroup = {
+  azureEnv: AzureEnv;
   client: ContainerInstanceManagementClient;
   id: string;
   logger: Logger;
 };
 
 export const createContainerGroup = async ({
+  azureEnv,
   client,
   containers,
   ipAddress,
@@ -49,26 +60,26 @@ export const createContainerGroup = async ({
 }: CreateContainerGroup): Promise<ContainerGroup> => {
   const log = logger.prefix("createContainerGroup");
   log.debug(
-    `${name} location ${location} resource group ${environment.AZURE_RESOURCE_GROUP}`
+    `${name} location ${location} resource group ${azureEnv.resourceGroup}`
   );
 
   try {
     const group = await client.containerGroups.beginCreateOrUpdate(
-      environment.AZURE_RESOURCE_GROUP,
+      azureEnv.resourceGroup,
       name,
       {
         containers,
         diagnostics: {
           logAnalytics: {
-            workspaceId: environment.AZURE_WORKSPACE_ID,
-            workspaceKey: environment.AZURE_WORKSPACE_KEY,
+            workspaceId: azureEnv.workspaceId,
+            workspaceKey: azureEnv.workspaceKey,
           },
         },
         imageRegistryCredentials: [
           {
-            password: environment.AZURE_REGISTRY_PASSWORD,
-            server: environment.AZURE_REGISTRY_SERVER,
-            username: environment.AZURE_REGISTRY_USERNAME,
+            password: azureEnv.registryPassword,
+            server: azureEnv.registryServer,
+            username: azureEnv.registryUsername,
           },
         ],
         ipAddress,
@@ -88,6 +99,7 @@ export const createContainerGroup = async ({
 };
 
 export const createRunnerContainerGroup = async ({
+  azureEnv,
   client,
   logger,
   runner,
@@ -150,6 +162,7 @@ export const createRunnerContainerGroup = async ({
   };
 
   return createContainerGroup({
+    azureEnv,
     client,
     containers,
     ipAddress,
@@ -160,6 +173,7 @@ export const createRunnerContainerGroup = async ({
 };
 
 export const deleteContainerGroup = async ({
+  azureEnv,
   client,
   logger,
   name,
@@ -168,7 +182,7 @@ export const deleteContainerGroup = async ({
   log.debug(name);
 
   const containerGroup = await client.containerGroups.deleteMethod(
-    environment.AZURE_RESOURCE_GROUP,
+    azureEnv.resourceGroup,
     name
   );
 
@@ -177,24 +191,41 @@ export const deleteContainerGroup = async ({
   return containerGroup;
 };
 
-export const getAzureClient = async (): Promise<ContainerInstanceManagementClient> => {
+export const findAzureEnv = async ({
+  db,
+  logger,
+}: ModelOptions): Promise<AzureEnv> => {
+  const azureEnv = await findSystemEnvironmentVariable("AZURE_ENV", {
+    db,
+    logger,
+  });
+
+  return JSON.parse(azureEnv.value);
+};
+
+export const getAzureClient = async (
+  options: ModelOptions
+): Promise<ContainerInstanceManagementClient> => {
+  const azureEnv = await findAzureEnv(options);
+
   const credentials = await azure.loginWithServicePrincipalSecret(
-    environment.AZURE_CLIENT_ID,
-    environment.AZURE_SECRET,
-    environment.AZURE_DOMAIN_ID
+    azureEnv.clientId,
+    azureEnv.secret,
+    azureEnv.domainId
   );
 
   return new ContainerInstanceManagementClient(
     credentials,
-    environment.AZURE_SUBSCRIPTION_ID
+    azureEnv.subscriptionId
   );
 };
 
-export const getRunnerContainerGroups = async (
-  client: ContainerInstanceManagementClient
-): Promise<ContainerGroupListResult> => {
+export const getRunnerContainerGroups = async ({
+  azureEnv,
+  client,
+}: GetRunnerContainerGroups): Promise<ContainerGroupListResult> => {
   const containerGroups = await client.containerGroups.listByResourceGroup(
-    environment.AZURE_RESOURCE_GROUP
+    azureEnv.resourceGroup
   );
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -202,6 +233,7 @@ export const getRunnerContainerGroups = async (
 };
 
 export const restartRunnerContainerGroup = async ({
+  azureEnv,
   client,
   id,
   logger,
@@ -211,10 +243,7 @@ export const restartRunnerContainerGroup = async ({
   const name = `runner-${id}`;
   log.debug(name);
 
-  await client.containerGroups.beginRestart(
-    environment.AZURE_RESOURCE_GROUP,
-    name
-  );
+  await client.containerGroups.beginRestart(azureEnv.resourceGroup, name);
 
   log.debug("restarted");
 };

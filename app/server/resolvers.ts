@@ -13,11 +13,7 @@ import {
   environmentVariablesResolver,
   updateEnvironmentVariableResolver,
 } from "./resolvers/environment_variable";
-import {
-  deleteFileResolver,
-  fileResolver,
-  updateFileResolver,
-} from "./resolvers/file";
+import { fileResolver, updateFileResolver } from "./resolvers/file";
 import {
   createGitHubIntegrationsResolver,
   gitHubBranchesResolver,
@@ -121,7 +117,6 @@ export const resolvers = {
     createTrigger: createTriggerResolver,
     deleteEnvironment: deleteEnvironmentResolver,
     deleteEnvironmentVariable: deleteEnvironmentVariableResolver,
-    deleteFile: deleteFileResolver,
     deleteTag: deleteTagResolver,
     deleteTests: deleteTestsResolver,
     deleteTrigger: deleteTriggerResolver,

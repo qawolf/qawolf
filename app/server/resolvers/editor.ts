@@ -118,26 +118,20 @@ export const commitTestAndHelpers = async (
     await createCommit({ branch, message, team, tree }, options);
 
     return {
-      helpers: await formatHelpersFile(
-        {
-          branch,
-          team: {
-            ...team,
-            helpers: isNil(helpers) ? helpersFile.text : helpers,
-          },
+      helpers: await formatHelpersFile({
+        branch,
+        team: {
+          ...team,
+          helpers: isNil(helpers) ? helpersFile.text : helpers,
         },
-        context
-      ),
-      test: await formatTestFile(
-        {
-          branch,
-          test: {
-            ...updatedTest,
-            code: isNil(code) ? testFile.text : code,
-          },
+      }),
+      test: await formatTestFile({
+        branch,
+        test: {
+          ...updatedTest,
+          code: isNil(code) ? testFile.text : code,
         },
-        context
-      ),
+      }),
     };
   });
 };

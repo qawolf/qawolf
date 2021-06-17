@@ -77,11 +77,12 @@ export const RunnerProvider: FC = ({ children }) => {
     if (!isRunnerConnected || !isLoaded) return;
 
     const file = testModel._file;
+    if (!file) return;
 
     runner._socket?.emit("connecttest", {
       authorization: localStorage.getItem(JWT_KEY),
-      id: file?.id,
-      url: file?.url,
+      id: file.id,
+      url: process.env.NEXT_PUBLIC_MULTIPLAYER_URL,
     });
   }, [isRunnerConnected, isLoaded, runner, testModel]);
 

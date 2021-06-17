@@ -100,7 +100,6 @@ describe("commitTestAndHelpers", () => {
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
     expect(updatedTest.path).toBe("qawolf/renamed.test.js");
 
@@ -155,8 +154,8 @@ describe("commitEditorResolver", () => {
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
+
     expect(test).toEqual({
       branch: "feature",
       content: "new code",
@@ -165,7 +164,6 @@ describe("commitEditorResolver", () => {
       is_read_only: false,
       path: "qawolf/renamed.test",
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
   });
 });

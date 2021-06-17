@@ -1,7 +1,6 @@
 import { updateTeam } from "../../../server/models/team";
 import { updateTest } from "../../../server/models/test";
 import {
-  deleteFileResolver,
   fileResolver,
   updateFileResolver,
 } from "../../../server/resolvers/file";
@@ -55,20 +54,6 @@ beforeAll(async () => {
   await db("runs").insert(run);
 });
 
-describe("deleteFileResolver", () => {
-  beforeAll(() => db("files").insert({ id: "test.testId", url: "testUrl" }));
-
-  afterAll(() => db("files").del());
-
-  it("deletes a file", async () => {
-    const fileId = await deleteFileResolver({}, { id: "test.testId" }, context);
-    const files = await db("files");
-
-    expect(fileId).toBe("test.testId");
-    expect(files).toEqual([]);
-  });
-});
-
 describe("fileResolver", () => {
   it("returns a helpers file", async () => {
     const file = await fileResolver({}, { id: "helpers.teamId" }, context);
@@ -81,7 +66,6 @@ describe("fileResolver", () => {
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -96,7 +80,6 @@ describe("fileResolver", () => {
       is_read_only: true,
       path: test.path,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -111,7 +94,6 @@ describe("fileResolver", () => {
       is_read_only: true,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
   });
 
@@ -128,7 +110,6 @@ describe("fileResolver", () => {
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).not.toBeCalled();
@@ -149,7 +130,6 @@ describe("fileResolver", () => {
       is_read_only: false,
       path: test.path,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
 
     expect(treeService.findFilesForBranch).toBeCalled();
@@ -182,7 +162,6 @@ describe("updateFileResolver", () => {
       is_read_only: false,
       path: treeService.HELPERS_PATH,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTeam({ helpers: oldHelpers, id: "teamId" }, options);
@@ -205,7 +184,6 @@ describe("updateFileResolver", () => {
       is_read_only: false,
       path: test2.name,
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ code: oldCode, id: "test2Id" }, options);
@@ -228,7 +206,6 @@ describe("updateFileResolver", () => {
       is_read_only: false,
       path: "new name",
       team_id: "teamId",
-      url: "wss://eastus2.qawolf.com",
     });
 
     await updateTest({ id: "test2Id", name: oldName }, options);

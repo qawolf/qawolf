@@ -2,7 +2,10 @@ import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 
 import { minutesFromNow } from "../../shared/utils";
 import { findRunners, updateRunner } from "../models/runner";
-import { createRunnerContainerGroup } from "../services/azure/container";
+import {
+  createRunnerContainerGroup,
+  findAzureEnv,
+} from "../services/azure/container";
 import { ModelOptions } from "../types";
 
 /**
@@ -14,6 +17,7 @@ export const deployRunners = async (
 ): Promise<void> => {
   const log = logger.prefix("deployRunners");
 
+  const azureEnv = await findAzureEnv({ db, logger });
   const deployed_at = minutesFromNow();
 
   const runners = await db.transaction(async (trx) => {
@@ -33,6 +37,7 @@ export const deployRunners = async (
 
   const containerPromises = runners.map((runner) =>
     createRunnerContainerGroup({
+      azureEnv,
       client,
       logger,
       runner,

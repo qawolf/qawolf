@@ -9,6 +9,23 @@ const generateSystemEnvVariables = async (): Promise<void> => {
     {
       id: cuid(),
       is_system: true,
+      name: "AZURE_ENV",
+      value: JSON.stringify({
+        clientId: process.env.AZURE_CLIENT_ID,
+        domainId: process.env.AZURE_DOMAIN_ID,
+        registryPassword: process.env.AZURE_REGISTRY_PASSWORD,
+        registryServer: process.env.AZURE_REGISTRY_SERVER,
+        registryUsername: process.env.AZURE_REGISTRY_USERNAME,
+        resourceGroup: process.env.AZURE_RESOURCE_GROUP,
+        secret: process.env.AZURE_SECRET,
+        subscriptionId: process.env.AZURE_SUBSCRIPTION_ID,
+        workspaceId: process.env.AZURE_WORKSPACE_ID,
+        workspaceKey: process.env.AZURE_WORKSPACE_KEY,
+      }),
+    },
+    {
+      id: cuid(),
+      is_system: true,
       name: "GITHUB_APP_PRIVATE_KEY",
       value: JSON.stringify(readFile("./qawolf-dev.pem")),
     },
