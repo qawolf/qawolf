@@ -3,7 +3,7 @@ import { findRunner } from "../../../server/models/runner";
 import * as azureContainer from "../../../server/services/azure/container";
 import { minutesFromNow } from "../../../shared/utils";
 import { prepareTestDb } from "../db";
-import { buildRunner, logger } from "../utils";
+import { buildEnvironmentVariable, buildRunner, logger } from "../utils";
 
 const db = prepareTestDb();
 
@@ -13,6 +13,14 @@ const restartRunnerContainerGroup = jest
 
 beforeAll(async () => {
   const now = minutesFromNow();
+
+  await db("environment_variables").insert({
+    ...buildEnvironmentVariable({ name: "AZURE_ENV" }),
+    environment_id: null,
+    is_system: true,
+    team_id: null,
+    value: JSON.stringify({}),
+  });
 
   await db("runners").insert(
     buildRunner({
@@ -40,6 +48,7 @@ it("updates the expired runner models", async () => {
 
 it("restarts the runners", () => {
   expect(restartRunnerContainerGroup).toBeCalledWith({
+    azureEnv: {},
     client: null,
     logger,
     id: "runnerId",
