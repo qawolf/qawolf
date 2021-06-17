@@ -81,7 +81,7 @@ export const RunnerProvider: FC = ({ children }) => {
     runner._socket?.emit("connecttest", {
       authorization: localStorage.getItem(JWT_KEY),
       id: file?.id,
-      url: file?.url,
+      url: process.env.NEXT_PUBLIC_MULTIPLAYER_URL,
     });
   }, [isRunnerConnected, isLoaded, runner, testModel]);
 
