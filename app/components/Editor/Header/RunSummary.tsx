@@ -64,9 +64,9 @@ export default function RunSummary({ run, suite }: Props): JSX.Element {
           />
         </LabeledBox>
       )}
-      {!!suite.branch && (
+      {!!suite?.branch && (
         <LabeledBox label={copy.branch}>
-          <GitBranch branch={suite.branch} color={colors.gray9} margin={{}} />
+          <GitBranch branch={suite?.branch} color={colors.gray9} margin={{}} />
         </LabeledBox>
       )}
     </Box>
