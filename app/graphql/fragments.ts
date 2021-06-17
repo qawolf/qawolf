@@ -115,6 +115,7 @@ export const suiteRunFragment = gql`
 export const suiteFragment = gql`
   fragment SuiteFragment on Suite {
     branch
+    commit_url
     created_at
     environment_id
     environment_name
@@ -124,6 +125,7 @@ export const suiteFragment = gql`
     runs {
       ...SuiteRunFragment
     }
+    tag_names
     team_id
     trigger {
       ...ShortTriggerFragment
