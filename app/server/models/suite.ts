@@ -193,7 +193,7 @@ export const createSuite = async (
 
   const suite = {
     branch: branch || null,
-    commit_message: commit_message || null,
+    commit_message: commit_message ? commit_message.slice(0, 70) : null,
     commit_url: commit_url || null,
     created_at: timestamp,
     creator_id: creator_id || null,
