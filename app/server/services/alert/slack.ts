@@ -1,10 +1,12 @@
 import { IncomingWebhook, IncomingWebhookSendArguments } from "@slack/webhook";
+import last from "lodash/last";
 
 import environment from "../../environment";
 import { findIntegration } from "../../models/integration";
 import { findUsersForTeam } from "../../models/user";
 import { ModelOptions, Suite, SuiteRun, Trigger, User } from "../../types";
 import { randomChoice } from "../../utils";
+import { buildSuiteName, buildWolfImageUrl } from "./utils";
 
 type BuildSuiteMessage = {
   runs: SuiteRun[];
@@ -25,6 +27,36 @@ type SendSlackAlert = {
   trigger: Trigger | null;
 };
 
+const buildSuiteDetailBlocks = (
+  suite: Suite,
+  isPass: boolean
+): IncomingWebhookSendArguments["blocks"] => {
+  if (!suite.commit_url) return [];
+
+  const emoji = isPass ? "✅" : "❌";
+  const sha = last(suite.commit_url.split("/")).slice(0, 7);
+  const pullRequestId = suite.pull_request_url
+    ? last(suite.pull_request_url.split("/"))
+    : null;
+
+  const branch = suite.branch ? `${suite.branch}, ` : "";
+  const pullRequest = pullRequestId
+    ? ` (<${suite.pull_request_url}|#${pullRequestId}>)`
+    : "";
+
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `${emoji} <${suite.commit_url}|${sha}>: ${branch}${
+          suite.commit_message || ""
+        }${pullRequest}`,
+      },
+    },
+  ];
+};
+
 export const buildMessageForSuite = ({
   runs,
   suite,
@@ -32,28 +64,27 @@ export const buildMessageForSuite = ({
   user,
 }: BuildSuiteMessage): IncomingWebhookSendArguments => {
   const wolfName = user?.wolf_name || "Spirit";
-  const wolfVariant = user?.wolf_variant || "white";
 
   const failingRuns = runs.filter((r) => r.status === "fail");
   const status = failingRuns.length ? "failed." : "passed!";
 
-  const triggerName = trigger?.name || "manually triggered";
+  const suiteName = buildSuiteName({ suite, trigger });
 
   const suiteHref = new URL(`/suites/${suite.id}`, environment.APP_URL).href;
-  const headline = `${wolfName} here: <${suiteHref}|${triggerName} tests> ${status}`;
-  const text = `${triggerName} tests ${status}`;
+  const headline = `${wolfName} here: <${suiteHref}|${suiteName} tests> ${status}`;
+  const text = `${suiteName} tests ${status}`;
 
   const runBlocks = failingRuns.map((run) => {
     return {
       type: "section",
       text: {
-        type: "mrkdwn",
         text: `<${environment.APP_URL}/run/${run.id}|${run.test_name}>`,
+        type: "mrkdwn",
       },
       accessory: {
-        type: "image",
-        image_url: run.gif_url,
         alt_text: run.test_name,
+        image_url: run.gif_url,
+        type: "image",
       },
     };
   });
@@ -65,7 +96,7 @@ export const buildMessageForSuite = ({
         elements: [
           {
             type: "image",
-            image_url: `https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-${wolfVariant}-slack.png`,
+            image_url: buildWolfImageUrl({ isPass: !failingRuns.length, user }),
             alt_text: wolfName,
           },
           {
@@ -74,6 +105,7 @@ export const buildMessageForSuite = ({
           },
         ],
       },
+      ...buildSuiteDetailBlocks(suite, !failingRuns.length),
       ...runBlocks,
     ],
     text,

@@ -112,6 +112,7 @@ const createSuiteForRequest = async (
       environment_id,
       environment_variables,
       is_api: true,
+      tag_names: tagNames || null,
       team_id: team.id,
       tests,
     },

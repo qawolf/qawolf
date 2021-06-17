@@ -267,6 +267,8 @@ export type Subscriber = {
 
 export type Suite = {
   branch: string | null;
+  commit_message?: string | null;
+  commit_url?: string | null;
   created_at: string;
   creator_id: string | null;
   environment_id: string | null;
@@ -274,6 +276,8 @@ export type Suite = {
   helpers: string;
   id: string;
   is_api: boolean;
+  pull_request_url?: string | null;
+  tag_names?: string | null;
   team_id: string;
   trigger_id: string;
   updated_at?: string;
@@ -468,6 +472,7 @@ export type CreateSuiteMutation = {
   branch: string | null;
   environment_id: string | null;
   environment_variables: string | null;
+  tag_names: string | null;
   test_ids: string[];
 };
 

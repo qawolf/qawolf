@@ -80,10 +80,56 @@ describe("buildMessageForSuite", () => {
     ).toMatchSnapshot();
 
     expect(
+      buildMessageForSuite({
+        runs,
+        suite: { ...suite, tag_names: "Sign up" },
+        trigger: null,
+        user,
+      })
+    ).toMatchSnapshot();
+
+    expect(
       buildMessageForSuite({ runs, suite, trigger: null, user })
     ).toMatchSnapshot();
 
     await db("runs").where({ id: "runId" }).update({ status: "fail" });
+  });
+
+  it("builds a Slack message for a failing suite with git details", async () => {
+    const trigger = await db.select("*").from("triggers").first();
+    const suite = await db.select("*").from("suites").first();
+    const runs = await findRunsForSuite(suite.id, options);
+
+    expect(
+      buildMessageForSuite({
+        runs,
+        suite: {
+          ...suite,
+          branch: "feature",
+          commit_message: "initial commit",
+          commit_url:
+            "https://github.com/qawolf/example/pull/123/commits/af2565c5cc30fac7bccfcf442994f6324da4fcd9",
+          pull_request_url: "https://github.com/qawolf/example/pull/123",
+        },
+        trigger,
+        user,
+      })
+    ).toMatchSnapshot();
+
+    expect(
+      buildMessageForSuite({
+        runs,
+        suite: {
+          ...suite,
+          branch: "feature",
+          commit_message: "initial commit",
+          commit_url:
+            "https://github.com/qawolf/example/pull/123/commits/af2565c5cc30fac7bccfcf442994f6324da4fcd9",
+        },
+        trigger,
+        user,
+      })
+    ).toMatchSnapshot();
   });
 });
 

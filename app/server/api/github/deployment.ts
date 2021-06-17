@@ -1,7 +1,7 @@
 import { logger } from "../../../test/server/utils";
 import { createGitHubCommitStatus } from "../../models/github_commit_status";
 import { findIntegration } from "../../models/integration";
-import { createSuiteForTests } from "../../models/suite";
+import { buildGitUrls, createSuiteForTests } from "../../models/suite";
 import { ensureTeamCanCreateSuite, findTeam } from "../../models/team";
 import { findEnabledTestsForTrigger } from "../../models/test";
 import { findTriggersForGitHubIntegration } from "../../models/trigger";
@@ -19,8 +19,9 @@ type BuildUrl = {
 };
 
 type CreateSuiteForDeployment = {
-  committedAt: string;
   branch: string;
+  commitMessage: string | null;
+  committedAt: string;
   deploymentUrl: string;
   environment?: string;
   installationId: number;
@@ -96,6 +97,7 @@ export const shouldRunTriggerOnDeployment = ({
 const createSuiteForDeployment = async (
   {
     branch,
+    commitMessage,
     committedAt,
     deploymentUrl,
     environment,
@@ -137,10 +139,16 @@ const createSuiteForDeployment = async (
   const { suite } = await createSuiteForTests(
     {
       branch,
+      commit_message: commitMessage,
       environment_variables: { URL: deploymentUrl },
       trigger_id: trigger.id,
       team_id: trigger.team_id,
       tests,
+      ...buildGitUrls({
+        pull_request_id: pullRequestId,
+        repo_name: `${owner}/${repo}`,
+        sha,
+      }),
     },
     options
   );
@@ -202,7 +210,7 @@ export const createSuitesForDeployment = async (
 ): Promise<void> => {
   const [owner, repo] = repoFullName.split("/");
 
-  const { branch, pullRequestId } = await findBranchForCommit(
+  const { branch, commitMessage, pullRequestId } = await findBranchForCommit(
     {
       installationId,
       owner,
@@ -225,6 +233,7 @@ export const createSuitesForDeployment = async (
           createSuiteForDeployment(
             {
               branch,
+              commitMessage,
               committedAt,
               deploymentUrl: buildUrl({
                 deploymentUrl,

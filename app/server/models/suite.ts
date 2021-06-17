@@ -27,6 +27,12 @@ export type SuiteForTeam = Suite & {
   repeat_minutes: number | null;
 };
 
+type BuildGitUrls = {
+  pull_request_id?: number | null;
+  repo_name?: string | null;
+  sha: string;
+};
+
 type BuildTestsForFiles = {
   files: GitHubFile[];
   tests: Test[];
@@ -45,21 +51,29 @@ type BuildTestsForSuiteResult = {
 
 type CreateSuite = {
   branch?: string | null;
+  commit_message?: string | null;
+  commit_url?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
   helpers: string;
   is_api?: boolean;
+  pull_request_url?: string | null;
+  tag_names?: string | null;
   team_id: string;
   trigger_id: string;
 };
 
 type CreateSuiteForTests = {
   branch?: string | null;
+  commit_message?: string | null;
+  commit_url?: string | null;
   creator_id?: string;
   environment_id?: string | null;
   environment_variables?: FormattedVariables | null;
   is_api?: boolean;
+  pull_request_url?: string | null;
+  tag_names?: string | null;
   team_id: string;
   tests: Test[];
   trigger_id?: string | null;
@@ -67,13 +81,43 @@ type CreateSuiteForTests = {
 
 type CreateSuiteForTrigger = {
   branch?: string | null;
+  commit_message?: string | null;
+  commit_url?: string | null;
   environment_variables?: FormattedVariables | null;
+  pull_request_url?: string | null;
   trigger: Trigger;
 };
 
 type FindSuitesForTeam = {
   limit: number;
   team_id: string;
+};
+
+type GitUrls = {
+  commit_url?: string | null;
+  pull_request_url?: string | null;
+};
+
+export const buildGitUrls = ({
+  pull_request_id,
+  repo_name,
+  sha,
+}: BuildGitUrls): GitUrls => {
+  if (!repo_name) return {};
+
+  const baseUrl = "https://github.com";
+
+  return {
+    commit_url: new URL(
+      pull_request_id
+        ? `${repo_name}/pull/${pull_request_id}/commits/${sha}`
+        : `${repo_name}/commit/${sha}`,
+      baseUrl
+    ).href,
+    pull_request_url: pull_request_id
+      ? new URL(`${repo_name}/pull/${pull_request_id}`, baseUrl).href
+      : null,
+  };
 };
 
 export const buildTestsForFiles = (
@@ -124,11 +168,15 @@ export const buildTestsForSuite = async (
 export const createSuite = async (
   {
     branch,
+    commit_message,
+    commit_url,
     creator_id,
     environment_id,
     environment_variables,
     helpers,
     is_api,
+    pull_request_url,
+    tag_names,
     team_id,
     trigger_id,
   }: CreateSuite,
@@ -145,6 +193,8 @@ export const createSuite = async (
 
   const suite = {
     branch: branch || null,
+    commit_message: commit_message || null,
+    commit_url: commit_url || null,
     created_at: timestamp,
     creator_id: creator_id || null,
     environment_id: environment_id || null,
@@ -152,6 +202,8 @@ export const createSuite = async (
     helpers,
     id: cuid(),
     is_api: is_api || false,
+    pull_request_url: pull_request_url || null,
+    tag_names: tag_names || null,
     team_id,
     trigger_id,
     updated_at: timestamp,
@@ -165,7 +217,14 @@ export const createSuite = async (
 };
 
 export const createSuiteForTrigger = async (
-  { branch, environment_variables, trigger }: CreateSuiteForTrigger,
+  {
+    branch,
+    commit_message,
+    commit_url,
+    environment_variables,
+    pull_request_url,
+    trigger,
+  }: CreateSuiteForTrigger,
   { db, logger }: ModelOptions
 ): Promise<CreatedSuite | null> => {
   const log = logger.prefix("createSuiteForTrigger");
@@ -177,7 +236,10 @@ export const createSuiteForTrigger = async (
     const result = await createSuiteForTests(
       {
         branch,
+        commit_message,
+        commit_url,
         environment_variables,
+        pull_request_url,
         team_id: trigger.team_id,
         trigger_id: trigger.id,
         tests,
@@ -195,10 +257,14 @@ export const createSuiteForTrigger = async (
 export const createSuiteForTests = async (
   {
     branch,
+    commit_message,
+    commit_url,
     creator_id,
     environment_id,
     environment_variables,
     is_api,
+    pull_request_url,
+    tag_names,
     team_id,
     tests,
     trigger_id,
@@ -224,11 +290,15 @@ export const createSuiteForTests = async (
   const suite = await createSuite(
     {
       branch,
+      commit_message,
+      commit_url,
       creator_id,
       environment_id,
       environment_variables,
       helpers,
       is_api,
+      pull_request_url,
+      tag_names,
       team_id,
       trigger_id,
     },

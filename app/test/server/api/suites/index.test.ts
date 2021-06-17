@@ -163,6 +163,7 @@ describe("handleSuitesRequest", () => {
     expect(suite).toMatchObject({
       environment_id: "environmentId",
       is_api: true,
+      tag_names: null,
       trigger_id: null,
     });
 
@@ -199,6 +200,7 @@ describe("handleSuitesRequest", () => {
     expect(suite).toMatchObject({
       environment_id: "environmentId",
       is_api: true,
+      tag_names: null,
       trigger_id: null,
     });
 
@@ -233,6 +235,7 @@ describe("handleSuitesRequest", () => {
     expect(suite).toMatchObject({
       environment_id: "environmentId",
       is_api: true,
+      tag_names: "tag1",
       trigger_id: null,
     });
 
@@ -266,6 +269,7 @@ describe("handleSuitesRequest", () => {
     expect(suite).toMatchObject({
       environment_id: "environmentId",
       is_api: true,
+      tag_names: "tag1",
       trigger_id: null,
     });
 

@@ -2,7 +2,7 @@
 
 exports[`buildCommentForSuite builds a comment for multiple failing tests 1`] = `
 "## ❌ QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 2 tests ran, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 2 tests ran, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>❌ 2 fail</summary>
 <table>
@@ -28,7 +28,7 @@ exports[`buildCommentForSuite builds a comment for multiple failing tests 1`] = 
 
 exports[`buildCommentForSuite builds a comment for multiple passing tests 1`] = `
 "## ✅ QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 3 tests ran, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-party-slack.png\\" width=\\"32\\" /> Bean here: 3 tests ran, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>✅ 3 pass</summary>
 <table>
@@ -62,12 +62,12 @@ exports[`buildCommentForSuite builds a comment for multiple passing tests 1`] = 
 
 exports[`buildCommentForSuite builds a comment for multiple running tests 1`] = `
 "## 🐺 QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 2 tests running, [see details here](http://localhost:3000/suites/suiteId)."
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 2 tests running, [see details here](http://localhost:3000/suites/suiteId)."
 `;
 
 exports[`buildCommentForSuite builds a comment for single failing test 1`] = `
 "## ❌ QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>❌ 1 fail</summary>
 <table>
@@ -85,7 +85,7 @@ exports[`buildCommentForSuite builds a comment for single failing test 1`] = `
 
 exports[`buildCommentForSuite builds a comment for single passing test 1`] = `
 "## ✅ QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-party-slack.png\\" width=\\"32\\" /> Bean here: 1 test ran, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>✅ 1 pass</summary>
 <table>
@@ -103,12 +103,12 @@ exports[`buildCommentForSuite builds a comment for single passing test 1`] = `
 
 exports[`buildCommentForSuite builds a comment for single running test 1`] = `
 "## 🐺 QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-black-slack.png\\" width=\\"24\\" /> Wolverina here: 1 test running, [see details here](http://localhost:3000/suites/suiteId)."
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-black-slack.png\\" width=\\"32\\" /> Wolverina here: 1 test running, [see details here](http://localhost:3000/suites/suiteId)."
 `;
 
 exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 1`] = `
 "## 🐺 QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>❌ 2 fail</summary>
 <table>
@@ -147,7 +147,7 @@ exports[`buildCommentForSuite builds a comment for suites with tests of all stat
 
 exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 2`] = `
 "## 🐺 QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>❌ 2 fail</summary>
 <table>
@@ -173,7 +173,7 @@ exports[`buildCommentForSuite builds a comment for suites with tests of all stat
 
 exports[`buildCommentForSuite builds a comment for suites with tests of all statuses 3`] = `
 "## 🐺 QA Wolf - Deployment
-<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"24\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
+<img src=\\"https://qawolf-public.s3.us-east-2.amazonaws.com/wolf-husky-slack.png\\" width=\\"32\\" /> Bean here: 1 test running, [see details here](http://localhost:3000/suites/suiteId).
 <details>
 <summary>✅ 3 pass</summary>
 <table>
