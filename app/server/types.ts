@@ -131,14 +131,10 @@ export type EnvironmentVariable = {
   updated_at?: string;
 };
 
-export type FileModel = {
-  id: string;
-  url: string;
-};
-
-export type File = FileModel & {
+export type File = {
   branch: string | null;
   content: string;
+  id: string;
   is_deleted: boolean;
   is_read_only: boolean;
   path: string;

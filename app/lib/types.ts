@@ -29,7 +29,6 @@ export type File = {
   is_read_only: boolean;
   path: string;
   team_id: string;
-  url: string;
 };
 
 export type GitHubBranch = {

@@ -104,10 +104,15 @@ export class FileModel extends EventEmitter {
 
     this._file = file;
 
-    this._provider = new WebsocketProvider(file.url, file.id, this._doc, {
-      awareness: this.awareness,
-      params: { authorization: localStorage.getItem(JWT_KEY) },
-    });
+    this._provider = new WebsocketProvider(
+      process.env.NEXT_PUBLIC_MULTIPLAYER_URL,
+      file.id,
+      this._doc,
+      {
+        awareness: this.awareness,
+        params: { authorization: localStorage.getItem(JWT_KEY) },
+      }
+    );
 
     this.emit("changed", { key: "content" });
     this.emit("changed", { key: "path" });
