@@ -3,6 +3,7 @@ import ContainerInstanceManagementClient from "azure-arm-containerinstance";
 import { findRunners } from "../models/runner";
 import {
   deleteContainerGroup,
+  findAzureEnv,
   getRunnerContainerGroups,
 } from "../services/azure/container";
 import { ModelOptions } from "../types";
@@ -16,7 +17,8 @@ export const deleteRunners = async (
 ): Promise<void> => {
   const log = logger.prefix("deleteRunners");
 
-  const groups = await getRunnerContainerGroups(client);
+  const azureEnv = await findAzureEnv({ db, logger });
+  const groups = await getRunnerContainerGroups({ azureEnv, client });
 
   log.debug(`check ${groups.length} groups`);
 
@@ -30,6 +32,7 @@ export const deleteRunners = async (
 
     if (!runner || runner.deleted_at) {
       await deleteContainerGroup({
+        azureEnv,
         client,
         logger,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

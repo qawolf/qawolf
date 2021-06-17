@@ -57,7 +57,7 @@ export default async function (
     } else if (job === "syncTeams") {
       await syncTeams(options);
     } else {
-      const client = await getAzureClient();
+      const client = await getAzureClient(options);
       if (job === "deleteRunners") {
         await deleteRunners(client, options);
       } else if (job === "deployRunners") {

@@ -10,6 +10,20 @@ export type SaveArtifacts = {
   videoUrl: string | null;
 };
 
+// Azure types
+export type AzureEnv = {
+  clientId: string;
+  domainId: string;
+  registryPassword: string;
+  registryServer: string;
+  registryUsername: string;
+  resourceGroup: string;
+  secret: string;
+  subscriptionId: string;
+  workspaceId: string;
+  workspaceKey: string;
+};
+
 // Context type
 export type Context = {
   api_key: string | null;
