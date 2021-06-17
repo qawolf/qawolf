@@ -65,7 +65,7 @@ export const EditorProvider: FC = ({ children }) => {
     createdAtRef.current
   );
 
-  const userAwareness = useUserAwareness(test, testModel);
+  const userAwareness = useUserAwareness(testModel);
 
   const { commitChanges, hasChanges } = useCommitChanges({
     branch,

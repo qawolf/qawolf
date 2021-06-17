@@ -2,7 +2,7 @@ import type monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { useContext } from "react";
 
 import { EditorContext } from "../contexts/EditorContext";
-import { EditorBinding } from "../hooks/EditorBinding";
+import { MonacoBinding } from "../hooks/MonacoBinding";
 import { EditorDidMount } from "./CodeEditor";
 import EditorComponent from "./Editor";
 
@@ -18,9 +18,15 @@ export default function HelpersEditor({
   const { helpers, helpersModel, test } = useContext(EditorContext);
 
   const editorDidMount = ({ editor, monaco }: EditorDidMount) => {
-    const binding = new EditorBinding({ editor, model: helpersModel, monaco });
+    const binding = new MonacoBinding(
+      monaco,
+      helpersModel._content,
+      editor.getModel(),
+      new Set([editor]),
+      helpersModel.awareness
+    );
 
-    editor.onDidDispose(() => binding.dispose());
+    editor.onDidDispose(() => binding.destroy());
   };
 
   const isReadOnly =

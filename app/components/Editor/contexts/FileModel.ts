@@ -8,11 +8,12 @@ import { File, User } from "../../../lib/types";
 
 export class FileModel extends EventEmitter {
   _doc = new Y.Doc();
-  _file?: File;
-  _provider?: WebsocketProvider;
-
+  _awareness = new Awareness(this._doc);
   _content = this._doc.getText("file.content");
   _metadata = this._doc.getMap("file.metadata");
+
+  _file?: File;
+  _provider?: WebsocketProvider;
 
   constructor() {
     super();
@@ -26,8 +27,8 @@ export class FileModel extends EventEmitter {
     });
   }
 
-  get awareness(): Awareness | undefined {
-    return this._provider?.awareness;
+  get awareness(): Awareness {
+    return this._awareness;
   }
 
   bind<T>(key: string, callback: (value: T) => void): () => void {
@@ -104,6 +105,7 @@ export class FileModel extends EventEmitter {
     this._file = file;
 
     this._provider = new WebsocketProvider(file.url, file.id, this._doc, {
+      awareness: this.awareness,
       params: { authorization: localStorage.getItem(JWT_KEY) },
     });
 
@@ -112,7 +114,7 @@ export class FileModel extends EventEmitter {
   }
 
   setUserState(user: User, created_at: number): void {
-    this._provider?.awareness.setLocalStateField("user", {
+    this.awareness.setLocalStateField("user", {
       avatar_url: user.avatar_url,
       // used to determine the color
       created_at: created_at,

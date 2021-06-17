@@ -4,7 +4,6 @@ import { Awareness } from "y-protocols/awareness";
 
 import { COLORS } from "../../../shared/buildColor";
 import { FileModel } from "../contexts/FileModel";
-import { FileState } from "./fileModel";
 
 export type CursorPosition = {
   canvas_x: number;
@@ -88,14 +87,11 @@ export class UserAwareness extends EventEmitter {
   }
 }
 
-export const useUserAwareness = (
-  file: FileState,
-  fileModel: FileModel
-): UserAwareness => {
+export const useUserAwareness = (fileModel: FileModel): UserAwareness => {
   const [userAwareness, setUserAwareness] = useState<UserAwareness>();
 
   useEffect(() => {
-    if (!file.isLoaded || !fileModel) return;
+    if (!fileModel) return;
 
     const userAwareness = new UserAwareness(fileModel.awareness);
     setUserAwareness(userAwareness);
@@ -104,7 +100,7 @@ export const useUserAwareness = (
       setUserAwareness(null);
       userAwareness?.dispose();
     };
-  }, [file.isLoaded, fileModel]);
+  }, [fileModel]);
 
   return userAwareness;
 };
