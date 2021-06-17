@@ -267,6 +267,36 @@ describe("createSuite", () => {
       environment_variables
     );
   });
+
+  it("truncates long commit messages", async () => {
+    const longMessage = "abc".repeat(100);
+
+    await createSuite(
+      {
+        branch: "feature",
+        commit_message: longMessage,
+        commit_url:
+          "https://github.com/qawolf/qawolf/pull/1339/commits/65fedc6b1351dc66f31c90d521048f6f73ae26d8",
+        creator_id: trigger.creator_id,
+        environment_id: "environmentId",
+        environment_variables,
+        helpers: "// helpers",
+        is_api: true,
+        pull_request_url: "https://github.com/qawolf/qawolf/pull/1339",
+        tag_names: "Account",
+        team_id: trigger.team_id,
+        trigger_id: trigger.id,
+      },
+      options
+    );
+
+    const suites = await db.select("*").from("suites");
+    expect(suites).toMatchObject([
+      {
+        commit_message: longMessage.substring(0, 70),
+      },
+    ]);
+  });
 });
 
 describe("createSuiteForTests", () => {
