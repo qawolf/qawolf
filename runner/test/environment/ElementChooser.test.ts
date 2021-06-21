@@ -6,17 +6,19 @@ import { ElementChooser } from "../../src/environment/ElementChooser";
 import { ElementChooserValue } from "../../src/types";
 import { launch, LaunchResult, setBody } from "../utils";
 
-const chooser = new ElementChooser({ codeModel: new CodeModel(), variables: {} });
+let launched: LaunchResult;
+let page: Page;
+let variables: Record<string, any> = {}
+
+const chooser = new ElementChooser({ codeModel: new CodeModel(), variables });
 let events: ElementChooserValue[] = [];
 
 chooser.on("elementchooser", (e) => events.push(e));
 
-let launched: LaunchResult;
-let page: Page;
-
 beforeAll(async () => {
   launched = await launch();
   page = launched.page;
+  variables.page = page;
   await chooser.setContext(launched.context);
 });
 
@@ -54,7 +56,7 @@ describe("start", () => {
   });
 
   it("emits isActive true", () => {
-    expect(events).toEqual([{ isActive: true }]);
+    expect(events[0]).toEqual(expect.objectContaining({ isActive: true }));
   });
 });
 
@@ -72,7 +74,7 @@ describe("stop", () => {
   });
 
   it("emits isActive false", () => {
-    expect(events).toEqual([{ isActive: true }, { isActive: false }]);
+    expect(events[1]).toEqual(expect.objectContaining({ isActive: false }));
   });
 });
 
@@ -82,10 +84,13 @@ it("emits elements for the current context", async () => {
   await waitUntil(() => events.length > 1);
 
   expect(events[1]).toEqual({
+    initializeCode: "",
     isActive: true,
     isFillable: false,
+    page,
     selectors: [],
     text: "hello",
+    variable: "page"
   });
 
   // change the context and check it emits those events
@@ -93,6 +98,7 @@ it("emits elements for the current context", async () => {
   await chooser.setContext(context2);
 
   const page2 = await context2.newPage();
+  variables.page2 = page2;
   // workaround since we need to navigate for init script
   await page2.goto("file://" + require.resolve("../fixtures/empty.html"));
   await setBody(page2, "<a>context2</a>");
@@ -105,9 +111,12 @@ it("emits elements for the current context", async () => {
   await waitUntil(() => events.length > 1);
 
   expect(events[1]).toEqual({
+    initializeCode: "",
     isActive: true,
     isFillable: false,
+    page: page2,
     selectors: [],
     text: "context2",
+    variable: "page2"
   });
 });
