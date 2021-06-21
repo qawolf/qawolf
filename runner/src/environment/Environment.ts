@@ -35,7 +35,7 @@ export class Environment extends EventEmitter {
 
     this._updater = new CodeUpdater({ codeModel, variables: this._variables });
 
-    this._elementChooser = new ElementChooser({ variables: this._variables });
+    this._elementChooser = new ElementChooser({ codeModel, variables: this._variables });
     this._elementChooser.on("elementchooser", (event) =>
       this.emit("elementchooser", event)
     );

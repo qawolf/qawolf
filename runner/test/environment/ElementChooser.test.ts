@@ -1,11 +1,12 @@
 import waitUntil from "async-wait-until";
 import { Page } from "playwright";
 
+import { CodeModel } from "../../src/code/CodeModel";
 import { ElementChooser } from "../../src/environment/ElementChooser";
 import { ElementChooserValue } from "../../src/types";
 import { launch, LaunchResult, setBody } from "../utils";
 
-const chooser = new ElementChooser();
+const chooser = new ElementChooser({ codeModel: new CodeModel(), variables: {} });
 let events: ElementChooserValue[] = [];
 
 chooser.on("elementchooser", (e) => events.push(e));

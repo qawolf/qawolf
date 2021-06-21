@@ -294,6 +294,7 @@ export type Wolf = {
 
 // Runner Types
 export interface ElementChooserValue {
+  initializeCode?: string;
   isActive: boolean;
   isFillable?: boolean;
   selectors?: string[];

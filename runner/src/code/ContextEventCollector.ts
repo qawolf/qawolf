@@ -9,8 +9,8 @@ import {
 } from "playwright";
 import { Protocol } from "playwright/types/protocol";
 
-import { buildFrameSelector } from '../playwright'
 import { forEachPage } from "../environment/forEach";
+import { buildFrameSelector } from '../playwright'
 import { ElementEvent, WindowAction, WindowEvent } from "../types";
 
 const debug = Debug("qawolf:ContextEventCollector");

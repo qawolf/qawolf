@@ -3,14 +3,17 @@ import {
   buildEventCode,
   insertEvent,
   PatchEventOptions,
-  prepareSourceVariables,
 } from "./insertEvent";
 import { ActionExpression } from "./parseCode";
+import { prepareSourceVariables } from "./prepareSourceVariables";
 
 export const patchCheckOrUncheck = (
   options: PatchEventOptions
 ): TextOperation[] => {
-  const { initializeCode, variable } = prepareSourceVariables(options);
+  const { initializeCode, variable } = prepareSourceVariables({
+    ...options,
+    shouldBringPageToFront: true
+  });
   if (initializeCode) return insertEvent(options);
 
   const { code, expressions, event } = options;

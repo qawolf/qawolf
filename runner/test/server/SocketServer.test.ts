@@ -138,7 +138,7 @@ describe("SocketServer", () => {
       socket.on("elementchooser", spy);
       socket.emit("subscribe", { type: "elementchooser" });
       await waitUntil(() => spy.mock.calls.length > 0);
-      expect(spy.mock.calls[0][0]).toEqual({ isActive: true });
+      expect(spy.mock.calls[0][0]).toEqual({ isActive: true, variable: "page" });
     });
 
     it("sends initial logs", async () => {

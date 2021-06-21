@@ -35,25 +35,26 @@ export type ElementAction =
   | "selectOption"
   | "uncheck";
 
-export interface ElementChosen {
-  frame?: Frame;
-  frameSelector?: string;
+export interface ElementChosen extends PlaywrightEvent {
   isFillable: boolean;
-  page: Page;
   selectors: string[];
   text: string;
 }
 
 export type ElementChooserValue = Partial<ElementChosen> & {
+  initializeCode?: string;
   isActive: boolean;
   variable?: string;
 };
 
-export interface ElementEvent {
-  action: ElementAction;
+export interface PlaywrightEvent {
   page: Page;
   frame?: Frame;
   frameSelector?: string;
+}
+
+export interface ElementEvent extends PlaywrightEvent {
+  action: ElementAction;
   relatedClickSelector?: string;
   selector: string;
   time: number;
@@ -138,9 +139,8 @@ export type Variables = { [key: string]: any };
 
 export type WindowAction = "goBack" | "goto" | "popup" | "reload";
 
-export interface WindowEvent {
+export interface WindowEvent extends PlaywrightEvent {
   action: WindowAction;
-  page: Page;
   popup?: Page;
   time: number;
   value?: string | null;

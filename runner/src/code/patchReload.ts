@@ -2,12 +2,15 @@ import { TextOperation } from "../types";
 import {
   insertEvent,
   PatchEventOptions,
-  prepareSourceVariables,
 } from "./insertEvent";
+import { prepareSourceVariables } from "./prepareSourceVariables";
 
 export const patchReload = (options: PatchEventOptions): TextOperation[] => {
   const { expressions } = options;
-  const { variable } = prepareSourceVariables(options);
+  const { variable } = prepareSourceVariables({
+    ...options,
+    shouldBringPageToFront: true
+  });
 
   const lastExpression = expressions[expressions.length - 1];
 

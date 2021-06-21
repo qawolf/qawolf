@@ -2,6 +2,9 @@ import Debug from "debug";
 import { EventEmitter } from "events";
 import { BrowserContext, Frame, Page } from "playwright";
 
+import { CodeModel } from "../code/CodeModel";
+import { parseActionExpressions } from "../code/parseCode";
+import { prepareSourceVariables } from "../code/prepareSourceVariables";
 import { buildFrameSelector } from '../playwright'
 import { ElementChooserValue, ElementChosen, ElementEvent, TextOperation, Variables, WindowEvent } from "../types";
 
@@ -12,49 +15,22 @@ type BindingOptions = {
   page: Page;
 };
 
-export type GetFrameOrPageVariableInput = {
-  event: ElementChosen;
-  variables: Variables;
-};
-
-export const getFrameOrPageVariable = ({
-  event,
-  variables,
-}: GetFrameOrPageVariableInput): string => {
-  const pageVariable = Object.keys(variables).find(
-    (name) => variables[name] === event.page
-  );
-
-  if (!pageVariable) throw new Error("No matching page found");
-
-  let frameVariable: string | undefined = undefined;
-
-  if (event.frameSelector) {
-    if (!event.frame) throw new Error("No frame provided");
-
-    frameVariable = Object.keys(variables).find(
-      (name) => variables[name] === event.frame
-    );
-
-    if (!frameVariable) throw new Error("No matching frame found");
-  }
-
-  return frameVariable || pageVariable
-};
-
 interface ElementChooserOptions {
+  codeModel: CodeModel;
   variables: Variables;
 }
 
 export class ElementChooser extends EventEmitter {
+  _codeModel: CodeModel;
   _context?: BrowserContext;
   _contextEmitter?: EventEmitter;
   _isActive = false;
   _lastElementChosen: ElementChosen | null = null;
   _variables: Variables;
 
-  constructor({ variables }: ElementChooserOptions) {
+  constructor({ codeModel, variables }: ElementChooserOptions) {
     super();
+    this._codeModel = codeModel;
     this._variables = variables;
   }
 
@@ -103,51 +79,60 @@ export class ElementChooser extends EventEmitter {
     });
   }
 
+  async _evalOnEveryFrame(frameEvalFn: () => void): Promise<void> {
+    const allFrames = (this._context?.pages() || [])
+    .filter((page) => !page.isClosed())
+    .map((page) => page.frames())
+    .flat()
+
+    const promises = allFrames.map((frame) => frame.evaluate(frameEvalFn));
+    await Promise.all(promises);
+  }
+
   async start(): Promise<void> {
     this._setActive(true);
 
-    const promises = (this._context?.pages() || [])
-      .filter((page) => !page.isClosed())
-      .map((page) => {
-        return page.evaluate(() => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const qawolf: any = (window as any).qawolf;
-          qawolf.actionRecorder.stop();
-          qawolf.elementChooser.start();
-        });
-      });
-
-    await Promise.all(promises);
+    await this._evalOnEveryFrame(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const qawolf: any = (window as any).qawolf;
+      qawolf.actionRecorder.stop();
+      qawolf.elementChooser.start();
+    });
   }
 
   async stop(): Promise<void> {
     this._setActive(false);
 
-    const promises = (this._context?.pages() || [])
-      .filter((page) => !page.isClosed())
-      .map((page) => {
-        return page.evaluate(() => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const qawolf: any = (window as any).qawolf;
-          qawolf.elementChooser.stop();
-          qawolf.actionRecorder.start();
-        });
-      });
-
-    await Promise.all(promises);
+    await this._evalOnEveryFrame(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const qawolf: any = (window as any).qawolf;
+      qawolf.elementChooser.stop();
+      qawolf.actionRecorder.start();
+    });
   }
 
   get value(): ElementChooserValue {
+    let initializeCode
     let variable = "page";
     if (this._lastElementChosen) {
-      variable = getFrameOrPageVariable({
+      ({ initializeCode, variable } = prepareSourceVariables({
+        // Don't add reference to this._variables or any initializeCode
+        // will get lost by the time the snippet is inserted.
+        declare: false,
+        expressions: parseActionExpressions(this._codeModel.value),
         event: this._lastElementChosen,
+        shouldBringPageToFront: true,
+        // There should never be a case when a page variable doesn't
+        // already exist since the page must be already loaded to
+        // choose on it (I think)
+        shouldDeclarePageVariable: false,
         variables: this._variables,
-      })
+      }))
     }
 
     return {
       ...(this._lastElementChosen || {}),
+      initializeCode,
       isActive: this._isActive,
       variable
     };

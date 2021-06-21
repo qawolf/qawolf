@@ -36,7 +36,16 @@ export default function Snippet({ isVisible }: Props): JSX.Element {
   const addRunSnippet = () => {
     if (!hasChosenElement || !testModel) return;
 
-    const selection = insertSnippet(testModel, snippetCode);
+    // Combine initialize code with snippet. We don't show
+    // init code in the snippet box but we do insert it.
+    let codeToInsert: string | undefined;
+    if (typeof elementChooserValue?.initializeCode === 'string' && elementChooserValue?.initializeCode.length > 0) {
+      codeToInsert = elementChooserValue?.initializeCode + snippetCode;
+    } else {
+      codeToInsert = snippetCode;
+    }
+
+    const selection = insertSnippet(testModel, codeToInsert);
 
     // this will enable code generation so make sure to call it before
     // run test which will disable code generation
