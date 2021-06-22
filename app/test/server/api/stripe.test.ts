@@ -192,7 +192,7 @@ describe("shouldIgnoreInvoicePaidEvent", () => {
       shouldIgnoreInvoicePaidEvent(
         {
           billing_reason: "subscription",
-          subscription: "subscription",
+          subscription: "stripeSubscriptionId",
         } as Stripe.Invoice,
         options
       )
