@@ -1,5 +1,3 @@
-import { edgeSize } from "../../../../theme/theme";
-
 const ClickActions = [
   "Assert element",
   "Assert element text",
@@ -100,10 +98,4 @@ export const formatArgument = (value: string | null): string => {
   if (!escaped.includes(`'`)) return `'${escaped}'`;
 
   return "`" + escaped.replace(/`/g, "\\`") + "`";
-};
-
-export const labelProps = {
-  color: "gray0",
-  margin: { bottom: edgeSize.xxsmall },
-  size: "componentBold" as const,
 };

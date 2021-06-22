@@ -3,7 +3,7 @@ import { Box } from "grommet";
 import { copy } from "../../../../theme/copy";
 import BrowserElement from "../../../shared/icons/BrowserElement";
 import Text from "../../../shared/Text";
-import { labelProps } from "./helpers";
+import { labelProps } from "./styleHelpers";
 
 export default function ChooseElement(): JSX.Element {
   return (
