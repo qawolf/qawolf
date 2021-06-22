@@ -3,6 +3,8 @@ import { parseActionExpressions } from "../../src/code/parseCode";
 import { patchCheckOrUncheck } from "../../src/code/patchCheckOrUncheck"
 import { PATCH_HANDLE } from "../../src/code/patchUtils";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const options: PatchEventOptions = {
   code: "",
   expressions: [],

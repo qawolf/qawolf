@@ -6,7 +6,7 @@ import { CodeModel } from "../code/CodeModel";
 import { parseActionExpressions } from "../code/parseCode";
 import { prepareSourceVariables } from "../code/prepareSourceVariables";
 import { buildFrameSelector } from '../playwright'
-import { ElementChooserValue, ElementChosen, ElementEvent, TextOperation, Variables, WindowEvent } from "../types";
+import { ElementChooserValue, ElementChosen, Variables } from "../types";
 
 const debug = Debug("qawolf:ElementChooser");
 

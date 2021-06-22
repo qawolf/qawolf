@@ -7,6 +7,8 @@ import {
 } from "../../src/code/prepareSourceVariables";
 import { ElementEvent } from "../../src/types";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const time = Date.now();
 
 const clickEvent: ElementEvent = {

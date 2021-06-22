@@ -1,5 +1,5 @@
 import waitUntil from "async-wait-until";
-import { Page } from "playwright";
+import { Frame, Page } from "playwright";
 
 import { CodeModel } from "../../src/code/CodeModel";
 import { ElementChooser } from "../../src/environment/ElementChooser";
@@ -8,7 +8,7 @@ import { launch, LaunchResult, setBody } from "../utils";
 
 let launched: LaunchResult;
 let page: Page;
-let variables: Record<string, any> = {}
+const variables: Record<string, Page | Frame> = {}
 
 const chooser = new ElementChooser({ codeModel: new CodeModel(), variables });
 let events: ElementChooserValue[] = [];
