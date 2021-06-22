@@ -50,6 +50,11 @@ export const shouldIgnoreInvoicePaidEvent = (
 ): boolean => {
   const log = logger.prefix("shouldIgnoreInvoicePaidEvent");
 
+  if (!invoice.subscription) {
+    log.debug("true, no subscription");
+    return true;
+  }
+
   const firstInvoice = invoice.billing_reason === "subscription_create";
   // first invoice is already handled by the checkout.session.completed event
   if (firstInvoice) {

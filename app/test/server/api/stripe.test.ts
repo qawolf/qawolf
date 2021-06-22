@@ -126,6 +126,14 @@ describe("handleInvoicePaid", () => {
     });
   });
 
+  it("does nothing if no subscription", async () => {
+    jest.spyOn(teamModel, "updateTeam");
+
+    await handleInvoicePaid({ subscription: null } as Stripe.Invoice, options);
+
+    expect(teamModel.updateTeam).not.toBeCalled();
+  });
+
   it("does nothing if should ignore webhook", async () => {
     jest
       .spyOn(stripeFunction, "findMetadataForSubscription")
@@ -158,6 +166,18 @@ describe("handleInvoicePaid", () => {
 });
 
 describe("shouldIgnoreInvoicePaidEvent", () => {
+  it("returns true if no subscription", () => {
+    expect(
+      shouldIgnoreInvoicePaidEvent(
+        {
+          billing_reason: "subscription",
+          subscription: null,
+        } as Stripe.Invoice,
+        options
+      )
+    ).toBe(true);
+  });
+
   it("returns true if first invoice", () => {
     expect(
       shouldIgnoreInvoicePaidEvent(
@@ -167,10 +187,13 @@ describe("shouldIgnoreInvoicePaidEvent", () => {
     ).toBe(true);
   });
 
-  it("returns true otherwise", () => {
+  it("returns false otherwise", () => {
     expect(
       shouldIgnoreInvoicePaidEvent(
-        { billing_reason: "subscription" } as Stripe.Invoice,
+        {
+          billing_reason: "subscription",
+          subscription: "subscription",
+        } as Stripe.Invoice,
         options
       )
     ).toBe(false);
