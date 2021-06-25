@@ -42,8 +42,9 @@ export class ElementChooser extends EventEmitter {
       this._lastElementChosen = null;
     }
 
-    debug("emit %j", this.value);
-    this.emit("elementchooser", this.value);
+    const val = this.value;
+    debug("emit %j", val);
+    this.emit("elementchooser", val);
   }
 
   async setContext(context: BrowserContext): Promise<void> {
@@ -59,10 +60,11 @@ export class ElementChooser extends EventEmitter {
 
     contextEmitter.on("qawElementChosen", (event: ElementChosen) => {
       this._lastElementChosen = event;
-      debug("emit %j", this.value);
 
+      const val = this.value;
+      debug("emit %j", val);
       if (this._isActive) {
-        this.emit("elementchooser", this.value);
+        this.emit("elementchooser", val);
       }
     });
 
@@ -112,26 +114,26 @@ export class ElementChooser extends EventEmitter {
   }
 
   get value(): ElementChooserValue {
-    let initializeCode
-    let variable = "page";
-    if (this._lastElementChosen) {
-      ({ initializeCode, variable } = prepareSourceVariables({
-        // Don't add reference to this._variables or any initializeCode
-        // will get lost by the time the snippet is inserted.
-        declare: false,
-        expressions: parseActionExpressions(this._codeModel.value),
-        event: this._lastElementChosen,
-        shouldBringPageToFront: true,
-        // There should never be a case when a page variable doesn't
-        // already exist since the page must be already loaded to
-        // choose on it (I think)
-        shouldDeclarePageVariable: false,
-        variables: this._variables,
-      }))
+    if (!this._lastElementChosen) {
+      return { isActive: this._isActive };
     }
 
+    const { initializeCode, variable = "page" } = prepareSourceVariables({
+      // Don't add reference to this._variables or any initializeCode
+      // will get lost by the time the snippet is inserted.
+      declare: false,
+      expressions: parseActionExpressions(this._codeModel.value),
+      event: this._lastElementChosen,
+      shouldBringPageToFront: true,
+      // There should never be a case when a page variable doesn't
+      // already exist since the page must be already loaded to
+      // choose on it (I think)
+      shouldDeclarePageVariable: false,
+      variables: this._variables,
+    })
+
     return {
-      ...(this._lastElementChosen || {}),
+      ...this._lastElementChosen,
       initializeCode,
       isActive: this._isActive,
       variable
