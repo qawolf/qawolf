@@ -34,6 +34,12 @@ export class ElementChooser extends EventEmitter {
     this._variables = variables;
   }
 
+  // Primarily for tests
+  _reset(): void {
+    this._codeModel.setValue('')
+    this._setActive(false)
+  }
+
   _setActive(value: boolean): void {
     this._isActive = value;
 
