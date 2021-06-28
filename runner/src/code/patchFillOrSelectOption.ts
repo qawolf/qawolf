@@ -1,16 +1,19 @@
 import { ElementEvent, TextOperation } from "../types";
+import { formatArgument } from "./formatArgument";
 import {
-  formatArgument,
   insertEvent,
   PatchEventOptions,
-  prepareSourceVariables,
 } from "./insertEvent";
 import { ActionExpression } from "./parseCode";
+import { prepareSourceVariables } from "./prepareSourceVariables";
 
 export const findExpressionToUpdate = (
   options: PatchEventOptions
 ): ActionExpression | null => {
-  const { initializeCode, variable } = prepareSourceVariables(options);
+  const { initializeCode, variable } = prepareSourceVariables({
+    ...options,
+    shouldBringPageToFront: true
+  });
   if (initializeCode) return null;
 
   const { expressions, event } = options;

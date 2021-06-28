@@ -3,8 +3,8 @@ import { useEffect } from "react";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
-import { labelProps } from "./helpers";
 import Select from "./Select";
+import { labelProps } from "./styleHelpers";
 
 type Props = {
   onSelectOption: (option: string) => void;

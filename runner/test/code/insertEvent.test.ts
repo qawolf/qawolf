@@ -1,12 +1,7 @@
 import {
   buildEventCode,
-  findLastPageVariable,
-  formatArgument,
-  insertEvent,
-  prepareSourceVariable,
-  prepareSourceVariables,
+  insertEvent
 } from "../../src/code/insertEvent";
-import { parseActionExpressions } from "../../src/code/parseCode";
 import { PATCH_HANDLE } from "../../src/code/patchUtils";
 import { ElementEvent } from "../../src/types";
 
@@ -22,36 +17,6 @@ const clickEvent: ElementEvent = {
   page: "p1" as any,
   time,
 };
-
-describe("formatArgument", () => {
-  it("returns an empty string for null", () => {
-    expect(formatArgument(null)).toEqual('""');
-  });
-
-  it("serializes newlines", () => {
-    expect(
-      formatArgument(`line 1
-line 2`)
-    ).toEqual('"line 1\\nline 2"');
-  });
-
-  it("uses double quotes by default", () => {
-    expect(formatArgument("a")).toBe(`"a"`);
-  });
-
-  it("uses single quotes when there are double quotes in the selector", () => {
-    expect(formatArgument('"a"')).toBe(`'"a"'`);
-  });
-
-  it("uses backtick when there are double and single quotes", () => {
-    expect(formatArgument(`text="a" and 'b'`)).toBe("`text=\"a\" and 'b'`");
-
-    // escapes backtick
-    expect(formatArgument("text=\"a\" and 'b' and `c`")).toBe(
-      "`text=\"a\" and 'b' and \\`c\\``"
-    );
-  });
-});
 
 describe("buildEventCode", () => {
   it("builds an action with a selector", () => {
@@ -88,155 +53,6 @@ describe("buildEventCode", () => {
         "page"
       )
     ).toEqual(`await page.keyboard.press("Escape");`);
-  });
-});
-
-describe("prepareSourceVariable", () => {
-  const frame = {} as any;
-  const page = { bringToFront: 1 } as any;
-
-  it("declares a page", () => {
-    const variables: any = {};
-    expect(
-      prepareSourceVariable({ declare: true, pageOrFrame: page, variables })
-    ).toEqual("page");
-    expect(variables.page).toEqual(page);
-  });
-
-  it("declares a frame", () => {
-    const variables: any = {};
-    expect(
-      prepareSourceVariable({ declare: true, pageOrFrame: frame, variables })
-    ).toEqual("frame");
-    expect(variables.frame).toEqual(frame);
-  });
-
-  it("increments to find an unused variable", () => {
-    const variables: any = { page: "" };
-    expect(
-      prepareSourceVariable({ declare: true, pageOrFrame: page, variables })
-    ).toEqual("page2");
-    expect(variables.page2).toEqual(page);
-  });
-});
-
-describe("findLastPageVariable", () => {
-  it("finds the variable of the last expression that is a page", () => {
-    const expressions = parseActionExpressions(
-      `await page2.click('.hello');${PATCH_HANDLE}`
-    );
-
-    expect(
-      findLastPageVariable(expressions, {
-        page2: {
-          // emulate a page
-          bringToFront: 1,
-        },
-      })
-    ).toEqual("page2");
-  });
-});
-
-describe("prepareSourceVariables", () => {
-  it("initializes the frame if it does not exist", () => {
-    expect(
-      prepareSourceVariables({
-        event: {
-          ...clickEvent,
-          frame: "f1" as any,
-          frameSelector: "#frame",
-        },
-        expressions: [],
-        variables: { page: "p1" },
-      })
-    ).toEqual({
-      initializeCode: `const frame = await (await page.waitForSelector("#frame")).contentFrame();\n`,
-      pageVariable: "page",
-      frameVariable: "frame",
-      variable: "frame",
-    });
-  });
-
-  it("reuses the frame that exists", () => {
-    expect(
-      prepareSourceVariables({
-        event: {
-          ...clickEvent,
-          frame: "f2" as any,
-          frameSelector: "#frame",
-        },
-        expressions: [],
-        variables: { frame2: "f2", page: "p1" },
-      })
-    ).toEqual({
-      initializeCode: "",
-      pageVariable: "page",
-      frameVariable: "frame2",
-      variable: "frame2",
-    });
-  });
-
-  it("initializes a new page for a goto", () => {
-    expect(
-      prepareSourceVariables({
-        event: {
-          action: "goto",
-          page: { bringToFront: 1, name: "p3" } as any,
-          time,
-          value: "https://google.com",
-        },
-        expressions: [],
-        variables: { page: "p1", page2: "p2" },
-      })
-    ).toEqual({
-      initializeCode: `const page3 = await context.newPage();\n`,
-      pageVariable: "page3",
-      variable: "page3",
-    });
-  });
-
-  it("reuses the page that exists", () => {
-    expect(
-      prepareSourceVariables({
-        event: {
-          action: "goto",
-          page: "p1" as any,
-          time,
-          value: "https://google.com",
-        },
-        expressions: [],
-        variables: { page: "p1" },
-      })
-    ).toEqual({
-      initializeCode: "",
-      pageVariable: "page",
-      variable: "page",
-    });
-  });
-
-  it("brings the page to the front when it changes", () => {
-    const expressions = parseActionExpressions(
-      `await page2.click('.hello');${PATCH_HANDLE}`
-    );
-
-    expect(
-      prepareSourceVariables({
-        event: clickEvent,
-        expressions,
-        variables: {
-          page: "p1",
-          page2: {
-            // emulate a page
-            bringToFront: 1,
-          },
-        },
-      })
-    ).toEqual({
-      frameVariable: undefined,
-      initializeCode: `await page.bringToFront();\n`,
-      pageVariable: "page",
-      variable: "page",
-    });
   });
 });
 

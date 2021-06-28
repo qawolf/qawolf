@@ -2,8 +2,9 @@ import { Box } from "grommet";
 
 import { copy } from "../../../../theme/copy";
 import Text from "../../../shared/Text";
-import { ActionType, buildActionOptions, labelProps } from "./helpers";
+import { ActionType, buildActionOptions } from "./helpers";
 import Select from "./Select";
+import { labelProps } from "./styleHelpers";
 
 type Props = {
   hasText: boolean;
