@@ -36,9 +36,13 @@ jobs:
         if: matrix.test == 'lint'
         working-directory: ./recorder
 
+      - run: Xvfb :0 -ac -screen 0 1288x804x24 &
+        if: matrix.test != 'lint'
+
       - name: Test recorder
         run: QAWOLF_BROWSER=${{ matrix.test }} npm test
         if: matrix.test != 'lint'
         working-directory: ./recorder
         env:
           CI: true
+          DISPLAY: ":0.0"

@@ -61,20 +61,11 @@ export class ActionRecorder {
 
     this._events.add(event);
 
-    const elementAction = resolveElementAction(this._events);
+    const elementAction = resolveElementAction(this._events, this._selectorCache);
 
     // If no action was returned, this isn't an event we care about
     // so we can skip building a selector and emitting it.
     if (!elementAction) return;
-
-    // Build the selector
-    if (elementAction.action !== "keyboard.press" && !elementAction.selector) {
-      elementAction.selector = getSelector(
-        event.target as HTMLElement,
-        1000,
-        this._selectorCache
-      );
-    }
 
     debug(
       `ActionRecorder: ${elementAction.action} action recorded:`,
@@ -95,6 +86,13 @@ export class ActionRecorder {
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
       if ((event as MouseEvent).button !== 0) return;
 
+      // Some newer components emit PointerEvent instead of older MouseEvent.
+      // Usually multiple of these are emitted for the same "click". For now,
+      // we will handle only "mouse" type events.
+      if ((event as PointerEvent).pointerId != null && (event as PointerEvent).pointerType !== "mouse") {
+        return;
+      }
+      
       this.recordEvent(event);
     });
 

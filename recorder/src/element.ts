@@ -1,6 +1,7 @@
 export type ElementDescriptor = {
-  isContentEditable: boolean;
+  inputIsChecked?: boolean;
   inputType?: string;
+  isContentEditable: boolean;
   tag: string;
 };
 
@@ -35,6 +36,7 @@ export const getDescriptor = (element: HTMLElement): ElementDescriptor => {
 
   if (tag === "input") {
     descriptor.inputType = (element as HTMLInputElement).type;
+    descriptor.inputIsChecked = (element as HTMLInputElement).checked;
   }
 
   return descriptor;

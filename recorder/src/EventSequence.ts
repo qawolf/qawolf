@@ -22,6 +22,8 @@ export class EventSequence {
     if (value !== undefined) value = typeof value === "string" ? value : "";
 
     this._events.unshift({
+      eventScreenCoords: (event as MouseEvent).screenX == null ? undefined : `${(event as MouseEvent).screenX}:${(event as MouseEvent).screenY}`,
+      eventTimeStamp: event.timeStamp,
       isTrusted: event.isTrusted,
       selector,
       target: event.target as HTMLElement,
@@ -32,6 +34,10 @@ export class EventSequence {
 
     // purge older events no longer relevant to this event
     this._events = this._events.filter((e) => time - e.time < 200);
+  }
+
+  getMostRecentClicks(): EventDescriptor[] {
+    return this._events.filter((event) => event.type === "click");
   }
 
   getMouseDown(): EventDescriptor | undefined {
@@ -52,6 +58,27 @@ export class EventSequence {
       return false;
 
     return last.target === previous.target && last.value === previous.value;
+  }
+
+  isDuplicateClick(): boolean {
+    // For a click, back-to-back events on the same selector may have been
+    // intentional, but sometimes they have an identical timestamp. When this
+    // happens it seems almost certain that we want to record only one.
+    // The targets are usually different when this happens, but we'll find the
+    // correct one when we search for the topmost click target while building
+    // the selector.
+    const [last, previous] = this._events;
+
+    if (!last || !previous) return false;
+    if (last.type !== "click" || previous.type !== "click") return false;
+
+    return (
+      // On firefox the timestamp can differ by a few MS even when the same mousedown
+      // caused both click events. But testing if the screen coordinates match seems
+      // to work as a fallback.
+      (last.eventTimeStamp !== undefined && last.eventTimeStamp === previous.eventTimeStamp) ||
+      (last.eventScreenCoords !== undefined && last.eventScreenCoords === previous.eventScreenCoords)
+    );
   }
 
   get last(): EventDescriptor {
