@@ -11,8 +11,7 @@
 
 <p align="center">
     <a href="https://www.qawolf.com/sign-up">🚀 Start Testing</a> |
-    <a href="https://www.qawolf.com/docs">📖 Documentation</a> |
-    <a href="https://github.com/qawolf/qawolf/projects/4">🗺️ Roadmap</a>
+    <a href="https://www.qawolf.com/docs">📖 Documentation</a>
 </p>
 
 <a href="https://youtu.be/q4_kSEh2O7o" alt="create your first browser test">
