@@ -1,5 +1,0 @@
-node_modules/
-.eslintignore
-.gitignore
-eslintrc.json
-docker-compose.override.yml
