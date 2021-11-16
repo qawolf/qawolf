@@ -32,7 +32,7 @@ We found browser testing too difficult and often gave up on it entirely in our p
 
 ## 🙋 Get help
 
-We want QA Wolf to work well for you, so please reach out for help! Join our [Slack community](https://slack.qawolf.com) or email us at hello@qawolf.com.
+We want QA Wolf to work well for you, so please reach out for help! Please email us at hello@qawolf.com.
 
 <br/>
 
