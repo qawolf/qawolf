@@ -5,18 +5,15 @@
 <p align="center">Set up browser tests in minutes to find bugs before your users do</p>
 
 <p align="center">
-<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Ship+confidently&url=https%3A%2F%2Fqawolf.com"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" /></a>
-<a href="http://slack.qawolf.com"><img src="https://img.shields.io/badge/slack-qawolf-36C5F0.svg?logo=slack" alt="slack" /></a>
+<a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Ship+confidently&url=https%3A%2F%2Fqawolf.com"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" />
 </p>
 
 <p align="center">
-    <a href="https://www.qawolf.com/sign-up">🚀 Start Testing</a> |
-    <a href="https://www.qawolf.com/docs">📖 Documentation</a>
+    <a href="https://www.qawolf.com">🚀 Start Testing</a> |
+    <a href="https://app.qawolf.com/docs">📖 Documentation</a>
 </p>
 
-<a href="https://youtu.be/q4_kSEh2O7o" alt="create your first browser test">
 <img src="https://qawolf-public.s3.us-east-2.amazonaws.com/create.gif">
-</a>
 
 <br/>
 
