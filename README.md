@@ -10,7 +10,7 @@
 
 ## 🐺 What is QA Wolf?
 
-At QA Wolf, we’re building the magical QA experience that we wanted when we were developers. With zero effort on your part, we get you to 80% automated test coverage in 4 months — and keep you there. 
+At QA Wolf, we’re building the magical QA experience that we wanted when we were managing engineering teams. With zero effort on your part, we get you to 80% automated test coverage in 4 months — and keep you there. 
 
 - **We plan.** You’ll get a test matrix covering every user flow in your web app, from happy path to edge case and everything in between. 
 - **We automate.** Using vanilla, open source Microsoft Playwright so that there’s no vendor lock-in — you own every test. 
