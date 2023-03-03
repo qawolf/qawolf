@@ -1,50 +1,35 @@
-<p align="center"><img src="https://qawolf-public.s3.us-east-2.amazonaws.com/logo-small.png" height="80" /></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/3012067/222813880-5aa5ee85-b2b7-4630-8767-2aed8745452f.png" height="80" /></p>
 
 <h1 align="center">QA Wolf - Ship confidently</h1>
 
-<p align="center">Set up browser tests in minutes to find bugs before your users do</p>
+<p align="center">We take testing off your plate. We build complete coverage in 4 months and keep you there. You get unlimited, parallel test runs on our infrastructure, and we guarantee zero flakes. It’s like magic but it’s QA Wolf.</p>
 
 <p align="center">
 <a align="center" href="https://twitter.com/intent/tweet?text=%F0%9F%90%BA+QA+Wolf%3A+Ship+confidently&url=https%3A%2F%2Fqawolf.com"><img src="https://img.shields.io/twitter/url/https/github.com/tterb/hyde.svg?style=social" alt="tweet" />
 </p>
 
-<p align="center">
-    <a href="https://www.qawolf.com">🚀 Start Testing</a> |
-    <a href="https://app.qawolf.com/docs">📖 Documentation</a>
-</p>
-
-<img src="https://qawolf-public.s3.us-east-2.amazonaws.com/create.gif">
-
-<br/>
-
 ## 🐺 What is QA Wolf?
 
-QA Wolf helps you create, run, and maintain end-to-end tests 10x faster.
+At QA Wolf, we’re building the magical QA experience that we wanted when we were managing engineering teams. With zero effort on your part, we get you to 80% automated test coverage in 4 months — and keep you there. 
 
-We found browser testing too difficult and often gave up on it entirely in our previous jobs. We built QA Wolf for developers like us who want to spend less time testing and more time shipping 🚀
+- **We plan.** You’ll get a test matrix covering every user flow in your web app, from happy path to edge case and everything in between. 
+- **We automate.** Using vanilla, open source Microsoft Playwright so that there’s no vendor lock-in — you own every test. 
+- **We run.** Every test in full parallel, on our own infrastructure, as many times as you want — no extra charge. 
+- **We triage.** When tests fail, we have full-time human QA engineers review the tests. We clear out all the noise of flaky tests and give you clear, human-verified bug reports. 
+- **We maintain.** Flaky and broken tests are fixed automatically, 24-hours a day. 
+- **We integrate.** Into your CI/CD, your issue tracker, your messaging app — we’ll feel like part of your team. 
 
-<a href="https://www.qawolf.com/docs/why-qa-wolf">Learn more here</a>
+It’s truly everything you could possibly want from automated testing. And it’s half the cost of an in-house QA engineer. 
 
-<br/>
+## 🕹️ Schedule a demo
 
-## 🙋 Get help
+Let’s talk about your testing needs and how QA Wolf can help you stop bugs from reaching production without waiting hours or days for QA. [Find a time](https://www.qawolf.com/get-started) that works for you.
 
-We want QA Wolf to work well for you, so please reach out for help! Please email us at hello@qawolf.com.
+## 💻 Work with us
 
-<br/>
-
-## 💻 Contribute
-
-We welcome contributions big and small.
-
-Not sure how to started? Schedule a free, no-pressure pairing session with us [here](https://calendly.com/qawolf/30min).
-
-<br/>
+Keep any eye out for new job openings [here](https://angel.co/company/qawolf). 
 
 ## 🙏 Acknowledgments
 
-QA Wolf is built with many awesome open source tools. We'd like to thank those who contributed to all of them, in particular Microsoft's [Playwright](https://github.com/microsoft/playwright) library.
+We use several open source tools and want to thank everyone who contributes to those great projects, particularly Microsoft's [Playwright](https://github.com/microsoft/playwright) library.
 
-<br/>
-
-We'd also like to thank everyone who has provided us with invaluable feedback. 🐺
