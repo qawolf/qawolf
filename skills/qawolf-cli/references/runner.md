@@ -186,7 +186,7 @@ Usage: qawolf runner list [options]
 List the runners running on your team
 
 Options:
-  --here      Only the runners this directory launched
+  --here      Only the runners this directory launched, and the one QAWOLF_RUNNER_ID names
   -h, --help  display help for command
 
 Examples:
@@ -195,12 +195,13 @@ Examples:
   $ qawolf runner list --json
 
 What the list holds:
-  The list names the runners this directory has launched that are still running,
-  and marks the one a command with no --runner would reach. It also includes the
-  runner named by QAWOLF_RUNNER_ID even though this directory did not launch it,
-  so a harness handed a runner sees it alongside the ones it started itself. Use
-  the id column with --runner to address any of them; addressing one does not
-  make it the default.
+  The list names every runner running on your team, and marks the ones this
+  directory launched and the one a command with no --runner would reach. --here
+  narrows it to this directory's runners and the runner named by
+  QAWOLF_RUNNER_ID, even when this directory did not launch it, so a harness
+  handed a runner sees it alongside the ones it started itself. Use the id
+  column with --runner to address any of them; addressing one does not make it
+  the default.
 
   Every runner is looked up before it is listed, so a runner that idled out is
   absent rather than reported. The lookup neither starts a runner nor resets an
