@@ -30,11 +30,18 @@ describe("investigation artifact downloads", () => {
     expect(result).toEqual({ status: "too-large" });
   });
 
-  it("downloads and parses a trace archive larger than 50 MiB", async () => {
+  it("downloads and parses a trace archive at the 75 MiB limit", async () => {
+    const limit = 75 * 1024 * 1024;
     const archive = new JSZip();
     archive.file("trace.trace", '{"type":"context-options"}\n');
-    archive.file("resources/large-resource", Buffer.alloc(51 * 1024 * 1024));
+    archive.file("resources/large-resource", Buffer.alloc(0));
+    const emptyArchive = await archive.generateAsync({ type: "nodebuffer" });
+    archive.file(
+      "resources/large-resource",
+      Buffer.alloc(limit - emptyArchive.byteLength),
+    );
     const bytes = await archive.generateAsync({ type: "nodebuffer" });
+    expect(bytes.byteLength).toBe(limit);
     const fetchImpl = (async () =>
       new Response(bytes)) as unknown as typeof fetch;
 
