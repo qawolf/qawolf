@@ -11,11 +11,10 @@ export type ArtifactDownload =
         | "unavailable";
     };
 
-const traceLimit = 50 * 1024 * 1024;
+const traceLimit = 75 * 1024 * 1024;
 const logTailLimit = 5 * 1024 * 1024;
 const logTransferLimit = 50 * 1024 * 1024;
-// Covers the whole transfer, not just the response headers: 50 MB in two
-// minutes still allows a slow (~3.5 Mbit/s) connection.
+// Covers the whole transfer: 75 MiB in two minutes requires ~5.24 Mbit/s.
 const downloadTimeoutMs = 120_000;
 
 function downloadFailure(error: unknown): ArtifactDownload {
