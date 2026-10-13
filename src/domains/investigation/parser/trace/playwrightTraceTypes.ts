@@ -80,7 +80,7 @@ export type TraceLimits = {
   maxTotalDecodedBytes: number;
 };
 export const traceLimits: TraceLimits = {
-  maxArchiveBytes: 50 * 1024 * 1024,
+  maxArchiveBytes: 75 * 1024 * 1024,
   maxBodyBytes: 256 * 1024,
   maxEntryBytes: 16 * 1024 * 1024,
   maxEvents: 100_000,

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "bun:test";
+import JSZip from "jszip";
 
 import { downloadLogTail, downloadTrace } from "./download.js";
+import { parsePlaywrightTraceArchive } from "./parser/trace/playwrightTrace.js";
 
 describe("investigation artifact downloads", () => {
   it.each([
@@ -19,13 +21,42 @@ describe("investigation artifact downloads", () => {
   it("rejects a declared oversize trace without parsing a prefix", async () => {
     const fetchImpl = (async () =>
       new Response("small", {
-        headers: { "content-length": String(50 * 1024 * 1024 + 1) },
+        headers: { "content-length": String(75 * 1024 * 1024 + 1) },
       })) as unknown as typeof fetch;
     const result = await downloadTrace(
       "https://storage.invalid/trace",
       fetchImpl,
     );
     expect(result).toEqual({ status: "too-large" });
+  });
+
+  it("downloads and parses a trace archive at the 75 MiB limit", async () => {
+    const limit = 75 * 1024 * 1024;
+    const archive = new JSZip();
+    archive.file("trace.trace", '{"type":"context-options"}\n');
+    archive.file("resources/large-resource", Buffer.alloc(0));
+    const emptyArchive = await archive.generateAsync({ type: "nodebuffer" });
+    archive.file(
+      "resources/large-resource",
+      Buffer.alloc(limit - emptyArchive.byteLength),
+    );
+    const bytes = await archive.generateAsync({ type: "nodebuffer" });
+    expect(bytes.byteLength).toBe(limit);
+    const fetchImpl = (async () =>
+      new Response(bytes)) as unknown as typeof fetch;
+
+    const downloaded = await downloadTrace(
+      "https://storage.invalid/trace",
+      fetchImpl,
+    );
+
+    expect(downloaded.status).toBe("available");
+    if (downloaded.status !== "available")
+      throw new Error("Expected the trace download to succeed");
+    const parsed = await parsePlaywrightTraceArchive(
+      Buffer.from(downloaded.bytes),
+    );
+    expect(parsed.status).toBe("ready");
   });
 
   it("requests a bounded log tail without authorization", async () => {
