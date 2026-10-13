@@ -72,7 +72,10 @@ export function registerRunnerInteractCommands(
     .description(
       "Perform one raw action on a runner's screen. A browser runner takes click, double_click, scroll, move, drag, keypress, navigate and type; a mobile runner takes tap, swipe, fill and type. A browser runner answers mobile actions with action-not-supported-on-browser; a mobile runner answers the other browser actions with action-not-supported-on-mobile. Use - to read a whole action as JSON from stdin",
     )
-    .option("--button <button>", "click: left, right, wheel, back or forward")
+    .option(
+      "--button <button>",
+      "click: left (default), right, wheel, back or forward",
+    )
     .option(
       "--duration-ms <ms>",
       "swipe: how long it takes, up to 10000. Slow scrolls, fast flings",
