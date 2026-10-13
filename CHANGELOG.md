@@ -1,5 +1,11 @@
 # @qawolf/cli
 
+## 1.43.1
+
+### Patch Changes
+
+- 823e6ce: Allow attempt investigation and inspection to read trace ZIPs up to 75 MiB while keeping the two-minute download timeout.
+
 ## 1.43.0
 
 ### Minor Changes
