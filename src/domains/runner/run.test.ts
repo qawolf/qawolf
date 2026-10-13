@@ -77,6 +77,13 @@ describe("flowsRun pre-flight", () => {
 
   it.each([
     ["iOS - iPad", runnerMessages.flowsSkipped("iOS", 1)],
+    [
+      "Android - Samsung Galaxy A17 (Android 16)",
+      runnerMessages.flowsSkipped(
+        "Android - Samsung Galaxy A17 (Android 16)",
+        1,
+      ),
+    ],
     ["Basic", runnerMessages.flowsSkipped("Basic", 1)],
     ["Electron", runnerMessages.flowsSkipped("Electron", 1)],
   ] as const)(

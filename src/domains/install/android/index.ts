@@ -1,6 +1,10 @@
 import { isAndroidTarget, type PeekFlowMetaFn } from "~/core/flowMeta.js";
 import { pluralize } from "~/core/pluralize.js";
-import { avdNameForTarget, buildSystemImage } from "~/core/androidTargets.js";
+import {
+  avdDeviceId,
+  avdNameForTarget,
+  buildSystemImage,
+} from "~/core/androidTargets.js";
 import { buildPatternArgs } from "~/core/patternArgs.js";
 import { parseExecutionTarget } from "@qawolf/flow-targets";
 import type { CommandContext, CommandResult } from "~/shell/commandContext.js";
@@ -76,8 +80,8 @@ async function collectAndroidTargets(
   return [...seen];
 }
 
-// deviceModel from parseExecutionTarget matches the avdmanager device ID directly
-// (e.g. "pixel_9"), so no separate mapping is needed.
+// avdDeviceId maps deviceModel from parseExecutionTarget to the avdmanager
+// device ID ("pixel_9" stays, "any_phone" becomes "pixel_9").
 // Cast matches the pattern in runAndroidFlowUtils.ts.
 type ParseArg = Parameters<typeof parseExecutionTarget>[0];
 
@@ -97,7 +101,7 @@ function buildAvdSpecs(
     seen.set(avdName, {
       avdName,
       systemImage: buildSystemImage(androidVersion, arch),
-      deviceId: deviceModel,
+      deviceId: avdDeviceId(deviceModel),
     });
   }
   return [...seen.values()];

@@ -74,8 +74,8 @@
     "@oxc-node/core": "0.1.0",
     "@qawolf/api-contracts": "0.91.0",
     "@qawolf/emails": "1.1.1",
-    "@qawolf/flow-targets": "1.0.0",
-    "@qawolf/flows": "0.1.4",
+    "@qawolf/flow-targets": "2.0.0",
+    "@qawolf/flows": "0.3.0",
     "@qawolf/testkit": "1.2.1",
     "commander": "14.0.3",
     "env-paths": "4.0.0",
@@ -107,7 +107,7 @@
     "webdriverio": "9.27.1"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.14.1"
   },
   "packageManager": "bun@1.4.2"
 }

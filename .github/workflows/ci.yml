@@ -62,13 +62,8 @@ jobs:
         run: bash scripts/check-co-authored.sh "$BASE_REF"
 
   # Proves the published npm bundle runs on every supported runtime: the bundle
-  # boots and a TypeScript flow transpiles + loads. Node 20 has no native TS, so
-  # this is the guard that the oxc-node loader keeps working there.
-  #
-  # Node 20 reached end-of-life on 2026-04-30 but is deliberately kept: an
-  # internal AI Task Docker image still runs Node 20 (see WIZ-10992). Do not
-  # remove the node-20 lane while that requirement stands. It pins the exact
-  # engines.node floor (20.19.0) so a regression at the minimum is caught.
+  # boots and a TypeScript flow transpiles + loads. The node-24 lane pins the
+  # exact engines.node floor (24.14.1) so a regression at the minimum is caught.
   runtime-smoke:
     name: Runtime smoke (${{ matrix.name }})
     runs-on: ubuntu-latest
@@ -78,12 +73,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: node-20
-            node-version: "20.19.0"
-          - name: node-22
-            node-version: "22"
           - name: node-24
-            node-version: "24"
+            node-version: "24.14.1"
           - name: bun
             node-version: ""
     steps:
