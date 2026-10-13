@@ -4,9 +4,9 @@ import packageJson from "../../../../package.json" with { type: "json" };
 import { checkNodeVersion } from "./nodeVersion.js";
 
 describe("checkNodeVersion", () => {
-  it("accepts a supported Node 20 against the shipped engines.node floor", async () => {
+  it("accepts the shipped engines.node floor", async () => {
     const r = await checkNodeVersion({
-      processVersion: "v20.19.0",
+      processVersion: "v24.14.1",
       enginesNode: packageJson.engines.node,
     });
     expect(r.status).toBe("pass");

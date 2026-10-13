@@ -23,7 +23,7 @@ Try it without installing:
 npx @qawolf/cli --help
 ```
 
-Supported Node versions: Node 20.19+. Node 20 reached [end-of-life](https://endoflife.date/nodejs) on 2026-04-30 and no longer receives security updates; it remains supported here only for environments still pinned to Node 20. Prefer Node 22+ where possible.
+Supported Node versions: Node 24.14.1+.
 
 ### Standalone binaries
 

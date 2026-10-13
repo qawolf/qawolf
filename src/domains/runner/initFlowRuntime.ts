@@ -1,3 +1,4 @@
+import { defaultWebPreset, parseExecutionTarget } from "@qawolf/flow-targets";
 import { makeDefaultFs, type Fs } from "~/shell/fs.js";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -97,13 +98,10 @@ async function doInit(
     throw new Error(
       `@qawolf/flows _runner at ${runnerPath} does not export configureFlowRuntime`,
     );
+  // One runtime target for every local web flow: launch() takes the browser
+  // from the flow's own target and reads this one to rule out Electron.
   await mod.configureFlowRuntime({
-    target: {
-      platform: "web",
-      schemaVersion: 1,
-      runnerName: "node20WithPlaywright",
-      meta: "legacy",
-    },
+    target: parseExecutionTarget(defaultWebPreset),
     webExpectAttributes: { defaultExpectTimeoutMs: timeout },
   });
 }

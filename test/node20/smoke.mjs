@@ -5,7 +5,7 @@
 // bun with @oxc-node/core kept external (see the runtime-smoke CI job) — bundling
 // resolves the `~/` path alias that Node/oxc cannot. Calling the real
 // registerFlowLoader() means this smoke fails if the strategy selection or
-// registration regresses, on each of Node 20 / 22 / 24 and Bun.
+// registration regresses, on Node 24 and Bun.
 import { registerFlowLoader } from "./loader.generated.mjs";
 
 await registerFlowLoader();

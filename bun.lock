@@ -10,8 +10,8 @@
         "@oxc-node/core": "0.1.0",
         "@qawolf/api-contracts": "0.91.0",
         "@qawolf/emails": "1.1.1",
-        "@qawolf/flow-targets": "1.0.0",
-        "@qawolf/flows": "0.1.4",
+        "@qawolf/flow-targets": "2.0.0",
+        "@qawolf/flows": "0.3.0",
         "@qawolf/testkit": "1.2.1",
         "commander": "14.0.3",
         "env-paths": "4.0.0",
@@ -469,15 +469,13 @@
 
     "@qawolf/emails": ["@qawolf/emails@1.1.1", "", { "dependencies": { "@paralleldrive/cuid2": "^2.3.1", "@qawolf/emailer-types": "^1.1.0", "msw": "^2.12.14", "node-html-parser": "^6.1.13", "p-retry": "^6.2.1", "superjson": "^2.2.6", "tslib": "^2.5.3", "zod": "^4.1.11" } }, "sha512-0dveoW7Thk4UCLqIbDARiG+NswiN32se4bVMg8HCC1Kg/YBpCPrE0prthQ/6MIn9YiL9z4JD8vN3vO2Nn5zQJg=="],
 
-    "@qawolf/flow-targets": ["@qawolf/flow-targets@1.0.0", "", { "dependencies": { "@qawolf/legacy-execution-targets": "^1.0.0", "tslib": "^2.5.3", "zod": "^4.1.13" } }, "sha512-qxi+/TpdkUJ7E5rMTyXHVNyJCpe53ztuED5ALK+qN0wdzQOX03p4gyC3B/XWTL6VA34t8Wf2ivJM6a0KgyVLJA=="],
+    "@qawolf/flow-targets": ["@qawolf/flow-targets@2.0.0", "", { "dependencies": { "tslib": "^2.5.3", "zod": "^4.1.13" } }, "sha512-nOVWpR9KxJsuOQdpARIyYws9g0J2DILn7FMNUh9J4Zcsj106ENnQ5iB5UGoDUPHq78pt7WYLQb915P7E6hTgFQ=="],
 
-    "@qawolf/flows": ["@qawolf/flows@0.1.4", "", { "dependencies": { "@qawolf/flow-targets": "^1.0.0", "@qawolf/run-globals-android": "^1.0.0", "@qawolf/run-globals-ios": "^0.0.18", "expect": "29.7.0", "pixelmatch": "^5.3.0", "pngjs": "^6.0.0", "tslib": "^2.5.3", "zod": "^4.1.11" }, "peerDependencies": { "expect-webdriverio": "5.6.5", "playwright": "1.58.2" }, "optionalPeers": ["expect-webdriverio", "playwright"] }, "sha512-aqy92N2AmPLAKjgX9liIKyh0ZiGHrNG0HxlXjF9GSrSSU/j/CgScWX85YOMYGCSTK/LVNG8aFEfkHMU+ravBqw=="],
-
-    "@qawolf/legacy-execution-targets": ["@qawolf/legacy-execution-targets@1.0.0", "", { "dependencies": { "tslib": "^2.6.2", "zod": "^4.1.11" } }, "sha512-Guh6ThMlWTZzUGZcBzV/dh7VWKK1mFRrl3LqSaXDiq7bifVonjMyf9QxytkqEwh2zRYiRYV1rrneDB4SWKckhQ=="],
+    "@qawolf/flows": ["@qawolf/flows@0.3.0", "", { "dependencies": { "@qawolf/flow-targets": "^2.0.0", "@qawolf/run-globals-android": "^1.0.0", "@qawolf/run-globals-ios": "^0.0.19", "expect": "29.7.0", "pixelmatch": "^5.3.0", "pngjs": "^6.0.0", "tslib": "^2.5.3", "zod": "^4.1.11" }, "peerDependencies": { "expect-webdriverio": "5.6.5", "playwright": "1.62.0" }, "optionalPeers": ["expect-webdriverio", "playwright"] }, "sha512-lrGoqeQKxECJLGbw2RkrKL5WCmKe96OVOk2VJoChyatKLEJIdZwWlu9V6AjzVxnkMkxsyYBLSXhXWlYMqaQcgg=="],
 
     "@qawolf/run-globals-android": ["@qawolf/run-globals-android@1.2.0", "", { "dependencies": { "execa": "^9.3.1", "ms": "^3.0.0-canary.202508261828", "tslib": "^2.5.3", "zod": "^4.1.11" } }, "sha512-XO5zgKobS3u/EA2H6FEUjyoAY/+W6Q4roLKgQV9ZDa+r1BVop2hPcUIG/6h8A2HtiizUkR3EIhiTq5S6FQlm5w=="],
 
-    "@qawolf/run-globals-ios": ["@qawolf/run-globals-ios@0.0.18", "", { "dependencies": { "plist": "^3.1.0", "zod": "^4.1.11" }, "peerDependencies": { "webdriver": "^8.0.0 || ^9.0.0", "webdriverio": "^8.0.0 || ^9.0.0" } }, "sha512-3ED9Aeq1AVrs1Pt1+N1L+4B5NTscRhOUGHo2WZ/r0eDlEuAJf6b4sitW9x+w7dP6QtrofilZe0LAQSnzVfybxw=="],
+    "@qawolf/run-globals-ios": ["@qawolf/run-globals-ios@0.0.19", "", { "dependencies": { "plist": "^3.1.0", "zod": "^4.1.11" }, "peerDependencies": { "webdriver": "^8.0.0 || ^9.0.0", "webdriverio": "^8.0.0 || ^9.0.0" } }, "sha512-N4bWgAMfoc/JVIW9wNgWHWkDeZ3evfJ1xG9Y/DPHExsHa8aAYNIoFkckzH2LUoQPLf0CLQyNxxa3rOBFA6QgwQ=="],
 
     "@qawolf/testkit": ["@qawolf/testkit@1.2.1", "", { "dependencies": { "jsqr": "^1.4.0", "otpauth": "9.3.6", "pngjs": "^6.0.0", "tslib": "^2.5.3", "zod": "^4.1.11" }, "peerDependencies": { "playwright": "1.58.2" } }, "sha512-8Wai6ti5qSq8fgBHa5Q2kyTH7MZYObs1oFM0f8R2baYk6TBAhxIGPZRjT5IBjNx5pB1klHd43Lr7Fj3ge6brcw=="],
 
