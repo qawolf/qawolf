@@ -7,6 +7,7 @@ import {
   setUpGitCredentialHelper,
 } from "./gitConfig.js";
 import {
+  browserSession,
   helperCommand,
   hostHelperKey,
   hostUrl,
@@ -20,11 +21,13 @@ describe("setUpGitCredentialHelper", () => {
     if (helperCommand.status !== "ready") throw Error("expected a command");
 
     const first = await setUpGitCredentialHelper({
+      credential: browserSession,
       deps: gitConfig.deps,
       helperCommand,
       hostUrl,
     });
     const second = await setUpGitCredentialHelper({
+      credential: browserSession,
       deps: gitConfig.deps,
       helperCommand,
       hostUrl,
@@ -50,6 +53,7 @@ describe("setUpGitCredentialHelper", () => {
     });
 
     await setUpGitCredentialHelper({
+      credential: browserSession,
       deps: gitConfig.deps,
       helperCommand: {
         command:
@@ -71,6 +75,7 @@ describe("setUpGitCredentialHelper", () => {
       });
 
       const result = await setUpGitCredentialHelper({
+        credential: browserSession,
         deps: gitConfig.deps,
         helperCommand,
         hostUrl,
@@ -98,6 +103,7 @@ describe("setUpGitCredentialHelper", () => {
     if (helperCommand.status !== "ready") throw Error("expected a command");
 
     await setUpGitCredentialHelper({
+      credential: browserSession,
       deps: gitConfig.deps,
       helperCommand,
       hostUrl,
@@ -117,6 +123,7 @@ describe("setUpGitCredentialHelper", () => {
     const spawn = mock(defaultSpawn);
 
     const result = await setUpGitCredentialHelper({
+      credential: browserSession,
       deps: { platform: process.platform, spawn },
       helperCommand: { status: "temporary-install" },
       hostUrl,
@@ -135,7 +142,14 @@ describe("setUpGitCredentialHelper", () => {
     const deps = { platform: process.platform, spawn };
 
     expect(
-      (await setUpGitCredentialHelper({ deps, helperCommand, hostUrl })).status,
+      (
+        await setUpGitCredentialHelper({
+          credential: browserSession,
+          deps,
+          helperCommand,
+          hostUrl,
+        })
+      ).status,
     ).toBe("git-missing");
     expect((await removeGitCredentialHelper({ deps, hostUrl })).status).toBe(
       "git-missing",

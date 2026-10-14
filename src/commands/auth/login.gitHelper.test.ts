@@ -25,7 +25,7 @@ function chooseBrowser(): Partial<UI> {
 }
 
 describe("handleLogin and Git", () => {
-  it("sets up Git after a browser sign-in stores a credential", async () => {
+  it("sets up Git with the credential that a browser sign-in stores", async () => {
     const configureGitCredentialHelper = mock(async () => undefined);
     const resolveApiKey = mock(
       async (): Promise<ApiKeyResult | undefined> => browserSession,
@@ -38,6 +38,9 @@ describe("handleLogin and Git", () => {
     });
 
     expect(configureGitCredentialHelper).toHaveBeenCalledTimes(1);
+    expect(configureGitCredentialHelper).toHaveBeenCalledWith(
+      expect.objectContaining({ credential: browserSession }),
+    );
   });
 
   it("leaves Git alone when sign-in ends without a credential", async () => {

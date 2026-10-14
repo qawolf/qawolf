@@ -1,4 +1,5 @@
 import { authMessages } from "~/core/messages/index.js";
+import type { ApiKeyResult } from "~/domains/auth/types.js";
 import {
   defaultCliInvocation,
   type GitConfigDeps,
@@ -32,6 +33,10 @@ function reportSetup({ result, ui }: { result: GitHelperSetup; ui: UI }): void {
     case "temporary-install":
       ui.warn(authMessages.gitHelper.temporaryInstall);
       return;
+    case "team-api-key":
+      ui.warn(authMessages.gitHelper.teamApiKeySkipped);
+      reportRemoval({ result: result.removal, ui });
+      return;
     case "failed":
       ui.warn(authMessages.gitHelper.failed(result.detail));
       return;
@@ -54,11 +59,16 @@ function reportRemoval({
   }
 }
 
-export async function configureGitCredentialHelper(
-  ctx: CommandContext,
-): Promise<void> {
+export async function configureGitCredentialHelper({
+  credential,
+  ctx,
+}: {
+  credential: ApiKeyResult;
+  ctx: CommandContext;
+}): Promise<void> {
   reportSetup({
     result: await setUpGitCredentialHelper({
+      credential,
       deps: defaultGitConfigDeps,
       helperCommand: resolveHelperCommand(defaultCliInvocation()),
       hostUrl: ctx.apiBaseUrl,

@@ -2,11 +2,22 @@ import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
+import type { ApiKeyResult } from "~/domains/auth/types.js";
 import { defaultSpawn, type SpawnFn } from "~/shell/spawn.js";
 
 import { resolveHelperCommand } from "./helperCommand.js";
 import type { GitConfigDeps } from "./helperEntries.js";
 
+export const browserSession: ApiKeyResult = {
+  key: "access_token",
+  source: "browser",
+  workspaceId: undefined,
+};
+export const teamApiKey: ApiKeyResult = {
+  key: "qawolf_team_key",
+  source: "env",
+  workspaceId: undefined,
+};
 export const hostUrl = "https://app.qawolf.com";
 export const hostHelperKey = `credential.${hostUrl}.helper`;
 export const helperCommand = resolveHelperCommand({

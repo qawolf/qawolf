@@ -1,3 +1,6 @@
+import type { ApiKeyResult } from "~/domains/auth/types.js";
+
+import { isTeamApiKey } from "./credentialKind.js";
 import { type HelperCommand, isCliHelperEntry } from "./helperCommand.js";
 import {
   addEntry,
@@ -9,15 +12,6 @@ import {
   unsetCliEntries,
 } from "./helperEntries.js";
 
-export type GitHelperSetup =
-  | Failure
-  | { readonly status: "git-missing" | "temporary-install" }
-  | {
-      readonly file: string | undefined;
-      readonly lines: string;
-      readonly status: "added" | "unchanged";
-    };
-
 export type GitHelperRemoval =
   | Failure
   | { readonly status: "git-missing" | "none" }
@@ -25,6 +19,16 @@ export type GitHelperRemoval =
       readonly file: string | undefined;
       readonly lines: string;
       readonly status: "removed";
+    };
+
+export type GitHelperSetup =
+  | Failure
+  | { readonly status: "git-missing" | "temporary-install" }
+  | { readonly removal: GitHelperRemoval; readonly status: "team-api-key" }
+  | {
+      readonly file: string | undefined;
+      readonly lines: string;
+      readonly status: "added" | "unchanged";
     };
 
 function describeLines({
@@ -73,14 +77,22 @@ function isInPlace({
 }
 
 export async function setUpGitCredentialHelper({
+  credential,
   deps,
   helperCommand,
   hostUrl,
 }: {
+  credential: ApiKeyResult;
   deps: GitConfigDeps;
   helperCommand: HelperCommand;
   hostUrl: string;
 }): Promise<GitHelperSetup> {
+  if (isTeamApiKey(credential)) {
+    return {
+      removal: await removeGitCredentialHelper({ deps, hostUrl }),
+      status: "team-api-key",
+    };
+  }
   if (helperCommand.status === "temporary-install") return helperCommand;
   const current = await readHelperEntries({ deps, hostUrl });
   if (current.status !== "read") return current;

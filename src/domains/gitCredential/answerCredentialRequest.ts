@@ -1,6 +1,8 @@
 import { readAccessTokenExpiry } from "~/core/deviceAuth/tokenExpiry.js";
 import type { ApiKeyResult } from "~/domains/auth/types.js";
 
+import { isTeamApiKey } from "./credentialKind.js";
+
 export type CredentialAnswer =
   | { readonly output: string; readonly status: "answered" }
   | {
@@ -11,7 +13,6 @@ export type CredentialAnswer =
         | "team-api-key";
     };
 
-const teamApiKeyPrefix = "qawolf_";
 const gitUsername = "qawolf";
 const millisecondsPerSecond = 1_000;
 
@@ -59,7 +60,7 @@ export async function answerCredentialRequest({
   }
   const credential = await resolveCredential();
   if (!credential) return { status: "signed-out" };
-  if (credential.key.startsWith(teamApiKeyPrefix)) {
+  if (isTeamApiKey(credential)) {
     return { status: "team-api-key" };
   }
   const expiresAtMs =

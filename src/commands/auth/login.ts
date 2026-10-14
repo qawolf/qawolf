@@ -13,7 +13,10 @@ type LoginDeps = {
   ) => Promise<ApiKeyResult | undefined>;
   loginWithApiKey?: (ctx: CommandContext) => Promise<CommandResult>;
   loginWithDevice?: (ctx: CommandContext) => Promise<CommandResult>;
-  configureGitCredentialHelper?: (ctx: CommandContext) => Promise<void>;
+  configureGitCredentialHelper?: (options: {
+    credential: ApiKeyResult;
+    ctx: CommandContext;
+  }) => Promise<void>;
 };
 
 const browserMethod = "browser";
@@ -28,10 +31,14 @@ async function configureGitAfterSignIn({
   result: CommandResult;
 }): Promise<CommandResult> {
   const resolveApiKey = deps.resolveApiKey ?? realResolveApiKey;
-  if (result === undefined && (await resolveApiKey(ctx.configDir, ctx.fs))) {
+  const credential =
+    result === undefined
+      ? await resolveApiKey(ctx.configDir, ctx.fs)
+      : undefined;
+  if (credential) {
     await (
       deps.configureGitCredentialHelper ?? realConfigureGitCredentialHelper
-    )(ctx);
+    )({ credential, ctx });
   }
   return result;
 }

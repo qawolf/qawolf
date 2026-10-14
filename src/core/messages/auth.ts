@@ -97,6 +97,8 @@ export const authMessages = {
     gitMissing: "Git is not installed, so Git setup was skipped.",
     temporaryInstall:
       "Git setup was skipped because this CLI runs from a temporary install. Install the CLI globally to clone with your QA Wolf sign-in.",
+    teamApiKeySkipped:
+      "Git setup was skipped because Git cannot use a team API key. Sign in with your browser or a user API key to clone with your QA Wolf sign-in.",
     failed: (detail: string) => `Could not set up Git: ${detail}`,
     removed: (file: string | undefined) =>
       `Removed the QA Wolf Git helper from ${file ?? "your global Git config"}:`,
