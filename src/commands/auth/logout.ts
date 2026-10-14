@@ -30,6 +30,8 @@ export async function handleLogout(
     deps.hasStoredCredentials ?? realHasStoredCredentials;
   const deleteApiKey = deps.deleteApiKey ?? realDeleteApiKey;
   const deleteTokens = deps.deleteTokens ?? realDeleteTokens;
+  const unconfigureGitCredentialHelper =
+    deps.unconfigureGitCredentialHelper ?? realUnconfigureGitCredentialHelper;
   const env = deps.env ?? process.env;
 
   // Storage is asked directly rather than through resolveApiKey. Resolving a
@@ -42,6 +44,7 @@ export async function handleLogout(
 
   if (!envKey && !stored) {
     ctx.ui.info(authMessages.logout.notAuthenticated);
+    await unconfigureGitCredentialHelper(ctx);
     return;
   }
 
@@ -78,9 +81,7 @@ export async function handleLogout(
     () => authMessages.logout.credentialsRemoved,
   );
 
-  await (
-    deps.unconfigureGitCredentialHelper ?? realUnconfigureGitCredentialHelper
-  )(ctx);
+  await unconfigureGitCredentialHelper(ctx);
 
   if (ctx.ui.mode === "human") {
     ctx.ui.outro(authMessages.logout.success);

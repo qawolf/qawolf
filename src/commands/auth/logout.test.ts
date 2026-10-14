@@ -123,6 +123,16 @@ describe("handleLogout", () => {
     expect(deps.deleteTokens).not.toHaveBeenCalled();
   });
 
+  it("removes the Git helper when no credential is left to sign out", async () => {
+    const ctx = makeCtx({ mode: "human" });
+    const deps = makeDeps({ stored: false });
+
+    await handleLogout(ctx, deps);
+
+    expect(ctx.ui.info).toHaveBeenCalledWith("Not currently authenticated.");
+    expect(deps.unconfigureGitCredentialHelper).toHaveBeenCalledTimes(1);
+  });
+
   it("warns that an environment variable cannot be removed", async () => {
     const ctx = makeCtx(confirmed());
     const deps = makeDeps({
@@ -158,5 +168,6 @@ describe("handleLogout", () => {
 
     expect(deps.deleteApiKey).not.toHaveBeenCalled();
     expect(deps.deleteTokens).not.toHaveBeenCalled();
+    expect(deps.unconfigureGitCredentialHelper).not.toHaveBeenCalled();
   });
 });
