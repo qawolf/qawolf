@@ -38,7 +38,7 @@ export function isCliHelperEntry(entry: string): boolean {
 
 export function defaultCliInvocation(): CliInvocation {
   return {
-    compiled: process.env["QAWOLF_COMPILED"] === "true",
+    compiled: process.env.QAWOLF_COMPILED === "true",
     execPath: process.execPath,
     scriptPath: process.argv[1],
   };

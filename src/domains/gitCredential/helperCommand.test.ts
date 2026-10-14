@@ -7,6 +7,28 @@ import { defaultSpawn } from "~/shell/spawn.js";
 
 import { resolveHelperCommand } from "./helperCommand.js";
 
+async function bundleLikeTheBinaryBuild(source: string) {
+  const directory = await mkdtemp(join(tmpdir(), "qawolf-define-"));
+  const entryPath = join(directory, "entry.ts");
+  const bundlePath = join(directory, "entry.js");
+  await writeFile(entryPath, source);
+  const build = await defaultSpawn(
+    process.execPath,
+    [
+      "build",
+      entryPath,
+      "--target=bun",
+      "--define",
+      'process.env.QAWOLF_COMPILED="true"',
+      "--outfile",
+      bundlePath,
+    ],
+    { platform: process.platform },
+  );
+  if (build.exitCode !== 0) throw Error(build.stderr);
+  return bundlePath;
+}
+
 async function writeFakeCli() {
   const directory = join(
     await mkdtemp(join(tmpdir(), "qawolf-helper-")),
@@ -72,6 +94,26 @@ describe.skipIf(process.platform === "win32")("resolveHelperCommand", () => {
     const result = await fillCredential(helper.command);
 
     expect(result.stdout).toContain("password=from-the-cli\n");
+  });
+});
+
+describe("defaultCliInvocation", () => {
+  it("reports a compiled CLI when the binary build defines QAWOLF_COMPILED", async () => {
+    const helperCommandPath = join(import.meta.dirname, "helperCommand.ts");
+    const bundlePath = await bundleLikeTheBinaryBuild(
+      [
+        `import { defaultCliInvocation } from ${JSON.stringify(helperCommandPath)};`,
+        "console.log(defaultCliInvocation().compiled);",
+        "",
+      ].join("\n"),
+    );
+
+    const result = await defaultSpawn(process.execPath, [bundlePath], {
+      env: { QAWOLF_COMPILED: undefined },
+      platform: process.platform,
+    });
+
+    expect(result.stdout.trim()).toBe("true");
   });
 });
 
