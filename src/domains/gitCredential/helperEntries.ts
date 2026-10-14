@@ -51,7 +51,7 @@ export async function readHelperEntries({
   hostUrl: string;
 }): Promise<HelperEntries> {
   const result = await runGitConfig({
-    args: ["--show-origin", "--get-all", helperKey(hostUrl)],
+    args: ["--show-origin", "--null", "--get-all", helperKey(hostUrl)],
     deps,
   });
   if (result.exitCode < 0) return { status: "git-missing" };
@@ -59,15 +59,13 @@ export async function readHelperEntries({
     return { entries: [], file: undefined, status: "read" };
   }
   if (result.exitCode !== 0) return failure(result);
-  const origins = result.stdout
-    .split("\n")
-    .filter((line) => line.includes("\t"));
+  const fields = result.stdout.split("\0");
+  const origins = fields.filter((_field, index) => index % 2 === 0);
+  const values = fields.filter((_field, index) => index % 2 === 1);
   const [firstOrigin] = origins;
   return {
-    entries: origins.map((line) => line.slice(line.indexOf("\t") + 1)),
-    file: firstOrigin
-      ?.slice(0, firstOrigin.indexOf("\t"))
-      .replace(/^file:/, ""),
+    entries: values,
+    file: firstOrigin?.replace(/^file:/, ""),
     status: "read",
   };
 }
