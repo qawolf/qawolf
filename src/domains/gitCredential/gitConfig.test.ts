@@ -1,7 +1,4 @@
 import { describe, expect, it, mock } from "bun:test";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 
 import { defaultSpawn, type SpawnFn } from "~/shell/spawn.js";
 
@@ -9,55 +6,16 @@ import {
   removeGitCredentialHelper,
   setUpGitCredentialHelper,
 } from "./gitConfig.js";
-import { resolveHelperCommand } from "./helperCommand.js";
-import type { GitConfigDeps } from "./helperEntries.js";
-
-const hostUrl = "https://app.qawolf.com";
-const helperCommand = resolveHelperCommand({
-  compiled: false,
-  execPath: "/usr/local/bin/node",
-  scriptPath: "/usr/local/lib/node_modules/@qawolf/cli/dist/cli.js",
-});
-const staleCliEntry =
-  "!'/old/bin/node' '/old/lib/node_modules/@qawolf/cli/dist/cli.js' auth git-credential";
-
-async function makeGitConfig({
-  contents,
-  folderName = "home",
-}: {
-  contents: string;
-  folderName?: string;
-}) {
-  const directory = join(
-    await mkdtemp(join(tmpdir(), "qawolf-git-config-")),
-    folderName,
-  );
-  await mkdir(directory);
-  const configPath = join(directory, "gitconfig");
-  await writeFile(configPath, contents);
-  const environment = {
-    GIT_CONFIG_GLOBAL: configPath,
-    GIT_CONFIG_NOSYSTEM: "1",
-    HOME: directory,
-  };
-  const spawn: SpawnFn = (command, args, options) =>
-    defaultSpawn(command, args, { ...options, env: environment });
-  const deps: GitConfigDeps = { platform: process.platform, spawn };
-  async function readValues(key: string) {
-    const result = await spawn(
-      "git",
-      ["config", "--global", "--get-all", key],
-      {
-        platform: process.platform,
-      },
-    );
-    return result.stdout.split("\n").filter(Boolean);
-  }
-  return { configPath, deps, readValues };
-}
+import {
+  helperCommand,
+  hostHelperKey,
+  hostUrl,
+  makeGitConfig,
+  staleCliEntry,
+} from "./gitConfig.testUtils.js";
 
 describe("setUpGitCredentialHelper", () => {
-  it("adds one helper entry for the QA Wolf host and names the config file", async () => {
+  it("adds the CLI helper after an empty entry and names the config file", async () => {
     const gitConfig = await makeGitConfig({ contents: "" });
     if (helperCommand.status !== "ready") throw Error("expected a command");
 
@@ -76,9 +34,32 @@ describe("setUpGitCredentialHelper", () => {
       throw Error(`expected added: ${first.status}`);
     expect(first.file).toBe(gitConfig.configPath);
     expect(second.status).toBe("unchanged");
-    expect(await gitConfig.readValues(`credential.${hostUrl}.helper`)).toEqual([
+    expect(await gitConfig.readValues(hostHelperKey)).toEqual([
+      "",
       helperCommand.command,
     ]);
+  });
+
+  it("makes Git ask the CLI before any helper set earlier in the config", async () => {
+    const gitConfig = await makeGitConfig({
+      contents: [
+        "[credential]",
+        `\thelper = "!f() { test \\"$1\\" = get && echo username=qawolf && echo password=stale-token; }; f"`,
+        "",
+      ].join("\n"),
+    });
+
+    await setUpGitCredentialHelper({
+      deps: gitConfig.deps,
+      helperCommand: {
+        command:
+          '!f() { test "$3" = get && echo username=qawolf && echo password=cli-token; }; f auth git-credential',
+        status: "ready",
+      },
+      hostUrl,
+    });
+
+    expect(await gitConfig.fillPassword()).toBe("password=cli-token");
   });
 
   it.skipIf(process.platform === "win32")(
@@ -102,13 +83,14 @@ describe("setUpGitCredentialHelper", () => {
     },
   );
 
-  it("keeps the user's own helpers and replaces a stale CLI entry", async () => {
+  it("keeps the user's own helpers and replaces the stale CLI entries", async () => {
     const gitConfig = await makeGitConfig({
       contents: [
         "[credential]",
         "\thelper = osxkeychain",
         `[credential "${hostUrl}"]`,
         "\thelper = store",
+        "\thelper =",
         `\thelper = ${staleCliEntry}`,
         "",
       ].join("\n"),
@@ -124,8 +106,9 @@ describe("setUpGitCredentialHelper", () => {
     expect(await gitConfig.readValues("credential.helper")).toEqual([
       "osxkeychain",
     ]);
-    expect(await gitConfig.readValues(`credential.${hostUrl}.helper`)).toEqual([
+    expect(await gitConfig.readValues(hostHelperKey)).toEqual([
       "store",
+      "",
       helperCommand.command,
     ]);
   });
@@ -157,40 +140,5 @@ describe("setUpGitCredentialHelper", () => {
     expect((await removeGitCredentialHelper({ deps, hostUrl })).status).toBe(
       "git-missing",
     );
-  });
-});
-
-describe("removeGitCredentialHelper", () => {
-  it("removes only the entries that the CLI added", async () => {
-    const gitConfig = await makeGitConfig({
-      contents: [
-        `[credential "${hostUrl}"]`,
-        "\thelper = store",
-        `\thelper = ${staleCliEntry}`,
-        "",
-      ].join("\n"),
-    });
-
-    const result = await removeGitCredentialHelper({
-      deps: gitConfig.deps,
-      hostUrl,
-    });
-
-    if (result.status !== "removed") {
-      throw Error(`expected removed: ${result.status}`);
-    }
-    expect(result.file).toBe(gitConfig.configPath);
-    expect(await gitConfig.readValues(`credential.${hostUrl}.helper`)).toEqual([
-      "store",
-    ]);
-  });
-
-  it("reports nothing to remove when the CLI added no entry", async () => {
-    const gitConfig = await makeGitConfig({ contents: "" });
-
-    expect(
-      (await removeGitCredentialHelper({ deps: gitConfig.deps, hostUrl }))
-        .status,
-    ).toBe("none");
   });
 });

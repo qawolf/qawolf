@@ -1,5 +1,7 @@
 import type { SpawnFn, SpawnResult } from "~/shell/spawn.js";
 
+import { isCliHelperEntry } from "./helperCommand.js";
+
 export type GitConfigDeps = {
   readonly platform: NodeJS.Platform;
   readonly spawn: SpawnFn;
@@ -18,20 +20,26 @@ type HelperEntries =
 
 const keyNotFoundExitCode = 1;
 const valueNotFoundExitCode = 5;
-const cliEntryPattern = "^!.* auth git-credential$";
+const cliEntryPattern = "^(!.* auth git-credential)?$";
 
-export function helperKey(hostUrl: string): string {
+export const helperListReset = "";
+
+export function isCliEntry(entry: string): boolean {
+  return entry === helperListReset || isCliHelperEntry(entry);
+}
+
+function helperKey(hostUrl: string): string {
   return `credential.${hostUrl}.helper`;
 }
 
-export function failure(result: SpawnResult): Failure {
+function failure(result: SpawnResult): Failure {
   return {
     detail: result.stderr.trim() || `git exited with ${result.exitCode}`,
     status: "failed",
   };
 }
 
-export function runGitConfig({
+function runGitConfig({
   args,
   deps,
 }: {
@@ -68,6 +76,22 @@ export async function readHelperEntries({
     file: firstOrigin?.replace(/^file:/, ""),
     status: "read",
   };
+}
+
+export async function addEntry({
+  deps,
+  entry,
+  hostUrl,
+}: {
+  deps: GitConfigDeps;
+  entry: string;
+  hostUrl: string;
+}): Promise<Failure | undefined> {
+  const result = await runGitConfig({
+    args: ["--add", helperKey(hostUrl), entry],
+    deps,
+  });
+  return result.exitCode === 0 ? undefined : failure(result);
 }
 
 export async function unsetCliEntries({
