@@ -52,6 +52,7 @@ function makeDeps(args: {
       file: "deleted" as const,
     })),
     env: args.env ?? {},
+    unconfigureGitCredentialHelper: mock(async () => undefined),
   };
 }
 
@@ -73,6 +74,15 @@ describe("handleLogout", () => {
 
     expect(deps.deleteApiKey).toHaveBeenCalledTimes(1);
     expect(deps.deleteTokens).toHaveBeenCalledTimes(1);
+  });
+
+  it("removes the Git helper that login added", async () => {
+    const ctx = makeCtx(confirmed());
+    const deps = makeDeps({ stored: true });
+
+    await handleLogout(ctx, deps);
+
+    expect(deps.unconfigureGitCredentialHelper).toHaveBeenCalledTimes(1);
   });
 
   // The bug this replaces: deletion used to sit behind resolveApiKey, which

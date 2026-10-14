@@ -3,8 +3,10 @@ import { deleteTokens as realDeleteTokens } from "~/domains/auth/store/deleteTok
 import { hasStoredCredentials as realHasStoredCredentials } from "~/domains/auth/store/index.js";
 import type { CommandContext, CommandResult } from "~/shell/commandContext.js";
 import { authMessages } from "~/core/messages/index.js";
+import { unconfigureGitCredentialHelper as realUnconfigureGitCredentialHelper } from "./gitHelperSetup.js";
 
 type LogoutDeps = {
+  unconfigureGitCredentialHelper?: (ctx: CommandContext) => Promise<void>;
   hasStoredCredentials?: (
     configDir: string,
     fs: CommandContext["fs"],
@@ -75,6 +77,10 @@ export async function handleLogout(
     ],
     () => authMessages.logout.credentialsRemoved,
   );
+
+  await (
+    deps.unconfigureGitCredentialHelper ?? realUnconfigureGitCredentialHelper
+  )(ctx);
 
   if (ctx.ui.mode === "human") {
     ctx.ui.outro(authMessages.logout.success);

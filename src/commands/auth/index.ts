@@ -3,6 +3,10 @@ import type { Command } from "commander";
 import { declareCommandKind } from "~/commands/commandKind.js";
 import { withContext } from "~/commands/context.js";
 import type { SignalRegistry } from "~/shell/signals/createSignalRegistry.js";
+import {
+  defaultGitCredentialDeps,
+  handleGitCredential,
+} from "./gitCredential.js";
 import { handleLogin } from "./login.js";
 import { handleLogout } from "./logout.js";
 import { handleSwitchWorkspace } from "./switchWorkspace.js";
@@ -31,4 +35,16 @@ export function registerAuthCommand(
   declareCommandKind(auth.command("whoami"), "read")
     .description("Show authentication status")
     .action(withContext(signals, handleWhoami));
+
+  declareCommandKind(
+    auth.command("git-credential", { hidden: true }).argument("<operation>"),
+    "read",
+  )
+    .description("Answer a Git credential request for the QA Wolf host")
+    .action(async (operation: string) => {
+      await handleGitCredential({
+        deps: defaultGitCredentialDeps(),
+        operation,
+      });
+    });
 }

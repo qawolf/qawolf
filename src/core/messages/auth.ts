@@ -90,6 +90,23 @@ export const authMessages = {
     success: "Logged out successfully.",
     cancelled: "Logout cancelled.",
   },
+  gitHelper: {
+    added: (file: string | undefined) =>
+      `Git now uses your QA Wolf sign-in. Added to ${file ?? "your global Git config"}:`,
+    unchanged: "Git already uses your QA Wolf sign-in.",
+    gitMissing: "Git is not installed, so Git setup was skipped.",
+    temporaryInstall:
+      "Git setup was skipped because this CLI runs from a temporary install. Install the CLI globally to clone with your QA Wolf sign-in.",
+    failed: (detail: string) => `Could not set up Git: ${detail}`,
+    removed: (file: string | undefined) =>
+      `Removed the QA Wolf Git helper from ${file ?? "your global Git config"}:`,
+    removalFailed: (detail: string) =>
+      `Could not remove the QA Wolf Git helper: ${detail}`,
+    signedOut:
+      "qawolf: run 'qawolf auth login' to use your QA Wolf sign-in with Git.",
+    teamApiKey:
+      "qawolf: Git needs a browser sign-in or a user API key. Run 'qawolf auth login' to use one.",
+  },
   errors: authErrorMessages,
   whoami: whoamiMessages,
 } as const;
