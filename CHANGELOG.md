@@ -1,5 +1,21 @@
 # @qawolf/cli
 
+## 2.2.0
+
+### Minor Changes
+
+- 5e750e7: Upgrades `@qawolf/api-contracts` to `0.98.0`.
+
+  `qawolf run get` gives each finished attempt a `url`, the page in the app that opens that flow at that attempt. Link it to show one flow's failure, because the run's `url` opens a different flow. `qawolf agent get` replies carry an `id`.
+
+### Patch Changes
+
+- de1fcca: Upgrades `@qawolf/api-contracts` to `0.98.1`.
+
+  `qawolf environment get --help` calls an environment's status its release readiness status, in place of its standing run health.
+
+- 983a4e2: `runner act click` clicks with the left button when `--button` is left out, instead of refusing the click.
+
 ## 2.1.0
 
 ### Minor Changes
