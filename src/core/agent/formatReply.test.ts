@@ -7,7 +7,12 @@ const reply = (
   text: string,
   askedAt = "2026-09-09T12:00:00.000Z",
   choices?: string[],
-): AgentReply => ({ askedAt, text, ...(choices ? { choices } : {}) });
+): AgentReply => ({
+  askedAt,
+  id: "reply-1",
+  text,
+  ...(choices ? { choices } : {}),
+});
 
 const plain = { listChoices: false };
 
