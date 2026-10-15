@@ -19,7 +19,13 @@ describe("followSession, attaching to a session", () => {
     const { callPublicApi, ctx, transcripts } = makeAuthCtx();
     const initial: AgentSession = {
       nextCursor: "c1",
-      replies: [{ askedAt: "2026-09-09T12:00:00.000Z", text: "Looking." }],
+      replies: [
+        {
+          askedAt: "2026-09-09T12:00:00.000Z",
+          id: "reply-1",
+          text: "Looking.",
+        },
+      ],
       sessionId: "sess_1",
       status: "working",
       url: "https://app.qawolf.com/sessions/sess_1",
