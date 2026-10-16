@@ -1,6 +1,6 @@
 # What the list holds
 
-The list names every runner running on your team, and marks the ones this directory launched and the one a command with no --runner would reach. --here narrows it to this directory's runners and the runner named by QAWOLF_RUNNER_ID, even when this directory did not launch it, so a harness handed a runner sees it alongside the ones it started itself. Use the id column with --runner to address any of them; addressing one does not make it the default.
+The list names the runners this directory has launched that are still running, and marks the one a command with no --runner would reach. It also includes the runner named by QAWOLF_RUNNER_ID even though this directory did not launch it, so a harness handed a runner sees it alongside the ones it started itself. Use the id column with --runner to address any of them; addressing one does not make it the default.
 
 Every runner is looked up before it is listed, so a runner that idled out is absent rather than reported. The lookup neither starts a runner nor resets an inactivity clock, which is what separates list from keepalive: listing tells you what is there and changes nothing. A lookup that cannot be answered fails the command rather than returning a shorter list, because a short list reads as the whole truth.
 

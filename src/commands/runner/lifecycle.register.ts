@@ -56,10 +56,7 @@ export function registerRunnerLifecycleCommands(
 
   declareCommandKind(runner.command("list"), "read")
     .description("List the runners running on your team")
-    .option(
-      "--here",
-      "Only the runners this directory launched, and the one QAWOLF_RUNNER_ID names",
-    )
+    .option("--here", "Only the runners this directory launched")
     .addHelpText("after", listExamples)
     .addHelpText("after", runnerGuides.list)
     .action((opts: { here?: boolean }, command: Command) =>
