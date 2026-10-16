@@ -186,7 +186,7 @@ Usage: qawolf runner list [options]
 List the runners running on your team
 
 Options:
-  --here      Only the runners this directory launched
+  --here      Only the runners this directory launched or QAWOLF_RUNNER_ID names
   -h, --help  display help for command
 
 Examples:
