@@ -57,6 +57,17 @@ describe("describeRequestError", () => {
     expect(described.exitCode).toBe(exitCodes.auth);
   });
 
+  it("does not blame the API key for a 403 the QA Wolf API did not send", () => {
+    const described = describeRequestError(
+      httpError(403, "<html>gateway</html>"),
+      baseUrl,
+      "runner.evaluateSnippet",
+    );
+
+    expect(described.error).not.toContain("API key has access");
+    expect(described.error).toContain("before it reached the QA Wolf API");
+  });
+
   it("maps HTTP 402 to the payment exit code", () => {
     const described = describeRequestError(
       httpError(402),
