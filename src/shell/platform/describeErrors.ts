@@ -1,4 +1,5 @@
 import { formatSeconds } from "~/core/formatSeconds.js";
+import { parseJson } from "~/core/parseJson.js";
 import { authMessages } from "~/core/messages/index.js";
 import type { NotFoundSubject } from "~/core/publicApi/notFoundSubject.js";
 import { exitCodes } from "~/shell/exit.js";
@@ -64,8 +65,11 @@ export function describeRequestError(
         exitCode: exitCodes.payment,
         ...body,
       };
+    // The API answers errors with JSON, so any other 403 body came from a proxy.
     if (err.status === 403)
-      return { error: m.request.rejected403(noun), ...body };
+      return parseJson(err.body) === undefined
+        ? { error: m.request.blocked403(noun) }
+        : { error: m.request.rejected403(noun), ...body };
     if (err.status === 404) return describeNotFound(notFound, noun, reason);
     return { error: m.request.failedWithStatus(err.status, noun), ...body };
   }

@@ -77,6 +77,21 @@ describe("buildRunnerAction", () => {
     expect(built.error).toContain("JSON array of points");
   });
 
+  it("clicks with the left button when no --button is given", () => {
+    expect(build("click", { x: "480", y: "260" })).toEqual({
+      action: { button: "left", type: "click", x: 480, y: 260 },
+      ok: true,
+    });
+  });
+
+  it("refuses --button on an action that has no button", () => {
+    const built = build("move", { button: "left", x: "1", y: "2" });
+
+    expect(built.ok).toBe(false);
+    if (built.ok) return;
+    expect(built.error).toContain("button");
+  });
+
   // Left out rather than passed as undefined, so the strict schema refuses a flag
   // that does not belong to the chosen action instead of dropping it.
   it("refuses a flag the chosen action does not have", () => {

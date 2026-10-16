@@ -1,5 +1,27 @@
 # @qawolf/cli
 
+## 2.2.0
+
+### Minor Changes
+
+- 5e750e7: Upgrades `@qawolf/api-contracts` to `0.98.0`.
+
+  `qawolf run get` gives each finished attempt a `url`, the page in the app that opens that flow at that attempt. Link it to show one flow's failure, because the run's `url` opens a different flow. `qawolf agent get` replies carry an `id`.
+
+### Patch Changes
+
+- de1fcca: Upgrades `@qawolf/api-contracts` to `0.98.1`.
+
+  `qawolf environment get --help` calls an environment's status its release readiness status, in place of its standing run health.
+
+- 983a4e2: `runner act click` clicks with the left button when `--button` is left out, instead of refusing the click.
+
+## 2.1.0
+
+### Minor Changes
+
+- b5521f5: `qawolf auth login` now sets up Git to use your QA Wolf sign-in, so `git clone`, `git fetch` and `git push` work with a workspace's QA Wolf Git URL and do not ask for a password. Login adds an empty `credential.<host>.helper` entry and then the CLI entry to your global Git config, so Git asks only the CLI for the QA Wolf host. Login prints the file and the lines it added, and changes no other Git setting. `qawolf auth logout` removes those entries, also when no credential is stored. Git setup is skipped when the CLI runs through `npx` or `bunx`. With a team API key, login skips Git setup and removes those entries, because Git needs a browser sign-in or a user API key.
+
 ## 2.0.0
 
 ### Major Changes

@@ -35,6 +35,7 @@ function makeDeps(
     resolveApiKey: overrides.resolveApiKey ?? (async () => undefined),
     loginWithApiKey: mock(async () => undefined),
     loginWithDevice: mock(async () => undefined),
+    configureGitCredentialHelper: mock(async () => undefined),
   };
 }
 

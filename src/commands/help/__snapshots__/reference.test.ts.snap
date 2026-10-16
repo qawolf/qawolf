@@ -584,7 +584,7 @@ other browser actions with action-not-supported-on-mobile. Use - to read a whole
 stdin
 
 Options:
-  --button <button>      click: left, right, wheel, back or forward
+  --button <button>      click: left (default), right, wheel, back or forward
   --duration-ms <ms>     swipe: how long it takes, up to 10000. Slow scrolls, fast flings
   --from <x,y>           swipe: the point it starts at
   --keys <keys...>       keypress: modifiers and the key, e.g. Control a

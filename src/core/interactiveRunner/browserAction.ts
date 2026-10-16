@@ -74,10 +74,12 @@ export function buildRunnerAction(
   if (from !== undefined && !from.ok) return from;
   const to = flags.to === undefined ? undefined : parsePoint("--to", flags.to);
   if (to !== undefined && !to.ok) return to;
+  // A click with no --button is a left click, the one nearly every click means.
+  const button = flags.button ?? (type === "click" ? "left" : undefined);
 
   const candidate = {
     type,
-    ...(flags.button === undefined ? {} : { button: flags.button }),
+    ...(button === undefined ? {} : { button }),
     ...(flags.durationMs === undefined
       ? {}
       : { duration_ms: toNumber(flags.durationMs) }),

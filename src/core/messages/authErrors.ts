@@ -19,6 +19,8 @@ export const authErrorMessages = {
       `QA Wolf API refused the${noun ? ` ${noun}` : ""} request (HTTP 402): billing prevented it.`,
     rejected403: (noun: string | undefined) =>
       `QA Wolf API rejected the${noun ? ` ${noun}` : ""} request (HTTP 403). Check that your API key has access to this environment.`,
+    blocked403: (noun: string | undefined) =>
+      `The${noun ? ` ${noun}` : ""} request was blocked before it reached the QA Wolf API (HTTP 403), so your API key was not checked.`,
     /**
      * A 404 is answered by what the request named, because almost none of them
      * are about an environment. Only `notFound404Environment` keeps the wording
