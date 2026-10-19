@@ -1,5 +1,13 @@
 # @qawolf/cli
 
+## 2.2.1
+
+### Patch Changes
+
+- 9a06689: When a firewall in front of the QA Wolf API blocks a command's request with HTTP 403, the error no longer tells you to check your API key; it says the request was blocked before it reached the API.
+- 3610557: The runner help says a playwright runner has a screen as soon as it launches, that `actions` launches a runner too, that exit code 7 means billing refused the request, and that launching a running id with a different `--name` attaches to it.
+- ab84d52: Keep the runner named by `QAWOLF_RUNNER_ID` in `qawolf runner list --here`, so a harness that was handed a runner sees it there.
+
 ## 2.2.0
 
 ### Minor Changes
