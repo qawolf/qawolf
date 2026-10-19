@@ -34,6 +34,7 @@ export const lifecycleMessages = {
   noRunnerIdForHighlight: `${noRunnerId} A playwright runner has a page to draw on as soon as it launches.`,
   noRunnerIdForInspect: `${noRunnerId} A playwright runner can be inspected as soon as it launches, and any other runner once a flow has run on it with qawolf runner run.`,
   noRunnerIdForPromoteSnapshot: `${noRunnerId} A baseline is replaced on the runner that produced the screenshot, so it has to be the runner the diff came from.`,
+  noRunnerIdForPageSnapshot: `${noRunnerId} A playwright runner has a page to snapshot as soon as it launches.`,
   noRunnerIdForScreenshot: `${noRunnerId} A playwright runner has a screen as soon as it launches, and any other runner once a flow has run on it with qawolf runner run.`,
   noRunnerId,
   wasNotRunning: (id: string) => `Runner ${id} was not running.`,

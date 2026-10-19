@@ -26,13 +26,17 @@ Any other runner, such as a mobile one, has no screen until its first run, and n
 
 Retry on the exit code, not on the message text:
 
-- \`4\` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a \`4\` can instead mean the answer was lost with the work in flight. For \`act\` and \`actions\`, take a screenshot first and repeat only what the screen says did not happen. For \`run\`, poll \`run-status\` instead of submitting again, since a second submission risks a second billed run. For \`exec\`, check the effect the snippet was meant to have before running it again.
+- \`4\` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a \`4\` can instead mean the answer was lost with the work in flight. For \`act\`, \`actions\` and \`ref\`, take a screenshot first and repeat only what the screen says did not happen. For \`run\`, poll \`run-status\` instead of submitting again, since a second submission risks a second billed run. For \`exec\`, check the effect the snippet was meant to have before running it again.
 - \`6\` means the work ran out of the time it is given.
 - \`7\` means billing prevented the request, such as a plan that does not cover the runner you asked for. The message says what was refused and what clears it.
 - \`8\` means there is no such runner. It was never launched, or it was terminated, or it idled out. Retrying never brings one back, so stop and launch the id or name one that is running. The message says which runner was meant and whether \`--runner\`, \`QAWOLF_RUNNER_ID\` or this directory's stored default chose it; read that line before you pick an id to launch.
 - \`2\` will not clear on its own. Nothing has run on this runner yet, so run a flow; or the runner has no browser at all, so launch with \`--name playwright\` instead; or the action belongs to the other runner family, so send \`tap\`, \`swipe\` or \`fill\` to a mobile runner and the browser actions to a browser runner. The message says which.
 
-\`act\`, \`actions\`, \`run\` and \`exec\` are the commands whose lost answer may still have taken effect.
+\`act\`, \`actions\`, \`ref\`, \`run\` and \`exec\` are the commands whose lost answer may still have taken effect.
+
+## Acting by ref
+
+On a browser page, \`qawolf runner snapshot --interactive\` lists what you can act on, each with a ref such as \`e4\`, and \`qawolf runner ref click e4\` acts on it and prints the element's Playwright locator for your flow. Refs last only while the page stays loaded: after a navigation, or on \`ref-not-found\`, snapshot again. Fall back to \`screenshot\` and \`act\` for anything the outline does not show, such as a canvas.
 
 ## End to end
 
@@ -109,6 +113,12 @@ Commands:
   highlight-selector [options] [selector]  Highlight what a selector matches on a runner's live
                                            page, so the next screenshot shows it. Omit the selector
                                            to clear the highlight
+  snapshot [options]                       Print the accessibility outline of a runner's page, with
+                                           a ref such as e4 on each element for qawolf runner ref to
+                                           act on
+  ref [options] <action> <ref> [value...]  Act on the element a ref from qawolf runner snapshot
+                                           names, and print its Playwright locator. fill takes the
+                                           text; select takes one or more option values or labels
   promote-snapshot [options]               Accept a run's screenshot as the new baseline for an
                                            image diff, on the runner that produced it
   record                                   Control video recording on a Playwright runner
@@ -1050,6 +1060,80 @@ Reading the result:
   to draw on. no-answer exits 4: a highlight runs inside the page, so a page
   that is gone or mid-navigation does not answer at all rather than answering
   slowly.
+\`\`\`
+
+## qawolf runner snapshot
+
+\`\`\`text
+Usage: qawolf runner snapshot [options]
+
+Print the accessibility outline of a runner's page, with a ref such as e4 on each element for qawolf
+runner ref to act on
+
+Options:
+  --interactive  Keep only the elements a user can act on, one per line
+  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this directory's stored runner
+  -h, --help     display help for command
+
+Examples:
+  $ qawolf runner snapshot
+  $ qawolf runner snapshot --interactive
+
+Reading the page by ref:
+  snapshot prints the page's url and title, then its accessibility outline, one
+  element per line, such as \`- button "Save" [ref=e4]\`. It is plain text on
+  stdout, so read it as it stands or pipe it. --interactive keeps only what a
+  user can act on, which is shorter and usually enough to pick a ref.
+
+  A ref names the same element for as long as the page stays loaded. After a
+  navigation, or when ref answers ref-not-found, snapshot again.
+
+  no-page and runner-cannot-snapshot-pages exit 2: open a page first, or launch
+  a playwright runner. page-snapshots-not-enabled exits 2 and means your team
+  does not have this yet; use screenshot and act instead. no-answer and
+  runner-unreachable exit 4 and are worth retrying.
+\`\`\`
+
+## qawolf runner ref
+
+\`\`\`text
+Usage: qawolf runner ref [options] <action> <ref> [value...]
+
+Act on the element a ref from qawolf runner snapshot names, and print its Playwright locator. fill
+takes the text; select takes one or more option values or labels
+
+Arguments:
+  action               What to do to the element (choices: "click", "dblclick", "fill", "hover",
+                       "select")
+  ref                  A ref from the latest snapshot, such as e4
+  value                fill: the text. select: the options to select
+
+Options:
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this directory's stored
+                       runner
+  --screenshot <path>  Also save a JPEG of the screen, taken after the action, to this file. -
+                       writes it to stdout and moves the confirmation, JSON included, to stderr
+  -h, --help           display help for command
+
+Examples:
+  $ qawolf runner ref click e4
+  $ qawolf runner ref fill e7 "hello@example.com" --screenshot after.jpg
+  $ qawolf runner ref select e9 "Canada"
+  $ qawolf runner ref dblclick e12
+
+Acting by ref:
+  ref clicks, double-clicks, fills, hovers or selects on the element a ref from
+  your latest snapshot names, then prints \`locator: <code>\`, the Playwright
+  locator for that element, ready to paste into a flow. Prefer it over act with
+  coordinates when the element has a ref: there is no pixel to miss, and you get
+  the locator for free.
+
+  ref-not-found exits 2 and means the page no longer has that element: run
+  snapshot again and pick a fresh ref. action-failed exits 1: the element was
+  found and the action did not complete, for example because something covers
+  it; the message carries the error and the locator. --screenshot works as it
+  does for act, including after action-failed. On a 4, the action may have
+  happened: take a screenshot or a snapshot before repeating it.
 \`\`\`
 
 ## qawolf runner promote-snapshot

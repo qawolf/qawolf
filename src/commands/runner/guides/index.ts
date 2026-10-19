@@ -12,8 +12,10 @@ import list from "./list.txt";
 import listRecordings from "./listRecordings.txt";
 import promoteSnapshot from "./promoteSnapshot.txt";
 import record from "./record.txt";
+import ref from "./ref.txt";
 import run from "./run.txt";
 import screenshot from "./screenshot.txt";
+import snapshot from "./snapshot.txt";
 import stopOrTerminate from "./stopOrTerminate.txt";
 import workflow from "./workflow.md" with { type: "text" };
 
@@ -32,8 +34,10 @@ export const runnerGuides = {
   listRecordings: formatGuide(listRecordings),
   promoteSnapshot: formatGuide(promoteSnapshot),
   record: formatGuide(record),
+  ref: formatGuide(ref),
   run: formatGuide(run),
   screenshot: formatGuide(screenshot),
+  snapshot: formatGuide(snapshot),
   stopOrTerminate: formatGuide(stopOrTerminate),
 };
 

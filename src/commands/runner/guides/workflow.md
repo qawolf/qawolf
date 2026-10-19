@@ -21,13 +21,17 @@ Any other runner, such as a mobile one, has no screen until its first run, and n
 
 Retry on the exit code, not on the message text:
 
-- `4` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a `4` can instead mean the answer was lost with the work in flight. For `act` and `actions`, take a screenshot first and repeat only what the screen says did not happen. For `run`, poll `run-status` instead of submitting again, since a second submission risks a second billed run. For `exec`, check the effect the snippet was meant to have before running it again.
+- `4` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a `4` can instead mean the answer was lost with the work in flight. For `act`, `actions` and `ref`, take a screenshot first and repeat only what the screen says did not happen. For `run`, poll `run-status` instead of submitting again, since a second submission risks a second billed run. For `exec`, check the effect the snippet was meant to have before running it again.
 - `6` means the work ran out of the time it is given.
 - `7` means billing prevented the request, such as a plan that does not cover the runner you asked for. The message says what was refused and what clears it.
 - `8` means there is no such runner. It was never launched, or it was terminated, or it idled out. Retrying never brings one back, so stop and launch the id or name one that is running. The message says which runner was meant and whether `--runner`, `QAWOLF_RUNNER_ID` or this directory's stored default chose it; read that line before you pick an id to launch.
 - `2` will not clear on its own. Nothing has run on this runner yet, so run a flow; or the runner has no browser at all, so launch with `--name playwright` instead; or the action belongs to the other runner family, so send `tap`, `swipe` or `fill` to a mobile runner and the browser actions to a browser runner. The message says which.
 
-`act`, `actions`, `run` and `exec` are the commands whose lost answer may still have taken effect.
+`act`, `actions`, `ref`, `run` and `exec` are the commands whose lost answer may still have taken effect.
+
+## Acting by ref
+
+On a browser page, `qawolf runner snapshot --interactive` lists what you can act on, each with a ref such as `e4`, and `qawolf runner ref click e4` acts on it and prints the element's Playwright locator for your flow. Refs last only while the page stays loaded: after a navigation, or on `ref-not-found`, snapshot again. Fall back to `screenshot` and `act` for anything the outline does not show, such as a canvas.
 
 ## End to end
 

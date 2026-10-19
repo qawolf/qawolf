@@ -9,6 +9,7 @@ import { registerRunnerImportPackageCommand } from "./importPackage.register.js"
 import { registerRunnerInspectCommands } from "./inspect.register.js";
 import { registerRunnerInteractCommands } from "./interact.register.js";
 import { registerRunnerLifecycleCommands } from "./lifecycle.register.js";
+import { registerRunnerPageSnapshotCommands } from "./pageSnapshot.register.js";
 import { registerRunnerPromoteSnapshotCommand } from "./promoteSnapshot.register.js";
 import { registerRunnerEventsCommand } from "./events.register.js";
 import { registerRunCommand } from "./run.register.js";
@@ -34,6 +35,7 @@ export function registerRunnerCommand(
   registerRunnerInspectCommands(runner, signals);
   registerRunnerImportPackageCommand(runner, signals);
   registerRunnerHighlightSelectorCommand(runner, signals);
+  registerRunnerPageSnapshotCommands(runner, signals);
   registerRunnerPromoteSnapshotCommand(runner, signals);
   registerRunnerRecordingCommands(runner, signals);
 }

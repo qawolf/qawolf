@@ -1,0 +1,5 @@
+# Acting by ref
+
+ref clicks, double-clicks, fills, hovers or selects on the element a ref from your latest snapshot names, then prints `locator: <code>`, the Playwright locator for that element, ready to paste into a flow. Prefer it over act with coordinates when the element has a ref: there is no pixel to miss, and you get the locator for free.
+
+ref-not-found exits 2 and means the page no longer has that element: run snapshot again and pick a fresh ref. action-failed exits 1: the element was found and the action did not complete, for example because something covers it; the message carries the error and the locator. --screenshot works as it does for act, including after action-failed. On a 4, the action may have happened: take a screenshot or a snapshot before repeating it.

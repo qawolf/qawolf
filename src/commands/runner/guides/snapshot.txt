@@ -1,0 +1,7 @@
+# Reading the page by ref
+
+snapshot prints the page's url and title, then its accessibility outline, one element per line, such as `- button "Save" [ref=e4]`. It is plain text on stdout, so read it as it stands or pipe it. --interactive keeps only what a user can act on, which is shorter and usually enough to pick a ref.
+
+A ref names the same element for as long as the page stays loaded. After a navigation, or when ref answers ref-not-found, snapshot again.
+
+no-page and runner-cannot-snapshot-pages exit 2: open a page first, or launch a playwright runner. page-snapshots-not-enabled exits 2 and means your team does not have this yet; use screenshot and act instead. no-answer and runner-unreachable exit 4 and are worth retrying.
