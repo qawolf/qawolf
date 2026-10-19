@@ -510,10 +510,11 @@ The recorder:
   \`code\` is absent on events with no call of their own, such as a navigation,
   which is why the first line falls back to \`type\`. Use these to turn a session
   you drove by pixel coordinates into durable selectors, and to check that a
-  click landed on the element you meant rather than near it. The stream is empty
-  until the runner's first run gives it a browser context, so an early empty
-  answer means "not yet", not "broken". Do not add --json here: it wraps each
-  line in an envelope and these field paths stop matching.
+  click landed on the element you meant rather than near it. The stream stays
+  empty while a playwright runner still shows its welcome page, and on any other
+  runner until its first run, so an early empty answer means "not yet", not
+  "broken". Do not add --json here: it wraps each line in an envelope and these
+  field paths stop matching.
 
 Following:
   --follow polls and prints as entries arrive. It is tail -f with a bound: it
