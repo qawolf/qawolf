@@ -26,6 +26,26 @@ describe("handleRunnerList --here", () => {
     ]);
   });
 
+  it("keeps the runner QAWOLF_RUNNER_ID names with --here, since a harness handed it over", async () => {
+    const { callPublicApi, ctx } = makeAuthCtx("json");
+    const deps = makeTestDeps({ env: { QAWOLF_RUNNER_ID: "harness" } });
+    callPublicApi.mockResolvedValue(
+      listed(runner("elsewhere", "android"), runner("harness")),
+    );
+
+    await handleRunnerList(ctx, onlyHere, deps);
+
+    expect(ctx.ui.json).toHaveBeenCalledWith([
+      {
+        id: "harness",
+        isDefault: true,
+        launchedHere: false,
+        runnerName: "playwright",
+        url: watchUrl("harness"),
+      },
+    ]);
+  });
+
   it("says so when --here finds nothing but the team has runners", async () => {
     const { callPublicApi, ctx, infos } = makeAuthCtx();
     callPublicApi.mockResolvedValue(listed(runner("elsewhere")));

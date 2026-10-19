@@ -106,7 +106,7 @@ export async function handleRunnerList(
     return { ...failureFields(listed), exitCode: exitCodes.network };
   }
   const items = options.here
-    ? listed.items.filter((item) => item.launchedHere)
+    ? listed.items.filter((item) => item.launchedHere || item.isDefault)
     : listed.items;
 
   if (ctx.ui.mode === "json") {
