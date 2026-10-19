@@ -103,7 +103,9 @@ export async function handleRunnerAct(
       return writeActionScreenshot(
         ctx,
         {
-          action: built.action,
+          actionName: built.action.type,
+          answer: { action: built.action },
+          humanLead: undefined,
           imageJpegBase64: answer.imageJpegBase64,
           out: options.screenshot,
         },

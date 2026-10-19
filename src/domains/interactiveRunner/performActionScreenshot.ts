@@ -1,5 +1,3 @@
-import type { RunnerAction } from "@qawolf/api-contracts/v1";
-
 import { interactiveRunnerMessages } from "~/core/messages/index.js";
 import { appendSentence } from "~/core/sentences.js";
 import type {
@@ -26,13 +24,22 @@ import type { InteractiveRunnerDeps } from "./deps.js";
 export async function writeActionScreenshot(
   ctx: AuthCommandContext,
   options: {
-    action: RunnerAction;
+    /** Names the action in the messages, such as `click`. */
+    actionName: string;
+    /** What the JSON answer says about the action, beside where its screen went. */
+    answer: Record<string, unknown>;
+    /** A line printed above the confirmation, for a person or an agent. */
+    humanLead: string | undefined;
     imageJpegBase64: string | undefined;
     out: string;
   },
   deps: InteractiveRunnerDeps,
 ): Promise<CommandResult> {
-  const { type } = options.action;
+  const type = options.actionName;
+  const withLead = (message: string) =>
+    options.humanLead === undefined
+      ? message
+      : `${options.humanLead}\n${message}`;
   if (options.imageJpegBase64 === undefined) {
     return {
       error: interactiveRunnerMessages.actionPerformedWithoutScreenshot(type),
@@ -71,15 +78,19 @@ export async function writeActionScreenshot(
   // JSON included, the same as `runner screenshot --out -`.
   if (options.out === stdoutPath) {
     ctx.ui.success(
-      interactiveRunnerMessages.actionPerformedScreenshotToStdout(type),
+      withLead(
+        interactiveRunnerMessages.actionPerformedScreenshotToStdout(type),
+      ),
     );
     return undefined;
   }
   ctx.ui.output(
-    { action: options.action, outcome: "success", screenshotPath: options.out },
-    interactiveRunnerMessages.actionPerformedScreenshotWritten(
-      type,
-      options.out,
+    { ...options.answer, outcome: "success", screenshotPath: options.out },
+    withLead(
+      interactiveRunnerMessages.actionPerformedScreenshotWritten(
+        type,
+        options.out,
+      ),
     ),
   );
   return undefined;
