@@ -111,7 +111,8 @@ Commands:
                                            to clear the highlight
   promote-snapshot [options]               Accept a run's screenshot as the new baseline for an
                                            image diff, on the runner that produced it
-  record                                   Control video recording on a Playwright runner
+  record                                   Control video recording on a browser, mobile, Windows, or
+                                           Mac runner
   list-recordings [options]                Read a page of published video recordings, including
                                            after the runner terminates. Platform URLs persist; video
                                            URLs expire
@@ -1089,7 +1090,7 @@ Paths:
 \`\`\`text
 Usage: qawolf runner record [options] [command]
 
-Control video recording on a Playwright runner
+Control video recording on a browser, mobile, Windows, or Mac runner
 
 Options:
   -h, --help                     display help for command
