@@ -367,7 +367,7 @@ Commands:
   import-package [options] <name>          Install a package into a runner's live run, so a snippet or a selection can import it
   highlight-selector [options] [selector]  Highlight what a selector matches on a runner's live page, so the next screenshot shows it. Omit the selector to clear the highlight
   promote-snapshot [options]               Accept a run's screenshot as the new baseline for an image diff, on the runner that produced it
-  record                                   Control video recording on a Playwright runner
+  record                                   Control video recording on a browser, mobile, Windows, or Mac runner
   list-recordings [options]                Read a page of published video recordings, including after the runner terminates. Platform URLs persist; video URLs expire
   help [command]                           display help for command
 "
@@ -726,7 +726,7 @@ Following:
 exports[`--help output qawolf runner record 1`] = `
 "Usage: qawolf runner record [options] [command]
 
-Control video recording on a Playwright runner
+Control video recording on a browser, mobile, Windows, or Mac runner
 
 Options:
   -h, --help                     display help for command

@@ -20,7 +20,9 @@ export function registerRunnerRecordingCommands(
 ): void {
   const record = runner
     .command("record")
-    .description("Control video recording on a Playwright runner")
+    .description(
+      "Control video recording on a browser, mobile, Windows, or Mac runner",
+    )
     .addHelpText("after", runnerGuides.record);
 
   declareCommandKind(record.command("start"), "write")
