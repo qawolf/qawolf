@@ -71,4 +71,24 @@ describe("handleRunnerSnapshotPage", () => {
     expect(result?.exitCode).toBe(exitCode);
     expect(result?.error).toContain(text);
   });
+
+  it("keeps the runner's own reason for a failure", async () => {
+    const { callPublicApi, ctx } = makeAuthCtx();
+    callPublicApi.mockResolvedValue({
+      ok: true,
+      value: {
+        errorMessage: "The page did not answer in time.",
+        failureReason: "no-answer",
+        outcome: "failure",
+      },
+    });
+
+    const result = await handleRunnerSnapshotPage(
+      ctx,
+      { interactiveOnly: false, runner: "ci" },
+      makeTestDeps(),
+    );
+
+    expect(result?.error).toContain("The page did not answer in time.");
+  });
 });

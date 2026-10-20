@@ -47,7 +47,10 @@ export async function handleRunnerSnapshotPage(
 
   const answer = result.value;
   if (answer.outcome === "failure") {
-    return describeSnapshotFailure(answer.failureReason);
+    const failure = describeSnapshotFailure(answer.failureReason);
+    return answer.errorMessage === undefined
+      ? failure
+      : { ...failure, error: `${failure.error}\n${answer.errorMessage}` };
   }
   ctx.ui.stream(
     answer,
