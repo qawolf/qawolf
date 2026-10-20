@@ -31,7 +31,7 @@ Retry on the exit code, not on the message text:
 
 ## Acting by ref
 
-On a browser page, `qawolf runner snapshot --interactive` lists what you can act on, each with a ref such as `e4`, and `qawolf runner ref click e4` acts on it and prints the element's Playwright locator for your flow. Refs last only while the page stays loaded: after a navigation, or on `ref-not-found`, snapshot again. Fall back to `screenshot` and `act` for anything the outline does not show, such as a canvas.
+On a browser page, `qawolf runner snapshot --interactive` lists what you can act on, each with a ref such as `e4`, and `qawolf runner ref click e4` acts on it and prints the element's Playwright locator for your flow. Refs belong to the latest snapshot: after a navigation, after running code, or on `ref-not-found`, snapshot again. Fall back to `screenshot` and `act` for anything the outline does not show, such as a canvas.
 
 ## End to end
 

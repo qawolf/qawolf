@@ -13,7 +13,7 @@ export const pageSnapshotMessages = {
   pageSnapshotAnsweredUnknown: (failureReason: string) =>
     `The runner answered "${failureReason}", which this version of the CLI does not know how to report. Upgrade with npm install -g @qawolf/cli.`,
   refNotFound: (ref: string) =>
-    `The page no longer has an element ${ref}. A ref lasts only while the page stays loaded, so run qawolf runner snapshot again and use a ref from that.`,
+    `The page no longer has an element ${ref}. A ref belongs to the latest snapshot, so run qawolf runner snapshot again and use a ref from that.`,
   refActionFailed: (
     errorMessage: string | undefined,
     locator: string | undefined,

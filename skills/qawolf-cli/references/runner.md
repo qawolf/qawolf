@@ -35,7 +35,7 @@ Retry on the exit code, not on the message text:
 
 ## Acting by ref
 
-On a browser page, `qawolf runner snapshot --interactive` lists what you can act on, each with a ref such as `e4`, and `qawolf runner ref click e4` acts on it and prints the element's Playwright locator for your flow. Refs last only while the page stays loaded: after a navigation, or on `ref-not-found`, snapshot again. Fall back to `screenshot` and `act` for anything the outline does not show, such as a canvas.
+On a browser page, `qawolf runner snapshot --interactive` lists what you can act on, each with a ref such as `e4`, and `qawolf runner ref click e4` acts on it and prints the element's Playwright locator for your flow. Refs belong to the latest snapshot: after a navigation, after running code, or on `ref-not-found`, snapshot again. Fall back to `screenshot` and `act` for anything the outline does not show, such as a canvas.
 
 ## End to end
 
@@ -1084,8 +1084,8 @@ Reading the page by ref:
   stdout, so read it as it stands or pipe it. --interactive keeps only what a
   user can act on, which is shorter and usually enough to pick a ref.
 
-  A ref names the same element for as long as the page stays loaded. After a
-  navigation, or when ref answers ref-not-found, snapshot again.
+  A ref belongs to the latest snapshot. After a navigation, after running code,
+  or when ref answers ref-not-found, snapshot again.
 
   no-page and runner-cannot-snapshot-pages exit 2: open a page first, or launch
   a playwright runner. page-snapshots-not-enabled exits 2 and means your team
