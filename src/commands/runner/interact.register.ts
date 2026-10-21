@@ -1,25 +1,22 @@
 import type { Command } from "commander";
 
 import { declareCommandKind } from "~/commands/commandKind.js";
-import { withAuthContext } from "~/commands/context.js";
 import { handleRunnerAct } from "~/domains/interactiveRunner/performAction.js";
 import { handleRunnerScreenshot } from "~/domains/interactiveRunner/takeScreenshot.js";
 import type { SignalRegistry } from "~/shell/signals/createSignalRegistry.js";
 
 import { actExamples } from "./actExamples.js";
-import { runnerDeps, runnerFlagDescription } from "./context.js";
+import {
+  runnerDeps,
+  runnerFlagDescription,
+  withRunnerContext,
+} from "./context.js";
 import { runnerGuides } from "./guides/index.js";
+import { screenshotExamples } from "./screenshotExamples.js";
 
 // JPEG, because that is what the API answers with; a .png name would be a lie
 // about the bytes in the file.
 const defaultScreenshotPath = "screenshot.jpg";
-
-const screenshotExamples = `
-Examples:
-  $ qawolf runner screenshot
-  $ qawolf runner screenshot --out screens/step-3.jpg
-  $ qawolf runner screenshot --out - > step-3.jpg
-  $ qawolf runner screenshot --out - | my-vision-tool`;
 
 type ActFlags = {
   button?: string;
@@ -57,7 +54,7 @@ export function registerRunnerInteractCommands(
     .addHelpText("after", screenshotExamples)
     .addHelpText("after", runnerGuides.screenshot)
     .action((opts: { out: string; runner?: string }, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerScreenshot(
           ctx,
           { out: opts.out, runner: opts.runner },
@@ -118,7 +115,7 @@ export function registerRunnerInteractCommands(
     .addHelpText("after", actExamples)
     .addHelpText("after", runnerGuides.act)
     .action((action: string, opts: ActFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerAct(
           ctx,
           {

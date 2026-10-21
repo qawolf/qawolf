@@ -2,6 +2,8 @@ An interactive runner is a live pod with a browser or a mobile device in it. You
 
 ## Which runner a command reaches
 
+Every runner command works in the workspace `qawolf auth switch` saved, unless it is given `--workspace-id <id>`. The flag holds for that one command and is never saved, so sessions on one machine working on different workspaces do not move each other. Since runner ids are scoped to a team, pass the same `--workspace-id` to every command that drives a runner you launched with it; leave it off one and that command looks for the runner in the saved workspace.
+
 Commands that target a runner find one in this order: `--runner`, then `QAWOLF_RUNNER_ID`, then the runner stored for the current directory, which `qawolf runner launch` sets. Setting the environment variable once is the most robust for a harness whose working directory may not be stable, with two catches:
 
 - `qawolf runner launch` is not in that order: it takes its id from `--id` and never reads `QAWOLF_RUNNER_ID`. Pass `--id` whenever you have an id in mind.

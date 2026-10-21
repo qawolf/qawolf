@@ -1,11 +1,14 @@
 import type { Command } from "commander";
 
 import { declareCommandKind } from "~/commands/commandKind.js";
-import { withAuthContext } from "~/commands/context.js";
 import { handleRunnerInspect } from "~/domains/interactiveRunner/inspect.js";
 import type { SignalRegistry } from "~/shell/signals/createSignalRegistry.js";
 
-import { runnerDeps, runnerFlagDescription } from "./context.js";
+import {
+  runnerDeps,
+  runnerFlagDescription,
+  withRunnerContext,
+} from "./context.js";
 import { registerRunnerInspectMobileCommands } from "./inspectMobile.register.js";
 import { runnerGuides } from "./guides/index.js";
 
@@ -44,7 +47,7 @@ export function registerRunnerInspectCommands(
     .requiredOption("--selector <selector>", "Playwright selector to inspect")
     .option("--runner <id>", runnerFlagDescription)
     .action((opts: { runner?: string; selector: string }, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerInspect(
           ctx,
           {
@@ -62,7 +65,7 @@ export function registerRunnerInspectCommands(
     .option("--selector <selector>", "Limit the output to this subtree")
     .option("--runner <id>", runnerFlagDescription)
     .action((opts: { runner?: string; selector?: string }, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerInspect(
           ctx,
           {
@@ -80,7 +83,7 @@ export function registerRunnerInspectCommands(
     .requiredOption("--name <name>", "Name of the variable to read")
     .option("--runner <id>", runnerFlagDescription)
     .action((opts: { name: string; runner?: string }, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerInspect(
           ctx,
           {
