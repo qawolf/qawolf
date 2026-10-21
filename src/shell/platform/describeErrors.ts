@@ -1,3 +1,4 @@
+import { describeFetchCause } from "~/core/fetchCause.js";
 import { formatSeconds } from "~/core/formatSeconds.js";
 import { parseJson } from "~/core/parseJson.js";
 import { authMessages } from "~/core/messages/index.js";
@@ -74,7 +75,13 @@ export function describeRequestError(
     return { error: m.request.failedWithStatus(err.status, noun), ...body };
   }
   if (err.kind === "network") {
-    return { error: m.request.networkUnreachable(baseUrl, noun) };
+    return {
+      error: m.request.networkUnreachable({
+        baseUrl,
+        cause: describeFetchCause(err.cause),
+        noun,
+      }),
+    };
   }
   if (err.kind === "timeout") {
     return { error: m.request.timedOut(err.timeoutMs, noun) };
