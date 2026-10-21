@@ -142,14 +142,29 @@ describe("buildRunnerAction", () => {
     expect(built.ok).toBe(false);
   });
 
-  // The schema is strict, so a scroll carries both deltas or neither. Nothing in
-  // the help says so, which is exactly why the refusal has to.
-  it("refuses a scroll missing one of its two deltas", () => {
-    const built = build("scroll", { scrollY: "300", x: "1", y: "2" });
+  it("scrolls 0 in the direction a scroll leaves out", () => {
+    expect(build("scroll", { scrollY: "300", x: "1", y: "2" })).toEqual({
+      action: { scroll_x: 0, scroll_y: 300, type: "scroll", x: 1, y: 2 },
+      ok: true,
+    });
+    expect(build("scroll", { scrollX: "-40", x: "1", y: "2" })).toEqual({
+      action: { scroll_x: -40, scroll_y: 0, type: "scroll", x: 1, y: 2 },
+      ok: true,
+    });
+  });
+
+  it("refuses a scroll with no delta at all", () => {
+    const built = build("scroll", { x: "1", y: "2" });
+
+    expect(built.ok).toBe(false);
+  });
+
+  it("refuses a scroll with no point to scroll at", () => {
+    const built = build("scroll", { scrollY: "300" });
 
     expect(built.ok).toBe(false);
     if (built.ok) return;
-    expect(built.error).toContain("scroll_x");
+    expect(built.error).toContain("at x");
   });
 });
 
