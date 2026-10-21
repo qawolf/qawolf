@@ -104,6 +104,24 @@ describe("describeRequestError", () => {
     expect(described.error).toContain(baseUrl);
   });
 
+  it("keeps the code and message of what broke the connection", () => {
+    const cause = new TypeError("fetch failed", {
+      cause: Object.assign(new Error("other side closed"), {
+        code: "UND_ERR_SOCKET",
+      }),
+    });
+
+    const described = describeRequestError(
+      { kind: "network", cause },
+      baseUrl,
+      "runner.runFlow",
+    );
+
+    expect(described.error).toBe(
+      `Could not reach the QA Wolf API at ${baseUrl} to fetch runner.runFlow (UND_ERR_SOCKET: other side closed). Check your network connection and QAWOLF_HOST_URL.`,
+    );
+  });
+
   it("omits the body for a timeout", () => {
     const described = describeRequestError(
       { kind: "timeout", timeoutMs: 15_000 },

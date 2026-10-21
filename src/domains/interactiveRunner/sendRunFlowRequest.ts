@@ -4,6 +4,7 @@ import {
   publicContractsV1,
 } from "@qawolf/api-contracts/v1";
 
+import { appendSentence } from "~/core/sentences.js";
 import { interactiveRunnerMessages } from "~/core/messages/index.js";
 import type { RunnerApiContext } from "~/shell/commandContext.js";
 import { exitCodes } from "~/shell/exit.js";
@@ -59,8 +60,17 @@ export async function sendRunFlowRequest(
     runnerCallOptions,
   );
   if (!result.ok) {
+    const failure = runnerRequestFailure(result, options.resolved);
     return {
-      failure: runnerRequestFailure(result, options.resolved),
+      failure: result.mayHaveArrived
+        ? {
+            ...failure,
+            error: appendSentence(
+              failure.error,
+              interactiveRunnerMessages.submitLostMayHaveStarted,
+            ),
+          }
+        : failure,
       type: "failed",
     };
   }
