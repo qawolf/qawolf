@@ -83,11 +83,13 @@ export async function requestWithRetry<T>(
       // never produced an answer count as unreachable.
       const unreachable =
         result.error.kind === "network" || result.error.kind === "timeout";
+      // `describe` comes last, so a caller that knows a request was never
+      // sent can say so.
       return {
         ok: false,
-        ...args.describe(result.error),
         ...(mayHaveArrived ? { mayHaveArrived } : {}),
         ...(unreachable ? { unreachable } : {}),
+        ...args.describe(result.error),
       };
     }
     await sleep(backoff);

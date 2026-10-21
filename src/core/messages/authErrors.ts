@@ -59,6 +59,8 @@ export const authErrorMessages = {
         : `QA Wolf found nothing matching the ${noun} request (HTTP 404).`,
     failedWithStatus: (status: number, noun: string | undefined) =>
       `QA Wolf API${noun ? ` ${noun}` : ""} request failed (HTTP ${status}).`,
+    notSent:
+      "Nothing was sent, so the action did not happen and it is safe to run the command again.",
     networkUnreachable: (options: {
       baseUrl: string;
       cause: string | undefined;

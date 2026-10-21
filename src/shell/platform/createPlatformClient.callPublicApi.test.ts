@@ -107,6 +107,60 @@ describe("callPublicApi", () => {
     expect(result.ok).toBe(false);
   });
 
+  const fetchFailed = (code: string) =>
+    new TypeError("fetch failed", {
+      cause: Object.assign(new Error(code), { code }),
+    });
+  const bunRefused = Object.assign(new TypeError("Unable to connect."), {
+    code: "ConnectionRefused",
+  });
+
+  // Node's fetch keeps the system error as its cause; Bun's fetch is that error.
+  it.each([
+    ["a Node DNS failure", fetchFailed("EAI_AGAIN"), "EAI_AGAIN", true],
+    ["a Bun refused connection", bunRefused, "ConnectionRefused", true],
+    ["a reset", fetchFailed("UND_ERR_SOCKET"), "UND_ERR_SOCKET", false],
+  ] as const)(
+    "after %s, says whether the write was sent",
+    async (_, error, code, notSent) => {
+      const result = await createPlatformClient(apiKey, {
+        fetch: mock<typeof fetch>().mockRejectedValue(
+          error,
+        ) as unknown as typeof fetch,
+        baseUrl,
+        sleep: noSleep,
+      }).callPublicApi(publicContractsV1.run.create, {
+        environmentId: "environment-id",
+        flowIds: ["flow-id"],
+      });
+
+      if (result.ok) throw new Error("expected a failure");
+      expect(result.error).toContain(code);
+      expect(result.error.includes("Nothing was sent")).toBe(notSent);
+      expect(result.mayHaveArrived).toBe(!notSent);
+    },
+  );
+
+  it("does not say a command is safe to run again after a read", async () => {
+    const readContract = {
+      description: "Look up a run.",
+      input: z.object({ runId: z.string() }),
+      kind: "read",
+      name: "run.get",
+      output: z.object({ status: z.string() }),
+    } as const;
+    const result = await createPlatformClient(apiKey, {
+      fetch: mock<typeof fetch>().mockRejectedValue(
+        fetchFailed("ENOTFOUND"),
+      ) as unknown as typeof fetch,
+      baseUrl,
+      sleep: noSleep,
+    }).callPublicApi(readContract, { runId: "r1" });
+
+    if (result.ok) throw new Error("expected a failure");
+    expect(result.error).not.toContain("Nothing was sent");
+  });
+
   it("retries read contracts on network errors", async () => {
     const readContract = {
       description: "Look up a run.",
