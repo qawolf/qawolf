@@ -1,6 +1,6 @@
 {
   "name": "@qawolf/cli",
-  "version": "1.38.0",
+  "version": "2.2.1",
   "description": "Run and manage QA Wolf flows from the terminal, CI, or an AI agent",
   "keywords": [
     "automation",
@@ -28,6 +28,7 @@
     "LICENSE",
     "README.md",
     "dist/cli.js",
+    "dist/investigation-parser.js",
     "dist/runner-sdk.js",
     "dist/types/runnerSdk/index.d.ts",
     "dist/types/runnerSdk/types.d.ts",
@@ -71,13 +72,14 @@
     "@clack/prompts": "1.5.1",
     "@napi-rs/keyring": "1.3.0",
     "@oxc-node/core": "0.1.0",
-    "@qawolf/api-contracts": "0.77.0",
+    "@qawolf/api-contracts": "0.98.1",
     "@qawolf/emails": "1.1.1",
-    "@qawolf/flow-targets": "1.0.0",
-    "@qawolf/flows": "0.1.4",
+    "@qawolf/flow-targets": "2.0.0",
+    "@qawolf/flows": "0.3.0",
     "@qawolf/testkit": "1.2.1",
     "commander": "14.0.3",
     "env-paths": "4.0.0",
+    "jszip": "3.10.1",
     "picomatch": "4.0.4",
     "pino": "10.3.1",
     "playwright": "1.62.0",
@@ -105,7 +107,7 @@
     "webdriverio": "9.27.1"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.14.1"
   },
   "packageManager": "bun@1.4.2"
 }

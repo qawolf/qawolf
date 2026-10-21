@@ -1,10 +1,27 @@
-import { parseExecutionTarget } from "@qawolf/flow-targets";
+import {
+  getAndroidDeviceMode,
+  parseExecutionTarget,
+} from "@qawolf/flow-targets";
+
+// The cloud picks a device for these models at claim time, so avdmanager has
+// no device definition for them. Locally they get the Pixel the cloud's
+// emulator templates use.
+const avdDeviceIdByModel: Readonly<Record<string, string>> = {
+  any_phone: "pixel_9",
+  any_tablet: "pixel_tablet",
+};
+
+/** The `avdmanager create avd -d` device id for a flow-targets device model. */
+export function avdDeviceId(deviceModel: string): string {
+  return avdDeviceIdByModel[deviceModel] ?? deviceModel;
+}
 
 export function makeAvdName(
   deviceModel: string,
   androidVersion: string,
 ): string {
-  return `qawolf_${deviceModel.toLowerCase().replace(/ /g, "_")}_api${androidVersion}`;
+  const device = avdDeviceId(deviceModel).toLowerCase().replace(/ /g, "_");
+  return `qawolf_${device}_api${androidVersion}`;
 }
 
 // `parseExecutionTarget`'s param is the strict preset-literal union, but it
@@ -21,6 +38,8 @@ export function avdNameForTarget(target: string): string | undefined {
   }
   if (parsed.platform !== "android") return undefined;
   const { deviceModel, androidVersion } = parsed.meta;
+  // Physical farm phones have no emulator image.
+  if (getAndroidDeviceMode(deviceModel) === "real") return undefined;
   return makeAvdName(deviceModel, androidVersion);
 }
 
@@ -40,5 +59,9 @@ export function buildSystemImage(
   // API 36 has no Play Store system image; use google_apis instead.
   const imageType =
     Number(androidVersion) >= 36 ? "google_apis" : "google_apis_playstore";
-  return `system-images;android-${androidVersion};${imageType};${archStr}`;
+  // Since Android 17 the SDK publishes system images per minor platform
+  // release (android-37.0, android-37.1, ...); google_apis ships with the first.
+  const platformId =
+    Number(androidVersion) >= 37 ? `${androidVersion}.0` : androidVersion;
+  return `system-images;android-${platformId};${imageType};${archStr}`;
 }

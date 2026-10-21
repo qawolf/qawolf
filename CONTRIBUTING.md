@@ -7,7 +7,7 @@ QA Wolf currently maintains `@qawolf/cli` internally and isn't accepting externa
 ## Prerequisites
 
 - [Bun](https://bun.sh) — version is pinned in the `packageManager` field of `package.json`
-- [Node.js](https://nodejs.org) 20.19 or later
+- [Node.js](https://nodejs.org) 24.14.1 or later
 
 ## Setup
 

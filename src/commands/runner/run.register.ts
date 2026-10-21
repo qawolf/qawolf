@@ -10,6 +10,7 @@ import {
   runnerFlagDescription,
   withRunnerContext,
 } from "./context.js";
+import { runnerGuides } from "./guides/index.js";
 
 const runExamples = `
 Examples:
@@ -86,6 +87,7 @@ export function registerRunCommand(
       String(defaultFollowTimeoutSeconds),
     )
     .addHelpText("after", runExamples)
+    .addHelpText("after", runnerGuides.run)
     .action((flowFile: string, opts: RunFlags, command: Command) =>
       withRunnerContext(signals, (ctx) =>
         handleRunnerRun(

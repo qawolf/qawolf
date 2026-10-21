@@ -3,7 +3,6 @@ import { describe, expect, it } from "bun:test";
 import {
   type ActionFlags,
   buildRunnerAction,
-  parseBrowserAction,
   parseRunnerAction,
 } from "./browserAction.js";
 
@@ -78,6 +77,21 @@ describe("buildRunnerAction", () => {
     expect(built.error).toContain("JSON array of points");
   });
 
+  it("clicks with the left button when no --button is given", () => {
+    expect(build("click", { x: "480", y: "260" })).toEqual({
+      action: { button: "left", type: "click", x: 480, y: 260 },
+      ok: true,
+    });
+  });
+
+  it("refuses --button on an action that has no button", () => {
+    const built = build("move", { button: "left", x: "1", y: "2" });
+
+    expect(built.ok).toBe(false);
+    if (built.ok) return;
+    expect(built.error).toContain("button");
+  });
+
   // Left out rather than passed as undefined, so the strict schema refuses a flag
   // that does not belong to the chosen action instead of dropping it.
   it("refuses a flag the chosen action does not have", () => {
@@ -128,14 +142,29 @@ describe("buildRunnerAction", () => {
     expect(built.ok).toBe(false);
   });
 
-  // The schema is strict, so a scroll carries both deltas or neither. Nothing in
-  // the help says so, which is exactly why the refusal has to.
-  it("refuses a scroll missing one of its two deltas", () => {
-    const built = build("scroll", { scrollY: "300", x: "1", y: "2" });
+  it("scrolls 0 in the direction a scroll leaves out", () => {
+    expect(build("scroll", { scrollY: "300", x: "1", y: "2" })).toEqual({
+      action: { scroll_x: 0, scroll_y: 300, type: "scroll", x: 1, y: 2 },
+      ok: true,
+    });
+    expect(build("scroll", { scrollX: "-40", x: "1", y: "2" })).toEqual({
+      action: { scroll_x: -40, scroll_y: 0, type: "scroll", x: 1, y: 2 },
+      ok: true,
+    });
+  });
+
+  it("refuses a scroll with no delta at all", () => {
+    const built = build("scroll", { x: "1", y: "2" });
+
+    expect(built.ok).toBe(false);
+  });
+
+  it("refuses a scroll with no point to scroll at", () => {
+    const built = build("scroll", { scrollY: "300" });
 
     expect(built.ok).toBe(false);
     if (built.ok) return;
-    expect(built.error).toContain("scroll_x");
+    expect(built.error).toContain("at x");
   });
 });
 
@@ -217,33 +246,5 @@ describe("parseRunnerAction", () => {
     expect(
       parseRunnerAction({ button: "left", type: "click", x: 1, y: 2 }).ok,
     ).toBe(true);
-  });
-});
-
-describe("parseBrowserAction", () => {
-  it("refuses a touchscreen action, which a sequence does not take", () => {
-    expect(parseBrowserAction({ type: "tap", x: 1, y: 2 }).ok).toBe(false);
-  });
-
-  it("takes a complete action as a model emitted it", () => {
-    const parsed = parseBrowserAction({
-      button: "left",
-      type: "click",
-      x: 1,
-      y: 2,
-    });
-
-    expect(parsed.ok).toBe(true);
-    if (!parsed.ok) return;
-    expect(parsed.action).toEqual({
-      button: "left",
-      type: "click",
-      x: 1,
-      y: 2,
-    });
-  });
-
-  it("refuses one the published schema does not admit", () => {
-    expect(parseBrowserAction({ type: "click" }).ok).toBe(false);
   });
 });

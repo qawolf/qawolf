@@ -14,13 +14,17 @@ import { registerRunnerPromoteSnapshotCommand } from "./promoteSnapshot.register
 import { registerRunnerEventsCommand } from "./events.register.js";
 import { registerRunCommand } from "./run.register.js";
 import { registerRunnerRecordingCommands } from "./recording.register.js";
+import { declareReferenceGuide } from "~/commands/help/referenceGuide.js";
+import { runnerWorkflowGuide } from "./guides/index.js";
 
 export function registerRunnerCommand(
   program: Command,
   signals: SignalRegistry,
 ): void {
-  const runner = program
-    .command("runner")
+  const runner = declareReferenceGuide(
+    program.command("runner"),
+    runnerWorkflowGuide,
+  )
     .description("Drive an interactive runner on the QA Wolf platform")
     .addOption(workspaceIdOption())
     // Set before the subcommands exist, which copy it when created, so each

@@ -193,7 +193,7 @@ Every documented field of the `run.get` response. `[]` marks an array, so
 - `supersededBy.url` — Absolute URL of the replacement run's page.
 - `blockingBugCount` — How many bugs this run found are blocking: still open, and priority urgent, high, or unprioritized — unprioritized counts because nobody has ruled it out yet. This is what `failed` is derived from, so it explains a failure rather than adding a second verdict: gate on `status`, then read this to say how many bugs are holding the build. It counts a bug filed against a later run by an investigation that carried over from this one, and it drops a bug once that bug is resolved.
 - `flows` — The run's flows, ordered alphabetically by name. Only the flows matching flowStatuses when the request set it.
-- `flows[].attempts` — The flow's finished execution attempts, oldest first, including manual Wolf Browser attempts. Present once at least one attempt has finished, so a flow that passed after retries also lists its failed attempts. Artifact URLs appear only on automated attempts that reached a verdict, stay valid for at least a day (call run.get again for fresh ones), and can return 404 when the attempt did not produce that artifact.
+- `flows[].attempts` — The flow's finished execution attempts, oldest first, including manual Wolf Browser attempts. Present once at least one attempt has finished, so a flow that passed after retries also lists its failed attempts. Artifact URLs appear only on attempts that reached a verdict, and on a manual attempt only when its Wolf Browser run kept them. They stay valid for at least a day (call run.get again for fresh ones), and can return 404 when the attempt did not produce that artifact.
 - `flows[].attempts[].logsUrl` — Signed URL for the attempt's execution logs.
 - `flows[].attempts[].traceUrl` — Signed URL for the attempt's Playwright trace (a trace.zip; open it with `npx playwright show-trace`).
 - `flows[].attempts[].videoUrl` — Signed URL for the attempt's screen recording.
@@ -201,6 +201,8 @@ Every documented field of the `run.get` response. `[]` marks an array, so
 - `flows[].attempts[].kind` — One of: automated, manual
 - `flows[].attempts[].startedAt` — Absent when the attempt failed before it could start.
 - `flows[].attempts[].status` — One of: passed, failed, canceled
+- `flows[].attempts[].url` — Absolute URL of the attempt's page in the app, which opens this flow at this attempt. Link this page to show one flow's attempt: the run page opens a different flow. Absent only in replies from servers older than this field.
+- `flows[].attempts[].canceledReason` — Why the attempt was canceled. userCanceled means a person stopped it; do not immediately retry that activity.
 - `flows[].failure.diagnosis` — QA Wolf's investigation verdict for the failure: `bug` means the application is broken, `maintenance` means the test needed an update and the failure does not indicate an application problem. Absent until the investigation reaches a verdict, and absent when the flow was opted out of investigation. Pass issueId to issue.get for details.
 - `flows[].failure.diagnosis.issueId` — The id of the issue.
 - `flows[].failure.diagnosis.type` — One of: bug, maintenance

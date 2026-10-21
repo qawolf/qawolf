@@ -26,7 +26,7 @@ export function recordingFailure(
       };
     case "screen-not-ready":
       return {
-        error: interactiveRunnerMessages.screenNotReady,
+        error: recordingMessages.screenNotReady,
         exitCode: exitCodes.network,
       };
     case "recording-in-progress":

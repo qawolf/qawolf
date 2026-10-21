@@ -1,4 +1,8 @@
-import { getWebBrowserInfo, parseExecutionTarget } from "@qawolf/flow-targets";
+import {
+  getAndroidDeviceMode,
+  getWebBrowserInfo,
+  parseExecutionTarget,
+} from "@qawolf/flow-targets";
 import { basename } from "node:path";
 import { type FlowCallMeta, parseFlowCall } from "~/core/flowCall.js";
 import type { BrowserName } from "~/core/types.js";
@@ -36,7 +40,12 @@ export function classifyTarget(
     // Zod validation failed — not a known target string (e.g. a typo)
     return { kind: "unrecognized" };
   }
-  if (parsed.platform === "android") return { kind: "android" };
+  if (parsed.platform === "android") {
+    // Physical farm phones (Samsung Galaxy A17/A37) have no local emulator.
+    return getAndroidDeviceMode(parsed.meta.deviceModel) === "real"
+      ? { kind: "unsupported" }
+      : { kind: "android" };
+  }
   if (parsed.platform === "ios") return { kind: "ios" };
   if (parsed.platform !== "web") return { kind: "unsupported" };
   const meta = parsed.meta;

@@ -19,6 +19,8 @@ export const authErrorMessages = {
       `QA Wolf API refused the${noun ? ` ${noun}` : ""} request (HTTP 402): billing prevented it.`,
     rejected403: (noun: string | undefined) =>
       `QA Wolf API rejected the${noun ? ` ${noun}` : ""} request (HTTP 403). Check that your API key has access to this environment.`,
+    blocked403: (noun: string | undefined) =>
+      `The${noun ? ` ${noun}` : ""} request was blocked before it reached the QA Wolf API (HTTP 403), so your API key was not checked.`,
     /**
      * A 404 is answered by what the request named, because almost none of them
      * are about an environment. Only `notFound404Environment` keeps the wording
@@ -57,8 +59,12 @@ export const authErrorMessages = {
         : `QA Wolf found nothing matching the ${noun} request (HTTP 404).`,
     failedWithStatus: (status: number, noun: string | undefined) =>
       `QA Wolf API${noun ? ` ${noun}` : ""} request failed (HTTP ${status}).`,
-    networkUnreachable: (baseUrl: string, noun: string | undefined) =>
-      `Could not reach the QA Wolf API at ${baseUrl}${noun ? ` to fetch ${noun}` : ""}. Check your network connection and QAWOLF_HOST_URL.`,
+    networkUnreachable: (options: {
+      baseUrl: string;
+      cause: string | undefined;
+      noun: string | undefined;
+    }) =>
+      `Could not reach the QA Wolf API at ${options.baseUrl}${options.noun ? ` to fetch ${options.noun}` : ""}${options.cause ? ` (${options.cause})` : ""}. Check your network connection and QAWOLF_HOST_URL.`,
     timedOut: (timeoutMs: number, noun: string | undefined) =>
       `The QA Wolf API${noun ? ` ${noun}` : ""} request timed out after ${formatSeconds(timeoutMs)}. The work may still be finishing on the platform.`,
     unexpectedResponse: (noun: string | undefined) =>

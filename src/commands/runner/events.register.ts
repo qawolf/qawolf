@@ -11,6 +11,7 @@ import {
   runnerFlagDescription,
   withRunnerContext,
 } from "./context.js";
+import { runnerGuides } from "./guides/index.js";
 
 const eventsExamples = `
 Examples:
@@ -50,6 +51,7 @@ export function registerRunnerEventsCommand(
       String(defaultFollowTimeoutSeconds),
     )
     .addHelpText("after", eventsExamples)
+    .addHelpText("after", runnerGuides.events)
     .action((stream: string, opts: EventsFlags, command: Command) =>
       withRunnerContext(signals, (ctx) =>
         handleRunnerEvents(

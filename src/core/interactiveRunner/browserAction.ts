@@ -1,7 +1,5 @@
 import {
-  type BrowserAction,
   type RunnerAction,
-  browserActionSchema,
   runnerActionSchema,
 } from "@qawolf/api-contracts/v1";
 import { z } from "zod";
@@ -76,22 +74,26 @@ export function buildRunnerAction(
   if (from !== undefined && !from.ok) return from;
   const to = flags.to === undefined ? undefined : parsePoint("--to", flags.to);
   if (to !== undefined && !to.ok) return to;
+  // A click with no --button is a left click, the one nearly every click means.
+  const button = flags.button ?? (type === "click" ? "left" : undefined);
+  // A scroll given one direction does not move in the other.
+  const scrollsOneWay =
+    type === "scroll" &&
+    (flags.scrollX === undefined) !== (flags.scrollY === undefined);
+  const scrollX = flags.scrollX ?? (scrollsOneWay ? "0" : undefined);
+  const scrollY = flags.scrollY ?? (scrollsOneWay ? "0" : undefined);
 
   const candidate = {
     type,
-    ...(flags.button === undefined ? {} : { button: flags.button }),
+    ...(button === undefined ? {} : { button }),
     ...(flags.durationMs === undefined
       ? {}
       : { duration_ms: toNumber(flags.durationMs) }),
     ...(from === undefined ? {} : { from: from.value }),
     ...(flags.keys === undefined ? {} : { keys: flags.keys }),
     ...(parsedPath === undefined ? {} : { path: parsedPath.value }),
-    ...(flags.scrollX === undefined
-      ? {}
-      : { scroll_x: toNumber(flags.scrollX) }),
-    ...(flags.scrollY === undefined
-      ? {}
-      : { scroll_y: toNumber(flags.scrollY) }),
+    ...(scrollX === undefined ? {} : { scroll_x: toNumber(scrollX) }),
+    ...(scrollY === undefined ? {} : { scroll_y: toNumber(scrollY) }),
     ...(flags.selector === undefined ? {} : { selector: flags.selector }),
     ...(flags.strategy === undefined ? {} : { strategy: flags.strategy }),
     ...(flags.text === undefined ? {} : { text: flags.text }),
@@ -104,27 +106,13 @@ export function buildRunnerAction(
   return parseRunnerAction(candidate);
 }
 
-function parseWith<Action>(
-  schema: z.ZodType<Action>,
+/** Puts one complete action, as a caller's model emitted it, to the schema `runner act` and `runner actions` send. */
+export function parseRunnerAction(
   candidate: unknown,
-): BuiltAction<Action> {
-  const parsed = schema.safeParse(candidate);
+): BuiltAction<RunnerAction> {
+  const parsed = runnerActionSchema.safeParse(candidate);
   if (!parsed.success) {
     return { error: z.prettifyError(parsed.error), ok: false };
   }
   return { action: parsed.data, ok: true };
-}
-
-/** Puts one complete action, as a caller's model emitted it, to the schema `runner act` sends. */
-export function parseRunnerAction(
-  candidate: unknown,
-): BuiltAction<RunnerAction> {
-  return parseWith(runnerActionSchema, candidate);
-}
-
-/** Puts one action of a `runner actions` sequence, which takes browser actions only, to its schema. */
-export function parseBrowserAction(
-  candidate: unknown,
-): BuiltAction<BrowserAction> {
-  return parseWith(browserActionSchema, candidate);
 }

@@ -9,6 +9,7 @@ import {
   runnerFlagDescription,
   withRunnerContext,
 } from "./context.js";
+import { runnerGuides } from "./guides/index.js";
 
 const highlightExamples = `
 Examples:
@@ -26,6 +27,7 @@ export function registerRunnerHighlightSelectorCommand(
     )
     .option("--runner <id>", runnerFlagDescription)
     .addHelpText("after", highlightExamples)
+    .addHelpText("after", runnerGuides.highlightSelector)
     .action(
       (
         selector: string | undefined,

@@ -10,6 +10,7 @@ import {
   withRunnerContext,
 } from "./context.js";
 import { registerRunnerInspectMobileCommands } from "./inspectMobile.register.js";
+import { runnerGuides } from "./guides/index.js";
 
 const inspectExamples = `
 Examples:
@@ -25,9 +26,9 @@ Examples:
 
 /**
  * A group rather than one command with a positional, because each arm needs
- * different flags. `element-html`/`page-html`/`variable` read a browser's
- * page; `session`/`contexts`/`page-source`/`elements` read a mobile runner's
- * Appium session instead — the two never apply to the same runner.
+ * different flags. `element-html`/`page-html` read a browser's page;
+ * `session`/`contexts`/`page-source`/`elements` read a mobile runner's Appium
+ * session instead. `variable` reads the running workflow on either.
  */
 export function registerRunnerInspectCommands(
   runner: Command,
@@ -38,7 +39,8 @@ export function registerRunnerInspectCommands(
     .description(
       "Read one thing off a runner's live page (browser) or Appium session (mobile)",
     )
-    .addHelpText("after", inspectExamples);
+    .addHelpText("after", inspectExamples)
+    .addHelpText("after", runnerGuides.inspect);
 
   declareCommandKind(inspect.command("element-html"), "read")
     .description("Print the HTML of the first element a selector matches")

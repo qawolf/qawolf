@@ -1,5 +1,84 @@
 # @qawolf/cli
 
+## 2.2.1
+
+### Patch Changes
+
+- 9a06689: When a firewall in front of the QA Wolf API blocks a command's request with HTTP 403, the error no longer tells you to check your API key; it says the request was blocked before it reached the API.
+- 3610557: The runner help says a playwright runner has a screen as soon as it launches, that `actions` launches a runner too, that exit code 7 means billing refused the request, and that launching a running id with a different `--name` attaches to it.
+- ab84d52: Keep the runner named by `QAWOLF_RUNNER_ID` in `qawolf runner list --here`, so a harness that was handed a runner sees it there.
+
+## 2.2.0
+
+### Minor Changes
+
+- 5e750e7: Upgrades `@qawolf/api-contracts` to `0.98.0`.
+
+  `qawolf run get` gives each finished attempt a `url`, the page in the app that opens that flow at that attempt. Link it to show one flow's failure, because the run's `url` opens a different flow. `qawolf agent get` replies carry an `id`.
+
+### Patch Changes
+
+- de1fcca: Upgrades `@qawolf/api-contracts` to `0.98.1`.
+
+  `qawolf environment get --help` calls an environment's status its release readiness status, in place of its standing run health.
+
+- 983a4e2: `runner act click` clicks with the left button when `--button` is left out, instead of refusing the click.
+
+## 2.1.0
+
+### Minor Changes
+
+- b5521f5: `qawolf auth login` now sets up Git to use your QA Wolf sign-in, so `git clone`, `git fetch` and `git push` work with a workspace's QA Wolf Git URL and do not ask for a password. Login adds an empty `credential.<host>.helper` entry and then the CLI entry to your global Git config, so Git asks only the CLI for the QA Wolf host. Login prints the file and the lines it added, and changes no other Git setting. `qawolf auth logout` removes those entries, also when no credential is stored. Git setup is skipped when the CLI runs through `npx` or `bunx`. With a team API key, login skips Git setup and removes those entries, because Git needs a browser sign-in or a user API key.
+
+## 2.0.0
+
+### Major Changes
+
+- 353ecfa: Breaking: the CLI requires Node 24.14.1 or newer (it was 20.19.0). Pin `@qawolf/flow-targets` 2.0.0 and `@qawolf/flows` 0.3.0. Local runs now accept the renamed execution targets, for example `Android - Google Pixel 9 (Android 16 | Emulator)`, `Android - Any Phone (Latest | Emulator)` and `iOS - Any iPhone (Latest)`. The old names keep working, and `qawolf init` writes `@qawolf/flows` 0.3.0. `Any Phone` and `Any Tablet` targets run on the `pixel_9` and `pixel_tablet` AVDs. Physical-phone targets (`Android - Samsung Galaxy A17/A37 (Android 16)`) are skipped with a warning, like iOS targets. API 37 targets install the `android-37.0` system image.
+
+## 1.43.1
+
+### Patch Changes
+
+- 823e6ce: Allow attempt investigation and inspection to read trace ZIPs up to 75 MiB while keeping the two-minute download timeout.
+
+## 1.43.0
+
+### Minor Changes
+
+- d83833a: Follow several agent sessions in one process with `agent get --sessions <ids...> --follow`. Return the first completion, failure, cancellation or question.
+
+## 1.42.0
+
+### Minor Changes
+
+- bfc73f7: Add the promotion commands. `qawolf promotion resolve` submits the resolution of a conflicted environment promotion, and `qawolf environment promote` and `qawolf environment terminate` settle a preview environment when its pull request closes.
+
+## 1.41.0
+
+### Minor Changes
+
+- daee0fd: `qawolf attempt investigate --attempt-id <id>` summarizes a finished run attempt's trace and execution log, and `qawolf attempt inspect --attempt-id <id>` reads one action, request, snapshot, screenshot, console window or log record from them.
+
+  Pins `@qawolf/api-contracts` 0.83.0. That removes `qawolf run getAttemptArtifacts`; use `qawolf attempt get --attempt-id <id>` for an attempt's signed artifact links. It also adds `qawolf environment discard`, `qawolf environment promote`, `qawolf promotion find` and `qawolf promotion get`.
+
+## 1.40.0
+
+### Minor Changes
+
+- cc5b447: Add `qawolf help ref [command...]` (alias `reference`): prints the full help of a command and of every command under it as Markdown, e.g. `qawolf help ref runner` for every runner command in one read. `qawolf help <command>` works as before.
+- e18d76c: The runner guide now ships inside the CLI. Each `qawolf runner` command's `--help` carries what used to be its section of `references/runner.md`, `qawolf help ref runner` prints the whole guide for the installed version, and `references/runner.md` is generated from it. The guide also covers mobile `runner actions` sequences: on mobile, send `tap` and `swipe`, never `click` or `drag`.
+
+### Patch Changes
+
+- a68f95d: The runner guide says `qawolf runner inspect variable` works on a mobile runner too; only `element-html` and `page-html` are browser-only.
+
+## 1.39.0
+
+### Minor Changes
+
+- 02bc353: `qawolf runner actions` takes the same actions as `qawolf runner act`, including the mobile `tap`, `swipe` and `fill`. A browser runner refuses a mobile action in a sequence with `action-not-supported-on-browser`; with `--continue-on-failure` the rest of the sequence still runs. Pins `@qawolf/api-contracts` 0.81.0.
+
 ## 1.38.0
 
 ### Minor Changes

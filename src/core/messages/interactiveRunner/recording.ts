@@ -1,7 +1,10 @@
 export const recordingMessages = {
   noRunnerIdForHistory:
     "Name the runner whose recordings to read with --runner <id> or QAWOLF_RUNNER_ID. History stays readable after the runner terminates.",
-  unsupported: "Video recording requires a Playwright runner.",
+  unsupported:
+    "This runner has no screen to record. Launch a browser, mobile, Windows, or Mac runner instead.",
+  screenNotReady:
+    "The runner's screen is not ready to record yet. On a browser runner, retry in a second or two. On a mobile, Windows, or Mac runner, a run must claim the device first. Run code on it, or turn on runner record auto before the next full run.",
   inProgress:
     "A recording is already in progress. Use runner record status to check its mode and id. Stop a manual recording by id, or wait for the run to finish an automatic recording.",
   notFound:
