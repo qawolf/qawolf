@@ -14,8 +14,9 @@ export const agentMessages = {
     "Pass --sessions alone, without --session or a session argument.",
   emptySessionList: "Pass at least one session id with --sessions.",
   sessionListNeedsFollow: "Pass --follow when using --sessions.",
+  // Most reasons already end with a period.
   answerSendFailed: (reason: string) =>
-    `The answer could not be sent: ${reason}. The session is still waiting, so try again.`,
+    `The answer could not be sent: ${reason.replace(/\.$/, "")}. The session is still waiting, so try again.`,
   // Printed instead of prompting when nothing can be typed back — a pipe, a CI
   // job, an agent harness. Exit is clean rather than a failure: a session
   // asking a question has not gone wrong, it has handed the work back.

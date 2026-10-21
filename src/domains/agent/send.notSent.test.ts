@@ -61,7 +61,8 @@ describe("handleAgentSend after its first write succeeded", () => {
       makeTestDeps(),
     );
 
-    expect(result?.error).toContain("Nothing was sent, so this request");
-    expect(result?.error).not.toContain("run the command again");
+    expect(result?.error).toBe(
+      "The answer could not be sent: Could not reach the QA Wolf API at https://test.qawolf.com to fetch agent.send (ConnectionRefused: Unable to connect.). Check your network connection and QAWOLF_HOST_URL. Nothing was sent, so this request did not take effect. The session is still waiting, so try again.",
+    );
   });
 });
