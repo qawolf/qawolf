@@ -1,5 +1,13 @@
 # @qawolf/cli
 
+## 2.2.2
+
+### Patch Changes
+
+- e58bf3f: `qawolf runner act scroll` now scrolls 0 in the direction you leave out, so `--scroll-y 600` alone works, and `act --help` shows a scroll example.
+- 68c9b65: Reduce the default `attempt investigate` output by shortening console and page excerpts, bounding execution errors, and keeping detailed action logs on the failed or last completed action. Evidence IDs remain available for deeper inspection with `attempt inspect`.
+- 46cd7a3: `runner record` now describes recording on browser, mobile, Windows, and Mac runners. On a device runner, `screen-not-ready` explains that a run must claim the device before a recording can start.
+
 ## 2.2.1
 
 ### Patch Changes
