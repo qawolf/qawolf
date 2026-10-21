@@ -592,8 +592,8 @@ Options:
                          place of a separate screenshot. An action that did not take effect answers
                          with one too. - writes it to stdout and moves the confirmation, JSON
                          included, to stderr
-  --scroll-x <delta>     scroll: horizontal wheel delta
-  --scroll-y <delta>     scroll: vertical wheel delta
+  --scroll-x <delta>     scroll: horizontal wheel delta, 0 when only --scroll-y is given
+  --scroll-y <delta>     scroll: vertical wheel delta, 0 when only --scroll-x is given
   --selector <selector>  tap or fill: the element to act on, as a screen object would find it. tap
                          takes it in place of --x and --y
   --strategy <strategy>  how --selector is resolved: xpath (default), ios-predicate or shadow
@@ -608,6 +608,7 @@ Examples:
   $ qawolf runner act click --button left --x 480 --y 260
   $ qawolf runner act type --text "hello@example.com"
   $ qawolf runner act keypress --keys Control a
+  $ qawolf runner act scroll --x 640 --y 400 --scroll-y 600
   $ qawolf runner act navigate --url https://example.com
   $ qawolf runner act drag --path '[{"x":10,"y":20},{"x":80,"y":90}]'
   $ qawolf runner act click --button left --x 480 --y 260 --screenshot step-4.jpg

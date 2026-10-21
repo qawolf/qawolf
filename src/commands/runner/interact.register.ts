@@ -91,8 +91,14 @@ export function registerRunnerInteractCommands(
       "--screenshot <path>",
       "Also save a JPEG of the screen, taken after the action, to this file, in place of a separate screenshot. An action that did not take effect answers with one too. - writes it to stdout and moves the confirmation, JSON included, to stderr",
     )
-    .option("--scroll-x <delta>", "scroll: horizontal wheel delta")
-    .option("--scroll-y <delta>", "scroll: vertical wheel delta")
+    .option(
+      "--scroll-x <delta>",
+      "scroll: horizontal wheel delta, 0 when only --scroll-y is given",
+    )
+    .option(
+      "--scroll-y <delta>",
+      "scroll: vertical wheel delta, 0 when only --scroll-x is given",
+    )
     .option(
       "--selector <selector>",
       "tap or fill: the element to act on, as a screen object would find it. tap takes it in place of --x and --y",

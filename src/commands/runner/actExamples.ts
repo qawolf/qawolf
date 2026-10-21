@@ -3,6 +3,7 @@ Examples:
   $ qawolf runner act click --button left --x 480 --y 260
   $ qawolf runner act type --text "hello@example.com"
   $ qawolf runner act keypress --keys Control a
+  $ qawolf runner act scroll --x 640 --y 400 --scroll-y 600
   $ qawolf runner act navigate --url https://example.com
   $ qawolf runner act drag --path '[{"x":10,"y":20},{"x":80,"y":90}]'
   $ qawolf runner act click --button left --x 480 --y 260 --screenshot step-4.jpg
