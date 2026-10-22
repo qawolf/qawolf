@@ -3,8 +3,10 @@ import { deleteTokens as realDeleteTokens } from "~/domains/auth/store/deleteTok
 import { hasStoredCredentials as realHasStoredCredentials } from "~/domains/auth/store/index.js";
 import type { CommandContext, CommandResult } from "~/shell/commandContext.js";
 import { authMessages } from "~/core/messages/index.js";
+import { unconfigureGitCredentialHelper as realUnconfigureGitCredentialHelper } from "./gitHelperSetup.js";
 
 type LogoutDeps = {
+  unconfigureGitCredentialHelper?: (ctx: CommandContext) => Promise<void>;
   hasStoredCredentials?: (
     configDir: string,
     fs: CommandContext["fs"],
@@ -28,6 +30,8 @@ export async function handleLogout(
     deps.hasStoredCredentials ?? realHasStoredCredentials;
   const deleteApiKey = deps.deleteApiKey ?? realDeleteApiKey;
   const deleteTokens = deps.deleteTokens ?? realDeleteTokens;
+  const unconfigureGitCredentialHelper =
+    deps.unconfigureGitCredentialHelper ?? realUnconfigureGitCredentialHelper;
   const env = deps.env ?? process.env;
 
   // Storage is asked directly rather than through resolveApiKey. Resolving a
@@ -40,6 +44,7 @@ export async function handleLogout(
 
   if (!envKey && !stored) {
     ctx.ui.info(authMessages.logout.notAuthenticated);
+    await unconfigureGitCredentialHelper(ctx);
     return;
   }
 
@@ -75,6 +80,8 @@ export async function handleLogout(
     ],
     () => authMessages.logout.credentialsRemoved,
   );
+
+  await unconfigureGitCredentialHelper(ctx);
 
   if (ctx.ui.mode === "human") {
     ctx.ui.outro(authMessages.logout.success);

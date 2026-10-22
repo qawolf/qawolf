@@ -1,25 +1,22 @@
 import type { Command } from "commander";
 
 import { declareCommandKind } from "~/commands/commandKind.js";
-import { withAuthContext } from "~/commands/context.js";
 import { handleRunnerAct } from "~/domains/interactiveRunner/performAction.js";
 import { handleRunnerScreenshot } from "~/domains/interactiveRunner/takeScreenshot.js";
 import type { SignalRegistry } from "~/shell/signals/createSignalRegistry.js";
 
 import { actExamples } from "./actExamples.js";
-import { runnerDeps, runnerFlagDescription } from "./context.js";
+import {
+  runnerDeps,
+  runnerFlagDescription,
+  withRunnerContext,
+} from "./context.js";
 import { runnerGuides } from "./guides/index.js";
+import { screenshotExamples } from "./screenshotExamples.js";
 
 // JPEG, because that is what the API answers with; a .png name would be a lie
 // about the bytes in the file.
 const defaultScreenshotPath = "screenshot.jpg";
-
-const screenshotExamples = `
-Examples:
-  $ qawolf runner screenshot
-  $ qawolf runner screenshot --out screens/step-3.jpg
-  $ qawolf runner screenshot --out - > step-3.jpg
-  $ qawolf runner screenshot --out - | my-vision-tool`;
 
 type ActFlags = {
   button?: string;
@@ -57,7 +54,7 @@ export function registerRunnerInteractCommands(
     .addHelpText("after", screenshotExamples)
     .addHelpText("after", runnerGuides.screenshot)
     .action((opts: { out: string; runner?: string }, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerScreenshot(
           ctx,
           { out: opts.out, runner: opts.runner },
@@ -72,7 +69,10 @@ export function registerRunnerInteractCommands(
     .description(
       "Perform one raw action on a runner's screen. A browser runner takes click, double_click, scroll, move, drag, keypress, navigate and type; a mobile runner takes tap, swipe, fill and type. A browser runner answers mobile actions with action-not-supported-on-browser; a mobile runner answers the other browser actions with action-not-supported-on-mobile. Use - to read a whole action as JSON from stdin",
     )
-    .option("--button <button>", "click: left, right, wheel, back or forward")
+    .option(
+      "--button <button>",
+      "click: left (default), right, wheel, back or forward",
+    )
     .option(
       "--duration-ms <ms>",
       "swipe: how long it takes, up to 10000. Slow scrolls, fast flings",
@@ -88,8 +88,14 @@ export function registerRunnerInteractCommands(
       "--screenshot <path>",
       "Also save a JPEG of the screen, taken after the action, to this file, in place of a separate screenshot. An action that did not take effect answers with one too. - writes it to stdout and moves the confirmation, JSON included, to stderr",
     )
-    .option("--scroll-x <delta>", "scroll: horizontal wheel delta")
-    .option("--scroll-y <delta>", "scroll: vertical wheel delta")
+    .option(
+      "--scroll-x <delta>",
+      "scroll: horizontal wheel delta, 0 when only --scroll-y is given",
+    )
+    .option(
+      "--scroll-y <delta>",
+      "scroll: vertical wheel delta, 0 when only --scroll-x is given",
+    )
     .option(
       "--selector <selector>",
       "tap or fill: the element to act on, as a screen object would find it. tap takes it in place of --x and --y",
@@ -109,7 +115,7 @@ export function registerRunnerInteractCommands(
     .addHelpText("after", actExamples)
     .addHelpText("after", runnerGuides.act)
     .action((action: string, opts: ActFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerAct(
           ctx,
           {

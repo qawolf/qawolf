@@ -2,6 +2,7 @@ import { authMessages } from "~/core/messages/index.js";
 import { resolveApiKey as realResolveApiKey } from "~/domains/auth/index.js";
 import type { ApiKeyResult } from "~/domains/auth/types.js";
 import type { CommandContext, CommandResult } from "~/shell/commandContext.js";
+import { configureGitCredentialHelper as realConfigureGitCredentialHelper } from "./gitHelperSetup.js";
 import { loginWithApiKey as realLoginWithApiKey } from "./loginApiKey.js";
 import { loginWithDevice as realLoginWithDevice } from "./loginDevice.js";
 
@@ -12,9 +13,35 @@ type LoginDeps = {
   ) => Promise<ApiKeyResult | undefined>;
   loginWithApiKey?: (ctx: CommandContext) => Promise<CommandResult>;
   loginWithDevice?: (ctx: CommandContext) => Promise<CommandResult>;
+  configureGitCredentialHelper?: (options: {
+    credential: ApiKeyResult;
+    ctx: CommandContext;
+  }) => Promise<void>;
 };
 
 const browserMethod = "browser";
+
+async function configureGitAfterSignIn({
+  ctx,
+  deps,
+  result,
+}: {
+  ctx: CommandContext;
+  deps: LoginDeps;
+  result: CommandResult;
+}): Promise<CommandResult> {
+  const resolveApiKey = deps.resolveApiKey ?? realResolveApiKey;
+  const credential =
+    result === undefined
+      ? await resolveApiKey(ctx.configDir, ctx.fs)
+      : undefined;
+  if (credential) {
+    await (
+      deps.configureGitCredentialHelper ?? realConfigureGitCredentialHelper
+    )({ credential, ctx });
+  }
+  return result;
+}
 
 export async function handleLogin(
   ctx: CommandContext,
@@ -31,7 +58,7 @@ export async function handleLogin(
     const reauth = await ctx.ui.confirm(authMessages.login.reAuthPrompt);
     if (!reauth.ok || !reauth.value) {
       ctx.ui.info(authMessages.alreadyConfigured);
-      return;
+      return configureGitAfterSignIn({ ctx, deps, result: undefined });
     }
   }
 
@@ -60,7 +87,11 @@ export async function handleLogin(
   }
 
   if (method.value !== browserMethod) {
-    return (deps.loginWithApiKey ?? realLoginWithApiKey)(ctx);
+    return configureGitAfterSignIn({
+      ctx,
+      deps,
+      result: await (deps.loginWithApiKey ?? realLoginWithApiKey)(ctx),
+    });
   }
 
   // Said before the flow starts rather than after it: the browser round trip
@@ -75,5 +106,9 @@ export async function handleLogin(
     );
   }
 
-  return (deps.loginWithDevice ?? realLoginWithDevice)(ctx);
+  return configureGitAfterSignIn({
+    ctx,
+    deps,
+    result: await (deps.loginWithDevice ?? realLoginWithDevice)(ctx),
+  });
 }

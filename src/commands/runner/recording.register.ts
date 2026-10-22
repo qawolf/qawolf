@@ -1,14 +1,17 @@
 import { Argument, type Command } from "commander";
 
 import { declareCommandKind } from "~/commands/commandKind.js";
-import { withAuthContext } from "~/commands/context.js";
 import {
   handleRunnerRecord,
   handleRunnerRecordings,
 } from "~/domains/interactiveRunner/recording.js";
 import type { SignalRegistry } from "~/shell/signals/createSignalRegistry.js";
 
-import { runnerDeps, runnerFlagDescription } from "./context.js";
+import {
+  runnerDeps,
+  runnerFlagDescription,
+  withRunnerContext,
+} from "./context.js";
 import { runnerGuides } from "./guides/index.js";
 
 type RecordFlags = { runner?: string; recordingId?: string };
@@ -20,7 +23,9 @@ export function registerRunnerRecordingCommands(
 ): void {
   const record = runner
     .command("record")
-    .description("Control video recording on a Playwright runner")
+    .description(
+      "Control video recording on a browser, mobile, Windows, or Mac runner",
+    )
     .addHelpText("after", runnerGuides.record);
 
   declareCommandKind(record.command("start"), "write")
@@ -33,7 +38,7 @@ export function registerRunnerRecordingCommands(
     )
     .option("--runner <id>", runnerFlagDescription)
     .action((opts: RecordFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerRecord(
           ctx,
           {
@@ -51,7 +56,7 @@ export function registerRunnerRecordingCommands(
     )
     .option("--runner <id>", runnerFlagDescription)
     .action((recordingId: string, opts: RecordFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerRecord(
           ctx,
           {
@@ -67,7 +72,7 @@ export function registerRunnerRecordingCommands(
     .description("Show the active recording and automatic recording setting")
     .option("--runner <id>", runnerFlagDescription)
     .action((opts: RecordFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerRecord(
           ctx,
           {
@@ -91,7 +96,7 @@ export function registerRunnerRecordingCommands(
     )
     .option("--runner <id>", runnerFlagDescription)
     .action((setting: string, opts: RecordFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerRecord(
           ctx,
           {
@@ -118,7 +123,7 @@ export function registerRunnerRecordingCommands(
     )
     .addHelpText("after", runnerGuides.listRecordings)
     .action((opts: RecordingsFlags, command: Command) =>
-      withAuthContext(signals, (ctx) =>
+      withRunnerContext(signals, (ctx) =>
         handleRunnerRecordings(
           ctx,
           {

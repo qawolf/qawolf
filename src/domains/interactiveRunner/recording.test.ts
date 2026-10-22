@@ -1,7 +1,7 @@
 import { publicContractsV1 } from "@qawolf/api-contracts/v1";
 import { describe, expect, it } from "bun:test";
 
-import { interactiveRunnerMessages } from "~/core/messages/index.js";
+import { recordingMessages } from "~/core/messages/interactiveRunner/recording.js";
 
 import { makeAuthCtx, makeTestDeps } from "./deps.testUtils.js";
 import { handleRunnerRecord } from "./recording.js";
@@ -170,7 +170,7 @@ describe("runner recording", () => {
       );
       expect(result?.exitCode).toBe(exitCode);
       if (failureReason === "screen-not-ready") {
-        expect(result?.error).toBe(interactiveRunnerMessages.screenNotReady);
+        expect(result?.error).toBe(recordingMessages.screenNotReady);
       }
       expect(result?.errorBody).toContain(recordingId);
       expect(outputs()).toEqual([]);

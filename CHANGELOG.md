@@ -1,5 +1,53 @@
 # @qawolf/cli
 
+## 2.3.0
+
+### Minor Changes
+
+- af37e87: Every `qawolf runner` command takes `--workspace-id <id>`, which works in that workspace for the one command without saving it. Until now the only way to choose a runner's workspace was `qawolf auth switch`, which saves the choice for every session on the machine, so one session switching moved every other session's next runner command to the new workspace. Without the flag, runner commands still use the saved workspace. The flag also gives an organization or user API key, which saves no workspace, one to work in.
+
+### Patch Changes
+
+- 29a062b: When a command that changes something, such as `runner act`, fails because its request could not be sent at all (a DNS failure, a refused connection, or a connect timeout on Node), it now says nothing was sent, so that request did not take effect, instead of warning that the action may have happened.
+
+## 2.2.2
+
+### Patch Changes
+
+- e58bf3f: `qawolf runner act scroll` now scrolls 0 in the direction you leave out, so `--scroll-y 600` alone works, and `act --help` shows a scroll example.
+- 68c9b65: Reduce the default `attempt investigate` output by shortening console and page excerpts, bounding execution errors, and keeping detailed action logs on the failed or last completed action. Evidence IDs remain available for deeper inspection with `attempt inspect`.
+- 46cd7a3: `runner record` now describes recording on browser, mobile, Windows, and Mac runners. On a device runner, `screen-not-ready` explains that a run must claim the device before a recording can start.
+
+## 2.2.1
+
+### Patch Changes
+
+- 9a06689: When a firewall in front of the QA Wolf API blocks a command's request with HTTP 403, the error no longer tells you to check your API key; it says the request was blocked before it reached the API.
+- 3610557: The runner help says a playwright runner has a screen as soon as it launches, that `actions` launches a runner too, that exit code 7 means billing refused the request, and that launching a running id with a different `--name` attaches to it.
+- ab84d52: Keep the runner named by `QAWOLF_RUNNER_ID` in `qawolf runner list --here`, so a harness that was handed a runner sees it there.
+
+## 2.2.0
+
+### Minor Changes
+
+- 5e750e7: Upgrades `@qawolf/api-contracts` to `0.98.0`.
+
+  `qawolf run get` gives each finished attempt a `url`, the page in the app that opens that flow at that attempt. Link it to show one flow's failure, because the run's `url` opens a different flow. `qawolf agent get` replies carry an `id`.
+
+### Patch Changes
+
+- de1fcca: Upgrades `@qawolf/api-contracts` to `0.98.1`.
+
+  `qawolf environment get --help` calls an environment's status its release readiness status, in place of its standing run health.
+
+- 983a4e2: `runner act click` clicks with the left button when `--button` is left out, instead of refusing the click.
+
+## 2.1.0
+
+### Minor Changes
+
+- b5521f5: `qawolf auth login` now sets up Git to use your QA Wolf sign-in, so `git clone`, `git fetch` and `git push` work with a workspace's QA Wolf Git URL and do not ask for a password. Login adds an empty `credential.<host>.helper` entry and then the CLI entry to your global Git config, so Git asks only the CLI for the QA Wolf host. Login prints the file and the lines it added, and changes no other Git setting. `qawolf auth logout` removes those entries, also when no credential is stored. Git setup is skipped when the CLI runs through `npx` or `bunx`. With a team API key, login skips Git setup and removes those entries, because Git needs a browser sign-in or a user API key.
+
 ## 2.0.0
 
 ### Major Changes

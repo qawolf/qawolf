@@ -24,7 +24,7 @@ Commands:
                                flows need
   attempt                      Investigate a finished run attempt from recorded
                                evidence
-  runner                       Drive an interactive runner on the QA Wolf
+  runner [options]             Drive an interactive runner on the QA Wolf
                                platform
   codeHostIntegration          QA Wolf public API codeHostIntegration commands
   deployment                   QA Wolf public API deployment commands
@@ -349,7 +349,14 @@ exports[`--help output qawolf runner 1`] = `
 Drive an interactive runner on the QA Wolf platform
 
 Options:
+  --workspace-id <id>                      Workspace to work in for this command only. Defaults to the one 'qawolf auth switch' saved, and is never saved itself
   -h, --help                               display help for command
+
+Global Options:
+  -V, --version                            output the version number
+  --verbose                                Enable debug logging to stderr
+  --json                                   Output as JSON
+  --agent                                  Output for agent consumption
 
 Commands:
   launch [options]                         Launch an interactive runner and make it this directory's default
@@ -367,7 +374,7 @@ Commands:
   import-package [options] <name>          Install a package into a runner's live run, so a snippet or a selection can import it
   highlight-selector [options] [selector]  Highlight what a selector matches on a runner's live page, so the next screenshot shows it. Omit the selector to clear the highlight
   promote-snapshot [options]               Accept a run's screenshot as the new baseline for an image diff, on the runner that produced it
-  record                                   Control video recording on a Playwright runner
+  record                                   Control video recording on a browser, mobile, Windows, or Mac runner
   list-recordings [options]                Read a page of published video recordings, including after the runner terminates. Platform URLs persist; video URLs expire
   help [command]                           display help for command
 "
@@ -379,9 +386,19 @@ exports[`--help output qawolf runner launch 1`] = `
 Launch an interactive runner and make it this directory's default
 
 Options:
-  --id <id>        Id to launch under. Relaunching an id attaches to that runner
-  --name <family>  Runner family to run, e.g. playwright
-  -h, --help       display help for command
+  --id <id>            Id to launch under. Relaunching an id attaches to that
+                       runner
+  --name <family>      Runner family to run, e.g. playwright
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Examples:
   $ qawolf runner launch
@@ -393,8 +410,8 @@ Ids:
   fine id. Launching an id that is already running attaches to that runner
   instead of starting and billing a second one, and the answer says which
   happened: read \`alreadyRunning\`. Reusing one id is therefore the cheap and
-  safe pattern. The same id with a different --name is refused rather than
-  silently ignored.
+  safe pattern. --name does not change a runner that is already running: the
+  answer's \`runnerName\` says what you attached to.
 
   launch takes its id from --id and never reads QAWOLF_RUNNER_ID. A bare \`qawolf
   runner launch\` invents a random id, bills a pod under it and stores it, so a
@@ -413,9 +430,10 @@ The page:
   launched its own runner. It is a QA Wolf page showing what the runner is
   doing, where a person can also take over with their own mouse and keyboard.
   Hand it to a person who asks what your runner is up to. The page opens for
-  anyone on the runner's team, however the runner was launched. There is nothing
-  to see until the runner's first run starts its screen, so the page waits until
-  then. You read the screen with \`screenshot\`, not with the page.
+  anyone on the runner's team, however the runner was launched. A playwright
+  runner's screen starts as it launches, showing a QA Wolf welcome page. Any
+  other runner's screen starts with its first run, so its page waits until then.
+  You read the screen with \`screenshot\`, not with the page.
 
 Browser or mobile:
   --name also chooses between a browser and a mobile device: --name android or
@@ -434,9 +452,18 @@ exports[`--help output qawolf runner terminate 1`] = `
 End an interactive runner, and the pod it runs on with it
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Stopping a run or ending a runner:
   Two different things, and the names are the only warning you get:
@@ -460,9 +487,18 @@ exports[`--help output qawolf runner stop-run 1`] = `
 Stop what a runner is currently executing, leaving the runner up
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Stopping a run or ending a runner:
   Two different things, and the names are the only warning you get:
@@ -517,6 +553,15 @@ Options:
                        runner alive, so a run that never settles would otherwise
                        bill until the terminal closed (default: "3600")
   -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Examples:
   $ qawolf runner run flows/checkout.flow.ts
@@ -671,6 +716,15 @@ Options:
                        until the terminal closed (default: "3600")
   -h, --help           display help for command
 
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
+
 Examples:
   $ qawolf runner events recorder --tail 5
   $ qawolf runner events run-logs --run <runId> --follow
@@ -710,10 +764,11 @@ The recorder:
   \`code\` is absent on events with no call of their own, such as a navigation,
   which is why the first line falls back to \`type\`. Use these to turn a session
   you drove by pixel coordinates into durable selectors, and to check that a
-  click landed on the element you meant rather than near it. The stream is empty
-  until the runner's first run gives it a browser context, so an early empty
-  answer means "not yet", not "broken". Do not add --json here: it wraps each
-  line in an envelope and these field paths stop matching.
+  click landed on the element you meant rather than near it. The stream stays
+  empty while a playwright runner still shows its welcome page, and on any other
+  runner until its first run, so an early empty answer means "not yet", not
+  "broken". Do not add --json here: it wraps each line in an envelope and these
+  field paths stop matching.
 
 Following:
   --follow polls and prints as entries arrive. It is tail -f with a bound: it
@@ -739,10 +794,19 @@ Following:
 exports[`--help output qawolf runner record 1`] = `
 "Usage: qawolf runner record [options] [command]
 
-Control video recording on a Playwright runner
+Control video recording on a browser, mobile, Windows, or Mac runner
 
 Options:
   -h, --help                     display help for command
+
+Global Options:
+  --workspace-id <id>            Workspace to work in for this command only.
+                                 Defaults to the one 'qawolf auth switch' saved,
+                                 and is never saved itself
+  -V, --version                  output the version number
+  --verbose                      Enable debug logging to stderr
+  --json                         Output as JSON
+  --agent                        Output for agent consumption
 
 Commands:
   start [options]                Start manual video capture across runs.
@@ -792,6 +856,15 @@ Options:
   --runner <id>          Runner to target. Defaults to QAWOLF_RUNNER_ID, then
                          this directory's stored runner
   -h, --help             display help for command
+
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
 "
 `;
 
@@ -802,9 +875,18 @@ Stop the recording with this UUID and publish it. Retrying cannot stop a later
 recording
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -814,9 +896,18 @@ exports[`--help output qawolf runner record status 1`] = `
 Show the active recording and automatic recording setting
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -826,12 +917,21 @@ exports[`--help output qawolf runner record auto 1`] = `
 Enable or disable automatic recording for subsequent full runs
 
 Arguments:
-  setting        Automatic recording setting (choices: "on", "off")
+  setting              Automatic recording setting (choices: "on", "off")
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -849,6 +949,15 @@ Options:
   --page-token <token>   Continue from nextPageToken returned by the previous
                          page
   -h, --help             display help for command
+
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
 
 Reading pages:
   $ qawolf runner list-recordings --runner ci --json
@@ -871,9 +980,18 @@ exports[`--help output qawolf runner keepalive 1`] = `
 Reset a runner's inactivity clock, for a caller that pauses between actions
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Examples:
   $ qawolf runner keepalive
@@ -902,12 +1020,21 @@ Save a JPEG of an interactive runner's screen to a file, or write it to stdout
 with --out -
 
 Options:
-  --out <path>   File to write the image to. - writes the JPEG bytes to stdout
-                 on their own and moves the confirmation, JSON included, to
-                 stderr (default: "screenshot.jpg")
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --out <path>         File to write the image to. - writes the JPEG bytes to
+                       stdout on their own and moves the confirmation, JSON
+                       included, to stderr (default: "screenshot.jpg")
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Examples:
   $ qawolf runner screenshot
@@ -923,9 +1050,10 @@ Reading the screen:
   to stderr so nothing follows the image on stdout. A terminal on stdout is
   refused: redirect or pipe it.
 
-  A runner has no screen until its first run, so until then screenshot exits 2.
-  It never launches a runner. When you are about to act anyway, \`act
-  --screenshot\` performs the action and returns the screen in one call.
+  A playwright runner's screen starts as it launches. Any other runner has no
+  screen until its first run, so until then screenshot exits 2 on it. It never
+  launches a runner. When you are about to act anyway, \`act --screenshot\`
+  performs the action and returns the screen in one call.
 "
 `;
 
@@ -940,7 +1068,7 @@ actions with action-not-supported-on-mobile. Use - to read a whole action as
 JSON from stdin
 
 Options:
-  --button <button>      click: left, right, wheel, back or forward
+  --button <button>      click: left (default), right, wheel, back or forward
   --duration-ms <ms>     swipe: how long it takes, up to 10000. Slow scrolls,
                          fast flings
   --from <x,y>           swipe: the point it starts at
@@ -953,8 +1081,10 @@ Options:
                          action that did not take effect answers with one too. -
                          writes it to stdout and moves the confirmation, JSON
                          included, to stderr
-  --scroll-x <delta>     scroll: horizontal wheel delta
-  --scroll-y <delta>     scroll: vertical wheel delta
+  --scroll-x <delta>     scroll: horizontal wheel delta, 0 when only --scroll-y
+                         is given
+  --scroll-y <delta>     scroll: vertical wheel delta, 0 when only --scroll-x is
+                         given
   --selector <selector>  tap or fill: the element to act on, as a screen object
                          would find it. tap takes it in place of --x and --y
   --strategy <strategy>  how --selector is resolved: xpath (default),
@@ -967,10 +1097,20 @@ Options:
   --y <pixels>           click, tap and the like: y, in screenshot pixels
   -h, --help             display help for command
 
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
+
 Examples:
   $ qawolf runner act click --button left --x 480 --y 260
   $ qawolf runner act type --text "hello@example.com"
   $ qawolf runner act keypress --keys Control a
+  $ qawolf runner act scroll --x 640 --y 400 --scroll-y 600
   $ qawolf runner act navigate --url https://example.com
   $ qawolf runner act drag --path '[{"x":10,"y":20},{"x":80,"y":90}]'
   $ qawolf runner act click --button left --x 480 --y 260 --screenshot step-4.jpg
@@ -1007,9 +1147,9 @@ Seeing and acting:
   instead. Bounds are checked before anything is sent, so an over-long --text or
   an out-of-range coordinate comes back immediately naming the limit.
 
-  On a 4, the answer may have been lost with the action in flight: take a
-  screenshot before repeating a click, and repeat only what the screen says did
-  not happen.
+  On a 4, unless the message says nothing was sent, the answer may have been
+  lost with the action in flight: take a screenshot before repeating a click,
+  and repeat only what the screen says did not happen.
 
 Mobile:
   A mobile runner has a touchscreen, not a mouse, so it has actions of its own:
@@ -1031,10 +1171,10 @@ Mobile:
   swipe and fill with action-not-supported-on-browser.
 
 Before the first run:
-  A runner has no screen until its first run, so act exits 2 until then, except
-  navigate, which exits 1 (action-failed): it skips the screen but still needs
-  the runner to have run something. With no runner named at all, act launches
-  one and says so on stderr.
+  A playwright runner's screen starts as it launches, so act works on it before
+  anything has run. Any other runner has no screen until its first run, so act
+  exits 2 on it until then. With no runner named at all, act launches one and
+  says so on stderr.
 "
 `;
 
@@ -1049,6 +1189,15 @@ Options:
   --runner <id>                Runner to target. Defaults to QAWOLF_RUNNER_ID,
                                then this directory's stored runner
   -h, --help                   display help for command
+
+Global Options:
+  --workspace-id <id>          Workspace to work in for this command only.
+                               Defaults to the one 'qawolf auth switch' saved,
+                               and is never saved itself
+  -V, --version                output the version number
+  --verbose                    Enable debug logging to stderr
+  --json                       Output as JSON
+  --agent                      Output for agent consumption
 
 Examples:
   $ qawolf runner import-package dayjs
@@ -1072,6 +1221,15 @@ Read one thing off a runner's live page (browser) or Appium session (mobile)
 
 Options:
   -h, --help              display help for command
+
+Global Options:
+  --workspace-id <id>     Workspace to work in for this command only. Defaults
+                          to the one 'qawolf auth switch' saved, and is never
+                          saved itself
+  -V, --version           output the version number
+  --verbose               Enable debug logging to stderr
+  --json                  Output as JSON
+  --agent                 Output for agent consumption
 
 Commands:
   element-html [options]  Print the HTML of the first element a selector matches
@@ -1162,6 +1320,15 @@ Options:
   --runner <id>          Runner to target. Defaults to QAWOLF_RUNNER_ID, then
                          this directory's stored runner
   -h, --help             display help for command
+
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
 "
 `;
 
@@ -1175,6 +1342,15 @@ Options:
   --runner <id>          Runner to target. Defaults to QAWOLF_RUNNER_ID, then
                          this directory's stored runner
   -h, --help             display help for command
+
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
 "
 `;
 
@@ -1184,10 +1360,19 @@ exports[`--help output qawolf runner inspect variable 1`] = `
 Print a top-level variable's value from the running workflow
 
 Options:
-  --name <name>  Name of the variable to read
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --name <name>        Name of the variable to read
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -1197,9 +1382,18 @@ exports[`--help output qawolf runner inspect session 1`] = `
 Print the Appium session's status: ready, or why not
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -1209,9 +1403,18 @@ exports[`--help output qawolf runner inspect contexts 1`] = `
 List the WebView contexts available, and which is current
 
 Options:
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -1221,10 +1424,19 @@ exports[`--help output qawolf runner inspect page-source 1`] = `
 Print the current context's page source, as a tree
 
 Options:
-  --context <name>  Read this context instead of the current one
-  --runner <id>     Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                    directory's stored runner
-  -h, --help        display help for command
+  --context <name>     Read this context instead of the current one
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 "
 `;
 
@@ -1246,6 +1458,15 @@ Options:
   --x <pixels>           point: whole pixels on the device's own screen
   --y <pixels>           point: whole pixels on the device's own screen
   -h, --help             display help for command
+
+Global Options:
+  --workspace-id <id>    Workspace to work in for this command only. Defaults to
+                         the one 'qawolf auth switch' saved, and is never saved
+                         itself
+  -V, --version          output the version number
+  --verbose              Enable debug logging to stderr
+  --json                 Output as JSON
+  --agent                Output for agent consumption
 "
 `;
 
@@ -1256,11 +1477,20 @@ Evaluate a snippet against a runner's live page. Use - to read the snippet from
 stdin
 
 Options:
-  --file <path>  File whose scope the snippet is evaluated in; it and the
-                 directory's other files travel with it
-  --runner <id>  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
-                 directory's stored runner
-  -h, --help     display help for command
+  --file <path>        File whose scope the snippet is evaluated in; it and the
+                       directory's other files travel with it
+  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                       directory's stored runner
+  -h, --help           display help for command
+
+Global Options:
+  --workspace-id <id>  Workspace to work in for this command only. Defaults to
+                       the one 'qawolf auth switch' saved, and is never saved
+                       itself
+  -V, --version        output the version number
+  --verbose            Enable debug logging to stderr
+  --json               Output as JSON
+  --agent              Output for agent consumption
 
 Examples:
   $ qawolf runner exec snippet.ts
@@ -1288,11 +1518,11 @@ Scope:
   files, so the snippet can use your own page objects and helpers.
 
 Failures:
-  exec exits 2 until the runner's first run, since there is no page to evaluate
-  against. On a 4 the message says the snippet could not be evaluated, but a
-  lost answer looks the same from outside, so treat a 4 from a snippet that
-  changes something as "may have run" rather than "did not run", and check its
-  effect before running it again. With no runner named at all, exec launches one
-  and says so on stderr.
+  A playwright runner has a page to evaluate against as soon as it launches. On
+  a 4 the message says the snippet could not be evaluated, but a lost answer
+  looks the same from outside, so treat a 4 from a snippet that changes
+  something as "may have run" rather than "did not run", and check its effect
+  before running it again. With no runner named at all, exec launches one and
+  says so on stderr.
 "
 `;

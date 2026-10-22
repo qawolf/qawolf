@@ -64,6 +64,12 @@ rather than leaving it to time out.
 commands that follow need no `--runner`. Override that default for one command
 with `--runner <id>`, or for a whole session with `QAWOLF_RUNNER_ID`.
 
+Runner commands work in the workspace `qawolf auth switch` saved, which is
+shared by every session on the machine. When more than one session may be
+working in different workspaces, pass `--workspace-id <id>` to every runner
+command instead of switching; it applies to that command only and is never
+saved.
+
 ## Output
 
 When consuming output programmatically, always pass `--json` (or `--agent`).
@@ -204,9 +210,9 @@ of calling `act` and then `screenshot`. One call performs the action and writes
 the screen the runner answers with: half the calls per step, and no delay to
 guess at between them.
 
-The full workflow is its own guide: how a runner is billed, why the first call
-must be a run, the order the commands go in, the see-and-act loop, `exec`, the
-recorder, reading history, staying alive, and an end-to-end example. **Run
+The full workflow is its own guide: how a runner is billed, the order the
+commands go in, the see-and-act loop, `exec`, the recorder, reading history,
+staying alive, and an end-to-end example. **Run
 `qawolf help ref runner` before driving a runner for the first time.** It prints
 that guide and the help of every runner command, for the CLI version you have.
 Each command's `--help` carries its own part, so `qawolf runner exec --help`

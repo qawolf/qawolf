@@ -65,6 +65,8 @@ export const runMessages = {
     `This read of ${stream} stopped before searching all of the runner's history, so older entries may exist that it did not look at. Page forwards with --since to reach them.`,
   submitMayHaveStarted:
     "The runner did not answer, which does not mean the run did not start. Read qawolf runner events run-status before running the flow again, and use the newest run id there if one appeared.",
+  submitLostMayHaveStarted:
+    "The run may have started before the connection failed. Read qawolf runner events run-status before running the flow again, and use the newest run id there if one appeared.",
   targetMismatch: (runnerName: string, requiredRunnerName: string) =>
     `This flow needs a ${requiredRunnerName} runner and ${runnerName} is running. Launch one with --name ${requiredRunnerName}.`,
   varMalformed: (assignment: string) =>

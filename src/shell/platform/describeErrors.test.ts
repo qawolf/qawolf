@@ -57,6 +57,17 @@ describe("describeRequestError", () => {
     expect(described.exitCode).toBe(exitCodes.auth);
   });
 
+  it("does not blame the API key for a 403 the QA Wolf API did not send", () => {
+    const described = describeRequestError(
+      httpError(403, "<html>gateway</html>"),
+      baseUrl,
+      "runner.evaluateSnippet",
+    );
+
+    expect(described.error).not.toContain("API key has access");
+    expect(described.error).toContain("before it reached the QA Wolf API");
+  });
+
   it("maps HTTP 402 to the payment exit code", () => {
     const described = describeRequestError(
       httpError(402),
@@ -91,6 +102,24 @@ describe("describeRequestError", () => {
 
     expect("errorBody" in described).toBe(false);
     expect(described.error).toContain(baseUrl);
+  });
+
+  it("keeps the code and message of what broke the connection", () => {
+    const cause = new TypeError("fetch failed", {
+      cause: Object.assign(new Error("other side closed"), {
+        code: "UND_ERR_SOCKET",
+      }),
+    });
+
+    const described = describeRequestError(
+      { kind: "network", cause },
+      baseUrl,
+      "runner.runFlow",
+    );
+
+    expect(described.error).toBe(
+      `Could not reach the QA Wolf API at ${baseUrl} to fetch runner.runFlow (UND_ERR_SOCKET: other side closed). Check your network connection and QAWOLF_HOST_URL.`,
+    );
   });
 
   it("omits the body for a timeout", () => {
