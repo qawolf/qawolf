@@ -1,5 +1,15 @@
 # @qawolf/cli
 
+## 2.3.0
+
+### Minor Changes
+
+- af37e87: Every `qawolf runner` command takes `--workspace-id <id>`, which works in that workspace for the one command without saving it. Until now the only way to choose a runner's workspace was `qawolf auth switch`, which saves the choice for every session on the machine, so one session switching moved every other session's next runner command to the new workspace. Without the flag, runner commands still use the saved workspace. The flag also gives an organization or user API key, which saves no workspace, one to work in.
+
+### Patch Changes
+
+- 29a062b: When a command that changes something, such as `runner act`, fails because its request could not be sent at all (a DNS failure, a refused connection, or a connect timeout on Node), it now says nothing was sent, so that request did not take effect, instead of warning that the action may have happened.
+
 ## 2.2.2
 
 ### Patch Changes
