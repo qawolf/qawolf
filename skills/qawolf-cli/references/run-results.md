@@ -192,6 +192,21 @@ Every documented field of the `run.get` response. `[]` marks an array, so
 - `supersededBy.runId` — The id of the run.
 - `supersededBy.url` — Absolute URL of the replacement run's page.
 - `blockingBugCount` — How many bugs this run found are blocking: still open, and priority urgent, high, or unprioritized — unprioritized counts because nobody has ruled it out yet. This is what `failed` is derived from, so it explains a failure rather than adding a second verdict: gate on `status`, then read this to say how many bugs are holding the build. It counts a bug filed against a later run by an investigation that carried over from this one, and it drops a bug once that bug is resolved.
+- `builds` — The builds the run installs, one per app and platform. Empty when the run has none.
+- `builds[].appId` — The package name (Android) or bundle ID (iOS) read from the file. A flow launches it with `launch({ app: { id } })`.
+- `builds[].appName` — The app's display name, when the file names one.
+- `builds[].branch` — The branch the uploader said the build came from.
+- `builds[].buildNumber` — versionCode (Android) or CFBundleVersion (iOS), when the file has one.
+- `builds[].commitSha` — The commit the uploader said the build came from.
+- `builds[].createdAt` — When the build was created.
+- `builds[].deletedAt` — When the build was deleted. Runs never install it after.
+- `builds[].environmentId` — The environment whose runs install the build while it is the newest one there for its app and platform. Absent: only a run created with the build installs it.
+- `builds[].fileName` — The uploaded file's name.
+- `builds[].id` — The id of the build, from build.requestUpload.
+- `builds[].platform` — One of: android, ios
+- `builds[].sizeBytes` — The file's size in bytes.
+- `builds[].version` — versionName (Android) or CFBundleShortVersionString (iOS), when the file has one.
+- `builds[].url` — Absolute URL of the team's Builds page.
 - `flows` — The run's flows, ordered alphabetically by name. Only the flows matching flowStatuses when the request set it.
 - `flows[].attempts` — The flow's finished execution attempts, oldest first, including manual Wolf Browser attempts. Present once at least one attempt has finished, so a flow that passed after retries also lists its failed attempts. Artifact URLs appear only on attempts that reached a verdict, and on a manual attempt only when its Wolf Browser run kept them. They stay valid for at least a day (call run.get again for fresh ones), and can return 404 when the attempt did not produce that artifact.
 - `flows[].attempts[].logsUrl` — Signed URL for the attempt's execution logs.
