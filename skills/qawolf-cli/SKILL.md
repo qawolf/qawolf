@@ -42,7 +42,7 @@ commands use `--environment-id`; `qawolf flows run` uses `--env`; and
 `qawolf runner run` uses `--env-id`, which falls back to `QAWOLF_ENVIRONMENT`
 when neither it nor `--env-file` is passed. To give one run a value the
 environment does not hold, keep the environment and add
-`--var NAME=VALUE`; it replaces the environment's value for that run only.
+`--env-var NAME=VALUE`; it replaces the environment's value for that run only.
 
 If multiple environments are returned and the task context does not identify
 the target, ask instead of guessing. Do not default to the newest environment.

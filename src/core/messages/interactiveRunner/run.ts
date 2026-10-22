@@ -70,7 +70,7 @@ export const runMessages = {
   targetMismatch: (runnerName: string, requiredRunnerName: string) =>
     `This flow needs a ${requiredRunnerName} runner and ${runnerName} is running. Launch one with --name ${requiredRunnerName}.`,
   varMalformed: (assignment: string) =>
-    `--var takes NAME=VALUE, and "${assignment}" names no variable.`,
+    `--env-var takes NAME=VALUE, and "${assignment}" names no variable.`,
   varRepeated: (name: string) =>
-    `--var gives ${name} more than once, so the run's value is unclear. Pass it once.`,
+    `--env-var gives ${name} more than once, so the run's value is unclear. Pass it once.`,
 } as const;

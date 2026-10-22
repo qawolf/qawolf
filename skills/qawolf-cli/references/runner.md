@@ -358,41 +358,42 @@ Usage: qawolf runner run [options] <flowFile>
 Run a flow on an interactive runner, shipping the flow and what it imports
 
 Options:
-  --follow             Report the run's status until it settles: in progress, then passed or failed
-                       (default: false)
-  --logs               Stream every log line the run produces while following. Implies --follow
-                       (default: false)
-  --run-events         Stream the run's progress events as JSON lines while following. Implies
-                       --follow (default: false)
-  --recorder-events    Stream the browser actions the runner records as JSON lines while following,
-                       from an anchor taken just before submission: the recorder is runner-wide, not
-                       run-scoped. Implies --follow (default: false)
-  --env-id <env>       QA Wolf environment whose variables the run is given, by id or alias.
-                       Defaults to QAWOLF_ENVIRONMENT unless --env-file is passed. QA Wolf reads and
-                       decrypts them itself, so they never leave the server and no size limit
-                       applies to them
-  --env-file <path>    Dotenv file on this machine whose variables the run is given. With --env-id,
-                       they go on top of that environment's
-  --var <name=value>   One variable for this run only, on top of the environment and --env-file;
-                       repeat for several (default: [])
-  --lines <start-end>  Run only these 1-indexed lines against the browser as it stands, instead of
-                       the whole flow from a fresh one
-  --lines-file <path>  File the --lines range lives in. Defaults to <flowFile>; pass it only when
-                       the lines are in another file, such as a page object
-  --runner <id>        Runner to target. Defaults to QAWOLF_RUNNER_ID, then this directory's stored
-                       runner
-  --timeout <seconds>  Give up following after this long. Following keeps the runner alive, so a run
-                       that never settles would otherwise bill until the terminal closed (default:
-                       "3600")
-  -h, --help           display help for command
+  --follow                       Report the run's status until it settles: in progress, then passed
+                                 or failed (default: false)
+  --logs                         Stream every log line the run produces while following. Implies
+                                 --follow (default: false)
+  --run-events                   Stream the run's progress events as JSON lines while following.
+                                 Implies --follow (default: false)
+  --recorder-events              Stream the browser actions the runner records as JSON lines while
+                                 following, from an anchor taken just before submission: the
+                                 recorder is runner-wide, not run-scoped. Implies --follow (default:
+                                 false)
+  --env-id <env>                 QA Wolf environment whose variables the run is given, by id or
+                                 alias. Defaults to QAWOLF_ENVIRONMENT unless --env-file is passed.
+                                 QA Wolf reads and decrypts them itself, so they never leave the
+                                 server and no size limit applies to them
+  --env-file <path>              Dotenv file on this machine whose variables the run is given. With
+                                 --env-id, they go on top of that environment's
+  --var, --env-var <name=value>  One variable for this run only, on top of the environment and
+                                 --env-file; repeat for several (default: [])
+  --lines <start-end>            Run only these 1-indexed lines against the browser as it stands,
+                                 instead of the whole flow from a fresh one
+  --lines-file <path>            File the --lines range lives in. Defaults to <flowFile>; pass it
+                                 only when the lines are in another file, such as a page object
+  --runner <id>                  Runner to target. Defaults to QAWOLF_RUNNER_ID, then this
+                                 directory's stored runner
+  --timeout <seconds>            Give up following after this long. Following keeps the runner
+                                 alive, so a run that never settles would otherwise bill until the
+                                 terminal closed (default: "3600")
+  -h, --help                     display help for command
 
 Global Options:
-  --workspace-id <id>  Workspace to work in for this command only. Defaults to the one 'qawolf auth
-                       switch' saved, and is never saved itself
-  -V, --version        output the version number
-  --verbose            Enable debug logging to stderr
-  --json               Output as JSON
-  --agent              Output for agent consumption
+  --workspace-id <id>            Workspace to work in for this command only. Defaults to the one
+                                 'qawolf auth switch' saved, and is never saved itself
+  -V, --version                  output the version number
+  --verbose                      Enable debug logging to stderr
+  --json                         Output as JSON
+  --agent                        Output for agent consumption
 
 Examples:
   $ qawolf runner run flows/checkout.flow.ts
@@ -401,7 +402,7 @@ Examples:
   $ qawolf runner run flows/checkout.flow.ts --lines 12-40
   $ qawolf runner run flows/checkout.flow.ts --lines 4-9 --lines-file pages/login.ts
   $ qawolf runner run flows/checkout.flow.ts --env-id staging
-  $ qawolf runner run flows/checkout.flow.ts --var RUN_INPUT_PATH=uploads/app.apk
+  $ qawolf runner run flows/checkout.flow.ts --env-var RUN_INPUT_PATH=uploads/app.apk
 
 What travels:
   run ships the flow file, everything it imports, and your package.json and
@@ -496,29 +497,29 @@ Environment variables:
     `qawolf flows` takes as --env.
   - --env-file .env reads a dotenv file, in the format `qawolf flows pull`
     writes.
-  - --var NAME=VALUE gives one variable, and can be repeated. It splits on the
-    first =, so a value may hold one.
+  - --env-var NAME=VALUE, or --var for short, gives one variable, and can be
+    repeated. It splits on the first =, so a value may hold one.
 
   A later source replaces a variable of the same name from an earlier one, for
   this run only; the QA Wolf environment itself is not changed. Use that to run
   against something the environment does not hold, such as a new app build:
-  `--var RUN_INPUT_PATH=uploads/app.apk`.
+  `--env-var RUN_INPUT_PATH=uploads/app.apk`.
 
   A run with no --env-id falls back to QAWOLF_ENVIRONMENT, the same variable
   `qawolf flows` reads, so one export covers both. The run says on stderr which
   environment it picked up, because those variables reach your flow's code and a
   run should never be given an environment silently. --env-id wins over it, and
   --env-file alone suppresses it, so a run reading a dotenv file is not handed a
-  second environment unless you name one with --env-id. --var keeps it, since a
-  --var adds to the environment rather than replacing it.
+  second environment unless you name one with --env-id. --env-var keeps it,
+  since an --env-var adds to the environment rather than replacing it.
 
   Prefer --env-id. QA Wolf reads and decrypts the environment itself, so the
   values never leave the server, nothing has to be pulled to disk first, and no
   size limit applies to them. It is the only way to run a flow whose environment
   holds something large, such as a session cookie.
 
-  The variables sent with --env-file and --var together may number at most 200,
-  each value at most 16 KiB. Names follow what a shell accepts, and
+  The variables sent with --env-file and --env-var together may number at most
+  200, each value at most 16 KiB. Names follow what a shell accepts, and
   QAWOLF_TEAM_ID is reserved because QA Wolf sets it from the key you
   authenticated with. QAWOLF_ENVIRONMENT_ID, QAWOLF_ENVIRONMENT_NAME and
   QAWOLF_TEAM_API_KEY are set by QA Wolf for a run given an environment, and

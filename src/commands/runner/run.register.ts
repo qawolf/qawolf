@@ -21,11 +21,12 @@ Examples:
   $ qawolf runner run flows/checkout.flow.ts --lines 12-40
   $ qawolf runner run flows/checkout.flow.ts --lines 4-9 --lines-file pages/login.ts
   $ qawolf runner run flows/checkout.flow.ts --env-id staging
-  $ qawolf runner run flows/checkout.flow.ts --var RUN_INPUT_PATH=uploads/app.apk`;
+  $ qawolf runner run flows/checkout.flow.ts --env-var RUN_INPUT_PATH=uploads/app.apk`;
 
 type RunFlags = {
   envFile?: string;
   envId?: string;
+  envVar: string[];
   follow: boolean;
   lines?: string;
   linesFile?: string;
@@ -34,7 +35,6 @@ type RunFlags = {
   runEvents: boolean;
   runner?: string;
   timeout: string;
-  var: string[];
 };
 
 export function registerRunCommand(
@@ -76,7 +76,7 @@ export function registerRunCommand(
       "Dotenv file on this machine whose variables the run is given. With --env-id, they go on top of that environment's",
     )
     .option(
-      "--var <name=value>",
+      "--var, --env-var <name=value>",
       "One variable for this run only, on top of the environment and --env-file; repeat for several",
       collectValue,
       [],
@@ -113,7 +113,7 @@ export function registerRunCommand(
             runEvents: opts.runEvents,
             runner: opts.runner,
             timeout: opts.timeout,
-            vars: opts.var,
+            vars: opts.envVar,
           },
           runnerDeps(ctx),
         ),

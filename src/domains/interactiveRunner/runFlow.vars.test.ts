@@ -5,8 +5,8 @@ import {
   sentRequest,
 } from "./runFlow.environment.testUtils.js";
 
-describe("handleRunnerRun with --var", () => {
-  it("sends a --var on top of the QAWOLF_ENVIRONMENT environment", async () => {
+describe("handleRunnerRun with --env-var", () => {
+  it("sends an --env-var on top of the QAWOLF_ENVIRONMENT environment", async () => {
     const { callPublicApi, result } = await run({
       env: { QAWOLF_ENVIRONMENT: "staging" },
       vars: ["RUN_INPUT_PATH=uploads/app.apk"],
@@ -19,7 +19,7 @@ describe("handleRunnerRun with --var", () => {
     });
   });
 
-  it("sends a --var alone when no environment is named", async () => {
+  it("sends an --env-var alone when no environment is named", async () => {
     const { callPublicApi } = await run({ vars: ["A=1"] });
     const request = sentRequest(callPublicApi);
 
@@ -27,7 +27,7 @@ describe("handleRunnerRun with --var", () => {
     expect(Object.hasOwn(request, "environmentId")).toBe(false);
   });
 
-  it("lets a --var replace the file's value of the same name", async () => {
+  it("lets an --env-var replace the file's value of the same name", async () => {
     const { callPublicApi } = await run({
       content: 'A="1"\nB="2"\n',
       envFile: ".env",
@@ -41,7 +41,7 @@ describe("handleRunnerRun with --var", () => {
     });
   });
 
-  it("splits a --var on its first =, so the value may hold one", async () => {
+  it("splits an --env-var on its first =, so the value may hold one", async () => {
     const { callPublicApi } = await run({ vars: ["QUERY=a=b&c=d", "EMPTY="] });
 
     expect(sentRequest(callPublicApi)).toMatchObject({
@@ -50,17 +50,17 @@ describe("handleRunnerRun with --var", () => {
   });
 
   it.each(["RUN_INPUT_PATH", "=uploads/app.apk"])(
-    "refuses a --var that names no variable, %p, before addressing a runner",
+    "refuses an --env-var that names no variable, %p, before addressing a runner",
     async (assignment) => {
       const { callPublicApi, result } = await run({ vars: [assignment] });
 
-      expect(result?.error).toContain("--var takes NAME=VALUE");
+      expect(result?.error).toContain("--env-var takes NAME=VALUE");
       expect(result?.exitCode).toBe(2);
       expect(callPublicApi).not.toHaveBeenCalled();
     },
   );
 
-  it("refuses a --var given twice", async () => {
+  it("refuses an --env-var given twice", async () => {
     const { callPublicApi, result } = await run({ vars: ["A=1", "A=2"] });
 
     expect(result?.error).toContain("more than once");
@@ -68,7 +68,7 @@ describe("handleRunnerRun with --var", () => {
     expect(callPublicApi).not.toHaveBeenCalled();
   });
 
-  it("refuses a --var the contract will not take", async () => {
+  it("refuses an --env-var the contract will not take", async () => {
     const { callPublicApi, result } = await run({ vars: ["QAWOLF_TEAM_ID=t"] });
 
     expect(result?.error).toContain("reserved");
