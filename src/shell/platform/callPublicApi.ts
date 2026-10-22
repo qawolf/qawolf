@@ -1,6 +1,8 @@
 import { type PublicApiContractKind } from "@qawolf/api-contracts/v1";
 import type { z } from "zod";
 
+import { errorCode } from "~/core/errors.js";
+import { authMessages } from "~/core/messages/index.js";
 import { notFoundSubject } from "~/core/publicApi/notFoundSubject.js";
 
 import { applyWorkspaceId } from "./applyWorkspaceId.js";
@@ -46,6 +48,16 @@ export type CallPublicApiMethod = <Input, Output>(
   options?: RequestOptions,
 ) => Promise<PlatformResult<Output>>;
 
+// Fetch failures from before a connection opens, so nothing was sent. A reset
+// can come after the body was written, so it is not here.
+const notSentCodes = new Set([
+  "ConnectionRefused",
+  "EAI_AGAIN",
+  "ECONNREFUSED",
+  "ENOTFOUND",
+  "UND_ERR_CONNECT_TIMEOUT",
+]);
+
 type MethodDeps = {
   baseUrl: string;
   sleep?: ((ms: number) => Promise<void>) | undefined;
@@ -69,8 +81,28 @@ export function makeCallPublicApiMethod(
     return requestWithRetry({
       call: () => callPublicApi(trpc, contract, sent, options),
       backoffMs: contract.kind === "read" ? readBackoffMs : [],
-      describe: (err) =>
-        describeRequestError(err, deps.baseUrl, contract.name, subject),
+      describe: (err) => {
+        const failure = describeRequestError(
+          err,
+          deps.baseUrl,
+          contract.name,
+          subject,
+        );
+        // Node's fetch puts the code on the error's cause, Bun's on the error.
+        const code =
+          err.kind === "network"
+            ? (errorCode(err.cause.cause) ?? errorCode(err.cause))
+            : undefined;
+        // Only a write: a read can fail inside a command that already changed
+        // something, as `runner run --follow` polls after submitting.
+        if (contract.kind !== "write" || !code || !notSentCodes.has(code))
+          return failure;
+        return {
+          ...failure,
+          error: `${failure.error} ${authMessages.errors.request.notSent}`,
+          mayHaveArrived: false,
+        };
+      },
       sleep: deps.sleep,
     });
   };

@@ -1132,9 +1132,9 @@ Seeing and acting:
   instead. Bounds are checked before anything is sent, so an over-long --text or
   an out-of-range coordinate comes back immediately naming the limit.
 
-  On a 4, the answer may have been lost with the action in flight: take a
-  screenshot before repeating a click, and repeat only what the screen says did
-  not happen.
+  On a 4, unless the message says nothing was sent, the answer may have been
+  lost with the action in flight: take a screenshot before repeating a click,
+  and repeat only what the screen says did not happen.
 
 Mobile:
   A mobile runner has a touchscreen, not a mouse, so it has actions of its own:

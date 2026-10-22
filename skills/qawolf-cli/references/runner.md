@@ -25,9 +25,9 @@ Any other runner, such as a mobile one, has no screen until its first run, and n
 
 ## Exit codes
 
-Retry on the exit code, not on the message text:
+Retry on the exit code:
 
-- `4` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a `4` can instead mean the answer was lost with the work in flight. For `act` and `actions`, take a screenshot first and repeat only what the screen says did not happen. For `run`, poll `run-status` instead of submitting again, since a second submission risks a second billed run. For `exec`, check the effect the snippet was meant to have before running it again.
+- `4` is transient, with one exception. The screen cannot serve this instant: still coming up just after launch, restarting after a display-size change, or busy with another request. Retry in a second or two, and bound the retries. The exception is a command that changes something, where a `4` can instead mean the answer was lost with the work in flight, unless the message says nothing was sent. For `act` and `actions`, take a screenshot first and repeat only what the screen says did not happen. For `run`, poll `run-status` instead of submitting again, since a second submission risks a second billed run. For `exec`, check the effect the snippet was meant to have before running it again.
 - `6` means the work ran out of the time it is given.
 - `7` means billing prevented the request, such as a plan that does not cover the runner you asked for. The message says what was refused and what clears it.
 - `8` means there is no such runner. It was never launched, or it was terminated, or it idled out. Retrying never brings one back, so stop and launch the id or name one that is running. The message says which runner was meant and whether `--runner`, `QAWOLF_RUNNER_ID` or this directory's stored default chose it; read that line before you pick an id to launch.
@@ -733,9 +733,9 @@ Seeing and acting:
   instead. Bounds are checked before anything is sent, so an over-long --text or
   an out-of-range coordinate comes back immediately naming the limit.
 
-  On a 4, the answer may have been lost with the action in flight: take a
-  screenshot before repeating a click, and repeat only what the screen says did
-  not happen.
+  On a 4, unless the message says nothing was sent, the answer may have been
+  lost with the action in flight: take a screenshot before repeating a click,
+  and repeat only what the screen says did not happen.
 
 Mobile:
   A mobile runner has a touchscreen, not a mouse, so it has actions of its own:

@@ -91,6 +91,9 @@ export function createTrpcClient(apiKey: string, deps: Deps): TrpcClient {
             body,
             headers: { ...authHeader, "content-type": "application/json" },
             method: "POST",
+            // A followed redirect can fail after the server got the body, and
+            // that failure would read as a request that was never sent.
+            redirect: "error",
           },
           schema,
           options?.timeoutMs ?? defaultTimeoutMs,
