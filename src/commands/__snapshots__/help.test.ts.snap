@@ -26,6 +26,7 @@ Commands:
                                evidence
   runner [options]             Drive an interactive runner on the QA Wolf
                                platform
+  build                        QA Wolf public API build commands
   codeHostIntegration          QA Wolf public API codeHostIntegration commands
   deployment                   QA Wolf public API deployment commands
   email                        QA Wolf public API email commands
@@ -35,6 +36,7 @@ Commands:
   investigation                QA Wolf public API investigation commands
   issue                        QA Wolf public API issue commands
   legacyTrigger                QA Wolf public API legacyTrigger commands
+  mcpServer                    QA Wolf public API mcpServer commands
   promotion                    QA Wolf public API promotion commands
   run                          Trigger and manage QA Wolf runs on the platform
   skill                        QA Wolf public API skill commands

@@ -39,6 +39,7 @@ describe("registerPublicApiCommands", () => {
     );
     expect(create?.options.map((option) => option.flags)).toEqual([
       "--ai-task-id <value>",
+      "--builds <values...>",
       "--chat-session-id <value>",
       "--environment-id <value>",
       "--environment-variables <KEY=VALUE...>",
@@ -50,6 +51,7 @@ describe("registerPublicApiCommands", () => {
       "--tag-names <values...>",
     ]);
     expect(create?.options.map((option) => option.mandatory)).toEqual([
+      false,
       false,
       false,
       true,
