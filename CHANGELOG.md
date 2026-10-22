@@ -1,5 +1,11 @@
 # @qawolf/cli
 
+## 2.4.0
+
+### Minor Changes
+
+- 96d9c2f: Add `qawolf investigation question find`, which lists the open questions the QA Wolf AI is waiting for a person to answer across a workspace's investigations.
+
 ## 2.3.0
 
 ### Minor Changes
