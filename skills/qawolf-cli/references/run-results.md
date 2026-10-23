@@ -207,6 +207,17 @@ Every documented field of the `run.get` response. `[]` marks an array, so
 - `builds[].sizeBytes` — The file's size in bytes.
 - `builds[].version` — versionName (Android) or CFBundleShortVersionString (iOS), when the file has one.
 - `builds[].url` — Absolute URL of the team's Builds page.
+- `buildVersions` — The apps the run's attempts installed, one per app and platform, with warnings. Empty when no attempt reported an install and the run has no builds.
+- `buildVersions[].appId` — The package name (Android) or bundle ID (iOS) of the app.
+- `buildVersions[].expected` — The run's build of this app. Absent for an app it got none of.
+- `buildVersions[].expected.buildId` — The id of the build, from build.requestUpload.
+- `buildVersions[].kind` — One of build, info; newer servers may add values, so ignore any you don't know. build: the run got a build of this app. info: any other app an attempt installed, such as a companion app. It has no warnings.
+- `buildVersions[].observed` — What attempts installed, one entry per build or version.
+- `buildVersions[].observed[].attempts` — How many attempts reported it.
+- `buildVersions[].observed[].buildId` — Absent when the file is not one of the team's builds.
+- `buildVersions[].platform` — One of: android, ios
+- `buildVersions[].unreportedAttempts` — Finished attempts that reported no installed app, such as web attempts or attempts on an older Flows SDK.
+- `buildVersions[].warnings` — Why the installed apps may not be what the run should test.
 - `flows` — The run's flows, ordered alphabetically by name. Only the flows matching flowStatuses when the request set it.
 - `flows[].attempts` — The flow's finished execution attempts, oldest first, including manual Wolf Browser attempts. Present once at least one attempt has finished, so a flow that passed after retries also lists its failed attempts. Artifact URLs appear only on attempts that reached a verdict, and on a manual attempt only when its Wolf Browser run kept them. They stay valid for at least a day (call run.get again for fresh ones), and can return 404 when the attempt did not produce that artifact.
 - `flows[].attempts[].logsUrl` — Signed URL for the attempt's execution logs.
@@ -225,6 +236,15 @@ Every documented field of the `run.get` response. `[]` marks an array, so
 - `flows[].failure.optedOutOfInvestigation.by` — One of: user, system
 - `flows[].flowId` — The id of the flow.
 - `flows[].status` — One of: failed, queued, running, passed, canceled
+- `siteVersions` — The versions the run's attempts saw on each site origin, with warnings. Empty when no attempt reported one.
+- `siteVersions[].expected` — The commit the run should see. Only on the origin the deployment reported as its target. Absent when no deployment names a commit and a target, or the deployment has a service.
+- `siteVersions[].expected.from` — One of deployment, latestDeployment; newer servers may add values, so ignore any you don't know. deployment: the run's own deployment. latestDeployment: the environment's latest successful deployment before the run.
+- `siteVersions[].expected.version` — The deployed commit.
+- `siteVersions[].observed` — What attempts saw, one entry per version and source.
+- `siteVersions[].observed[].attempts` — How many attempts reported it.
+- `siteVersions[].observed[].source` — One of header, meta, versionPath, frameworkBuildId, fingerprint; newer servers may add values, so ignore any you don't know. Where the attempt read the version.
+- `siteVersions[].origin` — The site origin the attempts visited.
+- `siteVersions[].warnings` — Why the site may not be the version the run should test.
 - `url` — Absolute URL of the run page.
 
 <!-- fields:end -->

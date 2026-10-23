@@ -20,6 +20,7 @@ describe("buildFlagSpecs union inputs", () => {
       { flag: "--name <value>", required: true },
       { flag: "--priority <value>", required: false },
       { flag: "--workspace-id <value>", required: false },
+      { flag: "--file-paths <values...>", required: false },
       { flag: "--type <value>", required: true },
       { flag: "--estimated-due-date <value>", required: false },
       { flag: "--effort <value>", required: false },
