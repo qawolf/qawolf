@@ -23,6 +23,7 @@ async function runAfterFailing(failure: {
       logs: false,
       recorderEvents: false,
       runEvents: false,
+      vars: [],
     },
     makeTestDeps(),
   );
